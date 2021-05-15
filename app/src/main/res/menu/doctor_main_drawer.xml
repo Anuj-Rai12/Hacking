@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/doctorDashboardFragment"
+            android:icon="@drawable/material_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/blogsFragment"
+            android:icon="@drawable/ic_baseline_article_24"
+            android:title="@string/blogs" />
+        <item
+            android:id="@+id/webinarsFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/webinars" />
+        <item
+            android:id="@+id/resourcesFragment"
+            android:icon="@drawable/ic_baseline_file_copy_24"
+            android:title="@string/resources" />
+        <item
+            android:id="@+id/referADoctor"
+            android:icon="@drawable/bottom_doctor_refer"
+            android:title="@string/refer_a_doctor" />
+    </group>
+</menu>

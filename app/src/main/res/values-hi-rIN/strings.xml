@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UpTodd</string>
+
+    <string name="menu_home">घर </string>
+
+    <string name="do_s">करने योग्य </string>
+
+    <string name="dont_s">न करने योग्य </string>
+
+    <string name="ideal_weight">आदर्श वजन </string>
+
+    <string name="your_weekly_score_board">आपका साप्ताहिक स्कोर बोर्ड </string>
+
+    <string name="your_essential_score_board">आपका आवश्यक स्कोर बोर्ड </string>
+
+    <string name="your_monthly_score_board">आपका मासिक स्कोर बोर्ड </string>
+
+    <string name="your_daily_score_board">आपका दैनिक स्कोर बोर्ड </string>
+
+    <string name="mark_activities">मार्क क्रियाएँ </string>
+
+    <string name="today_s_tip">आज की युक्ति </string>
+
+    <string name="set_alarm">अलार्म सेट करो </string>
+
+    <string name="share">शेयर </string>
+
+    <string name="mark_all_done">सभी को चिह्नित करें </string>
+
+    <string name="you_will_be_a_super_parent_soon">आप जल्द ही <b> सुपर पैरेंट </b> होंगे</string>
+
+    <string name="toys">खिलौने </string>
+
+    <string name="colours">रंग की </string>
+
+    <string name="back">वापस </string>
+
+    <string name="all_activities_completed">सभी गतिविधियां पूरी हुईं </string>
+
+    <string name="you_re_a_super_parent">आप एक सुपर \n प्रधान हैं </string>
+
+    <string name="reminder_frequency">स्मरण की आवृत्ति </string>
+
+    <string name="remind_me_at">मुझे याद दिलाना </string>
+
+    <string name="save">सहेजें </string>
+
+    <string name="m">सोम </string>
+
+    <string name="t">मंगल </string>
+
+    <string name="w">बुद्ध </string>
+
+    <string name="f">शुक्र </string>
+
+    <string name="s">शनि </string>
+
+    <string name="cancel">रद्द करना </string>
+
+    <string name="watch_now">अभी पढ़ो </string>
+
+    <string name="app_guidelines">ऐप दिशानिर्देश </string>
+
+    <string name="support">सहयोग </string>
+
+    <string name="sample"> 256 </string>
+
+    <string name="dashboard"> डैशबोर्ड </string>
+
+    <string name="stories">कहानियों </string>
+
+    <string name="yoga">योग </string>
+
+    <string name="you_re_a_n_super_parent">आप एक \nसुपर पेरेंट हैं</string>
+
+    <string name="email_id">ईमेल आईडी </string>
+
+    <string name="password">कुंजिका </string>
+
+    <string name="forgot_password">पासवर्ड भूल गए? </string>
+
+    <string name="or_log_in_with"> या लॉग इन के साथ </string>
+
+    <string name="logout">लॉग आउट </string>
+
+    <string name="phone_no">फोन नंबर। </string>
+
+    <string name="name"> नाम </string>
+
+    <string name="name_req">नाम * </string>
+
+    <string name="whatsapp_no"> व्हाट्सएप नं </string>
+
+    <string name="whatsapp_no_req">व्हाट्सएप नं * </string>
+
+    <string name="city"> शहर </string>
+
+    <string name="submit">प्रस्तुत </string>
+
+    <string name="baby_dob">बेबी DOB </string>
+
+    <string name="home">घर </string>
+
+    <string name="orders">आदेश </string>
+
+    <string name="account">लेखा </string>
+
+    <string name="personal_info">व्यक्तिगत जानकारी </string>
+
+    <string name="e_mail_id">ईमेल आईडी </string>
+
+    <string name="wallet_details">बटुआ विवरण </string>
+
+    <string name="total_amount">कुल रकम </string>
+
+    <string name="amount_in_bank"> बैंक में राशि </string>
+
+    <string name="pending_amount">बकाया राशि </string>
+
+    <string name="bank_account_details">बैंक खाता विवरण </string>
+
+    <string name="title">शीर्षक </string>
+
+    <string name="message">संदेश </string>
+
+    <string name="reopen_ticket">रोपेन टिकट </string>
+
+    <string name="welcome_doctor">स्वागत है, डॉक्टर </string>
+
+    <string name="patients_enrolled_count">मरीजों की गिनती की गई </string>
+
+    <string name="patients_referred_count">मरीजों की गिनती की गई </string>
+
+    <string name="ticket_number">टिकट नंबर </string>
+
+    <string name="starting_date">शुरू करने की तिथि - शुरू होने की तिथि - रवाना होने की तिथि </string>
+
+    <string name="ticket_status">टिकट की स्थिति </string>
+
+    <string name="rate_ticket">टिकट दर </string>
+
+    <string name="log_in">लॉग इन करें </string>
+
+    <string name="sign_in_as_doctor">डॉक्टर के रूप में साइन इन करें </string>
+
+    <string name="generate_new_ticket">नया टिकट जनरेट करें </string>
+
+    <string name="book_a_session">पुस्तक एक सत्र </string>
+
+    <string name="recommended_webinars">अनुशंसित ब्लॉग </string>
+
+    <string name="comment">टिप्पणी </string>
+
+    <string name="rate_this_ticket">इस टिकट को रेट करें </string>
+
+    <string name="baby_name">बच्चे का नाम </string>
+
+    <string name="baby_age_req">बच्चे की आयु * </string>
+
+    <string name="session_by"> द्वारा सत्र </string>
+
+    <string name="session_date">सत्र की तारीख </string>
+
+    <string name="session_id">सत्र आईडी </string>
+
+    <string name="rate_session">दर सत्र </string>
+
+    <string name="music">संगीत </string>
+
+    <string name="book_a_slot">एक स्लॉट बुक करें </string>
+
+    <string name="poem">कविता </string>
+
+    <string name="bank_name"> बैंक का नाम: </string>
+
+    <string name="refer_and_earn_5_revenue_for_the_entire_lifecycle">पूरे जीवनचक्र के लिए 5% राजस्व का संदर्भ लें और अर्जित करें। </string>
+
+    <string name="see_previous_referrals">पिछले रेफरल देखें </string>
+
+    <string name="refer_amp_earn">देखें और कमाएँ </string>
+
+    <string name="done">किया हुआ </string>
+
+    <string name="close">बंद करे </string>
+
+    <string name="refer_a_doctor">एक डॉक्टर को देखें </string>
+
+    <string name="date_of_registration">पंजीकरण की तिथि </string>
+
+    <string name="date_of_referral">रेफरल की तारीख </string>
+
+    <string name="status">स्थिति </string>
+
+    <string name="note">ध्यान दें </string>
+
+    <string name="timing">समय </string>
+
+    <string name="change_password">पासवर्ड बदलें </string>
+
+    <string name="successful">सफल </string>
+
+    <string name="pending">विचाराधीन </string>
+
+    <string name="failed">अनुत्तीर्ण होना </string>
+
+    <string name="referral_date">रेफरल तिथि </string>
+
+    <string name="referral_date_range">रेफरल तिथि सीमा </string>
+
+    <string name="start_date">आरंभ करने की तिथि </string>
+
+    <string name="end_date">अंतिम तिथि </string>
+
+    <string name="my_patients">मेरे मरीज </string>
+
+    <string name="my_doctors">मेरे डॉक्टर्स </string>
+
+    <string name="refer"> उल्लेख </string>
+
+    <string name="capture_moment">मोमेंट कैप्चर करें </string>
+
+    <string name="expected_outcomes">अपेक्षित परिणाम </string>
+
+    <string name="blogs">ब्लॉग </string>
+
+    <string name="webinars">वेबिनार </string>
+
+    <string name="not_now">अभी नहीं </string>
+
+    <string name="a_c_holder">ए / सी धारक: </string>
+
+    <string name="a_c_no"> ए / सी नहीं: </string>
+
+    <string name="amount_by_referring_doctors"> डॉक्टरों का हवाला देकर राशि </string>
+
+    <string name="amount_by_referring_patients">मरीजों को रेफर कर राशि </string>
+
+    <string name="topic">विषय </string>
+
+    <string name="diet">आहार </string>
+
+    <string name="vaccination">टीका </string>
+
+    <string name="we_miss_you_doctor">वी मिस यू डॉक्टर </string>
+
+    <string name="refer_now">अब देखें </string>
+
+    <string name="_10_gift_voucher"> 10% गिफ्ट वाउचर </string>
+
+    <string name="close_ticket">टिकट बंद करें </string>
+
+    <string name="doctor_app_guide">डॉक्टर ऐप गाइड </string>
+
+    <string name="doctor_referral_guide">डॉक्टर रेफरल गाइड </string>
+
+    <string name="doctor_brochure">डॉक्टर ब्रोशर </string>
+
+    <string name="resources">साधन </string>
+
+    <string name="all_activities">सभी गतिविधियाँ </string>
+
+    <string name="essentialsAlarmDescription">अनिवार्य अलार्म पहले और दूसरे सोमवार, और महीने के आखिरी शनिवार और रविवार के लिए निर्धारित होते हैं </string>
+
+    <string name="monthlyAlarmDescription">मासिक अलार्म पहले और दूसरे सोमवार के लिए निर्धारित किए जाते हैं, और महीने के आखिरी शनिवार और रविवार को </string>
+
+    <string name="activity_alarms">गतिविधि अलार्म </string>
+
+    <string name="loading">लोड हो रहा है.. </string>
+
+    <string name="no_tickets_found"> कोई टिकट नहीं मिला! </string>
+
+    <string name="no_sessions_found"> कोई सत्र नहीं मिला! </string>
+
+    <string name="no_referrals_here"> यहां कोई रेफरल नहीं। </string>
+
+    <string name="no_poems_found">कोई कविता नहीं मिली! </string>
+
+    <string name="no_music_found"> कोई संगीत नहीं मिला! </string>
+
+    <string name="welcome_name"> स्वागत है, नाम </string>
+
+    <string name="your_profile">आपकी रूपरेखा </string>
+
+    <string name="edit_profile_image">प्रोफ़ाइल छवि संपादित करें </string>
+
+    <string name="ranking">श्रेणी </string>
+
+    <string name="personal_information">व्यक्तिगत जानकारी </string>
+
+    <string name="phone">फ़ोन </string>
+
+    <string name="permanent_address">स्थाई पता </string>
+
+    <string name="financial_mail">वित्तीय मेल </string>
+
+    <string name="kids_information">बच्चों की जानकारी </string>
+
+    <string name="kids_name">बच्चों का नाम </string>
+
+    <string name="kids_age">बच्चों की उम्र </string>
+
+    <string name="kids_gender">किड्स जेंडर </string>
+
+    <string name="subscription_details">सदस्यता विवरण </string>
+
+    <string name="current_subscribed_plan">वर्तमान सदस्यता योजना </string>
+
+    <string name="set_up_nanny_mode">नानी मोड सेट करें </string>
+
+    <string name="see_update_nanny_details">नानी मोड विवरण देखें / अपडेट करें </string>
+
+    <string name="nanny_details_are_updated">नानी मोड विवरण अपडेट किए गए हैं </string>
+
+    <string name="account_details_are_updated">खाता विवरण अपडेट किया जाता है </string>
+
+    <string name="are_you_sure_logout">क्या आप लॉग आउट करना चाहते हैं </string>
+
+    <string name="select_picture">चित्र का चयन करें </string>
+
+    <string name="unable_to_select_image">छवि का चयन करने में असमर्थ </string>
+
+    <string name="enter_userid">उपयोगकर्ता आईडी दर्ज करें </string>
+
+    <string name="short_password">पासवर्ड की लंबाई 8 से अधिक होनी चाहिए </string>
+
+    <string name="image_not_saved">छवि सहेजी नहीं गई </string>
+
+    <string name="enter_valid_name">मान्य नाम दर्ज करें </string>
+
+    <string name="enter_valid_phone">मान्य फ़ोन नंबर दर्ज करें </string>
+
+    <string name="enter_valid_address">मान्य पता दर्ज करें </string>
+
+    <string name="enter_valid_financial">मान्य वित्तीय ईमेल दर्ज करें </string>
+
+    <string name="enter_valid_email">मान्य ईमेल दर्ज करें </string>
+
+    <string name="failed_to_load_to_database">डेटाबेस में लोड करने में विफल </string>
+
+    <string name="retry">पुन: प्रयास </string>
+
+    <string name="loading_please_wait">लोड हो रहा है, कृपया प्रतीक्षा करें </string>
+
+    <string name="are_you_sure_to_leave_without_editing">क्या आप वाकई संपादन के बिना छोड़ना चाहते हैं? </string>
+
+    <string name="the_password_length_must_be_more_than_8_and_it_should_contain_atleast_one_digit_and_atleast_one_special_character"> पासवर्ड की लंबाई 8 से अधिक होनी चाहिए और इसमें कम से कम एक अंक और कम से कम एक विशेष वर्ण होना चाहिए </string>
+
+    <string name="current_password">वर्तमान पासवर्ड </string>
+
+    <string name="new_password">नया पासवर्ड </string>
+
+    <string name="confirm_new_password">नए पासवर्ड की पुष्टि करें </string>
+
+    <string name="enter_current_password">वर्तमान पासवर्ड दर्ज करो </string>
+
+    <string name="enter_new_password">नया पासवर्ड दर्ज करें </string>
+
+    <string name="enter_valid_password">मान्य पासवर्ड दर्ज करें </string>
+
+    <string name="passwords_dont_match">पासवर्ड मेल नहीं खाते</string>
+
+    <string name="password_updated_successfully">पासवर्ड सफलतापूर्वक अपडेट किया गया </string>
+
+    <string name="password_too_short">पासवर्ड बहुत छोटा है </string>
+
+    <string name="password_must_have_a_digit">पासवर्ड में एक अंक होना चाहिए </string>
+
+    <string name="the_password_must_have_a_special_character">पासवर्ड में एक विशेष वर्ण होना चाहिए </string>
+
+    <string name="changing_password_please_wait">पासवर्ड बदलना, कृपया प्रतीक्षा करें </string>
+
+    <string name="no_items">कोई वस्तु नहीं </string>
+
+    <string name="all">सब </string>
+
+    <string name="blogimage"> blogImage </string>
+
+    <string name="blog_title"> ब्लॉग का शीर्षक </string>
+
+    <string name="capture_moments">क्षणों को संजोएं </string>
+
+    <string name="permission_denied">अनुमति नहीं मिली </string>
+
+    <string name="failed_to_choose_image">छवि चुनने में विफल </string>
+
+    <string name="flip_camera">फ्लिप कैमरा </string>
+
+    <string name="flash"> Chamak </string>
+
+    <string name="gallery"> गेलरी </string>
+
+    <string name="choose_Card">कार्ड चुनें </string>
+
+    <string name="error_saving_to_database">सर्वर पर सहेजने में त्रुटि </string>
+
+    <string name="lovely_moment_ofsuper_baby_and_super_parent_is_saved_in_your_gallery">आपकी गैलरी में सुपर बेबी और सुपर पेरेंट का लवली मोमेंट बच जाता है </string>
+
+    <string name="image_not_found_in_storage">संग्रहण में छवि नहीं मिली </string>
+
+    <string name="unable_to_load_image">छवि लोड करने में असमर्थ </string>
+
+    <string name="error_caching_image">छवि कैशिंग में त्रुटि </string>
+
+    <string name="wait_card_not_ready">रुको! कार्ड तैयार नहीं </string>
+
+    <string name="downloading_please_wait">डाउनलोडिंग, कृपया प्रतीक्षा करें </string>
+
+    <string name="share_via">के माध्यम से बाँटे </string>
+
+    <string name="card">कार्ड </string>
+
+    <string name="don_t_want_to_disclose">खुलासा नहीं करना चाहता </string>
+
+    <string name="girl">लड़की </string>
+
+    <string name="boy">लड़का </string>
+
+    <string name="tell_us_your_baby_s_gender">हमें अपने बच्चे का लिंग बताएं </string>
+
+    <string name="a_girl">एक लड़की </string>
+
+    <string name="a_boy">एक लड़का </string>
+
+    <string name="get_started">शुरू हो जाओ </string>
+
+    <string name="what_is_your_baby_s_name">आपके बच्चे का नाम क्या है? </string>
+
+    <string name="enter_name"> नाम दर्ज </string>
+
+    <string name="unable_to_upload_data_try_again_after_sometime">डेटा अपलोड करने में असमर्थ, कुछ समय बाद पुन: प्रयास करें </string>
+
+    <string name="log_in_failed">लॉगिन विफल </string>
+
+    <string name="unable_to_send_otp">ओटीपी भेजने में असमर्थ </string>
+
+    <string name="enter_otp"> OTP दर्ज करें </string>
+
+    <string name="enter_the_otp_sent_to_your_email_id_below">अपनी ईमेल आईडी पर भेजे गए ओटीपी को नीचे दर्ज करें </string>
+
+    <string name="submit_otp"> OTP जमा करें </string>
+
+    <string name="wrong_otp">गलत ओटीपी </string>
+
+    <string name="resend_otp">ओटीपी पुनः भेजें </string>
+
+    <string name="enter_the_email_associated_with_your_account">अपने खाते से संबद्ध ईमेल दर्ज करें </string>
+
+    <string name="ellipse">अंडाकार </string>
+
+    <string name="send_otp"> OTP भेजें </string>
+
+    <string name="ok">ठीक </string>
+
+    <string name="logo">प्रतीक चिन्ह </string>
+
+    <string name="contact_us">संपर्क करें </string>
+
+    <string name="see_our_website">हमारी वेबसाइट देखें </string>
+
+    <string name="facebook">फेसबुक </string>
+
+    <string name="google">गूगल </string>
+
+    <string name="nanny_mode">नानी मोड </string>
+
+    <string name="you_are_baby_s">आप बच्चे के हैं?</string>
+
+    <string name="mother"> मां </string>
+
+    <string name="guardian">अभिभावक </string>
+
+    <string name="father">पिता </string>
+
+    <string name="tell_us_your_stage">हमें अपना चरण बताओ </string>
+
+    <string name="pre_birth">पूर्व जन्म </string>
+
+    <string name="post_birth">जन्म के बाद </string>
+
+    <string name="nanny_login_id">नानी लॉगिन आईडी </string>
+
+    <string name="nanny_password">नानी का पासवर्ड </string>
+
+    <string name="eye">आंख </string>
+
+    <string name="yes">हाँ </string>
+
+    <string name="switch_to_nanny_mode">नानी मोड पर जाएँ </string>
+
+    <string name="user_id">यूज़र आईडी </string>
+
+    <string name="order_history">आदेश इतिहास </string>
+
+    <string name="the_request_for_extending_subscription_has_been_registered_we_ll_reach_out_out_to_you_soon">सदस्यता बढ़ाने का अनुरोध पंजीकृत किया गया है। हम जल्द ही आपके पास पहुंचेंगे </string>
+
+    <string name="month_no">महीना- </string>
+
+    <string name="qty"> मात्रा: </string>
+
+    <string name="delivered"> पहुंचा दिया </string>
+
+    <string name="expected_delivery">अपेक्षित वितरण </string>
+
+    <string name="current_subscription">वर्तमान सदस्यता </string>
+
+    <string name="upgrade">उन्नयन </string>
+
+    <string name="no_orders">कोई आदेश नहीं </string>
+
+    <string name="extend_subscription">सदस्यता बढ़ाएँ </string>
+
+    <string name="order_no">आदेश संख्या : </string>
+
+    <string name="date">"अपेक्षित वितरण की तारीख : "</string>
+
+    <string name="order_details"> ऑर्डर का विवरण </string>
+
+    <string name="unable_to_load_pdf">पीडीएफ लोड करने में असमर्थ </string>
+
+    <string name="wait_">रुको… </string>
+
+    <string name="confirm_to_extend_subscription"> सदस्यता बढ़ाने की पुष्टि करें </string>
+
+    <string name="refer_and_earn">देखें और कमाएँ </string>
+
+    <string name="thank_you_for_your_referral">आपके रेफरल के लिए धन्यवाद। </string>
+
+    <string name="an_error_has_occurred">एक गलती हुई है: </string>
+
+    <string name="copied_to_clipboard"> क्लिपबोर्ड पर नकल </string>
+
+    <string name="referral_code_for_uptodd"> UpTodd के लिए रेफरल कोड </string>
+
+    <string name="thank_you_for_your_referral_we_ll_contact_you_soon">आपके रेफरल के लिए धन्यवाद। हम जल्द ही उनसे संपर्क करेंगे! </string>
+
+    <string name="refer_amp_earn_inr_5000"> संदर्भ लें और INR 5000 कमाएँ </string>
+
+    <string name="referral_code">रेफरल कोड </string>
+
+    <string name="code">कोड </string>
+
+    <string name="referral_details">रेफरल विवरण </string>
+
+    <string name="new_details_have_been_submitted_successfully">नए विवरण सफलतापूर्वक प्रस्तुत किए गए हैं! </string>
+
+    <string name="cancel_editing"> संपादन रद्द करें </string>
+
+    <string name="are_you_sure_you_want_to_discard_the_changes">क्या आप वाकई परिवर्तनों को छोड़ना चाहते हैं? </string>
+
+    <string name="no"> नहीं </string>
+
+    <string name="email">ईमेल </string>
+
+    <string name="registration_date">पंजीकरण की तारीख </string>
+
+    <string name="referrals">रेफरल </string>
+
+    <string name="thank_you_for_your_feedback">आपकी प्रतिक्रिया के लिए आपका धन्यवाद। </string>
+
+    <string name="search">खोज </string>
+
+    <string name="filter">फिल्टर </string>
+
+    <string name="no_referrals">कोई संदर्भ नहीं </string>
+
+    <string name="order_no_caps">आदेश संख्या: </string>
+
+    <string name="product_name_qty"> उत्पाद का नाम | मात्रा: </string>
+
+    <string name="delivery_status"> वितरण की स्थिति </string>
+
+    <string name="view_details">विवरण देखें </string>
+
+    <string name="photo_type">फोटो प्रकार </string>
+
+    <string name="webinar_title">वेबिनार का शीर्षक </string>
+
+    <string name="date_">दिनांक </string>
+
+    <string name="hey_mumma">अरे, मम्मा </string>
+
+    <string name="hey_dad">पिता जी </string>
+
+    <string name="hey">अरे, </string>
+
+    <string name="babyMonthsFormat">बच्चा "%d" महीनों का है</string>
+
+    <string name="daily">रोज </string>
+
+    <string name="weekly">साप्ताहिक </string>
+
+    <string name="monthly">महीने के </string>
+
+    <string name="essentials">अनिवार्य </string>
+
+    <string name="no_internet_connection">कोई इंटरनेट कनेक्शन नहीं </string>
+
+    <string name="alarm_on">अलार्म ऑन हो गया </string>
+
+    <string name="alarm_cancelled">अलार्म रद्द कर दिया गया </string>
+
+    <string name="couldnt_refresh_data">डेटा ताज़ा नहीं किया जा सका। \n अपना इंटरनेट कनेक्शन चेक करें </string>
+
+    <string name="select_days">दिनों का चयन करें </string>
+
+    <string name="ideal_height">आदर्श ऊंचाई </string>
+
+    <string name="happy_birthday_baby">जन्मदिन मुबारक हों बेबी </string>
+
+    <string name="milestone_name">मील का पत्थर नाम </string>
+
+    <string name="change_language">भाषा बदलो</string>
+
+    <string name="english">English</string>
+    <string name="hindi">हिंदी</string>
+    <string name="the_language_is_updated_and_the_changes_will_be_visible_in_few_hours">भाषा अपडेट की गई है और कुछ घंटों में परिवर्तन दिखाई देगा</string>
+
+    <string name="timer_is_set_for_15_minutes">15 मिनट के लिए टाइमर सेट।</string>
+    <string name="timer_is_set_for_30_minutes">30 मिनट के लिए टाइमर सेट।</string>
+    <string name="timer_is_set_for_45_minutes">45 मिनट के लिए टाइमर सेट।</string>
+    <string name="timer_cancelled">टाइमर रद्द!</string>
+    <string name="we_ll_play_this_for">हम इस गीत को चलाएंगे </string>
+    <string name="minutes"> मिनट तक</string>
+    <string name="sending_data">डेटा भेज रहा है …</string>
+    <string name="general">आम</string>
+    <string name="user_section">उपयोगकर्ता अनुभाग</string>
+    <string name="my_referrals">मेरा सिफ़ारिशें</string>
+
+    <string name="welcome">स्वागत हे </string>
+    <string name="landscape_not_allowed">लैंडस्केप की अनुमति नहीं है</string>
+    <string name="months">" महीने"</string>
+    <string name="step">"चरण "</string>
+    <string name="keep_the_phone_in_portrait_mode">फोन को पोर्ट्रेट मोड में रखें</string>
+    <string name="available">उपलब्ध</string>
+    <string name="not_available">उपलब्ध नहीं है</string>
+    <string name="delivery_date">डिलीवरी की तारीख :</string>
+
+    <string name="language_text">भाषा</string>
+</resources>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/doctor_nav"
+    app:startDestination="@id/doctorDashboardFragment">
+
+    <fragment
+        android:id="@+id/referADoctor"
+        android:name="com.uptodd.uptoddapp.doctor.refer.doctor.ReferADoctor"
+        android:label="Refer A Doctor"
+        tools:layout="@layout/refer_a_doctor_fragment">
+        <action
+            android:id="@+id/action_referADoctor_to_referredListDoctor"
+            app:destination="@id/referredListDoctor"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/webinarsFragment"
+        android:name="com.uptodd.uptoddapp.ui.webinars.webinarslist.WebinarsFragment"
+        android:label="Webinars"
+        tools:layout="@layout/fragment_webinars" />
+
+    <fragment
+        android:id="@+id/blogsFragment"
+        android:name="com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsFragment"
+        android:label="Blogs" />
+
+    <fragment
+        android:id="@+id/doctorDashboardFragment"
+        android:name="com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/doctor_dashboard_fragment">
+        <action
+            android:id="@+id/action_doctorDashboardFragment_to_bookASession"
+            app:destination="@id/bookASession"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_doctorDashboardFragment_to_referredListPatient"
+            app:destination="@id/referredListPatient"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_doctorDashboardFragment_to_referredListDoctor"
+            app:destination="@id/referredListDoctor"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/referredListDoctor"
+        android:name="com.uptodd.uptoddapp.doctor.refer.referrals.doctor.ReferredDoctorsList"
+        android:label="My Doctors"
+        tools:layout="@layout/referred_list_patients_fragment">
+        <action
+            android:id="@+id/action_referredList_to_referralDetails"
+            app:destination="@id/referralDetails"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="filters_status"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/referredListPatient"
+        android:name="com.uptodd.uptoddapp.doctor.refer.referrals.patients.ReferredPatientsList"
+        android:label="My Patients"
+        tools:layout="@layout/referred_list_patients_fragment">
+        <action
+            android:id="@+id/action_referredList_to_referralDetails"
+            app:destination="@id/referralDetails"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="filters_status"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/referralDetails"
+        android:name="com.uptodd.uptoddapp.doctor.refer.referrals.ReferralDetails"
+        android:label="Referral Details"
+        tools:layout="@layout/referral_details_fragment">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="doctor"
+            app:argType="boolean" />
+        <argument
+            android:name="referral_status"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_referralDetails_to_noteFragment"
+            app:destination="@id/noteFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/doctorAccount"
+        android:name="com.uptodd.uptoddapp.doctor.account.DoctorAccountFragment"
+        android:label="Account"
+        tools:layout="@layout/doctor_account_fragment">
+        <action
+            android:id="@+id/action_doctorAccount_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookASession"
+        android:name="com.uptodd.uptoddapp.doctor.bookasession.BookASession"
+        android:label="Book A Session"
+        tools:layout="@layout/book_a_session_fragment" />
+
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.uptodd.uptoddapp.doctor.refer.referrals.NoteFragment"
+        android:label="Add a note">
+        <argument
+            android:name="referralPersonId"
+            app:argType="integer" />
+        <argument
+            android:name="referralPersonName"
+            app:argType="string" />
+        <argument
+            android:name="is_doctor"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.uptodd.uptoddapp.ui.account.changepassword.ChangePasswordFragment"
+        android:label="Change Password"
+        tools:layout="@layout/fragment_change_password">
+        <argument
+            android:name="doctorReset"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPDFFragment"
+        android:name="com.uptodd.uptoddapp.doctor.resources.ViewPDFFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_view_pdf">
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/resourcesFragment"
+        android:name="com.uptodd.uptoddapp.doctor.resources.ResourcesFragment"
+        android:label="Resources"
+        tools:layout="@layout/resources_fragment">
+        <action
+            android:id="@+id/action_resourcesFragment_to_viewPDFFragment"
+            app:destination="@id/viewPDFFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/missYouDoctorFragment"
+        android:name="com.uptodd.uptoddapp.ui.other.MissYouDoctorFragment"
+        android:label="Miss You Doctor" />
+
+</navigation>

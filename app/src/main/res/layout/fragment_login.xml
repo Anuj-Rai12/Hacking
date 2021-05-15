@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.login.loginpage.LoginFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="loginViewModel"
+            type="com.uptodd.uptoddapp.ui.login.loginpage.LoginViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbarTrackVertical="@null">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff">
+
+
+            <ImageView
+                android:id="@+id/main_uptoddLogo"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/app_icon" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mainLoginButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> loginViewModel.beginLogin()}"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="8dp"
+                android:text="@string/log_in"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:visibility="@{loginViewModel.showLoginProgress ? View.INVISIBLE : View.VISIBLE}"
+                app:cornerRadius="16dp"
+                app:layout_constraintStart_toStartOf="@+id/mainLoginPassword"
+                app:layout_constraintTop_toBottomOf="@+id/mainLoginPassword" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circularProgressIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{loginViewModel.showLoginProgress ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/mainLoginButton"
+                app:layout_constraintEnd_toEndOf="@id/mainLoginButton"
+                app:layout_constraintStart_toStartOf="@id/mainLoginButton"
+                app:layout_constraintTop_toTopOf="@id/mainLoginButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mainForgotPassword"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="@{loginViewModel.enableInput}"
+                android:text="@string/forgot_password"
+                android:textColor="@color/textGrey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mainLoginButton"
+                app:layout_constraintEnd_toEndOf="@+id/mainLoginPassword"
+                app:layout_constraintTop_toTopOf="@+id/mainLoginButton" />
+
+
+            <TextView
+                android:id="@+id/main_or_login_with"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/or_log_in_with"
+                android:textColor="@color/textGrey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainLoginButton" />
+
+            <ImageButton
+                android:id="@+id/main_facebook_login"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="24dp"
+                android:background="#fff"
+                android:contentDescription="@string/facebook"
+                android:enabled="@{loginViewModel.enableInput}"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toStartOf="@id/main_google_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_or_login_with"
+                app:srcCompat="@drawable/fb" />
+
+            <ImageButton
+                android:id="@+id/main_google_login"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="64dp"
+                android:background="#fff"
+                android:contentDescription="@string/google"
+                android:enabled="@{loginViewModel.enableInput}"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/main_facebook_login"
+                app:layout_constraintTop_toTopOf="@+id/main_facebook_login"
+                app:srcCompat="@drawable/google" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/mainLoginMail"
+                app:layout_constraintStart_toStartOf="@+id/mainLoginMail"
+                app:layout_constraintTop_toBottomOf="@+id/main_facebook_login">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:enabled="@{loginViewModel.enableInput}"
+                    android:fontFamily="@font/montserrat"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/sign_in_as_doctor"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    app:cornerRadius="16dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_nanny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:enabled="@{loginViewModel.enableInput}"
+                    android:fontFamily="@font/montserrat"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/nanny_mode"
+                    android:textAllCaps="false"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mainLoginMail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:enabled="@{loginViewModel.enableInput}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_uptoddLogo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@={loginViewModel.emailId}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mainLoginPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="@{loginViewModel.enableInput}"
+                app:layout_constraintEnd_toEndOf="@+id/mainLoginMail"
+                app:layout_constraintStart_toStartOf="@+id/mainLoginMail"
+                app:layout_constraintTop_toBottomOf="@+id/mainLoginMail"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:text="@={loginViewModel.sPassword}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/music_navigation"
+    app:startDestination="@id/music">
+
+    <fragment
+        android:id="@+id/music"
+        android:name="com.uptodd.uptoddapp.media.music.MusicFragment"
+        android:label="Music Player"
+        tools:layout="@layout/music_fragment" >
+        <action
+            android:id="@+id/action_music_to_details"
+            app:destination="@id/details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/details"
+        android:name="com.uptodd.uptoddapp.ui.details.Details"
+        android:label="Details"
+        tools:layout="@layout/details_fragment" >
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+</navigation>

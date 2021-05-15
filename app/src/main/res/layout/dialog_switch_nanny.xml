@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="vertical"
+        android:background="@drawable/round_dialog_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/switch_to_nanny_mode"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/textGrey"
+            android:textSize="14sp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/editText_userID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/round_edittext"
+            android:fontFamily="@font/montserrat"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/textGrey"
+            android:textSize="14sp"
+            android:hint="@string/user_id" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="32dp">
+
+            <EditText
+                android:id="@+id/editText_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_edittext"
+                android:fontFamily="@font/montserrat"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/textGrey"
+                android:textSize="14sp"
+                android:hint="@string/password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/imageButton_passwordEye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_baseline_remove_red_eye_24"
+                app:layout_constraintBottom_toBottomOf="@id/editText_password"
+                app:layout_constraintEnd_toEndOf="@id/editText_password"
+                app:layout_constraintTop_toTopOf="@id/editText_password"
+                android:contentDescription="@string/eye" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/montserrat"
+            android:padding="8dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/passwordErrorText"
+            android:textSize="12sp"
+            android:layout_gravity="end"/>
+
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_button_login"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</layout>

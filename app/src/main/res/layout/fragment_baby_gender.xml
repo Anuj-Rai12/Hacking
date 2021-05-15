@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.login.babygender.BabyGenderFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <Button
+            android:id="@+id/button__notDisclose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg_horizontal_gradient"
+            android:text="@string/don_t_want_to_disclose"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageButton
+            android:id="@+id/imageButton_girl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_pink_fill_girl"
+            android:src="@drawable/girl"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11"
+            app:layout_constraintVertical_bias="0.102"
+            android:contentDescription="@string/girl" />
+
+        <ImageButton
+            android:id="@+id/imageButton_boy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_blue_fill_boy"
+            android:src="@drawable/boy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintVertical_bias="0.138"
+            android:contentDescription="@string/boy" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/rounded_corners_text_view_login"
+            android:gravity="center"
+            android:text="@string/tell_us_your_baby_s_gender"
+            android:textColor="@color/themeBlue"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/a_girl"
+            android:textColor="#BB6DFF"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton_girl"
+            app:layout_constraintStart_toStartOf="@+id/imageButton_girl"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton_girl" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/a_boy"
+            android:textColor="#2A73CC"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton_boy"
+            app:layout_constraintStart_toStartOf="@+id/imageButton_boy"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton_boy" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

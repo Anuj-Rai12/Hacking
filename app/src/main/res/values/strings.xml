@@ -1,0 +1,373 @@
+<resources>
+    <string name="app_name" translatable="false">UpTodd</string>
+
+    <!--network loading duration-->
+    <string name="loadingDuarationInMillis" translatable="false">10000</string>
+
+    <string name="uptoddWebsiteUrl" translatable="false">https://www.uptodd.com/</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="do_s">Do\'s</string>
+    <string name="dont_s">Dont\'s</string>
+
+    <string name="ideal_weight">IDEAL WEIGHT</string>
+    <string name="your_weekly_score_board">Your Weekly Score Board</string>
+    <string name="your_essential_score_board">Your Essential Score Board</string>
+    <string name="your_monthly_score_board">Your Monthly Score Board</string>
+    <string name="your_daily_score_board">Your Daily Score Board</string>
+    <string name="mark_activities">Mark Routines</string>
+    <string name="today_s_tip">Today\'s Tip</string>
+    <string name="set_alarm">Set Alarm</string>
+    <string name="share">Share</string>
+    <string name="mark_all_done">Mark all done</string>
+    <string name="you_will_be_a_super_parent_soon">You will be a <b>Super Parent</b> soon</string>
+    <string name="toys">Toys</string>
+    <string name="colours">Colours</string>
+    <string name="back">Back</string>
+    <string name="all_activities_completed">All Activities Completed</string>
+    <string name="you_re_a_super_parent"><b>You\'re a SUPER \nPARENT</b> </string>
+    <string name="reminder_frequency">Reminder Frequency</string>
+    <string name="remind_me_at">Remind me at</string>
+    <string name="save">Save</string>
+    <string name="m">M</string>
+    <string name="t">T</string>
+    <string name="w">W</string>
+    <string name="f">F</string>
+    <string name="s">S</string>
+    <string name="cancel">Cancel</string>
+    <string name="watch_now">Read Now</string>
+    <string name="app_guidelines">App Guidelines</string>
+    <string name="support">Support</string>
+    <string name="sample">256</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="stories">Stories</string>
+    <string name="yoga">Yoga</string>
+    <string name="you_re_a_n_super_parent">You\'re a\n Super Parent</string>
+
+
+    // todo string formatters
+
+    <string name="email_id">Email ID</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="or_log_in_with">Or Log In With</string>
+    <string name="logout">Logout</string>
+    <string name="phone_no">Phone No.</string>
+    <string name="name">Name</string>
+    <string name="name_req">Name*</string>
+    <string name="whatsapp_no">Whatsapp No</string>
+    <string name="whatsapp_no_req">Whatsapp No*</string>
+    <string name="city">City</string>
+    <string name="submit">Submit</string>
+    <string name="baby_dob">Baby DOB</string>
+    <string name="home">Home</string>
+    <string name="orders">Orders</string>
+    <string name="account">Account</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="e_mail_id">E-mail ID</string>
+    <string name="wallet_details">Wallet Details</string>
+    <string name="total_amount">Total amount</string>
+    <string name="amount_in_bank">Amount in bank</string>
+    <string name="pending_amount">Pending amount</string>
+    <string name="bank_account_details">Bank Account Details</string>
+    <!--For facebook login-->
+    <string name="facebook_app_id" translatable="false">833338570768649</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb833338570768649</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="reopen_ticket">Reopen Ticket</string>
+    <string name="welcome_doctor"><u>Welcome, Doctor</u></string>
+    <string name="patients_enrolled_count">Patients Enrolled Count</string>
+    <string name="patients_referred_count">Patients Referred Count</string>
+    <string name="ticket_number">Ticket number</string>
+    <string name="starting_date">Starting date</string>
+    <string name="ticket_status">Ticket status</string>
+    <string name="rate_ticket">Rate ticket</string>
+    <string name="log_in">Login</string>
+    <string name="sign_in_as_doctor">Login as doctor</string>
+    <string name="generate_new_ticket">Generate new ticket</string>
+    <string name="book_a_session">Book A Session</string>
+    <string name="recommended_webinars">Recommended blogs</string>
+    <string name="comment">Comment</string>
+    <string name="rate_this_ticket">Rate this ticket</string>
+    <string name="baby_name">Baby Name</string>
+    <string name="baby_age_req">Baby Age*</string>
+    <string name="session_by">Session By</string>
+    <string name="session_date">Session Date</string>
+    <string name="session_id">Session ID</string>
+    <string name="rate_session">Rate Session</string>
+    <string name="music">Music</string>
+    <string name="book_a_slot">Book a slot</string>
+    <string name="poem">Poem</string>
+    <string name="bank_name">Bank Name:</string>
+    <string name="refer_and_earn_5_revenue_for_the_entire_lifecycle">Refer and Earn 5% revenue for the entire lifecycle.</string>
+    <string name="see_previous_referrals">See previous referrals</string>
+    <string name="refer_amp_earn"><![CDATA[Refer & Earn]]></string>
+    <string name="done">Done</string>
+    <string name="close">Close</string>
+    <string name="refer_a_doctor">Refer a doctor</string>
+    <string name="date_of_registration">Date of registration</string>
+    <string name="date_of_referral">Date of referral</string>
+    <string name="status">Status</string>
+    <string name="note">Note</string>
+    <string name="timing">Timing</string>
+    <string name="change_password">Change Password</string>
+    <string name="successful">Successful</string>
+    <string name="pending">Pending</string>
+    <string name="failed">Failed</string>
+    <string name="referral_date">Referral Date</string>
+    <string name="referral_date_range">Referral Date Range</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="my_patients">My patients</string>
+    <string name="my_doctors">My Doctors</string>
+
+    <!--Blogs categories-->
+    <string name="refer">Refer</string>
+    <string name="capture_moment">Capture Moment</string>
+    <string name="expected_outcomes">Expected Outcomes</string>
+    <string name="blogs">Blogs</string>
+    <string name="webinars">Webinars</string>
+    <string name="not_now">Not Now</string>
+    <string name="a_c_holder">A/C Holder:</string>
+    <string name="a_c_no">A/C No:</string>
+    <string name="amount_by_referring_doctors">Amount by referring doctors</string>
+    <string name="amount_by_referring_patients">Amount by referring patients</string>
+    <string name="topic">Topic</string>
+    <string name="diet">Diet</string>
+    <string name="vaccination">Vaccination</string>
+    <string name="we_miss_you_doctor">We Miss You Doctor</string>
+    <string name="refer_now">Refer NOW</string>
+    <string name="_10_gift_voucher">10% GIFT VOUCHER</string>
+    <string name="close_ticket">Close Ticket</string>
+    <string name="doctor_app_guide">Doctor App Guide</string>
+    <string name="doctor_referral_guide">Doctor Referral Guide</string>
+    <string name="doctor_brochure">Doctor Brochure</string>
+    <string name="resources">Resources</string>
+    <string name="all_activities">All Routines</string>
+    <string name="essentialsAlarmDescription">Essentials Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
+    <string name="monthlyAlarmDescription">Monthly Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
+    <string name="activity_alarms">Routine Alarms</string>
+    <string name="loading">Loading..</string>
+    <string name="no_tickets_found">No Tickets Found!</string>
+    <string name="no_sessions_found">No Sessions Found!</string>
+    <string name="no_referrals_here">No referrals here.</string>
+    <string name="no_poems_found">No poems found!</string>
+    <string name="no_music_found">No music found!</string>
+    <string name="welcome_name">Welcome, Name</string>
+    <string name="your_profile">Your Profile</string>
+    <string name="edit_profile_image">Edit Profile Image</string>
+    <string name="ranking">Ranking</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="phone">Phone</string>
+    <string name="permanent_address">Permanent address</string>
+    <string name="financial_mail">Financial Mail</string>
+    <string name="kids_information">Kids Information</string>
+    <string name="kids_name">Kids name</string>
+    <string name="kids_age">Kids age</string>
+    <string name="kids_gender">Kids Gender</string>
+    <string name="subscription_details">Subscription Details</string>
+    <string name="current_subscribed_plan">Current subscribed plan</string>
+    <string name="set_up_nanny_mode">Set up nanny mode</string>
+    <string name="see_update_nanny_details">See/Update nanny mode details</string>
+    <string name="nanny_details_are_updated">The nanny mode details are updated</string>
+    <string name="account_details_are_updated">The account details are updated</string>
+    <string name="are_you_sure_logout">Are you sure you want to logout</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="unable_to_select_image">Unable to select image</string>
+    <string name="enter_userid">Enter user id</string>
+    <string name="short_password">Password length must be more than 8</string>
+    <string name="image_not_saved">Image Not saved</string>
+    <string name="enter_valid_name">Enter valid name</string>
+    <string name="enter_valid_phone">Enter valid phone number</string>
+    <string name="enter_valid_address">Enter valid address</string>
+    <string name="enter_valid_financial">Enter valid financial email</string>
+    <string name="enter_valid_email">Enter valid email</string>
+    <string name="failed_to_load_to_database">Failed to load to database</string>
+    <string name="retry">RETRY</string>
+    <string name="loading_please_wait">Loading, please wait</string>
+    <string name="are_you_sure_to_leave_without_editing">Are you sure you want to leave without editing</string>
+
+    <!--ChangePasswordFragment-->
+    <string name="the_password_length_must_be_more_than_8_and_it_should_contain_atleast_one_digit_and_atleast_one_special_character">The password length must be more than 8 and it should contain atleast one digit and atleast one special character</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="enter_current_password">Enter Current Password</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="enter_valid_password">Enter valid password</string>
+    <string name="passwords_dont_match">Passwords don\'t match</string>
+    <string name="password_updated_successfully">Password updated successfully</string>
+    <string name="password_too_short">Password too short</string>
+    <string name="password_must_have_a_digit">The password must have a digit</string>
+    <string name="the_password_must_have_a_special_character">The password must have a special character</string>
+    <string name="changing_password_please_wait">Changing password, please wait</string>
+
+    <!--Blogs-->
+    <string name="no_items">No items</string>
+    <string name="all">All</string>
+    <string name="blogimage">blogImage</string>
+    <string name="blog_title">Blog title</string>
+
+    <!--CaptureMoments-->
+    <string name="capture_moments">Capture Moments</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="failed_to_choose_image">Failed to choose image</string>
+    <string name="flip_camera">Flip Camera</string>
+    <string name="flash">Flash</string>
+    <string name="gallery">Gallery</string>
+    <string name="choose_Card">Choose Card</string>
+    <string name="error_saving_to_database">Error saving to server</string>
+    <string name="lovely_moment_ofsuper_baby_and_super_parent_is_saved_in_your_gallery">Lovely moment of super baby and super parent is saved in your gallery</string>
+    <string name="image_not_found_in_storage">Image not found in storage</string>
+    <string name="unable_to_load_image">Unable to load image</string>
+    <string name="error_caching_image">Error caching image</string>
+    <string name="wait_card_not_ready">Wait! Card not ready</string>
+    <string name="downloading_please_wait">Downloading, please wait</string>
+    <string name="share_via">Share via  </string>
+    <string name="card">card</string>
+
+    <!--Login Pages-->
+    <string name="don_t_want_to_disclose">Don\'t want to disclose</string>
+    <string name="girl">girl</string>
+    <string name="boy">boy</string>
+    <string name="tell_us_your_baby_s_gender">Tell us your baby’s gender</string>
+    <string name="a_girl">A GIRL</string>
+    <string name="a_boy">A BOY</string>
+    <string name="get_started">Get started</string>
+    <string name="what_is_your_baby_s_name">What is your baby’s name?</string>
+    <string name="enter_name">Enter name</string>
+    <string name="unable_to_upload_data_try_again_after_sometime">Unable to upload data, Try again after sometime</string>
+    <string name="log_in_failed">Login failed</string>
+    <string name="unable_to_send_otp">Unable to send OTP</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_the_otp_sent_to_your_email_id_below">Enter the OTP sent to your email ID below</string>
+    <string name="submit_otp">Submit OTP</string>
+    <string name="wrong_otp">Wrong OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="enter_the_email_associated_with_your_account">Enter the email associated with your account</string>
+    <string name="ellipse">ellipse</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="ok">OK</string>
+    <string name="logo">logo</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="see_our_website">See our website</string>
+    <string name="facebook">facebook</string>
+    <string name="google">google</string>
+    <string name="nanny_mode">Login as Nanny</string>
+    <string name="you_are_baby_s">You are baby\'s?</string>
+    <string name="mother">MOTHER</string>
+    <string name="guardian">GUARDIAN</string>
+    <string name="father">FATHER</string>
+    <string name="tell_us_your_stage">Tell us your stage</string>
+    <string name="pre_birth">Pre Birth</string>
+    <string name="post_birth">Post Birth</string>
+
+    <!--nanny-->
+    <string name="nanny_login_id">Nanny login id</string>
+    <string name="nanny_password">Nanny password</string>
+    <string name="eye">eye</string>
+    <string name="yes">YES</string>
+    <string name="switch_to_nanny_mode">Switch to nanny mode</string>
+    <string name="user_id">User ID</string>
+
+    <!--Orders-->
+    <string name="order_history">Order history</string>
+    <string name="the_request_for_extending_subscription_has_been_registered_we_ll_reach_out_out_to_you_soon">The request for extending subscription has been registered. We\'ll reach out to you soon</string>
+    <string name="month_no">Month-</string>
+    <string name="qty">Qty:</string>
+    <string name="delivered">Delivered</string>
+    <string name="expected_delivery">Expected Delivery</string>
+    <string name="current_subscription">Current Subscription</string>
+    <string name="upgrade">UpGrade</string>
+    <string name="no_orders">No orders</string>
+    <string name="extend_subscription">Extend Subscription</string>
+    <string name="order_no">Order No : </string>
+    <string name="date">Expected Delivery Date : </string>
+    <string name="order_details">Order details</string>
+    <string name="unable_to_load_pdf">Unable to load PDF</string>
+    <string name="wait_">Wait…</string>
+    <string name="confirm_to_extend_subscription">Confirm to extend subscription</string>
+
+    <!--Refer User part-->
+    <string name="refer_and_earn"><![CDATA[Refer & earn]]></string>
+    <string name="thank_you_for_your_referral">Thank you for your referral.</string>
+    <string name="an_error_has_occurred">An error has occurred: </string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="referral_code_for_uptodd">Referral code for UpTodd</string>
+    <string name="thank_you_for_your_referral_we_ll_contact_you_soon">Thank you for your referral. We\'ll contact them soon!</string>
+    <string name="refer_amp_earn_inr_5000"><![CDATA[Refer & Earn INR 5000]]></string>
+    <string name="referral_code">Referral Code</string>
+    <string name="code">Code</string>
+    <string name="referral_details">Referral Details</string>
+    <string name="new_details_have_been_submitted_successfully">New details have been submitted successfully!</string>
+    <string name="cancel_editing">Cancel Editing?</string>
+    <string name="are_you_sure_you_want_to_discard_the_changes">Are you sure you want to discard the changes?</string>
+    <string name="no">NO</string>
+    <string name="email">Email</string>
+    <string name="registration_date">Registration Date</string>
+    <string name="referrals">Referrals</string>
+    <string name="thank_you_for_your_feedback">Thank you for your feedback.</string>
+    <string name="search">Search</string>
+    <string name="filter">filter</string>
+    <string name="no_referrals">No referrals</string>
+
+
+    <!--Webinars-->
+    <string name="order_no_caps">ORDER NO:</string>
+    <string name="product_name_qty">Product name | Qty:</string>
+    <string name="delivery_status">Delivery Status</string>
+    <string name="view_details">View Details</string>
+    <string name="photo_type">Photo Type</string>
+    <string name="webinar_title">Webinar title</string>
+    <string name="date_">Date</string>
+
+    <!--Todos-->
+    <string name="hey_mumma">Hey, Mumma</string>
+    <string name="hey_dad">Hey, Dad</string>
+    <string name="hey">Hey,</string>
+    <string name="babyMonthsFormat">Baby is "%d" months old</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="essentials">Essentials</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="alarm_on">Alarm turned ON</string>
+    <string name="alarm_cancelled">Alarm cancelled</string>
+    <string name="couldnt_refresh_data">Couldn\'t refresh data.\nCheck your internet connection</string>
+    <string name="select_days">Select days</string>
+    <string name="ideal_height">IDEAL HEIGHT</string>
+
+    <string name="happy_birthday_baby">Happy Birthday Baby</string>
+    <string name="milestone_name">Milestone name</string>
+    <string name="change_language">Change Language</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="the_language_is_updated_and_the_changes_will_be_visible_in_few_hours">The language is updated and the changes will be visible in few hours</string>
+    <string name="timer_is_set_for_15_minutes">Timer set for 15 minutes.</string>
+    <string name="timer_is_set_for_30_minutes">Timer set for 30 minutes.</string>
+    <string name="timer_is_set_for_45_minutes">Timer set for 45 minutes.</string>
+    <string name="timer_cancelled">Timer cancelled!</string>
+    <string name="we_ll_play_this_for">We\'ll play this for </string>
+    <string name="minutes"> minutes.</string>
+    <string name="sending_data">Sending Data…</string>
+    <string name="general">General</string>
+    <string name="user_section">User section</string>
+    <string name="my_referrals">My referrals</string>
+
+    <string name="welcome">Welcome </string>
+    <string name="landscape_not_allowed">Landscape not allowed</string>
+    <string name="months">" months"</string>
+    <string name="step">"Step: "</string>
+    <string name="keep_the_phone_in_portrait_mode">Keep the phone in portrait mode</string>
+    <string name="available">Available</string>
+    <string name="not_available">Not available</string>
+    <string name="delivery_date">Delivery Date :</string>
+    <string name="language_text">Language</string>
+    <string name="go_back" translatable="false">go back</string>
+    <string name="activity_sample">Activity Sample</string>
+    <string name="no_data" translatable="false">No Data</string>
+
+
+</resources>

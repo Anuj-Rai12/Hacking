@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/support_navigation"
+    app:startDestination="@id/allTicketsFragment">
+
+
+    <fragment
+        android:id="@+id/allTicketsFragment"
+        android:name="com.uptodd.uptoddapp.support.all.AllTicketsFragment"
+        android:label="All Tickets"
+        tools:layout="@layout/all_tickets_fragment">
+        <action
+            android:id="@+id/action_allTicketsFragment_to_createTicketFragment"
+            app:destination="@id/createTicketFragment" />
+        <action
+            android:id="@+id/action_allTicketsFragment_to_viewTicket"
+            app:destination="@id/viewTicket" />
+        <argument
+            android:name="ticket"
+            android:defaultValue="@null"
+            app:argType="com.uptodd.uptoddapp.database.support.Ticket"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_allTicketsFragment_to_bookASlot"
+            app:destination="@id/bookASlot" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketFragment"
+        android:name="com.uptodd.uptoddapp.support.create.CreateTicketFragment"
+        android:label="Create New Ticket"
+        tools:layout="@layout/create_ticket_fragment">
+        <argument
+            android:name="ticketSupportTeam"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewTicket"
+        android:name="com.uptodd.uptoddapp.support.view.ViewTicket"
+        android:label="{supportType}"
+        tools:layout="@layout/view_ticket_fragment">
+        <argument
+            android:name="ticket"
+            app:argType="com.uptodd.uptoddapp.database.support.Ticket" />
+        <argument
+            android:name="supportType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookASlot"
+        android:name="com.uptodd.uptoddapp.support.all.allsessions.bookaslot.BookASlot"
+        android:label="Book Your Slot"
+        tools:layout="@layout/book_a_slot_fragment" >
+        <action
+            android:id="@+id/action_bookASlot_to_slotTiming"
+            app:destination="@id/slotTiming" />
+    </fragment>
+    <fragment
+        android:id="@+id/slotTiming"
+        android:name="com.uptodd.uptoddapp.support.all.allsessions.bookaslot.SlotTiming"
+        android:label="Slot Time" >
+        <argument
+            android:name="slotDate"
+            app:argType="string" />
+    </fragment>
+</navigation>

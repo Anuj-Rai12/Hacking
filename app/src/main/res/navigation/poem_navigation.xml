@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/music_navigation"
+    app:startDestination="@id/poem">
+
+    <fragment
+        android:id="@+id/poem"
+        android:name="com.uptodd.uptoddapp.media.poem.PoemFragment"
+        android:label="Poems"
+        tools:layout="@layout/poem_fragment" >
+        <action
+            android:id="@+id/action_poemFragment_to_details"
+            app:destination="@id/details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/details"
+        android:name="com.uptodd.uptoddapp.ui.details.Details"
+        android:label="Details"
+        tools:layout="@layout/details_fragment" >
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+</navigation>

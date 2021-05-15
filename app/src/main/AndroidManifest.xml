@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.uptodd.uptoddapp">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission
+        android:name="android.permission.FLASHLIGHT"
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal" />
+
+    <application
+        android:name=".UpToddActivityClass"
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.login.googlelogin.GoogleLoginActivity" />
+        <activity android:name=".UptoddWebsiteActivity" />
+        <activity android:name=".media.PoemActivity" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".ReferActivity" />
+        <activity android:name=".OrderActivity" />
+        <activity android:name=".ui.webinars.webinarslist.WebinarsActivity" />
+        <activity
+            android:name=".ui.webinars.fullwebinar.FullWebinarActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity android:name=".ui.blogs.fullblog.FullBlogActivity" />
+        <activity android:name=".ui.blogs.blogslist.BlogsActivity" />
+        <!--
+<activity android:name=".doctor.refer.doctor.ReferDoctorActivity"
+            android:screenOrientation="fullSensor" />
+        <activity android:name=".media.PoemActivity"
+            android:screenOrientation="fullSensor" />
+        -->
+        <activity android:name=".support.SupportActivity" />
+        <activity android:name=".ui.home.homePage.HomeActivity" />
+        <activity
+            android:name=".ui.todoScreens.TodosListActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".doctor.dashboard.DoctorDashboard"
+            android:launchMode="singleInstance" />
+        <activity android:name=".doctor.DoctorLogin" />
+        <activity android:name=".media.MusicPlayer" />
+        <activity android:name=".ui.login.facebooklogin.FacebookLoginActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".alarmsAndNotifications.receivers.AlarmBroadcastReceiver" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".CaptureMomentsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" /> <!-- For facebook login -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".media.player.BackgroundPlayer" />
+        <receiver android:name=".media.player.MediaStopReceiver" />
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.NotificationBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.activity.DailyNotificationsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.activity.WeeklyNotificationsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.activity.MonthlyNotificationsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.activity.EssentialsNotificationsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".alarmsAndNotifications.receivers.DailyActivityStatusCheck"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".alarmsAndNotifications.UptoddPushNotifications"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fcm.push_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/app_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+    </application>
+
+</manifest>

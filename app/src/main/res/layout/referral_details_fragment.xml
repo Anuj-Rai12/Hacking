@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="referralDetailsBinding"
+            type="com.uptodd.uptoddapp.doctor.refer.referrals.ReferralDetailsViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".doctor.refer.referrals.ReferralDetails">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ellipse" />
+
+            <TextView
+                android:id="@+id/referral_details_referral_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@{referralDetailsBinding.referralName}"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/referral_details_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note"
+                android:textColor="@color/ticket_closed"
+                app:layout_constraintBottom_toBottomOf="@+id/referral_details_email_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.88"
+                app:layout_constraintStart_toEndOf="@+id/referral_details_email_text"
+                app:layout_constraintTop_toTopOf="@+id/referral_details_email_text" />
+
+            <TextView
+                android:id="@+id/referral_details_email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/email_id"
+                android:textColor="#000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_referral_name"
+                app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+
+            <EditText
+                android:id="@+id/referral_details_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/round_edittext"
+                android:ems="15"
+                android:enabled="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:text="@={referralDetailsBinding.referralEmail}"
+                android:textColor="#847F7F"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_email_text"
+                app:layout_constraintTop_toBottomOf="@+id/referral_details_email_text" />
+
+            <TextView
+                android:id="@+id/referral_details_phone_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/phone_no"
+                android:textColor="#000"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_email"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_email" />
+
+            <EditText
+                android:id="@+id/referral_details_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_edittext"
+                android:padding="8dp"
+                android:text="@={referralDetailsBinding.referralPhone}"
+                android:enabled="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textColor="#847F7F"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/referral_details_email"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_phone_text"
+                app:layout_constraintTop_toBottomOf="@+id/referral_details_phone_text" />
+
+            <TextView
+                android:id="@+id/referral_details_city_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/city"
+                android:visibility="@{referralDetailsBinding.doctorVisibility}"
+                android:textColor="#000"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_email"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_phone" />
+
+            <EditText
+                android:id="@+id/referral_details_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_edittext"
+                android:padding="8dp"
+                android:text="@={referralDetailsBinding.referralCity}"
+                android:enabled="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textColor="#847F7F"
+                android:visibility="@{referralDetailsBinding.doctorVisibility}"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/referral_details_email"
+                app:layout_constraintStart_toStartOf="@+id/referral_details_phone_text"
+                app:layout_constraintTop_toBottomOf="@+id/referral_details_city_text" />
+
+            <LinearLayout
+                android:id="@+id/referral_details_baby_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:visibility="@{referralDetailsBinding.babyVisibility}"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_city">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_baby_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/baby_name"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_baby_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:text="@={referralDetailsBinding.babyName}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_baby_dob_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/baby_dob"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_baby_dob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.babyDOB}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/referral_details_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_baby_layout">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout1_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@={referralDetailsBinding.layout1Text1Text}"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout1_field1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.layout1Field1}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout1_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date_of_referral"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout1_field2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.referralDate}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/referral_details_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_layout1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout2_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@={referralDetailsBinding.layout2Text2Text}"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout2_field1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.layout2Field1}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout2_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date_of_registration"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout2_field2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.referralRegistrationDate}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/referral_details_layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/referral_details_layout2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout3_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@={referralDetailsBinding.layout3Text3Text}"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout3_field1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.layout3Field1}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/referral_details_layout3_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status"
+                        android:textColor="#000" />
+
+                    <EditText
+                        android:id="@+id/referral_details_layout3_field2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/round_edittext"
+                        android:padding="8dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:text="@={referralDetailsBinding.referralStatus}"
+                        android:textColor="#847F7F"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/referral_details_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_button_new_ticket"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/referral_details_layout3" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

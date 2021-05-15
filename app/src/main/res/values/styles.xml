@@ -1,0 +1,180 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnBackground">@color/black</item>
+
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
+        <item name="materialButtonStyle">@style/AppTheme.RoundButton</item>
+
+        <item name="progressBarStyle">@style/AppTheme.ProgressBarStyle</item>
+
+        <item name="textInputStyle">@style/AppTheme.EditText.Layout</item>
+
+        <item name="fontFamily">@font/montserrat</item>
+
+        <!-- text styles -->
+        <item name="textAppearanceHeadline6">@style/AppTheme.TextAppearance.Headline6</item>
+        <item name="textAppearanceHeadline5">@style/AppTheme.TextAppearance.Headline5</item>
+        <item name="textAppearanceHeadline4">@style/AppTheme.TextAppearance.Headline4</item>
+        <item name="textAppearanceHeadline3">@style/AppTheme.TextAppearance.Headline3</item>
+        <item name="textAppearanceHeadline2">@style/AppTheme.TextAppearance.Headline2</item>
+        <item name="textAppearanceHeadline1">@style/AppTheme.TextAppearance.Headline1</item>
+
+        <item name="textAppearanceBody1">@style/AppTheme.TextAppearance.Body1</item>
+        <item name="textAppearanceBody2">@style/AppTheme.TextAppearance.Body2</item>
+
+        <item name="textAppearanceSubtitle1">@style/AppTheme.TextAppearance.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/AppTheme.TextAppearance.Subtitle2</item>
+
+        <item name="textAppearanceButton">@style/AppTheme.TextAppearance.Button</item>
+
+        <item name="textAppearanceCaption">@style/AppTheme.TextAppearance.Caption</item>
+        <item name="textAppearanceOverline">@style/AppTheme.TextAppearance.Overline</item>
+    </style>
+
+    <style name="circularImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="AppTheme.RoundButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">20dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="AppTheme.ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="indicatorColor">@color/colorPrimary</item>
+        <item name="hideAnimationBehavior">inward</item>
+        <item name="showAnimationBehavior">outward</item>
+    </style>
+
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_bg</item>
+    </style>
+
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/toggle_bg</item>
+    </style>
+
+    <style name="toggleButton" parent="AppTheme.NoActionBar">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textColor">@drawable/toggle_text_color</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="tab_text_style" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+
+
+
+    // Edit Text Style
+
+    <style name="AppTheme.EditText.Layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+
+    </style>
+
+    <style name="AppTheme.EditText.Text" parent="">
+        <item name="singleLine">true</item>
+        <item name="maxLines">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:imeOptions">flagNoExtractUi</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="AppTheme.EditText.Email" parent="AppTheme.EditText.Text">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="AppTheme.EditText.Password" parent="AppTheme.EditText.Text">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+
+    // text styles
+
+    <style name="AppTheme.TextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+
+    <style name="AppTheme.TextAppearance.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+
+    <style name="AppTheme.TextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+
+    <style name="AppTheme.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="AppTheme.NavigationDrawer" parent="Widget.Design.NavigationView">
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+
+</resources>

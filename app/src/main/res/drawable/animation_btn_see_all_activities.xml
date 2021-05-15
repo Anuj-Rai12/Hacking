@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/see_all_activities_btn_bg_1"
+        android:duration="8000" />
+
+    <!--    <item-->
+    <!--        android:drawable="@drawable/see_all_activities_btn_bg_3"-->
+    <!--        android:duration="4000" />-->
+
+    <item
+        android:drawable="@drawable/see_all_activities_btn_bg_2"
+        android:duration="6000" />
+
+    <!--    <item-->
+    <!--        android:drawable="@drawable/see_all_activities_btn_bg_3"-->
+    <!--        android:duration="4000" />-->
+
+</animation-list>

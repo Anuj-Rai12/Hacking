@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/homePageFragment"
+        android:icon="@drawable/material_home"
+        android:title="@string/menu_home" />
+    <item android:title="@string/general">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/music"
+                    android:icon="@drawable/ic_baseline_library_music_24"
+                    android:title="@string/music" />
+                <item
+                    android:id="@+id/poemFragment"
+                    android:icon="@drawable/ic_baseline_library_music_24"
+                    android:title="@string/poem" />
+                <item
+                    android:id="@+id/toysFragment"
+                    android:icon="@drawable/ic_baseline_toys_24"
+                    android:title="@string/toys" />
+                <item
+                    android:id="@+id/storiesFragment"
+                    android:icon="@drawable/stories_icon"
+                    android:title="@string/stories" />
+
+                <item
+                    android:id="@+id/dietFragment"
+                    android:icon="@drawable/ic_baseline_local_dining_24"
+                    android:title="@string/diet" />
+                <item
+                    android:id="@+id/changeLanguageNanny"
+                    android:icon="@drawable/ic_language"
+                    android:title="@string/language_text" />
+
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:title="@string/account">
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nannyLogoutFragment"
+                    android:icon="@drawable/ic_baseline_power_settings_new_24"
+                    android:title="@string/logout" />
+
+            </group>
+        </menu>
+    </item>
+
+</menu>

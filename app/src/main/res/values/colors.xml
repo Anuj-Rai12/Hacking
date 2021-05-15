@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4CB8CB</color>
+    <color name="colorPrimaryDark">#4CB8CB</color>
+    <color name="colorAccent">#4CB8CB</color>
+
+    <color name="grey">#D8CFCF</color>
+
+    //todos
+    <color name="black">#000000</color>
+    <color name="timeDisplayWhite">#FDFDFD</color>
+    <color name="activeBlue">#3EA6E4</color>
+    <color name="white">#ffffff</color>
+    <color name="darkBlue">#2A73CC</color>
+    <color name="onSwipeGreen">#C6FCC8</color>
+    <color name="onSwipeBlue">#E7FFFE</color>
+    <color name="buttonBlue">#4CB8CB</color>
+    <color name="btnToggleStateOff">#F1F1F1</color>
+    <!--    <color name="themeBlue">#3EA6E4</color>-->
+    <color name="ticket_open">#05a167</color>
+    <color name="ticket_rated">#000</color>
+    <color name="ticket_closed">#838080</color>
+    <color name="details_note">#F43D74</color>
+    <color name="div">#838080</color>
+
+    //For carousel
+    <color name="gradientCarouselIndicatorStartColor">#66DCE3</color>
+    <color name="gradientCarouselIndicatorEndColor">#3e6ce4</color>
+
+
+
+    <color name="themeBlue">#4CB8CB</color>
+    <color name="gradientStartColor">#66DCE3</color>
+    <color name="gradientEndColor">#3e6ce4</color>
+    <color name="textGrey">#222222</color>
+    <color name="solidButtonColor">#4CB8CB</color>
+    <color name="passwordErrorText">#ff0000</color>
+    <color name="formFieldHeading">#787878</color>
+    <color name="link">#3D9FF4</color>
+    <color name="orangeButtonBackground">#ff6a4c</color>
+</resources>

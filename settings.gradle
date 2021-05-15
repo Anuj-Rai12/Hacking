@@ -1,0 +1,6 @@
+include ':YouTubeAndroidPlayerApi'
+include ':YouTubeAndroidPlayerApi'
+include ':YouTubeAndroidPlayerApi'
+include ':app'
+rootProject.name = "UpTodd"
+include ':youTubeAndroidAPIDemo'

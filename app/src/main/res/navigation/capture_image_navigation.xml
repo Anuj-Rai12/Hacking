@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/capture_image_navigation"
+    app:startDestination="@id/captureImageFragment">
+
+    <fragment
+        android:id="@+id/captureImageFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment"
+        android:label="fragment_capture_image"
+        tools:layout="@layout/fragment_capture_image" >
+        <action
+            android:id="@+id/action_captureImageFragment_to_selectTypeFragment"
+            app:destination="@id/selectTypeFragment" />
+        <action
+            android:id="@+id/action_captureImageFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectTypeFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.selecttype.SelectTypeFragment"
+        android:label="fragment_select_type"
+        tools:layout="@layout/fragment_select_type" >
+        <action
+            android:id="@+id/action_selectTypeFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment" />
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateCardFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.generatecard.GenerateCardFragment"
+        android:label="fragment_generate_card"
+        tools:layout="@layout/fragment_generate_card_1" >
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+        <argument
+            android:name="photoType"
+            app:argType="string" />
+    </fragment>
+</navigation>

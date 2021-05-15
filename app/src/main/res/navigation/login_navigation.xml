@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.loginpage.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_selectParentFragment"
+            app:destination="@id/selectParentFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment2"
+            app:destination="@id/forgetPasswordFragment2"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_nannyLoginFragment"
+            app:destination="@id/nannyLoginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <!-- Language fragment not used for now -->
+    <fragment
+        android:id="@+id/selectParentFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.selectparent.SelectParentFragment"
+        android:label="fragment_select_parent"
+        tools:layout="@layout/fragment_select_parent">
+        <action
+            android:id="@+id/action_selectParentFragment_to_stageFragment"
+            app:destination="@id/stageFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <!--<argument
+            android:name="loginMethod"
+            app:argType="String"/>
+        <argument
+            android:name="Uid"
+            app:argType="String"/>
+        <argument
+            android:name="email"
+            app:argType="String"/>-->
+    </fragment>
+    <fragment
+        android:id="@+id/babyGenderFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.babygender.BabyGenderFragment"
+        android:label="fragment_baby_gender"
+        tools:layout="@layout/fragment_baby_gender">
+        <action
+            android:id="@+id/action_babyGenderFragment_to_babyNameFragment"
+            app:destination="@id/babyNameFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/babyNameFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.babyname.BabyNameFragment"
+        android:label="fragment_baby_name"
+        tools:layout="@layout/fragment_baby_name" />
+    <fragment
+        android:id="@+id/stageFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.stage.StageFragment"
+        android:label="fragment_stage"
+        tools:layout="@layout/fragment_stage">
+        <action
+            android:id="@+id/action_stageFragment_to_babyGenderFragment"
+            app:destination="@id/babyGenderFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPasswordFragment2"
+        android:name="com.uptodd.uptoddapp.ui.login.forgetpassword.forgetpassword.ForgetPasswordFragment"
+        android:label="fragment_forget_password"
+        tools:layout="@layout/fragment_forget_password">
+        <action
+            android:id="@+id/action_forgetPasswordFragment2_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/forgetPasswordFragment2"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="isDoctorReset"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.forgetpassword.resetpassword.ResetPasswordFragment"
+        android:label="ResetPasswordFragment"
+        tools:layout="@layout/fragment_reset_password">
+        <argument
+            android:name="isDoctorReset"
+            app:argType="boolean" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nannyLoginFragment"
+        android:name="com.uptodd.uptoddapp.ui.nanny.login.NannyLoginFragment"
+        android:label="fragment_nanny_login"
+        tools:layout="@layout/fragment_nanny_login"/>
+</navigation>

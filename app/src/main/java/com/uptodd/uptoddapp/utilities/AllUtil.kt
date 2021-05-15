@@ -1,0 +1,355 @@
+package com.uptodd.uptoddapp.utilities
+
+import android.content.Context
+import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.uptodd.uptoddapp.database.media.music.MusicFiles
+import com.uptodd.uptoddapp.database.referrals.ReferredListItemDoctor
+import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
+import com.uptodd.uptoddapp.database.support.Experts
+import com.uptodd.uptoddapp.database.support.Sessions
+import com.uptodd.uptoddapp.database.support.Ticket
+import com.uptodd.uptoddapp.support.view.TicketMessage
+import org.json.JSONObject
+import java.lang.reflect.Type
+import java.util.*
+import java.util.regex.Pattern
+
+
+class AllUtil{
+    companion object{
+
+        private lateinit var sharedPreferences: SharedPreferences
+
+        fun registerToken(userType:String) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+                Log.i("FCM", "Token: $token")
+
+                val jsonObject = JSONObject()
+                jsonObject.put("deviceToken", token)
+
+                var url=""
+                if(userType=="doctor")
+                    url="https://uptodd.com/api/doctor/deviceToken/{userId}"
+                else if(userType=="normal" || userType=="nanny")
+                    url="https://uptodd.com/api/appusers/deviceToken/{userId}"
+                if(userType=="normal" || userType=="nanny" || userType=="doctor") {
+                    Log.d("div","AllUtil L55 $url $userType ${getUserId()}")
+                    AndroidNetworking.put(url)
+                        .addHeaders("Authorization","Bearer $token")
+                        .addPathParameter("userId", getUserId().toString())
+                        .addJSONObjectBody(jsonObject)
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONObject(object : JSONObjectRequestListener {
+                            override fun onResponse(response: JSONObject?) {
+                                Log.i("tokenResult", response.toString())
+                            }
+
+                            override fun onError(anError: ANError?) {
+                                logApiError(anError!!)
+                            }
+                        })
+                }
+            })
+        }
+
+        fun unregisterToken() {
+            val jsonObject = JSONObject()
+            jsonObject.put("deviceToken", "")
+            AndroidNetworking.put("https://uptodd.com/api/appusers/deviceToken/{userId}")
+                .addPathParameter("userId", getUserId().toString())
+                .addJSONObjectBody(jsonObject)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        Log.i("tokenResult", response.toString())
+                    }
+
+                    override fun onError(anError: ANError?) {
+                        logApiError(anError!!)
+                    }
+                })
+        }
+
+        fun loadPreferences(context: Context, name: String){
+            sharedPreferences = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
+        }
+
+        fun isNetworkAvailable(context: Context): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected
+        }
+
+
+        fun getAllTickets(jsonString: String): ArrayList<Ticket> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<Ticket?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<Ticket>
+        }
+
+        fun getAllSessions(jsonString: String): ArrayList<Sessions> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<Sessions?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<Sessions>
+        }
+
+        fun getAllExperts(jsonString: String): ArrayList<Experts> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<Experts?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<Experts>
+        }
+
+        fun getAllDates(jsonString: String): ArrayList<Int> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<Int?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<Int>
+        }
+
+        fun getAllMusic(jsonString: String): ArrayList<MusicFiles> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<MusicFiles?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<MusicFiles>
+        }
+
+        fun getJsonObject(jsonString: String): JSONObject {
+            return JSONObject(jsonString)
+        }
+
+        fun getAllDoctorReferrals(jsonString: String): ArrayList<ReferredListItemDoctor> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<ReferredListItemDoctor?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<ReferredListItemDoctor>
+        }
+
+        fun getAllPatientReferrals(jsonString: String): ArrayList<ReferredListItemPatient> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<ReferredListItemPatient?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<ReferredListItemPatient>
+        }
+
+        fun getAllTicketMessages(jsonString: String): ArrayList<TicketMessage> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<TicketMessage?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<TicketMessage>
+        }
+
+        fun logApiError(anError: ANError){
+            Log.e(
+                "apiError",
+                "${anError.errorDetail} / ${anError.errorCode} / ${anError.errorBody} / ${anError.response}"
+            )
+        }
+
+        fun getTimeFromTimeStamp(timeStamp: String): Long{
+            val cal = Calendar.getInstance()
+            val year = timeStamp.substring(0, 4).toInt()
+            val month = timeStamp.substring(5, 7).toInt() - 1
+            val date = timeStamp.substring(8, 10).toInt()
+            val hour = timeStamp.substring(11, 13).toInt()
+            val minute = timeStamp.substring(14, 16).toInt()
+            val seconds = timeStamp.substring(17, 19).toInt()
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, month)
+            cal.set(Calendar.DATE, date)
+            cal.set(Calendar.HOUR_OF_DAY, hour)
+            cal.set(Calendar.MINUTE, minute)
+            cal.set(Calendar.SECOND, seconds)
+            cal.timeZone = TimeZone.getTimeZone("UTC")
+            return cal.timeInMillis
+        }
+
+        fun getUserId(): Int{
+            if(sharedPreferences.getBoolean("loggedIn", false))
+                return sharedPreferences.getString("uid", "-1")!!.toInt()
+            else
+                return -1
+        }
+
+        fun getDoctorId(): Int{
+            if(sharedPreferences.getBoolean("loggedIn", false))
+                return sharedPreferences.getString("uid", "-1")!!.toInt()
+            else
+                return -1
+        }
+
+        fun getLanguage():String
+        {
+            var language="english"
+            if(sharedPreferences.contains("language"))
+                language= sharedPreferences.getString("language","English")!!.toLowerCase()
+            return language
+        }
+
+        fun getTimeFromMillis(time: Long): String{
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = time
+            return "" + String.format("%02d", cal.get(Calendar.DATE)) + "/" +
+                    String.format("%02d", (cal.get(Calendar.MONTH) + 1)) + " " +
+                    String.format("%02d", cal.get(Calendar.HOUR)) + ":"+
+                    String.format("%02d", cal.get(Calendar.MINUTE)) + " " +
+                    (if(cal.get(Calendar.AM_PM)==Calendar.AM)"am" else "pm")
+        }
+
+        fun isEmailValid(email: String?): Boolean {
+            val emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                    "[a-zA-Z0-9_+&*-]+)*@" +
+                    "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                    "A-Z]{2,7}$"
+            val pat: Pattern = Pattern.compile(emailRegex)
+            return if (email == null) false else pat.matcher(email).matches()
+        }
+
+        fun getUntilNextHour(hourOfDay: Int, calendarInstance: Calendar, inclusive: Boolean = false): Calendar{
+            if(hourOfDay<=24) {
+                if(inclusive) {
+                    if (calendarInstance.get(Calendar.HOUR_OF_DAY) <= hourOfDay) {
+                        calendarInstance.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    } else {
+                        calendarInstance.add(Calendar.DAY_OF_YEAR, 1)
+                        calendarInstance.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    }
+                }
+                else{
+                    if (calendarInstance.get(Calendar.HOUR_OF_DAY) < hourOfDay) {
+                        calendarInstance.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    } else {
+                        calendarInstance.add(Calendar.DAY_OF_YEAR, 1)
+                        calendarInstance.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    }
+                }
+//                while (calendarInstance.get(Calendar.HOUR_OF_DAY) < hourOfDay) {
+//                    calendarInstance.add(Calendar.HOUR_OF_DAY, 1)
+//                }
+            }
+            return calendarInstance
+        }
+
+        fun getUntilNextDayOfWeekAfterHour(
+            dayOfWeek: Int,
+            hourOfDay: Int,
+            calendarInstance: Calendar,
+        ): Calendar {
+            if (calendarInstance.get(Calendar.HOUR_OF_DAY) >= hourOfDay && calendarInstance.get(
+                    Calendar.DAY_OF_WEEK) == dayOfWeek
+            )
+                calendarInstance.add(Calendar.DAY_OF_WEEK, 1)
+            while (calendarInstance.get(Calendar.DAY_OF_WEEK) != dayOfWeek) {
+                calendarInstance.add(Calendar.DAY_OF_WEEK, 1)
+            }
+            return calendarInstance
+        }
+
+        fun getUntilNextDayOfMonthAfterHour(
+            dayOfMonth: Int,
+            hourOfDay: Int,
+            calendarInstance: Calendar,
+            inclusive: Boolean = false
+        ): Calendar {
+            if (calendarInstance.get(Calendar.HOUR_OF_DAY) >= hourOfDay && calendarInstance.get(
+                    Calendar.DAY_OF_MONTH) == dayOfMonth
+            )
+                calendarInstance.add(Calendar.DAY_OF_MONTH, 1)
+            while (calendarInstance.get(Calendar.DAY_OF_MONTH) != dayOfMonth) {
+                calendarInstance.add(Calendar.DAY_OF_WEEK, 1)
+            }
+            return calendarInstance
+        }
+
+        fun getBabyName(): String {
+            return sharedPreferences.getString("babyName", "")!!
+        }
+
+        fun getSubscriptionEndingDate(): Int {
+            var endingTime=0L
+            if (sharedPreferences.contains("uid") && sharedPreferences.getString("uid", "") != null) {
+                val userId = sharedPreferences.getString("uid", "")!!
+
+                AndroidNetworking.get("https://uptodd.com/api/appusers/checksubscription/{userId}")
+                    .addPathParameter("userId", userId)
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+                            if (response != null && response.get("status") == "Success") {
+                                val endingDate=(response.get("data") as JSONObject).getString("subscriptionEndingDate")
+                                val calendar=Calendar.getInstance()
+                                calendar.set(endingDate.substring(0,4).toInt(),endingDate.substring(5,7).toInt(),endingDate.substring(8,10).toInt())
+                                endingTime=calendar.timeInMillis
+
+                                Log.d("div","AllUtil L291 $endingTime")
+                            }
+                        }
+
+                        override fun onError(error: ANError?) {
+                            Log.d("div", "AllUtil L294 $error")
+                            if (error!!.errorCode != 0) {
+                                Log.d("div", "onError errorCode : " + error.errorCode)
+                                Log.d("div", "onError errorBody : " + error.errorBody)
+                                Log.d("div", "onError errorDetail : " + error.errorDetail)
+                            } else {
+                                // error.getErrorDetail() : connectionError, parseError, requestCancelledError
+                                Log.d("div", "onError errorDetail : " + error.errorDetail)
+                            }
+                        }
+
+                    })
+            }
+//            val calendarInstance = Calendar.getInstance()
+//            calendarInstance.add(Calendar.DAY_OF_YEAR, 30)
+//            return calendarInstance.get(Calendar.DAY_OF_YEAR)
+            Log.d("div","AllUtil L311 $endingTime")
+            return endingTime.toInt()
+        }
+
+        fun getBabyBirthday(): Long {
+            return sharedPreferences.getLong("babyDOB", 0L)
+        }
+
+        fun isLoggedInAsDoctor(): Boolean {
+            return sharedPreferences.getString("userType", "Normal") == "Doctor"
+        }
+
+        fun getMusicImage(song: MusicFiles, dpi: String): String {
+            return "https://uptodd.com/images/app/android/thumbnails/musics/${dpi}/${song.image!!.trim()}.webp"
+        }
+
+        fun getAuthToken():String?{
+            return sharedPreferences.getString("token","")
+        }
+
+        fun getPoemImage(song: MusicFiles, dpi: String): String {
+            return "https://uptodd.com/images/app/android/thumbnails/poems/${dpi}/${song.image!!.trim()}.webp"
+        }
+    }
+
+    fun s() {
+        val cal = Calendar.getInstance()
+        val days = cal.getMaximum(Calendar.DAY_OF_MONTH)
+
+        while (cal.get(Calendar.DAY_OF_MONTH) != 1)
+            cal.add(Calendar.DAY_OF_MONTH, 1)
+
+
+    }
+
+}

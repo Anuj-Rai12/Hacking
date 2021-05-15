@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/todoRecyclerItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/completeStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:checked="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="13dp"
+        android:layout_toRightOf="@+id/completeStatus"
+        android:text="task name here"
+        android:textColor="@color/textGrey"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:text="TextView"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/alarmClockIcon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_baseline_alarm_24"
+        android:visibility="invisible" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/alarmSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeTextView"
+        android:layout_alignStart="@+id/timeTextView"
+        android:layout_alignLeft="@+id/timeTextView"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp" />
+</RelativeLayout>

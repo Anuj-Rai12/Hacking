@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "448021136520",
+    "firebase_url": "https://uptodd-98511.firebaseio.com",
+    "project_id": "uptodd-98511",
+    "storage_bucket": "uptodd-98511.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448021136520:android:3418547bb617a785448b3d",
+        "android_client_info": {
+          "package_name": "com.uptodd.uptoddapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448021136520-tis8q8c33hctgbn37pv6lh0p52o1jrk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uptodd.uptoddapp",
+            "certificate_hash": "5a6ca6ca5b2f7e87df61c883806c4e173d2a4b16"
+          }
+        },
+        {
+          "client_id": "448021136520-6q7jm7app8640lj8f33c0b9qmvqrvbc4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkhUDSLT5dM1Jpcb6HTevs7-FNY-I_6rI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "448021136520-6q7jm7app8640lj8f33c0b9qmvqrvbc4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

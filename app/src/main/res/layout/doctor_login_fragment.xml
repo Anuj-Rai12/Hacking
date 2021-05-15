@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="doctorViewModel"
+            type="com.uptodd.uptoddapp.doctor.DoctorLoginViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        tools:context=".doctor.DoctorLogin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/uptoddLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="#fff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/app_icon" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_mail_doctor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:enabled="@{doctorViewModel.enableInput}"
+                android:hint="@string/email_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uptoddLogo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/doctor_mail"
+                    style="@style/AppTheme.EditText.Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={doctorViewModel.emailId}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_password_doctor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="@{doctorViewModel.enableInput}"
+                android:hint="@string/password"
+                app:layout_constraintEnd_toEndOf="@+id/login_mail_doctor"
+                app:layout_constraintStart_toStartOf="@+id/login_mail_doctor"
+                app:layout_constraintTop_toBottomOf="@+id/login_mail_doctor"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/AppTheme.EditText.Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={doctorViewModel.password}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_doctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> doctorViewModel.beginLogin()}"
+                android:paddingStart="32dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="32dp"
+                android:paddingBottom="10dp"
+                android:text="@string/log_in"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:visibility="@{doctorViewModel.showLoginProgress ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintEnd_toStartOf="@id/forgot_password_doctor"
+                app:layout_constraintStart_toStartOf="@+id/login_password_doctor"
+                app:layout_constraintTop_toBottomOf="@+id/login_password_doctor" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{doctorViewModel.showLoginProgress ? View.VISIBLE : View.INVISIBLE}"
+                app:hideAnimationBehavior="inward"
+                app:layout_constraintBottom_toBottomOf="@+id/login_doctor"
+                app:layout_constraintEnd_toEndOf="@+id/login_doctor"
+                app:layout_constraintStart_toStartOf="@+id/login_doctor"
+                app:layout_constraintTop_toTopOf="@+id/login_doctor"
+                app:showAnimationBehavior="outward"
+                tools:visibility="invisible" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forgot_password_doctor"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="@{doctorViewModel.enableInput}"
+                android:text="@string/forgot_password"
+                android:textColor="@color/textGrey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/login_doctor"
+                app:layout_constraintEnd_toEndOf="@+id/login_password_doctor"
+                app:layout_constraintStart_toEndOf="@+id/login_doctor"
+                app:layout_constraintTop_toTopOf="@+id/login_doctor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_as_patient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:layout_marginBottom="64dp"
+                android:enabled="@{doctorViewModel.enableInput}"
+                android:paddingStart="32dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="32dp"
+                android:paddingBottom="8dp"
+                android:text="Login As Patient"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_doctor" />
+
+            <ImageView
+                android:id="@+id/goBackDoctor"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:enabled="@{doctorViewModel.enableInput}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_back_black" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+</layout>

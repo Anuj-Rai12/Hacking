@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="doctorDashboardBinding"
+            type="com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboardViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="SmallSp">
+
+
+            <TextView
+                android:id="@+id/doctor_dashboard_welcome_doctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/welcome_doctor"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView20"
+                app:layout_constraintTop_toTopOf="parent" />
+
+<!--            <com.uptodd.uptoddapp.carouselview.CarouselView-->
+<!--                android:id="@+id/carousel_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="128dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                app:fillColor="#ffffffff"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/doctor_dashboard_welcome_doctor"-->
+<!--                app:pageColor="#00000000"-->
+<!--                app:radius="4dp"-->
+<!--                app:slideInterval="3000"-->
+<!--                app:strokeColor="#fff"-->
+<!--                app:strokeWidth="1dp" />-->
+
+            <androidx.viewpager.widget.ViewPager
+                android:foregroundGravity="center"
+                android:id="@+id/carousel_view"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:overScrollMode="never"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doctor_dashboard_welcome_doctor" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/carousel_view_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/carousel_view"
+                app:tabBackground="@drawable/dot_indicator_tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
+
+
+            <Button
+                android:id="@+id/doctor_dashboard_book_a_session"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="64dp"
+                android:background="@drawable/round_button_book_a_session"
+                android:text="@string/book_a_session"
+                android:textColor="#fdfdfd"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/carousel_view_indicator" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="@string/recommended_webinars"
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toStartOf="@+id/doctor_dashboard_webinar_1"
+                app:layout_constraintTop_toBottomOf="@+id/doctor_dashboard_book_a_session" />
+
+            <LinearLayout
+                android:id="@+id/doctor_dashboard_webinar_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/doctor_dashboard_webinar_3"
+                app:layout_constraintEnd_toStartOf="@+id/doctor_dashboard_webinar_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView20">
+
+                <ImageView
+                    android:id="@+id/doctor_dashboard_webinar_1_image"
+                    android:layout_width="150dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/webinar_test" />
+
+                <TextView
+                    android:id="@+id/doctor_dashboard_webinar_1_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="4dp"
+                    android:textAllCaps="false"
+                    android:textSize="8sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLines="2"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#f9f9f9">
+
+                    <LinearLayout
+                        android:id="@+id/doctor_dashboard_watch_now1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button_book_a_session"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_article_24" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:text="@string/watch_now"
+                            android:textColor="#fff"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/doctor_dashboard_webinar_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/doctor_dashboard_webinar_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/doctor_dashboard_webinar_1"
+                app:layout_constraintTop_toBottomOf="@+id/textView20">
+
+                <ImageView
+                    android:id="@+id/doctor_dashboard_webinar_2_image"
+                    android:layout_width="150dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/webinar_test" />
+
+                <TextView
+                    android:id="@+id/doctor_dashboard_webinar_2_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="4dp"
+                    android:textAllCaps="false"
+                    android:textSize="8sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLines="2"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#f9f9f9">
+
+                    <LinearLayout
+                        android:id="@+id/doctor_dashboard_watch_now2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button_book_a_session"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_article_24" />
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:text="@string/watch_now"
+                            android:textColor="#fff"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/doctor_dashboard_webinar_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/doctor_dashboard_webinar_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doctor_dashboard_webinar_1">
+
+                <ImageView
+                    android:id="@+id/doctor_dashboard_webinar_3_image"
+                    android:layout_width="150dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/webinar_test" />
+
+                <TextView
+                    android:id="@+id/doctor_dashboard_webinar_3_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="4dp"
+                    android:textAllCaps="false"
+                    android:textSize="8sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLines="2"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#f9f9f9">
+
+                    <LinearLayout
+                        android:id="@+id/doctor_dashboard_watch_now3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button_book_a_session"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_article_24" />
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:text="@string/watch_now"
+                            android:textColor="#fff"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/doctor_dashboard_webinar_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/doctor_dashboard_webinar_3"
+                app:layout_constraintTop_toBottomOf="@id/doctor_dashboard_webinar_2">
+
+                <ImageView
+                    android:id="@+id/doctor_dashboard_webinar_4_image"
+                    android:layout_width="150dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/webinar_test" />
+
+                <TextView
+                    android:id="@+id/doctor_dashboard_webinar_4_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="4dp"
+                    android:textAllCaps="false"
+                    android:textSize="8sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLines="2"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#f9f9f9">
+
+                    <LinearLayout
+                        android:id="@+id/doctor_dashboard_watch_now4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button_book_a_session"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView13"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_baseline_article_24" />
+
+                        <TextView
+                            android:id="@+id/textView26"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:text="@string/watch_now"
+                            android:textColor="#fff"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

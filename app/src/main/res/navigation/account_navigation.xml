@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_navigation"
+    app:startDestination="@id/accountFragment2">
+
+    <fragment
+        android:id="@+id/selectTypeFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.selecttype.SelectTypeFragment"
+        android:label="fragment_select_type"
+        tools:layout="@layout/fragment_select_type">
+        <action
+            android:id="@+id/action_selectTypeFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/captureImageFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment"
+        android:label="fragment_capture_image"
+        tools:layout="@layout/fragment_capture_image">
+        <action
+            android:id="@+id/action_captureImageFragment_to_selectTypeFragment"
+            app:destination="@id/selectTypeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_captureImageFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="pervious"
+            android:defaultValue="Home"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateCardFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.generatecard.GenerateCardFragment"
+        android:label="fragment_generate_card"
+        tools:layout="@layout/fragment_generate_card_1">
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+        <argument
+            android:name="photoType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment2"
+        android:name="com.uptodd.uptoddapp.ui.account.account.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account">
+        <action
+            android:id="@+id/action_accountFragment2_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment2_to_rankingFragment2"
+            app:destination="@id/rankingFragment2"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.uptodd.uptoddapp.ui.account.changepassword.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+        <argument
+            android:name="doctorReset"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/rankingFragment2"
+        android:name="com.uptodd.uptoddapp.ui.todoScreens.ranking.RankingFragment"
+        android:label="RankingFragment">
+        <action
+            android:id="@+id/action_rankingFragment2_to_captureImageFragment"
+            app:destination="@id/captureImageFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+</navigation>

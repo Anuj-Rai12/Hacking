@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/todos_navigation"
+    app:startDestination="@id/homePageFragment">
+    <fragment
+        android:id="@+id/blogsFragment"
+        android:name="com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsFragment"
+        android:label="Blogs" />
+    <!--    <fragment-->
+    <!--        android:id="@+id/webinarsFragment"-->
+    <!--        android:name="com.uptodd.uptoddapp.ui.webinars.webinarslist.WebinarsFragment"-->
+    <!--        android:label="Activities Sample" />-->
+    <fragment
+        android:id="@+id/accountFragment2"
+        android:name="com.uptodd.uptoddapp.ui.account.account.AccountFragment"
+        android:label="Account">
+        <action
+            android:id="@+id/action_accountFragment2_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_accountFragment2_to_rankingFragment"
+            app:destination="@id/rankingFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.uptodd.uptoddapp.ui.account.changepassword.ChangePasswordFragment"
+        android:label="Change Password">
+        <argument
+            android:name="doctorReset"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="com.uptodd.uptoddapp.ui.order.orderlist.OrderListFragment"
+        android:label="Order List">
+        <action
+            android:id="@+id/action_orderListFragment_to_fullPdfFragment"
+            app:destination="@id/fullPdfFragment" />
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailsFragment2"
+            app:destination="@id/orderDetailsFragment2"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullPdfFragment"
+        android:name="com.uptodd.uptoddapp.ui.order.fullpdf.FullPdfFragment"
+        android:label="Full PDF" />
+    <fragment
+        android:id="@+id/referDetailsFragment"
+        android:name="com.uptodd.uptoddapp.ui.refer.referdetails.ReferDetailsFragment"
+        android:label="Refer Details" />
+    <fragment
+        android:id="@+id/referListFragment"
+        android:name="com.uptodd.uptoddapp.ui.refer.referlist.ReferListFragment"
+        android:label="fragment_refer_list">
+        <action
+            android:id="@+id/action_referListFragment_to_referDetailsFragment"
+            app:destination="@id/referDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/referFragment"
+        android:name="com.uptodd.uptoddapp.ui.refer.refer.ReferFragment"
+        android:label="Refer">
+        <action
+            android:id="@+id/action_referFragment_to_referListFragment"
+            app:destination="@id/referListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectTypeFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.selecttype.SelectTypeFragment"
+        android:label="Select Type">
+        <action
+            android:id="@+id/action_selectTypeFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment" />
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateCardFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.generatecard.GenerateCardFragment"
+        android:label="Generate Card">
+        <argument
+            android:name="imagePath"
+            app:argType="string" />
+        <argument
+            android:name="photoType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/captureImageFragment"
+        android:name="com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment"
+        android:label="Capture Image">
+        <action
+            android:id="@+id/action_captureImageFragment_to_selectTypeFragment"
+            app:destination="@id/selectTypeFragment" />
+        <action
+            android:id="@+id/action_captureImageFragment_to_generateCardFragment"
+            app:destination="@id/generateCardFragment" />
+        <argument
+            android:name="pervious"
+            android:defaultValue="Home"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/music"
+        android:name="com.uptodd.uptoddapp.media.music.MusicFragment"
+        android:label="Music Player">
+        <action
+            android:id="@+id/action_music_to_details"
+            app:destination="@id/details"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/details"
+        android:name="com.uptodd.uptoddapp.ui.details.Details"
+        android:label="Details">
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="file"
+            app:argType="com.uptodd.uptoddapp.database.media.music.MusicFiles" />
+    </fragment>
+    <fragment
+        android:id="@+id/allTicketsFragment"
+        android:name="com.uptodd.uptoddapp.support.all.AllTicketsFragment"
+        android:label="All Tickets">
+        <action
+            android:id="@+id/action_allTicketsFragment_to_createTicketFragment"
+            app:destination="@id/createTicketFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_allTicketsFragment_to_viewTicket"
+            app:destination="@id/viewTicket"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="ticket"
+            android:defaultValue="@null"
+            app:argType="com.uptodd.uptoddapp.database.support.Ticket"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_allTicketsFragment_to_bookASlot"
+            app:destination="@id/bookASlot"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookASlot"
+        android:name="com.uptodd.uptoddapp.support.all.allsessions.bookaslot.BookASlot"
+        android:label="Book Your Slot">
+        <action
+            android:id="@+id/action_bookASlot_to_slotTiming"
+            app:destination="@id/slotTiming"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewTicket"
+        android:name="com.uptodd.uptoddapp.support.view.ViewTicket"
+        android:label="{supportType}">
+        <argument
+            android:name="ticket"
+            app:argType="com.uptodd.uptoddapp.database.support.Ticket" />
+        <argument
+            android:name="supportType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/slotTiming"
+        android:name="com.uptodd.uptoddapp.support.all.allsessions.bookaslot.SlotTiming"
+        android:label="Slot Time">
+        <argument
+            android:name="expertName"
+            app:argType="string" />
+        <argument
+            android:name="expertId"
+            app:argType="integer" />
+        <argument
+            android:name="slotDate"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTicketFragment"
+        android:name="com.uptodd.uptoddapp.support.create.CreateTicketFragment"
+        android:label="Create New {ticketSupportTeam} Ticket">
+        <argument
+            android:name="ticketSupportTeam"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/todosViewPagerFragment"
+        android:name="com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.TodosViewPagerFragment"
+        android:label="Todos">
+        <action
+            android:id="@+id/action_todosViewPagerFragment_to_todoDetailsFragment"
+            app:destination="@id/todoDetailsFragment" />
+        <action
+            android:id="@+id/action_todosViewPagerFragment_to_appreciationFragment"
+            app:destination="@id/appreciationFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/todoDetailsFragment"
+        android:name="com.uptodd.uptoddapp.ui.todoScreens.todoDetailsScreen.TodoDetailsFragment"
+        android:label="Details">
+        <argument
+            android:name="todoId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_todoDetailsFragment_to_editAlarmTimeFragment"
+            app:destination="@id/editAlarmTimeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/homePageFragment"
+        android:name="com.uptodd.uptoddapp.ui.home.homePage.HomePageFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_homePageFragment_to_todosViewPagerFragment"
+            app:destination="@id/todosViewPagerFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homePageFragment_to_appreciationFragment"
+            app:destination="@id/appreciationFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/appreciationFragment"
+        android:name="com.uptodd.uptoddapp.ui.home.homePage.AppreciationFragment"
+        android:label="Congratulations">
+        <action
+            android:id="@+id/action_appreciationFragment_to_captureImageFragment"
+            app:destination="@id/captureImageFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/toysFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.toy.ToysFragment"
+        android:label="Toys">
+        <action
+            android:id="@+id/action_toysFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/coloursFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.color.ColoursFragment"
+        android:label="@string/colours">
+        <action
+            android:id="@+id/action_coloursFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editAlarmTimeFragment"
+        android:name="com.uptodd.uptoddapp.ui.todoScreens.todoDetailsScreen.EditAlarmTimeFragment"
+        android:label="Edit Alarm Time">
+        <argument
+            android:name="todoId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_editAlarmTimeFragment_to_todoDetailsFragment"
+            app:destination="@id/todoDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_editAlarmTimeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.uptodd.uptoddapp.ui.todoScreens.ranking.RankingFragment"
+        android:label="Ranking and score">
+        <action
+            android:id="@+id/action_rankingFragment_to_captureImageFragment"
+            app:destination="@id/captureImageFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/storiesFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.stories.StoriesFragment"
+        android:label="Stories">
+        <action
+            android:id="@+id/action_storiesFragment_to_todoDetailsFragment"
+            app:destination="@id/todoDetailsFragment" />
+        <action
+            android:id="@+id/action_storiesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/yogaFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.YogaFragment"
+        android:label="Yoga">
+        <action
+            android:id="@+id/action_yogaFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="yogaName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/allYogaFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.AllYogaFragment"
+        android:label="All Yoga">
+        <action
+            android:id="@+id/action_allYogaFragment_to_yogaFragment"
+            app:destination="@id/yogaFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/poemFragment"
+        android:name="com.uptodd.uptoddapp.media.poem.PoemFragment"
+        android:label="Poems">
+        <action
+            android:id="@+id/action_poemFragment_to_details"
+            app:destination="@id/details"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/expectedOutcomesFragment3"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.outcomes.ExpectedOutcomesFragment"
+        android:label="Expected Outcomes">
+        <action
+            android:id="@+id/action_expectedOutcomesFragment3_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/dietFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.diet.DietFragment"
+        android:label="Diet">
+        <action
+            android:id="@+id/action_dietFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/vaccinationFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.vaccination.VaccinationFragment"
+        android:label="Vaccination">
+        <action
+            android:id="@+id/action_vaccinationFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment2"
+        android:name="com.uptodd.uptoddapp.ui.order.orderdetails.OrderDetailsFragment"
+        android:label="Order Details" />
+    <fragment
+        android:id="@+id/nannyLogoutFragment"
+        android:name="com.uptodd.uptoddapp.ui.nanny.logout.NannyLogoutFragment"
+        android:label="Nanny Logout" />
+    <fragment
+        android:id="@+id/allTodosViewPagerFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.allTodos.AllTodosViewPagerFragment"
+        android:label="@string/all_activities">
+        <action
+            android:id="@+id/action_allTodosViewPagerFragment_to_todoDetailsFragment"
+            app:destination="@id/todoDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editAlarmsViewPagerFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.editTodoAlarms.EditAlarmsViewPagerFragment"
+        android:label="@string/activity_alarms">
+        <action
+            android:id="@+id/action_editAlarmsViewPagerFragment_to_editAlarmTimeFragment"
+            app:destination="@id/editAlarmTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/happyBirthdayFragment"
+        android:name="com.uptodd.uptoddapp.ui.other.HappyBirthdayFragment"
+        android:label="Happy Birthday" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.details.DetailsFragment"
+        android:label="Details">
+        <argument
+            android:name="actionBar"
+            app:argType="string" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="folder"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeLanguageNanny"
+        android:name="com.uptodd.uptoddapp.ui.nanny.ChangeLanguageNanny"
+        android:label="Change Language" />
+
+    <action
+        android:id="@+id/to_capture_image_fragment"
+        app:destination="@+id/captureImageFragment" />
+    <fragment
+        android:id="@+id/activitySampleFragment"
+        android:name="com.uptodd.uptoddapp.ui.activitysample.ActivitySampleFragment"
+        android:label="@string/activity_sample">
+<!--        <action-->
+<!--            android:id="@+id/action_activitySampleFragment_to_activityVideoFragment"-->
+<!--            app:destination="@id/activityVideoFragment"-->
+<!--            app:enterAnim="@android:anim/slide_in_left"-->
+<!--            app:exitAnim="@android:anim/slide_out_right"-->
+<!--            app:popEnterAnim="@android:anim/slide_in_left"-->
+<!--            app:popExitAnim="@android:anim/slide_out_right" />-->
+    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/activityVideoFragment"-->
+<!--        android:name="com.uptodd.uptoddapp.ui.activitysample.ActivityVideoFragment"-->
+<!--        android:label="Activity Sample">-->
+<!--        <argument-->
+<!--            android:name="title"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="url"-->
+<!--            app:argType="string" />-->
+<!--    </fragment>-->
+</navigation>
