@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/blogsFragment"
         android:name="com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsFragment"
-        android:label="Blogs" />
+        android:label="@string/blogs" />
     <!--    <fragment-->
     <!--        android:id="@+id/webinarsFragment"-->
     <!--        android:name="com.uptodd.uptoddapp.ui.webinars.webinarslist.WebinarsFragment"-->
