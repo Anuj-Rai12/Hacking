@@ -34,6 +34,10 @@
         <activity
             android:name=".ui.webinars.fullwebinar.FullWebinarActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+        <activity
+            android:name=".ui.webinars.podcastwebinar.PodcastWebinarActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+
         <activity android:name=".ui.blogs.fullblog.FullBlogActivity" />
         <activity android:name=".ui.blogs.blogslist.BlogsActivity" />
         <!--

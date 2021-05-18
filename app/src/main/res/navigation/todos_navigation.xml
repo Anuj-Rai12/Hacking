@@ -504,7 +504,11 @@
 <!--            app:popEnterAnim="@android:anim/slide_in_left"-->
 <!--            app:popExitAnim="@android:anim/slide_out_right" />-->
     </fragment>
-<!--    <fragment-->
+    <fragment
+        android:id="@+id/activityPodcastFragment"
+        android:name="com.uptodd.uptoddapp.ui.activitypodcast.ActivityPodcastFragment"
+        android:label="@string/activity_podcast" />
+    <!--    <fragment-->
 <!--        android:id="@+id/activityVideoFragment"-->
 <!--        android:name="com.uptodd.uptoddapp.ui.activitysample.ActivityVideoFragment"-->
 <!--        android:label="Activity Sample">-->

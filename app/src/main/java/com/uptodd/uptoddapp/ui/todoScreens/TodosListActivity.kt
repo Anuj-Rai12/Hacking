@@ -164,6 +164,7 @@ class TodosListActivity : AppCompatActivity() {
                 R.id.vaccinationFragment,
                 R.id.blogsFragment,
                 R.id.activitySampleFragment,
+                R.id.activityPodcastFragment,
                 R.id.captureImageFragment,
                 R.id.orderListFragment,
                 R.id.referFragment,

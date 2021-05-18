@@ -1,6 +1,10 @@
 package com.uptodd.uptoddapp.workManager
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -37,6 +41,36 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
 
     }
 
+    private fun checkPodcast()
+    {
+
+        val notificationManager=context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("Podcast", "PodcastNotification", NotificationManager.IMPORTANCE_HIGH).apply {
+                description = "new channel"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        var cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY,11)
+        cal.set(Calendar.MINUTE,0)
+        val stringIntentExtras = HashMap<String, String>()
+        stringIntentExtras["notificationTitle"] = "New Podcast Added"
+        stringIntentExtras["notificationText"] = "Hey Mom/Dad, Check new Podcast Added."
+        stringIntentExtras["type"]="Podcast"
+        stringIntentExtras["notificationChannelId"] = "Podcast"
+        val intIntentExtras = HashMap<String, Int>()
+        intIntentExtras["notificationPriority"] = NotificationCompat.PRIORITY_DEFAULT
+        intIntentExtras["notificationId"] =60007
+
+        UptoddNotificationUtilities.setRepeatingAlarm(context
+            ,cal.timeInMillis, AlarmManager.INTERVAL_DAY,DAILY_ALARM_REQUEST_CODE,NotificationBroadcastReceiver::class.java
+            ,intentStringExtras = stringIntentExtras,intentIntegerExtras = intIntentExtras)
+
+    }
+
     private fun setPhotoNotification() {
         var calendarInstance = Calendar.getInstance()
         calendarInstance =
@@ -48,6 +82,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
         UptoddNotifications.setWeeklyPhotoNotification(context, calendarInstance.timeInMillis)
 
     }
+
 
     private fun setEssentialActivityNotification() {
         var calendarInstance = Calendar.getInstance()
@@ -157,6 +192,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
         UptoddNotifications.setWishNotification(context, calendarInstance.timeInMillis, text)
     }
 
+
     override suspend fun doWork(): Result = coroutineScope {
 
         if (!AllUtil.isLoggedInAsDoctor()) {
@@ -170,6 +206,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             setWeeklyActivityNotification()
             setMonthlyActivityNotification()
             setSessionLeftReminder()
+            checkPodcast()
         } else {
             //TODO: add doctor notifications
             setWeeklyDoctorReferralNotification()

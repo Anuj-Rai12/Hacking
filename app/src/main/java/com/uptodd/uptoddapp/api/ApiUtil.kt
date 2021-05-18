@@ -18,3 +18,7 @@ fun getUserId(context: Context): Long? {
 fun getPeriod(context: Context): Int {
     return KidsPeriod(context).getPeriod()
 }
+
+fun getMonth(context: Context): Int {
+    return KidsPeriod(context).getKidsAge()
+}

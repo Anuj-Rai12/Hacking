@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.database.account.AccountDao
+import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
+import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcastDao
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.database.activitysample.ActivitySampleDao
 import com.uptodd.uptoddapp.database.blogs.BlogCategories
@@ -46,7 +48,7 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         Webinars::class, WebinarCategories::class,
         Vaccination::class, Toy::class, Story::class,
         ExpectedOutcomes::class, Yoga::class, Diet::class,
-        Colour::class, Account::class, ActivitySample::class],
+        Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class],
     version = 4,
     exportSchema = false
 )
@@ -125,6 +127,8 @@ abstract class UptoddDatabase : RoomDatabase() {
     // activity sample dao
     abstract val activitySampleDao: ActivitySampleDao
 
+    // activity podcast dao
+    abstract val activityPodcastDao:ActivityPodcastDao
 
     // provide migration here if any
 

@@ -64,6 +64,10 @@
                         android:id="@+id/activitySampleFragment"
                         android:icon="@drawable/ic_menu_slideshow"
                         android:title="@string/activity_sample" />
+                    <item
+                        android:id="@id/activityPodcastFragment"
+                        android:icon="@drawable/ic_menu_slideshow"
+                        android:title="@string/activity_podcast"/>
 
                 </group>
             </menu>
