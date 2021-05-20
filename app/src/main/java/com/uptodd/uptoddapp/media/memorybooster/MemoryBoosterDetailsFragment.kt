@@ -416,7 +416,10 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
     override fun onPause() {
         requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR       //to restrict landscape orientation
+            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//to restrict landscape orientation
 
         super.onPause()
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)

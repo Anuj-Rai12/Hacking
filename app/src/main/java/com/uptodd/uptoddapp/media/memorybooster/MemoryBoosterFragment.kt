@@ -424,8 +424,10 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
     override fun onPause() {
         requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR       //to restrict landscape orientation
+            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR //to restrict landscape orientation
 
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onPause()
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
