@@ -17,6 +17,7 @@ import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.DownloadRequest
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
+import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
@@ -1240,7 +1241,7 @@ class TodosViewModel(
         //viewModelJob.cancel()
     }
 
-    fun startMusicDownload(destinationDir: File, uptoddDownloadManager: DownloadManager) {
+    fun startMusicDownload(destinationDir: File, uptoddDownloadManager: DownloadManager,context: Context) {
         viewModelScope.launch {
             downloadedMusic = musicDatabase.getAllFiles()
             Log.i("downloaded", downloadedMusic.size.toString())
@@ -1281,6 +1282,42 @@ class TodosViewModel(
 
                     override fun onError(error: ANError) {}
                 })
+
+            val uid = AllUtil.getUserId()
+            val prenatal =if(getMonth(context) >0) 1 else 0
+            val lang = AllUtil.getLanguage()
+            AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={months}&lang={lang}")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+                .addPathParameter("userId",uid.toString())
+                .addPathParameter("prenatal",prenatal.toString())
+                .addPathParameter("lang",lang)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject) {
+                        if (response.getString("status") == "Success") {
+                            viewModelScope.launch {
+                                val speedBooster = AllUtil.getAllMusic(response.get("data").toString())
+                                val destDir = File(destinationDir, "speedbooster")
+                               downloadSpeedBoosterFiles(speedBooster,destDir,uptoddDownloadManager)
+                            }
+
+                        } else {
+                            apiError = response.getString("message")
+                            _isLoading.value = -1
+                        }
+                    }
+
+                    override fun onError(error: ANError) {
+                        apiError = error.message.toString()
+                        _isLoading.value = -1
+                        Log.i("error", error.errorBody)
+                    }
+                })
+
+
+
+
         }
 
     }
@@ -1497,6 +1534,70 @@ class TodosViewModel(
         }
     }
 
+    fun downloadSpeedBoosterFiles(
+        files: List<MusicFiles>,
+        destinationDir: File,
+        mManager: DownloadManager,
+    ) {
+        files.forEach {
+            if (!getIsMusicDownloaded(it)) {
+                _showDownloadingFlag.value = true
+                val file = File(destinationDir.path, "${it.file}.aac")
+                if (file.exists())
+                    file.delete()
+                if (!file.exists())
+                    destinationDir.mkdirs()
+                if (!destinationDir.canWrite())
+                    destinationDir.setWritable(true)
+
+                val destinationUri = Uri.fromFile(file)
+                Log.i(
+                    "inserting",
+                    "starting -> ${it.name}. Downloading from : https://uptodd.com/files/memory_booster/${it.file!!.trim()}.aac"
+                )
+
+                val request: DownloadRequest = DownloadRequest.Builder()
+                    .url("https://uptodd.com/files/memory_booster/${it.file!!.trim()}.aac")
+                    .retryTime(3)
+                    .retryInterval(2, TimeUnit.SECONDS)
+                    .progressInterval(1, TimeUnit.SECONDS)
+                    .priority(com.coolerfall.download.Priority.HIGH)
+                    //.allowedNetworkTypes(DownloadRequest.NETWORK_WIFI)
+                    .destinationFilePath(file.path)
+                    .downloadCallback(object : DownloadCallback {
+                        override fun onStart(downloadId: Int, totalBytes: Long) {
+                            Log.i(
+                                "inserting",
+                                "on start -> ${it.name}"
+                            )
+                        }
+
+                        override fun onRetry(downloadId: Int) {}
+                        override fun onProgress(
+                            downloadId: Int,
+                            bytesWritten: Long,
+                            totalBytes: Long,
+                        ) {
+                        }
+
+                        override fun onSuccess(downloadId: Int, filePath: String) {
+                            updatePath(it, file.path)
+                            Log.i("inserting", "on success")
+                        }
+
+                        override fun onFailure(downloadId: Int, statusCode: Int, errMsg: String) {
+                            Log.i(
+                                "inserting",
+                                "on failed -> ${it.name}. Cause: $errMsg"
+                            )
+                        }
+                    })
+                    .build()
+
+                val downloadId: Int = mManager.add(request)
+            }
+        }
+    }
     fun downloadGuidelines(context: Context) {
         val downloader = Downloader
         downloader.startDocumentDownload(context,

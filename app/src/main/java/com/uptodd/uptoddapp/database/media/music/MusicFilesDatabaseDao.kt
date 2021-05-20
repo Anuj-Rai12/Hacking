@@ -22,11 +22,14 @@ interface MusicFilesDatabaseDao {
     @Query("DELETE FROM music_files")
     suspend fun clear()
 
-    @Query("SELECT * FROM music_files WHERE language = 'NA' ")
+    @Query("SELECT * FROM music_files WHERE language = 'NA' AND prenatal=-1")
     suspend fun getAllDownloadedMusic(): List<MusicFiles>
 
     @Query("SELECT * FROM music_files WHERE language != 'NA'")
     suspend fun getAllDownloadedPoem(): List<MusicFiles>
+
+    @Query("SELECT * FROM music_files WHERE prenatal!=-1")
+    suspend fun getAllSpeedBoosterFiles(): List<MusicFiles>
 
     @Query("SELECT * FROM music_files")
     suspend fun getAllFiles(): List<MusicFiles>

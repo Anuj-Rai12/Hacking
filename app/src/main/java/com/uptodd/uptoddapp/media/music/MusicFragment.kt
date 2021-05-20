@@ -107,7 +107,7 @@ class MusicFragment : Fragment() {
         if (lastUpdated.isBlank()) {
             updateMusic(today)
         } else if (lastUpdated.toLong() < today.timeInMillis) {
-            updateMusic(today)
+                updateMusic(today)
         } else {
             viewModel.initializeOffline()
         }

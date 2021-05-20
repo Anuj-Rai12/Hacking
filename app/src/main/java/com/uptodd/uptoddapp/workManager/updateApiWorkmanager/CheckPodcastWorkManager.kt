@@ -32,7 +32,7 @@ CoroutineWorker(context, parameters)  {
             cal.set(Calendar.MINUTE,0)
             val stringIntentExtras = HashMap<String, String>()
             stringIntentExtras["notificationTitle"] = "New Podcast Added"
-            stringIntentExtras["notificationText"] = "Hey Mom/Dad, Check new Podcast Added."
+            stringIntentExtras["notificationText"] = "Hey Mom/Dad, Check new Podcast Added for you."
             stringIntentExtras["type"]="Podcast"
             stringIntentExtras["notificationChannelId"] = "Podcast"
             val intIntentExtras = HashMap<String, Int>()
@@ -47,6 +47,8 @@ CoroutineWorker(context, parameters)  {
 
         Result.success()
     }
+
+
 
 
 

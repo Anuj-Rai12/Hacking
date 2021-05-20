@@ -224,7 +224,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
         val check=sharedPrefWorkManager.getInt("ALREADY_REQUESTED",0)
 
-        if(check!=0) {
+        if(check==0) {
             var workRequest = OneTimeWorkRequest.Builder(
                 CheckPodcastWorkManager::class.java
             ).build()

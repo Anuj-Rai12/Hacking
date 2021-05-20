@@ -8,6 +8,7 @@ import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.media.music.MusicViewModel
 import com.uptodd.uptoddapp.media.poem.PoemViewModel
+import com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterViewModel
 import com.uptodd.uptoddapp.ui.account.account.AccountViewModel
 import com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsListViewModel
 import com.uptodd.uptoddapp.ui.capturemoments.selecttype.SelectTypeViewModel
@@ -88,6 +89,12 @@ class UptoddViewModelFactory private constructor(
         if (modelClass.isAssignableFrom(SelectTypeViewModel::class.java)) {
             val token = preferences.getString("token", "")
             return SelectTypeViewModel(application, token) as T
+        }
+
+        // speedbooster viewmodel
+        if(modelClass.isAssignableFrom(MemoryBoosterViewModel::class.java))
+        {
+            return   return MemoryBoosterViewModel(database.musicDatabaseDao, application) as T
         }
 
 

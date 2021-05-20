@@ -371,5 +371,12 @@
 
     <!--Activity Podcast-->
 
+    <!--Memory Booster-->
+    <string name="memory_booster">Memory Booster</string>
+
+    <!--Resource Files-->
+
+
+
 
 </resources>
