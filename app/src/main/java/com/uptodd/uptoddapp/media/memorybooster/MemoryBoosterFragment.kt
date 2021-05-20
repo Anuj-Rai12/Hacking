@@ -118,7 +118,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-            viewModel.initializeOffline()
+           updatePoems(today)
         }
 
 

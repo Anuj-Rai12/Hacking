@@ -114,7 +114,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-            viewModel.initializeOffline()
+            updatePoems(today)
         }
 
 
@@ -174,7 +174,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
             val position=preferences.getInt("currentFileIndex",-1)
 
-            val music:MusicFiles?=it[position]
+           val music:MusicFiles?=it[position]
             viewModel.playFile(music!!)
             binding.musicTitle.text = music.name
             binding.musicPlayerLayout.visibility = View.VISIBLE

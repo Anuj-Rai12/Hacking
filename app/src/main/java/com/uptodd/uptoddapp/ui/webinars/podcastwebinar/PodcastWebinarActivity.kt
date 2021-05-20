@@ -44,16 +44,16 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
 
         binding.title.text = title
         binding.description.text=description
-        binding.kitContent.text="Kit content:$kitContent"
+        binding.kitContent.text="Kit content: $kitContent"
 
         mOnInitializedListener = object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 p0: YouTubePlayer.Provider?,
                 p1: YouTubePlayer?,
                 p2: Boolean, ) {
+
                 if (p1 != null) {
                     p1.loadVideo(VIDEO_SAMPLE)
-
                     p1.setPlayerStateChangeListener(object :YouTubePlayer.PlayerStateChangeListener
                     {
                         override fun onAdStarted() {

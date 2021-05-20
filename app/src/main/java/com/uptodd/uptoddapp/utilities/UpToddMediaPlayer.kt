@@ -47,10 +47,10 @@ class UpToddMediaPlayer {
     }
 
     private fun generateUrl(song: MusicFiles): String {
-        if (song.language == null)
-            return "https://uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
         if (song.prenatal!=-1)
             return  "https://uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
+        else if (song.language == null)
+            return "https://uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
         else
             return "https://uptodd.com/files/poem/${song.name!!.trim()}.aac"
     }
