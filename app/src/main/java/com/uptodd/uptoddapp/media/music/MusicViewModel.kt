@@ -59,7 +59,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
 
     private var currentPlaying = 0
 
-    private var mediaPlayer: UpToddMediaPlayer = UpToddMediaPlayer()
+    private var mediaPlayer: UpToddMediaPlayer = UpToddMediaPlayer.upToddMediaPlayer
 
     //Initialize the required variables and set media-player-listener
     init {

@@ -46,7 +46,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
     private lateinit var binding: FragmentMemoryBoosterDetailsBinding
     private lateinit var downloadManager: UpToddDownloadManager
     private lateinit var uptoddDialogs: UpToddDialogs
-    private lateinit var viewModel: MemoryBoosterViewModel
+    private lateinit var viewModel: MemoryBoosterDetailsViewModel
     private lateinit var preferences: SharedPreferences
     var count = 0
 
@@ -87,7 +87,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
         val viewModelFactory =
             UptoddViewModelFactory.getInstance(requireActivity().application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterDetailsViewModel::class.java)
         binding.memoryBoosterViewModel=viewModel
 
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
@@ -109,17 +109,19 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
         setTimer(binding)
 
-        if (lastUpdated.isBlank()) {
-            updatePoems(today)
-        } else if (lastUpdated.toLong() < today.timeInMillis) {
-            updatePoems(today)
-        } else {
-            updatePoems(today)
-        }
-
 
         if (!UpToddMediaPlayer.isPlaying) {
-            binding.musicPlayerLayout.visibility = View.GONE
+            if (lastUpdated.isBlank()) {
+                updatePoems(today)
+            } else if (lastUpdated.toLong() < today.timeInMillis) {
+                updatePoems(today)
+            } else {
+                updatePoems(today)
+            }
+        }
+        else
+        {
+            viewModel._isLoading.value=2
         }
 
 
@@ -146,7 +148,8 @@ class MemoryBoosterDetailsFragment: Fragment() {
                         })
                 }
                 else -> {
-
+                    viewModel.intializeSame()
+                    initializeObservers(binding)
                 }
             }
         })
@@ -173,12 +176,12 @@ class MemoryBoosterDetailsFragment: Fragment() {
         viewModel.poems.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             val position=preferences.getInt("currentFileIndex",-1)
-
-           val music:MusicFiles?=it[position]
-            viewModel.playFile(music!!)
-            binding.musicTitle.text = music.name
-            binding.musicPlayerLayout.visibility = View.VISIBLE
-
+            if(it.size>position) {
+                val music: MusicFiles? = it[position]
+                viewModel.playFile(music!!)
+                binding.musicTitle.text = music.name
+                binding.musicPlayerLayout.visibility = View.VISIBLE
+            }
         })
 
             //if time is already set and the user changes music, cancel the timer
@@ -206,6 +209,10 @@ class MemoryBoosterDetailsFragment: Fragment() {
             } else {
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
+            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+            intent.putExtra("toRun", true)
+            intent.putExtra("musicType", "poem")
+            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, androidx.lifecycle.Observer {

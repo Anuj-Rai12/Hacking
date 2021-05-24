@@ -114,7 +114,7 @@ class MusicFragment : Fragment() {
 
         setTimer(binding)
 
-        if (!UpToddMediaPlayer.isPlaying) {
+        if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
             binding.musicPlayerLayout.visibility = View.GONE
         }
 
@@ -304,6 +304,10 @@ class MusicFragment : Fragment() {
             } else {
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
+            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+            intent.putExtra("toRun", true)
+            intent.putExtra("musicType", "poem")
+            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {

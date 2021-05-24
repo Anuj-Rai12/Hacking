@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterDetailsViewModel
 import com.uptodd.uptoddapp.media.music.MusicViewModel
 import com.uptodd.uptoddapp.media.poem.PoemViewModel
 import com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterViewModel
@@ -91,10 +92,16 @@ class UptoddViewModelFactory private constructor(
             return SelectTypeViewModel(application, token) as T
         }
 
-        // speedbooster viewmodel
+        // memorybooster viewmodel
         if(modelClass.isAssignableFrom(MemoryBoosterViewModel::class.java))
         {
-            return   return MemoryBoosterViewModel(database.musicDatabaseDao, application) as T
+            return MemoryBoosterViewModel(database.musicDatabaseDao, application) as T
+        }
+
+        // memoryboooster viewmodel
+        if(modelClass.isAssignableFrom(MemoryBoosterDetailsViewModel::class.java))
+        {
+            return MemoryBoosterDetailsViewModel(database.musicDatabaseDao,application) as T
         }
 
 

@@ -12,16 +12,21 @@ class UpToddMediaPlayer {
 
     companion object {
         val mediaPlayer: MediaPlayer = MediaPlayer()
+        val upToddMediaPlayer=UpToddMediaPlayer()
         var songPlaying: MusicFiles = MusicFiles()
         var songIndex: Int = -1
         var isPlaying = false
         var timer: Long? = null
+        var isMemoryBooster:Boolean?=false
         private var mediaPlaylist: ArrayList<MusicFiles> = ArrayList()
     }
 
 
 
     fun setSource(song: MusicFiles) {
+
+        isMemoryBooster = song.prenatal!=-1
+
         if (isPlaying) {
             mediaPlayer.stop()
             isPlaying = false

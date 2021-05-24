@@ -130,11 +130,6 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
         setTimer(binding)
 
-        if (!UpToddMediaPlayer.isPlaying) {
-            binding.musicPlayerLayout.visibility = View.GONE
-        }
-
-
         viewModel.poems.observe(viewLifecycleOwner, Observer { poems ->
             Log.i("update", "$poems")
 //            redrawList(poems, binding)
@@ -455,13 +450,15 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
     }
 
     override fun onClickPoem(poem: MusicFiles,position:Int) {
-        viewModel.playFile(poem)
-        binding.musicTitle.text = poem.name
-        binding.musicPlayerLayout.visibility = View.VISIBLE
         //if time is already set and the user changes music, cancel the timer
-        if (UpToddMediaPlayer.timer != null)
-            binding.musicTimer.performClick()
 
+        if(UpToddMediaPlayer.isPlaying)
+        {
+           if(UpToddMediaPlayer.songPlaying.id!=poem.id)
+           {
+               UpToddMediaPlayer.isPlaying=false
+           }
+        }
         preferences.edit().putInt("currentFileIndex",position).apply()
 
         Navigation.findNavController(requireView()).navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
