@@ -30,6 +30,7 @@ import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import kotlinx.coroutines.GlobalScope
@@ -143,9 +144,9 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
         val database=UptoddDatabase.getInstance(context).musicDatabaseDao
         val uid = AllUtil.getUserId()
-        val prenatal =if(getMonth(context)>0) 1 else 0
+        val prenatal =if(UptoddSharedPreferences.getInstance(context).getStage()=="pre birth") 0 else 1
         val lang = AllUtil.getLanguage()
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={months}&lang={lang}")
+        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())

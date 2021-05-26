@@ -150,6 +150,19 @@ class UptoddSharedPreferences private constructor(context: Context) {
         editor.apply()
     }
 
+    fun saveStage(stage:String)
+    {
+        val editor=loginSharedPreference.edit()
+        editor.putString(Account::motherStage.name, stage).apply()
+    }
+
+    fun getStage(): String?
+    {
+
+        return loginSharedPreference.getString(Account::motherStage.name,"")
+    }
+
+
     fun clearLoginInfo() {
         loginSharedPreference.edit().clear().apply()
     }

@@ -295,9 +295,11 @@ class AllUtil{
                 AndroidNetworking.get("https://uptodd.com/api/appusers/checksubscription/{userId}")
                     .addPathParameter("userId", userId)
                     .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
+                    .getAsJSONObject(object : JSONObjectRequestListener
+                    {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response.get("status") == "Success") {
+                            if (response != null && response.get("status") == "Success")
+                            {
                                 val endingDate=(response.get("data") as JSONObject).getString("subscriptionEndingDate")
                                 val calendar=Calendar.getInstance()
                                 calendar.set(endingDate.substring(0,4).toInt(),endingDate.substring(5,7).toInt(),endingDate.substring(8,10).toInt())
