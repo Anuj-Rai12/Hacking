@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +27,7 @@ import com.uptodd.uptoddapp.database.blogs.BlogCategories
 import com.uptodd.uptoddapp.database.blogs.BlogCategoryDao
 import com.uptodd.uptoddapp.databinding.FragmentBlogsBinding
 import com.uptodd.uptoddapp.ui.blogs.blogcategories.Category1
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -58,8 +60,21 @@ class BlogsFragment : Fragment() {
     ): View? {
         ChangeLanguage(requireContext()).setLanguage()
 
+
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_blogs, container, false)
 
+
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_blogsFragment_to_upgradeFragment)
+        }
         binding.lifecycleOwner = this
 
         categoryDao = UptoddDatabase.getInstance(requireContext()).categoryDao

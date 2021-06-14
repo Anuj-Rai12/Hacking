@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -25,6 +26,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.stories.StoriesDao
 import com.uptodd.uptoddapp.databinding.FragmentStoriesBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +71,17 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_storiesFragment_to_upgradeFragment)
+        }
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         storiesDao = UptoddDatabase.getInstance(requireContext()).storiesDao
 
@@ -126,8 +139,10 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/stories")
+                AndroidNetworking.get("https://uptodd.com/api/stories?userType=$userType&country=$country")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()

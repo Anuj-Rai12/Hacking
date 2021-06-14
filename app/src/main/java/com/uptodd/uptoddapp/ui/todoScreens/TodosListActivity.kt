@@ -1,6 +1,7 @@
 package com.uptodd.uptoddapp.ui.todoScreens
 
 import android.Manifest
+import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
@@ -17,7 +18,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -25,10 +28,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -40,13 +40,16 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.workManager.*
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.DailyAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.MonthlyAndEssentialsAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.WeeklyAlarmSchedulerWorker
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.UpgradeWorkManager
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -96,6 +99,43 @@ class TodosListActivity : AppCompatActivity() {
 
         requestFireAllWorkManagers()
 
+        if(intent.getIntExtra("showUp",0)==1)
+        {
+            findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+        }
+        else
+        { if(!AllUtil.isUserPremium(this)) {
+
+            val upToddDialogs = UpToddDialogs(this)
+            upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
+                object :UpToddDialogs.UpToddDialogListener {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                    }
+
+                    override fun onDialogDismiss() {
+                        upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Upgrade Now",
+                            object :UpToddDialogs.UpToddDialogListener
+                            {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+
+                                    try {
+                                        findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+                                    }catch (e:Exception)
+                                    {
+                                        Log.e("dialog error",e.localizedMessage)
+                                    }
+                                    dialog.dismiss()
+                                }
+
+                            }
+                        )
+                    }
+
+                }
+            )
+        }
+        }
 
         val viewModelFactory = UptoddViewModelFactory.getInstance(application)
 
@@ -108,8 +148,8 @@ class TodosListActivity : AppCompatActivity() {
             "notificationIntent",
             DEFAULT_HOMEPAGE_INTENT
         )
-
         viewModel.notificationIntentExtras.value = intent.extras
+
 
 
         val manager: DownloadManager = DownloadManager.Builder().context(this)
@@ -127,6 +167,23 @@ class TodosListActivity : AppCompatActivity() {
         )
 
 
+        if(!AllUtil.isUserPremium(this)) {
+            viewModel.getNPDetails(this)
+            viewModel.isNewUser.observe(this, Observer {
+
+                if(it)
+                {
+                }
+                else
+                {
+                    val np = UptoddSharedPreferences.getInstance(this).getNonPAccount()
+                    np.kidsDob?.let { Log.d("kidsDob", it) }
+                    np.motherStage?.let { Log.d("stage", it) }
+                    np.anythingSpecial?.let { Log.d("anythingSpecial", it) }
+                    np.expectedMonthsOfDelivery?.let { Log.d("expectedMonthOfDelivery", it) }
+                }
+            })
+        }
     }
 
 
@@ -174,6 +231,14 @@ class TodosListActivity : AppCompatActivity() {
                 R.id.accountFragment2
             ), drawerLayout
         )
+
+
+        val country=if(UptoddSharedPreferences.getInstance(this).getPhone()?.startsWith("+91")!!)
+            "india"
+        else
+            "row"
+        if(country=="row")
+        navView.menu.findItem(R.id.orderListFragment).title=("Expert prescription")
 
         navController = findNavController(R.id.home_page_fragment)
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -376,7 +441,7 @@ class TodosListActivity : AppCompatActivity() {
                 fireMonthlyAndEssentialsAlarmWorkManager()
                 fireDailyCheckWorkManager()
                 fireDailySubscriptionCheckWorkManager()
-
+                fireUpgradeCheckWorkManager()
                 uptoddSharedPreferences.setWorkManagerFiredStatusTrue()
             } else Log.d("Todos list Activity", "Work manager fired already")
         }
@@ -427,6 +492,19 @@ class TodosListActivity : AppCompatActivity() {
 
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyCheckWorker)
+    }
+    private fun fireUpgradeCheckWorkManager() {
+        val dailyCheckWorker = OneTimeWorkRequestBuilder<UpgradeWorkManager>()
+            .addTag(DAILY_UP_CHECK_WORK_MANAGER)
+            .build()
+
+
+        val workManager = WorkManager.getInstance(application)
+        workManager.enqueue(dailyCheckWorker)
+        Log.d(
+            "Work manager",
+            "Upgrade Work manager triggered"
+        )
     }
 
     private fun fireDailySubscriptionCheckWorkManager() {

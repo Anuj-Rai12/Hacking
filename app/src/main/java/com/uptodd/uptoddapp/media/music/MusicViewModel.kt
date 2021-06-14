@@ -1,6 +1,7 @@
 package com.uptodd.uptoddapp.media.music
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -12,6 +13,7 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import kotlinx.coroutines.launch
@@ -101,7 +103,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         })
     }
 
-    fun initializeAll() {
+    fun initializeAll(context: Context) {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
@@ -111,7 +113,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             _image.value =
                 "https://www.pngfind.com/pngs/m/427-4277341_add-play-button-to-image-online-overlay-play.png"
         }
-        getAllMusicCategories()
+        getAllMusicCategories(context)
 
     }
 
@@ -171,10 +173,12 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         _presetTimer.value = -1
     }
 
-    private fun getAllMusicCategories() {
+    private fun getAllMusicCategories(context: Context) {
         musicFiles = HashMap()
         val language = AllUtil.getLanguage()
-        AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language")
+        val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+        val country=AllUtil.getCountry(context)
+        AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language&userType=$userType&country=$country")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

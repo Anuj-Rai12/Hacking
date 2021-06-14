@@ -185,7 +185,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             calendarInstance.get(Calendar.DAY_OF_YEAR) - birthdayCalendarInstance.get(Calendar.DAY_OF_YEAR)
         val noOfMonths = dayDifference / 30
         var text = ""
-        if (noOfMonths > 12)
+        if (noOfMonths >= 12)
             text = "${noOfMonths / 12} years, ${noOfMonths % 12} months"
         else
             text = "$noOfMonths months"

@@ -9,16 +9,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.AllTicketsFragmentBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.all.allsessions.AllSessions
 import com.uptodd.uptoddapp.support.all.expert.ExpertTeam
 import com.uptodd.uptoddapp.support.all.support.SupportTeam
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import java.text.SimpleDateFormat
 
 class AllTicketsFragment : Fragment() {
 
@@ -57,6 +62,37 @@ class AllTicketsFragment : Fragment() {
         binding.allTicketsBinding = viewModel
 
         setupViewPager(binding)
+
+        if(!AllUtil.isUserPremium(requireContext()))
+        {
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+                object :UpToddDialogs.UpToddDialogListener
+                {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        view?.findNavController()?.navigateUp()
+                        dialog.dismiss()
+                    }
+
+                }
+            )
+        }
+
+        val end=SimpleDateFormat("yyyy-mm-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+        if(AllUtil.isSubscriptionOver(end))
+        {
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+                object :UpToddDialogs.UpToddDialogListener
+                {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        view?.findNavController()?.navigateUp()
+                        dialog.dismiss()
+                    }
+
+                }
+            )
+        }
 
         viewModel.isLoading.observe(viewLifecycleOwner, {
             it.let {

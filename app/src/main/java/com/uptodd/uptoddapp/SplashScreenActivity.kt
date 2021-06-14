@@ -13,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -113,6 +114,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
             val notIntent = Intent(this, TodosListActivity::class.java)
             notIntent.putExtras(intent)
+
+            if(intent.getIntExtra("showUp",0)==1)
+            {
+               notIntent.putExtra("showUp",1)
+            }
             startActivity(notIntent)
             this.finishAffinity()
 

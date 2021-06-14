@@ -11,14 +11,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import kotlinx.coroutines.CoroutineScope
@@ -53,6 +56,17 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentActivitySampleBinding.inflate(inflater, container, false)
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
+        }
         return binding.root
     }
 
@@ -99,7 +113,10 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     private fun fetchDataFromApi() {
         val period = getPeriod(requireContext())
         val uid = AllUtil.getUserId()
-        AndroidNetworking.get("https://uptodd.com/api/activitysample?userId={userId}&period={period}")
+        val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val country=AllUtil.getCountry(requireContext())
+
+        AndroidNetworking.get("https://uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("period", period.toString())
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -125,6 +142,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
                             hideRecyclerView()
                         } else {
                             parseData(response.get("data") as JSONArray)
+
                             hideNodata()
                         }
                     } catch (e: Exception) {

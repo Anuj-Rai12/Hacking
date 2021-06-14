@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/blogsFragment"
         android:name="com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsFragment"
-        android:label="@string/blogs" />
+        android:label="@string/blogs" >
+        <action
+            android:id="@+id/action_blogsFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+    </fragment>
     <!--    <fragment-->
     <!--        android:id="@+id/webinarsFragment"-->
     <!--        android:name="com.uptodd.uptoddapp.ui.webinars.webinarslist.WebinarsFragment"-->
@@ -53,6 +57,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_orderListFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/fullPdfFragment"
@@ -134,6 +141,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_music_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/details"
@@ -239,6 +249,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_todosViewPagerFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/todoDetailsFragment"
@@ -271,6 +284,12 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homePageFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_selectParentFragment2"
+            app:destination="@id/selectParentFragment2" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -295,6 +314,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_toysFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/coloursFragment"
@@ -307,6 +329,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_coloursFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/editAlarmTimeFragment"
@@ -356,6 +381,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_storiesFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/yogaFragment"
@@ -371,6 +399,9 @@
         <argument
             android:name="yogaName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_yogaFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/allYogaFragment"
@@ -383,6 +414,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_allYogaFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/poemFragment"
@@ -395,6 +429,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_poemFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/expectedOutcomesFragment3"
@@ -407,6 +444,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_expectedOutcomesFragment3_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/dietFragment"
@@ -431,6 +471,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_vaccinationFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment2"
@@ -451,6 +494,12 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_allTodosViewPagerFragment_to_subscriptionOverFragment2"
+            app:destination="@id/subscriptionOverFragment2" />
+        <action
+            android:id="@+id/action_allTodosViewPagerFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/editAlarmsViewPagerFragment"
@@ -459,6 +508,9 @@
         <action
             android:id="@+id/action_editAlarmsViewPagerFragment_to_editAlarmTimeFragment"
             app:destination="@id/editAlarmTimeFragment" />
+        <action
+            android:id="@+id/action_editAlarmsViewPagerFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/happyBirthdayFragment"
@@ -497,18 +549,18 @@
         android:id="@+id/activitySampleFragment"
         android:name="com.uptodd.uptoddapp.ui.activitysample.ActivitySampleFragment"
         android:label="@string/activity_sample">
-<!--        <action-->
-<!--            android:id="@+id/action_activitySampleFragment_to_activityVideoFragment"-->
-<!--            app:destination="@id/activityVideoFragment"-->
-<!--            app:enterAnim="@android:anim/slide_in_left"-->
-<!--            app:exitAnim="@android:anim/slide_out_right"-->
-<!--            app:popEnterAnim="@android:anim/slide_in_left"-->
-<!--            app:popExitAnim="@android:anim/slide_out_right" />-->
+        <action
+            android:id="@+id/action_activitySampleFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
     <fragment
         android:id="@+id/activityPodcastFragment"
         android:name="com.uptodd.uptoddapp.ui.activitypodcast.ActivityPodcastFragment"
-        android:label="@string/activity_podcast" />
+        android:label="@string/activity_podcast" >
+        <action
+            android:id="@+id/action_activityPodcastFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/speedBoosterFragment"
         android:name="com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterFragment"
@@ -517,6 +569,9 @@
         <action
             android:id="@+id/action_speedBoosterFragment_to_memoryBoosterDetailsFragment"
             app:destination="@id/memoryBoosterDetailsFragment" />
+        <action
+            android:id="@+id/action_speedBoosterFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
 
     <fragment
@@ -527,7 +582,27 @@
         android:id="@+id/resourcesFragment"
         android:name="com.uptodd.uptoddapp.media.resources.ResourceFragment"
         android:label="@string/resources" />
-
+    <fragment
+        android:id="@+id/upgradeFragment"
+        android:name="com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment"
+        android:label="Upgrade" >
+        <action
+            android:id="@+id/action_upgradeFragment_to_paymentSuccessFragment"
+            app:destination="@id/paymentSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentSuccessFragment"
+        android:name="com.uptodd.uptoddapp.ui.upgrade.PaymentSuccessFragment"
+        android:label="PaymentSuccessFragment" />
+    <fragment
+        android:id="@+id/subscriptionOverFragment2"
+        android:name="com.uptodd.uptoddapp.ui.other.SubscriptionOverFragment"
+        android:label="SubscriptionOverFragment" />
+    <fragment
+        android:id="@+id/selectParentFragment2"
+        android:name="com.uptodd.uptoddapp.ui.login.selectparent.SelectParentFragment"
+        android:label="fragment_select_parent"
+        tools:layout="@layout/fragment_select_parent" />
 
 
     <!--    <fragment-->

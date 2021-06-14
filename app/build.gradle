@@ -209,5 +209,13 @@ dependencies {
     // swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    //razor pay
+    implementation 'com.razorpay:checkout:1.6.6'
+
+    //paypal
+    implementation ('com.paypal.sdk:paypal-android-sdk:2.16.0')
+            {
+                exclude group:'io.card'
+            }
 
 }

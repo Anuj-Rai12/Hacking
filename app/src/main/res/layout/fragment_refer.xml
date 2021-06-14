@@ -110,7 +110,7 @@
                     android:fontFamily="@font/montserrat"/>
 
                 <EditText
-                    android:id="@+id/editText_name"
+                    android:id="@+id/editText_toys"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"

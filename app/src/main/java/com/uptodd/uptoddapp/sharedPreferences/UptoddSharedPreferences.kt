@@ -5,6 +5,10 @@ import android.content.SharedPreferences
 import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.database.logindetails.DoctorLoginInfo
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
+import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
+import com.uptodd.uptoddapp.utilities.AllUtil
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -13,6 +17,7 @@ class UptoddSharedPreferences private constructor(context: Context) {
     companion object {
 
         private lateinit var uptoddSharedPreferences: UptoddSharedPreferences
+        const val USER_TYPE="user_type_np"
 
         fun getInstance(context: Context): UptoddSharedPreferences {
             if (!this::uptoddSharedPreferences.isInitialized) {
@@ -132,8 +137,10 @@ class UptoddSharedPreferences private constructor(context: Context) {
         val editor = loginSharedPreference.edit()
 
         editor.putString(userInfo::uid.name, userInfo.uid)
+        editor.putString(userInfo::userName.name,userInfo.userName)
         editor.putBoolean(userInfo::isNewUser.name, userInfo.isNewUser)
         editor.putString(userInfo::userType.name, userInfo.userType)
+        editor.putString(userInfo::address.name,userInfo.address)
         editor.putString(userInfo::email.name, userInfo.email)
         editor.putString(userInfo::loginMethod.name, userInfo.loginMethod)
         editor.putString(userInfo::kidsDob.name, userInfo.kidsDob)
@@ -149,19 +156,124 @@ class UptoddSharedPreferences private constructor(context: Context) {
 
         editor.apply()
     }
-
-    fun saveStage(stage:String)
+    fun getEmail(): String?
     {
-        val editor=loginSharedPreference.edit()
+        return loginSharedPreference.getString(UserInfo::email.name,"")
+    }
+    fun getName(): String?
+    {
+        return loginSharedPreference.getString(UserInfo::userName.name,"No Name")
+    }
+
+    fun saveStage(stage: String) {
+        val editor = loginSharedPreference.edit()
         editor.putString(Account::motherStage.name, stage).apply()
     }
 
-    fun getStage(): String?
-    {
+    fun getStage(): String? {
 
-        return loginSharedPreference.getString(Account::motherStage.name,"")
+        return loginSharedPreference.getString(Account::motherStage.name, "")
     }
 
+    fun saveSubStartDate(date: String) {
+        val editor = loginSharedPreference.edit()
+        editor.putString(Account::subscriptionStartDate.name, date).apply()
+
+    }
+
+    fun daysLeftNP():Long
+    {
+        val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
+        val start =Calendar.getInstance().time
+        val difference=AllUtil.getDifferenceDay(start.time,end.time)
+
+        return if(difference>=0)
+            difference
+        else
+            -1
+
+    }
+
+    fun getSubStart(): String? {
+
+        return loginSharedPreference.getString(Account::subscriptionStartDate.name, "")
+    }
+
+    fun getSubEnd(): String? {
+
+        return loginSharedPreference.getString("sub_end_date", "")
+    }
+
+    fun saveSubEndDate(date: String) {
+        val editor = loginSharedPreference.edit()
+        editor.putString("sub_end_date", date).apply()
+    }
+
+    fun saveUserType(type:String)
+    {
+        val editor = loginSharedPreference.edit()
+        editor.putString(USER_TYPE,type).apply()
+    }
+    fun getUserType():String?
+    {
+        return loginSharedPreference.getString(USER_TYPE,"")
+    }
+
+    fun saveNonPAccount(account: NonPremiumAccount)
+    {
+        val editor = loginSharedPreference.edit()
+        editor.putLong(account::userId.name,account.userId)
+        editor.putString(account::motherStage.name,account.motherStage)
+        editor.putString(account::name.name,account.name)
+        editor.putString(account::kidsName.name,account.kidsName)
+        editor.putString(account::kidsDob.name,account.kidsDob)
+        editor.putString(account::kidsToy.name,account.kidsToy)
+        account.minutesForBaby?.let { editor.putInt(account::minutesForBaby.name, it) }
+        editor.putString(account::anythingSpecial.name,account.anythingSpecial)
+        editor.putString(account::majorObjective.name,account.majorObjective)
+        editor.putString(account::expectedMonthsOfDelivery.name,account.expectedMonthsOfDelivery)
+        editor.putString(account::anythingYouDo.name,account.anythingYouDo)
+
+        editor.apply()
+    }
+    fun getNonPAccount():NonPremiumAccount
+    {
+        val pref=loginSharedPreference
+
+        var nonPA=NonPremiumAccount(
+            pref.getLong(NonPremiumAccount::userId.name,-1L),
+            pref.getString(NonPremiumAccount::name.name,""),
+            pref.getString(NonPremiumAccount::kidsDob.name,""),
+            pref.getString(NonPremiumAccount::kidsName.name,""),
+            pref.getString(NonPremiumAccount::kidsToy.name,""),
+            pref.getInt(NonPremiumAccount::minutesForBaby.name,0),
+            pref.getString(NonPremiumAccount::motherStage.name,""),
+            pref.getString(NonPremiumAccount::anythingSpecial.name,""),
+            pref.getString(NonPremiumAccount::majorObjective.name,""),
+            pref.getString(NonPremiumAccount::expectedMonthsOfDelivery.name,""),
+            pref.getString(NonPremiumAccount::anythingYouDo.name,""))
+
+        return nonPA
+    }
+    fun savePhone(phone:String)
+    {
+        val edit=loginSharedPreference.edit()
+        edit.putString(Account::phone.name,phone).apply()
+    }
+    fun getPhone():String?
+    {
+        return loginSharedPreference.getString(Account::phone.name,"")
+    }
+
+    fun saveCurrentSubPlan(plan:Long)
+    {
+        val edit=loginSharedPreference.edit()
+        edit.putLong(Account::currentSubscribedPlan.name,plan).apply()
+    }
+    fun getCurrentPlan():Long
+    {
+        return loginSharedPreference.getLong(Account::currentSubscribedPlan.name,0)
+    }
 
     fun clearLoginInfo() {
         loginSharedPreference.edit().clear().apply()

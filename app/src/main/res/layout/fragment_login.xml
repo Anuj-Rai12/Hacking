@@ -177,7 +177,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/main_uptoddLogo">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailId"
+                    android:id="@+id/email_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email_id"

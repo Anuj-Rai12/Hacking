@@ -13,7 +13,7 @@ class StageViewModel() : ViewModel() {
 
     var loginMethod: String? = null
     var parentType: String? = null
-    var stage: String = "post birth"
+    var stage: String = "postnatal"
     var uid: String? = null
 
     var isLoadingDialogVisible = MutableLiveData<Boolean>()

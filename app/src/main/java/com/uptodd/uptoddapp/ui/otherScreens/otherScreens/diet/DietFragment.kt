@@ -25,6 +25,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.diet.DietDao
 import com.uptodd.uptoddapp.databinding.FragmentDietBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +70,13 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         dietDao = UptoddDatabase.getInstance(requireContext()).dietDao
 
@@ -123,8 +131,9 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/diets/{period}?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/diets/{period}?lang=$language&userType=$userType")
                     .addPathParameter(
                         "period",
                         KidsPeriod(requireActivity()).getPeriod().toString()

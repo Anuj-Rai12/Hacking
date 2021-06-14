@@ -69,6 +69,17 @@
 
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/upgradeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade"
+                android:background="@color/buttonBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                ></com.google.android.material.button.MaterialButton>
+
 
             <RelativeLayout
                 android:id="@+id/music_player_layout"
@@ -76,6 +87,7 @@
                 android:layout_height="80dp"
                 android:background="@drawable/music_player_background"
                 android:padding="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/upgradeButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

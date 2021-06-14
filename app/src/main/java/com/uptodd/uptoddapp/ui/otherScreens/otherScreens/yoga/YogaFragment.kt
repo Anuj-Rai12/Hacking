@@ -24,6 +24,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.yoga.YogaDao
 import com.uptodd.uptoddapp.databinding.FragmentYogaBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
@@ -70,6 +71,13 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.yoga)
 
         val args = YogaFragmentArgs.fromBundle(requireArguments())
@@ -113,8 +121,9 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language&userType=$userType")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()

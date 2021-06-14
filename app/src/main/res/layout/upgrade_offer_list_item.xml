@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<LinearLayout
+   android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_margin="8dp"
+    >
+
+    <TextView
+        android:id="@+id/up_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/up_item_title_color"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="@string/title">
+    </TextView>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:textColor="@color/up_item_extra_color"
+        android:layout_width="wrap_content"
+        android:textSize="13sp"
+        android:layout_height="wrap_content"
+        android:text="@string/up_program_plane_extra"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/up_key_feature"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/up_item_key_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="key Feature"/>
+    <TextView
+        android:id="@+id/up_special"
+        android:text="Special Offer You"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/up_item_sp_color"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/up_upgrade"
+       android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upgrade Now"
+        android:background="@color/buttonBlue"
+        />
+    <TextView
+        android:id="@+id/up_original"
+        android:text="Original Price"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/up_emi"
+        android:text="Emi"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+</layout>

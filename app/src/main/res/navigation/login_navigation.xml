@@ -31,6 +31,18 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_loginFragment_to_subscriptionOverFragment"
+            app:destination="@id/subscriptionOverFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_upgradeFragment2"
+            app:destination="@id/upgradeFragment2" />
+        <action
+            android:id="@+id/action_loginFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_dobFragment"
+            app:destination="@id/dobFragment" />
     </fragment>
 
     <!-- Language fragment not used for now -->
@@ -86,6 +98,15 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_stageFragment_to_preBirthQuestionsFragment"
+            app:destination="@id/preBirthQuestionsFragment" />
+        <action
+            android:id="@+id/action_stageFragment_to_postBirthQuestionsFragment"
+            app:destination="@id/postBirthQuestionsFragment" />
+        <action
+            android:id="@+id/action_stageFragment_to_nameFragment"
+            app:destination="@id/nameFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment2"
@@ -122,4 +143,105 @@
         android:name="com.uptodd.uptoddapp.ui.nanny.login.NannyLoginFragment"
         android:label="fragment_nanny_login"
         tools:layout="@layout/fragment_nanny_login"/>
+    <fragment
+        android:id="@+id/subscriptionOverFragment"
+        android:name="com.uptodd.uptoddapp.ui.other.SubscriptionOverFragment"
+        tools:layout="@layout/fragment_subscription_over"
+        android:label="SubscriptionOverFragment" >
+        <action
+            android:id="@+id/action_subscriptionOverFragment_to_upgradeFragment2"
+            app:destination="@id/upgradeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/preBirthQuestionsFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.PreBirthQuestionsFragment"
+        tools:layout="@layout/fragment_pre_birth_questions"
+        android:label="PreBirthQuestionsFragment" />
+    <fragment
+        android:id="@+id/postBirthQuestionsFragment"
+        tools:layout="@layout/fragment_post_birth_questions"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.PostBirthQuestionsFragment"
+        android:label="PostBirthQuestionsFragment" />
+    <fragment
+        android:id="@+id/babyNameFragment2"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.BabyNameFragment"
+        android:label="BabyNameFragment" >
+        <action
+            android:id="@+id/action_babyNameFragment2_to_dobFragment"
+            app:destination="@id/dobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nameFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.NameFragment"
+        android:label="NameFragment" >
+        <action
+            android:id="@+id/action_nameFragment_to_babyNameFragment2"
+            app:destination="@id/babyNameFragment2" />
+        <action
+            android:id="@+id/action_nameFragment_to_deliveryFragment"
+            app:destination="@id/deliveryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dobFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.DobFragment"
+        android:label="DobFragment" >
+        <action
+            android:id="@+id/action_dobFragment_to_toysFragment2"
+            app:destination="@id/toysFragment2" />
+        <action
+            android:id="@+id/action_dobFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/minutesFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.MinutesFragment"
+        android:label="MinutesFragment" >
+        <action
+            android:id="@+id/action_minutesFragment_to_specialFragment"
+            app:destination="@id/specialFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/specialFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.SpecialFragment"
+        android:label="SpecialFragment" >
+        <action
+            android:id="@+id/action_specialFragment_to_majorFragment"
+            app:destination="@id/majorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/majorFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.MajorFragment"
+        android:label="MajorFragment" />
+    <fragment
+        android:id="@+id/anyThingFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.AnyThingFragment"
+        android:label="AnyThingFragment" >
+        <action
+            android:id="@+id/action_anyThingFragment_to_specialFragment"
+            app:destination="@id/specialFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deliveryFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.DeliveryFragment"
+        android:label="DeliveryFragment" >
+        <action
+            android:id="@+id/action_deliveryFragment_to_anyThingFragment"
+            app:destination="@id/anyThingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/toysFragment2"
+        android:name="com.uptodd.uptoddapp.ui.login.nonpremiumform.ToysFragment"
+        android:label="ToysFragment" >
+        <action
+            android:id="@+id/action_toysFragment2_to_minutesFragment"
+            app:destination="@id/minutesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/upgradeFragment2"
+        android:name="com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment"
+        android:label="UpgradeFragment" />
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.uptodd.uptoddapp.ui.login.selectaddress.AddressFragment"
+        android:label="AddressFragment" />
 </navigation>

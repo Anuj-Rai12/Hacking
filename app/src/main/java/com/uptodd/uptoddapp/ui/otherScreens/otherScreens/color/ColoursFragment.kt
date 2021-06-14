@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidnetworking.AndroidNetworking
@@ -26,6 +27,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.colour.ColourDao
 import com.uptodd.uptoddapp.databinding.FragmentColorsBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +76,17 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         colourDao = UptoddDatabase.getInstance(requireContext()).colourDao
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.materialButton.visibility= View.GONE
+            }
+        }
+        binding.materialButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_coloursFragment_to_upgradeFragment)
+        }
 
         return binding.root
     }
@@ -144,8 +157,9 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
             val language = ChangeLanguage(requireContext()).getLanguage()
             isLoadingDialogVisible.value = true
             showLoadingDialog()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/colors?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/colors?lang=$language&userType=$userType")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()

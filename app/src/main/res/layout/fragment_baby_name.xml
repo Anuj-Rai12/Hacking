@@ -18,22 +18,23 @@
 
 
         <Button
-            android:id="@+id/button_start"
+            android:id="@+id/button_next"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/button_bg_horizontal_gradient"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_bg_horizontal_gradient"
+            android:fontFamily="@font/montserrat"
             android:paddingEnd="12dp"
             android:text="@string/get_started"
             android:textAllCaps="false"
             android:textColor="#ffffff"
             android:textSize="14sp"
-            android:fontFamily="@font/montserrat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_name"
+            app:layout_constraintTop_toBottomOf="@+id/editText_toys"
             app:layout_constraintVertical_bias="0.737" />
 
         <Button
@@ -43,13 +44,13 @@
             android:layout_marginEnd="10dp"
             android:background="#00000000"
             android:foreground="@drawable/blue_arrow_white_round_bg"
-            app:layout_constraintBottom_toBottomOf="@id/button_start"
-            app:layout_constraintEnd_toEndOf="@id/button_start"
-            app:layout_constraintTop_toTopOf="@id/button_start"
+            app:layout_constraintBottom_toBottomOf="@id/button_next"
+            app:layout_constraintEnd_toEndOf="@id/button_next"
+            app:layout_constraintTop_toTopOf="@id/button_next"
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/text_non_premium_minutes"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="50dp"
@@ -89,7 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/text_non_premium_minutes"
             app:layout_constraintVertical_bias="0.371" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

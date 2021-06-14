@@ -30,6 +30,7 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".ReferActivity" />
         <activity android:name=".OrderActivity" />
+        <activity android:name=".ui.upgrade.PaymentActivity"/>
         <activity android:name=".ui.webinars.webinarslist.WebinarsActivity" />
         <activity
             android:name=".ui.webinars.fullwebinar.FullWebinarActivity"

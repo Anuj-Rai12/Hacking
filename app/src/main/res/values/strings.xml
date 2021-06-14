@@ -16,6 +16,17 @@
     <string name="your_essential_score_board">Your Essential Score Board</string>
     <string name="your_monthly_score_board">Your Monthly Score Board</string>
     <string name="your_daily_score_board">Your Daily Score Board</string>
+
+    <!--Upgrade-->
+    <string name="up_program_desc">Premium program to provide personalised support from team from MIT(USA), IITs, AIIMS, Stanford etc. and to empower you with the best prenatal parenting toolkit under expert guidance, where uptodd team as a Family ensures right prenatal parenting for your unborn baby with 24*7 support and complete take care</string>
+    <string name="up_program_title">Premium Program</string>
+    <string name="up_program_tagline">EMPOWER YOUR BABY WITH THE BEST</string>
+    <string name="up_program_plane_extra">(Complimentary app access of 3 extra months)</string>
+    <string name="success_payment_message">Congratulations!!
+You have successfully joined premium Program</string>
+    <string name="success_payment_tagline">We have shared the details over mail to you, our team will
+reach you out within 24-48 hours to start your onboarding</string>
+
     <string name="mark_activities">Mark Routines</string>
     <string name="today_s_tip">Today\'s Tip</string>
     <string name="set_alarm">Set Alarm</string>
@@ -44,8 +55,8 @@
     <string name="stories">Stories</string>
     <string name="yoga">Yoga</string>
     <string name="you_re_a_n_super_parent">You\'re a\n Super Parent</string>
-
-
+    <string name="subscriptionEnded">Thank you for taking the 10 days program for baby \' s growth and development</string>
+    <string name="setupLoading">We are getting things ready for you</string>
     // todo string formatters
 
     <string name="email_id">Email ID</string>
@@ -366,8 +377,8 @@
     <string name="delivery_date">Delivery Date :</string>
     <string name="language_text">Language</string>
     <string name="go_back" translatable="false">go back</string>
-    <string name="activity_sample">Activity Sample</string>
-    <string name="no_data" translatable="false">No Data</string>
+    <string name="activity_sample">Session</string>
+     <string name="no_data" translatable="false">No Data</string>
 
     <!--Activity Podcast-->
 
@@ -377,6 +388,16 @@
     <!--Resource Files-->
 
 
-
-
+    <!--Non premium forms-->
+    <string name="np_next">Next</string>
+    <string name="np_finish">Finish</string>
+    <string name="np_question_name">What\'s your name?</string>
+    <string name="np_question_baby_name">Whats\'s your baby name?</string>
+    <string name="np_question_baby_dob">What\'s baby dob?</string>
+    <string name="np_question_delivery">Expected month of delivery</string>
+    <string name="np_question_anything">Anything that you do for your baby\'s growth?</string>
+    <string name="np_question_baby_toys">What toys do you use for your baby?</string>
+    <string name="np_question_baby_minutes">How many minutes a day can you give for your baby\'s development?</string>
+    <string name="np_question_baby_toys_special_needs">Any Special needs you have around your baby\'s development?</string>
+    <string name="np_question_baby_major_objective">What is the major objective to join this program?</string>
 </resources>

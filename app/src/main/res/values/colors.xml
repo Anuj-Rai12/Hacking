@@ -38,4 +38,11 @@
     <color name="formFieldHeading">#787878</color>
     <color name="link">#3D9FF4</color>
     <color name="orangeButtonBackground">#ff6a4c</color>
+    <color name="brown_lg">#744D4D</color>
+    <color name="desc_color">#1C0202</color>
+    <color name="up_item_title_color">#3F625E</color>
+    <color name="up_item_extra_color">#588E85</color>
+    <color name="up_item_sp_color">#C1752E</color>
+    <color name="up_item_key_color">#5E5656</color>
+    <color name="success_payment">#269B32</color>
 </resources>
