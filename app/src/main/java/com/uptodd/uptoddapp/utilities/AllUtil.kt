@@ -398,6 +398,9 @@ class AllUtil{
             return isSubscriptionOver(end)
         }
 
+
+
+
         fun isUserPremium(context: Context):Boolean
         {
             return UptoddSharedPreferences.getInstance(context).getUserType()=="premium"

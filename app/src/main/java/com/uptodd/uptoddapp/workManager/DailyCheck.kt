@@ -8,12 +8,14 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddNotifications
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.NotificationBroadcastReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.DailyNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.EssentialsNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.MonthlyNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.WeeklyNotificationsReceiver
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.coroutineScope
 import java.util.*
@@ -185,10 +187,12 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             calendarInstance.get(Calendar.DAY_OF_YEAR) - birthdayCalendarInstance.get(Calendar.DAY_OF_YEAR)
         val noOfMonths = dayDifference / 30
         var text = ""
-        if (noOfMonths >= 12)
-            text = "${noOfMonths / 12} years, ${noOfMonths % 12} months"
+
+        val months = KidsPeriod(context).getKidsAge()
+        if (months >= 12)
+            text = "${months / 12} years, ${months % 12} months"
         else
-            text = "$noOfMonths months"
+            text = "$months months"
         UptoddNotifications.setWishNotification(context, calendarInstance.timeInMillis, text)
     }
 
@@ -205,7 +209,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             setDailyActivityCheck()
             setWeeklyActivityNotification()
             setMonthlyActivityNotification()
-            setSessionLeftReminder()
+            //setSessionLeftReminder()
             checkPodcast()
         } else {
             //TODO: add doctor notifications
@@ -243,7 +247,7 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             calendarInstance.set(Calendar.SECOND, 0)
 
             UptoddNotificationUtilities.setAlarm(
-                context,
+               context,
                 calendarInstance.timeInMillis,
                 MONTHLY_SESSIONS_CHECK_ALARM_REQUEST_CODE,
                 MonthlyNotificationsReceiver::class.java

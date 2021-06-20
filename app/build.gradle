@@ -187,7 +187,7 @@ dependencies {
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
 
     //CameraView Library for Camera
-    api 'com.otaliastudios:cameraview:2.6.4'
+    api 'com.otaliastudios:cameraview:2.7.0'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 

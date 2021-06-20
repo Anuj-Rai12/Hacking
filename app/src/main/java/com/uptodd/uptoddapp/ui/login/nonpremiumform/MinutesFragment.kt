@@ -24,13 +24,8 @@ class MinutesFragment : Fragment() {
         binding= FragmentNonpremiumMinutesBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
-
-            if(binding.editTextMinutes.text.toString().isNotEmpty()) {
                 viewModel?.putMinutes(binding.editTextMinutes.text.toString())
                 view?.findNavController()?.navigate(R.id.action_minutesFragment_to_specialFragment)
-            }
-            else
-                binding.editTextMinutes.error="Required"
         }
         return binding.root
     }

@@ -24,14 +24,9 @@ class DeliveryFragment: Fragment() {
         binding= FragmentNonpremiumDeliveryBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
-
-            if(binding.editTextToys.text.toString().isNotEmpty())
-            {
                 viewModel?.putDelivery(binding.editTextToys.text.toString())
                 view?.findNavController()?.navigate(R.id.action_deliveryFragment_to_anyThingFragment)
-            }
-            else
-                binding.editTextToys.error="Required"
+
         }
         return binding.root
     }

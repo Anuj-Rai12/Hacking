@@ -25,13 +25,9 @@ class SpecialFragment : Fragment() {
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
 
-            if (binding.editTextSpecial.text.toString().isNotEmpty()) {
                 viewModel?.putSpecial(binding.editTextSpecial.text.toString())
                 view?.findNavController()?.navigate(R.id.action_specialFragment_to_majorFragment)
             }
-            else
-                binding.editTextSpecial.error="Required"
-        }
         return binding.root
     }
 }

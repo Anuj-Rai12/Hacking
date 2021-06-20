@@ -14,11 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
 import com.uptodd.uptoddapp.databinding.FragmentTodosViewPagerBinding
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.*
+import com.uptodd.uptoddapp.utilities.AllUtil
 
 // this fragment will hold the view pager which holds daily, weekly, monthly, essentials fragment
 // layout text fetches data from data binding
@@ -46,6 +48,17 @@ class TodosViewPagerFragment : Fragment() {
         setupViewPager()
         initialiseScoreDisplay()
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if( !AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_activityPodcastFragment_to_upgradeFragment)
+        }
 //        viewModel.navigateToAppreciationScreenFlag.observe(viewLifecycleOwner, {
 //            if (it == true) {
 //                viewModel.doneNavigatingToAppreciationScreen()

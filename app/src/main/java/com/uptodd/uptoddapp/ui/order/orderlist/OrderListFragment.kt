@@ -94,7 +94,6 @@ class OrderListFragment : Fragment() {
             row=true
             supportActionBar.title = "Expert Prescription"
         }
-
         displayOrders(createOrderList())
 
 
@@ -184,18 +183,18 @@ class OrderListFragment : Fragment() {
                     activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 childView = inflater.inflate(R.layout.order_item_view, null)
 
-                if(row)
-                childView.textView2.text=" Prescription No:"
+                if(row) {
+                    childView.textView2.text = " Prescription No: "
+                }
+                childView.textView_deliveryStatus.text="Date: "
                 childView.textView_orderNo.text = order.orderNo
-                childView.textView_monthNo.text = getString(R.string.month_no) + order.monthNo
-                childView.textView_productNameAndQty.text =
-                    order.productname + " | " + getString(R.string.qty) + order.quantity
+                childView.textView_monthNo.text ="Month: " + order.monthNo
+                if(row)
+                {
+                    childView.textView_productNameAndQty.text = "Prescription Name: "+order.productname + " | " + getString(R.string.qty) + order.quantity
+                }
                 //val date=decodeDate(order.deliveryDate)
                 childView.textView_date.text = "( " + order.deliveryDate + " )"
-                if (order.deliveryStatus)
-                    childView.textView_deliveryStatus.text = getString(R.string.delivered)
-                else
-                    childView.textView_deliveryStatus.text = getString(R.string.expected_delivery)
                 if (order.details == "null" || order.details == null) {
                     childView.button_viewDetails.visibility = View.GONE
                     childView.button_download.visibility = View.GONE

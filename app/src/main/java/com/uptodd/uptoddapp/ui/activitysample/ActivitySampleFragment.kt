@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.activitysample
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,10 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -24,6 +27,8 @@ import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -197,6 +202,26 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     }
 
     private fun showNoData() {
+        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+            if (!AllUtil.isUserPremium(requireContext())) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                        }
+                    })
+
+            }
+        }
         binding.noDataContainer.isVisible = true
     }
 

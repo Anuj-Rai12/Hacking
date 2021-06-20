@@ -24,13 +24,9 @@ class ToysFragment : Fragment() {
         binding= FragmentNonpremiumToysBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
-
-            if(binding.editTextToys.text.toString().isNotEmpty()) {
                 viewModel?.putToys(binding.editTextToys.text.toString())
                 view?.findNavController()?.navigate(R.id.action_toysFragment2_to_minutesFragment)
-            }
-            else
-                binding.editTextToys.error="Required"
+
         }
         return binding.root
     }

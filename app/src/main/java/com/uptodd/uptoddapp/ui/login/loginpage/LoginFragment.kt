@@ -528,17 +528,10 @@ class LoginFragment : Fragment() {
                     } else {
 
                         AllUtil.registerToken("normal")
-                        if(userInfo.kidsDob==null || userInfo.kidsDob=="null")
+                        if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
                         {
-                            if(viewModel.motherStage=="postnatal")
-                            {
                                 view?.findNavController()
                                     ?.navigate(R.id.action_loginFragment_to_dobFragment)
-                            }
-                            else
-                            {
-
-                            }
                         }
                         else if((userInfo.address==null ||userInfo.address=="null") && country=="india")
                         {

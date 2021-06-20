@@ -318,6 +318,21 @@
                 android:contentDescription="@string/save"/>
 
 
+            <TextView
+                android:id="@+id/textView35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:padding="6dp"
+                android:text="@string/p_note_reffer"
+                app:layout_anchorGravity="bottom|center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout_form" />
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

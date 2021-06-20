@@ -2,8 +2,10 @@ package com.uptodd.uptoddapp.ui.capturemoments.captureimage
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -11,9 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
 import android.util.Log
@@ -27,15 +27,18 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
-import com.otaliastudios.cameraview.CameraListener
-import com.otaliastudios.cameraview.PictureResult
+import com.otaliastudios.cameraview.*
 import com.otaliastudios.cameraview.controls.Facing
 import com.otaliastudios.cameraview.controls.Flash
 import com.otaliastudios.cameraview.controls.Mode
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentCaptureImageBinding
+import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import kotlinx.coroutines.Dispatchers
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -644,7 +647,7 @@ class CaptureImageFragment : Fragment() {
         "Home"              //Enter the previous activity here and get it through intent also
 
     private val requiredBitmapSize: Int = 900
-
+    private var onCap:OnCaptureListener?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -672,26 +675,47 @@ class CaptureImageFragment : Fragment() {
             container,
             false
         )
-        binding.lifecycleOwner = this
 
         (activity as AppCompatActivity?)?.supportActionBar?.title =
             getString(R.string.capture_moments)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
+        binding.cameraView!!.setLifecycleOwner(this)
+
+        binding.cameraView!!.addCameraListener(object :CameraListener()
+        {
+            override fun onCameraError(exception: CameraException) {
+                Log.e("camera error",exception.localizedMessage)
+            }
+
+            override fun onCameraOpened(options: CameraOptions) {
+
+            }
+
+            override fun onOrientationChanged(orientation: Int) {
+
+            }
+
+        })
+
+
+
+
 
         val orientation = this.resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             // code for portrait mode
+            CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
+            binding.cameraView!!.setLifecycleOwner(this)
             binding.cameraView!!.mode = Mode.PICTURE
-
-            binding.cameraView!!.setLifecycleOwner(viewLifecycleOwner)
-
             checkFlashPresent()
             checkFrontCameraPresent()
 
 
             //cameraPermissinGranted = hasCameraPermission()
             hasStoragePermission()
+            hasCameraPermission()
+
 
             if (storagePermissinGranted) {
 
@@ -707,7 +731,13 @@ class CaptureImageFragment : Fragment() {
                     .show()
                 requireActivity().onBackPressed()
             }
-        } else {
+        } else
+        {
+            binding.cameraView!!.mode = Mode.PICTURE
+            binding.cameraView!!.setLifecycleOwner(viewLifecycleOwner)
+
+            checkFlashPresent()
+            checkFrontCameraPresent()
             // code for landscape mode
         }
 
@@ -715,6 +745,23 @@ class CaptureImageFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onCap=(activity as TodosListActivity)
+    }
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                if(onCap!=null)
+                    onCap?.onCapturedAttach()
+            },1000
+        )
+    }
+
 
 
     private fun hasStoragePermission() {
@@ -734,6 +781,7 @@ class CaptureImageFragment : Fragment() {
         } else {
             storagePermissinGranted = true
         }
+        binding.cameraView!!.open()
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -770,6 +818,7 @@ class CaptureImageFragment : Fragment() {
             if (requestCode == STORAGE_PERMISSION_REQUEST_CODE)
                 storagePermissinGranted = true
         }
+
     }
 
     private fun onClickGallery() {
@@ -833,7 +882,8 @@ class CaptureImageFragment : Fragment() {
         }
     }
 
-    private fun onClickFlash() {
+    private fun onClickFlash()
+    {
         flashMode = (flashMode + 1) % 3
         if (flashMode == FLASH_ON) {
             binding.cameraView!!.flash = Flash.ON
@@ -990,6 +1040,10 @@ class CaptureImageFragment : Fragment() {
                 bundle
             )
         }
+    }
+    interface OnCaptureListener
+    {
+        fun onCapturedAttach()
     }
 
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {

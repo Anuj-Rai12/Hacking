@@ -1,13 +1,20 @@
 package com.uptodd.uptoddapp.adapters.todoListAdapters
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.score.TYPE_HEADER
 import com.uptodd.uptoddapp.database.score.WEEKLY_TODO
 import com.uptodd.uptoddapp.database.todo.Todo
+import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.KidsPeriod
+import com.uptodd.uptoddapp.utilities.ScreenDpi
 import kotlinx.android.synthetic.main.daily_todo_recycler_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,10 +97,13 @@ class TodosRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val todo = todoList[position]
         if (todo.doType != TYPE_HEADER) {
-            if (holder.bindingAdapterPosition % 2 != 0) {
-                holder.itemView.todoRecyclerItem.setBackgroundResource(R.drawable.todo_bg_blue)
-            } else holder.itemView.todoRecyclerItem.setBackgroundResource(R.drawable.todo_bg_green)
-
+            when(holder.bindingAdapterPosition % 5) {
+                1->   holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#F0FCF9"))
+                1->   holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#F8F3E9"))
+                2->  holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#A6D2FA"))
+                3-> holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#F1F0FC"))
+                4-> holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#E7FEFF"))
+            }
 
             if (multipleSelectionFlag) {
                 holder.itemView.completeStatus.visibility = View.VISIBLE
@@ -135,7 +145,22 @@ class TodosRecyclerAdapter(
 
         fun bind(todo: Todo, todosInterface: TodosInterface) {
 
+          //  Glide.with(itemView).load(todo.imageUrl).into(itemView.thumbnail_todo)
+            val period = KidsPeriod(itemView.context).getPeriod()
+            val dpi = ScreenDpi(itemView.context).getScreenDrawableType()
+            val appendable =
+                "https://uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
+            Glide.with(itemView)
+                .load("$appendable${todo.imageUrl}.webp")
+                .into(itemView.thumbnail_todo)
+                .onLoadStarted(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.loading_animation
+                    )
+                )
+            Log.e("thumbanail",todo.imageUrl)
             itemView.nameTextView.text = todo.task
             itemView.timeTextView.text = todo.alarmTimeByUser.substringBeforeLast(':')
             itemView.alarmSwitch.isChecked = todo.isAlarmNeededByUser

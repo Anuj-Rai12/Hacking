@@ -26,12 +26,8 @@ class AnyThingFragment: Fragment() {
 
         binding.buttonNext.setOnClickListener {
 
-            if (binding.editTextToys.text.toString().isNotEmpty()) {
                 viewModel?.putAnything(binding.editTextToys.text.toString())
                 view?.findNavController()?.navigate(R.id.action_anyThingFragment_to_specialFragment)
-            }
-            else
-                binding.editTextToys.error="Required"
         }
         return binding.root
     }

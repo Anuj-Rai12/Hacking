@@ -129,11 +129,32 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null) {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "YogaFragment L72 $data")
                                 parseData(data)
+                            } else
+                            {
+                                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                                    if (!AllUtil.isUserPremium(requireContext())) {
+                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                                        val upToddDialogs = UpToddDialogs(requireContext())
+                                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                            "Close",
+                                            object : UpToddDialogs.UpToddDialogListener {
+                                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                                    dialog.dismiss()
+                                                }
+
+                                                override fun onDialogDismiss() {
+                                                    findNavController().navigateUp()
+                                                }
+                                            })
+
+                                    }
+                                }
                             }
                         }
 

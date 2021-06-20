@@ -155,6 +155,22 @@ class MusicFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                         })
+                    if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                        if (!AllUtil.isUserPremium(requireContext())) {
+                            val title = activity?.actionBar?.title.toString()
+
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                "Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        findNavController().navigateUp()
+
+                                    }
+                                })
+
+                        }
+                    }
                 }
                 else -> {
                     uptoddDialogs.dismissDialog()
@@ -317,13 +333,17 @@ class MusicFragment : Fragment() {
         viewModel.isPlaying.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.musicPlay.setImageResource(R.drawable.material_pause)
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", true)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
             } else {
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", false)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
-            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-            intent.putExtra("toRun", true)
-            intent.putExtra("musicType", "poem")
-            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {
@@ -452,10 +472,13 @@ class MusicFragment : Fragment() {
         supportActionBar.title = getString(R.string.music)
         supportActionBar.setHomeButtonEnabled(true)
         supportActionBar.setDisplayHomeAsUpEnabled(true)
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", false)
         intent.putExtra("musicType", "music")
         requireContext().sendBroadcast(intent)
+
+         */
     }
 
 }

@@ -25,58 +25,68 @@
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
                     android:src="@drawable/preg_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-                <TextView
-                    android:id="@+id/upgrade_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:text="@string/up_program_title"
-                    android:textAlignment="center"
-                    android:textColor="@color/brown_lg"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
-                <TextView
-                    android:id="@+id/upgrade_tagline"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/head_up"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="6dp"
-                    android:padding="10dp"
-                    android:text="@string/up_program_tagline"
-                    android:textColor="@color/formFieldHeading"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/upgrade_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView6">
+
+                    <TextView
+                        android:id="@+id/upgrade_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/crimson_text_bold"
+                        android:gravity="center"
+                        android:text="@string/up_program_title"
+                        android:textAlignment="center"
+                        android:textSize="30sp"
+                        android:textColor="@color/brown_lg"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/upgrade_tagline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
+                        android:fontFamily="@font/crimson_text_bold"
+                        android:gravity="center"
+                        android:text="@string/up_program_tagline"
+                        android:textColor="@color/formFieldHeading"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView31"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="left"
-                    android:padding="10dp"
+                    android:padding="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:textAlignment="textStart"
                     android:text="@string/up_program_desc"
                     android:textColor="@color/desc_color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/upgrade_tagline" />
+                    app:layout_constraintTop_toBottomOf="@+id/head_up" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/upGradeRecyclerView"
@@ -103,10 +113,11 @@
             android:id="@+id/upgradeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Limited offer for you"
-            android:backgroundTint="@color/darkBlue"
-            android:background="@color/gradientEndColor"
+            android:text="Limited Period OFFER For You"
+            android:background="@color/limited"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:backgroundTint="@color/gradientEndColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             ></com.google.android.material.button.MaterialButton>

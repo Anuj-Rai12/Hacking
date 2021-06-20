@@ -1199,8 +1199,9 @@ class TodosViewModel(
         val month = KidsPeriod(activity).getKidsAge()
 
         if (!preferences.contains("idealWeight") || !preferences.contains("idealHeight")) {
+            var stage=UptoddSharedPreferences.getInstance(activity).getStage()
             viewModelScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/idealsize/$month")        //replace music by blog in L54 and L55
+                AndroidNetworking.get("https://uptodd.com/api/idealsize/${if(stage=="prenatal" || stage=="pre birth") -1 else month}")        //replace music by blog in L54 and L55
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -1211,8 +1212,8 @@ class TodosViewModel(
                                 val weight = data.getString("weight")
                                 val height = data.getString("height")
 
-                                idealHeight.value = height
-                                idealWeight.value = weight
+                                idealHeight.value = "$height cm"
+                                idealWeight.value = "$weight  Kg"
 
                                 editor.putString("idealWeight", weight)
                                 editor.putString("idealHeight", height)
@@ -1231,10 +1232,8 @@ class TodosViewModel(
         } else {
             val weight = preferences.getString("idealWeight", "")
             val height = preferences.getString("idealHeight", "")
-
-            idealHeight.value = height
-            idealWeight.value = weight
-
+            idealHeight.value = "$height cm"
+            idealWeight.value = "$weight  Kg"
         }
 
     }

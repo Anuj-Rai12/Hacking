@@ -66,6 +66,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         if(intent.getStringExtra("type")=="Upgrade")
         {
             notificationIntent.putExtra("showUp",1)
+            UptoddSharedPreferences.getInstance(context).showUpgrade(0)
         }
 
         val builder = UptoddNotificationUtilities.notificationBuilder(

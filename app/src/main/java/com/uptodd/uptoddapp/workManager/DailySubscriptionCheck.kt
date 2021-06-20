@@ -56,7 +56,9 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
                                     (response.get("data") as JSONObject).getString("nannyPassUpdateTime")
 
                                 if (subscriptionActive != 1)
-                                    logout()
+                                {
+
+                                }
 
                                 var currentDate: Date?
 

@@ -359,6 +359,18 @@ class UptoddSharedPreferences private constructor(context: Context) {
 
         return account
     }
+    fun showUpgrade(show:Int)
+    {
+        loginSharedPreference.edit().putInt("showUp",show).apply()
+    }
+
+    fun getShowUp():Boolean
+    {
+       return loginSharedPreference.getInt("showUp",0)==1
+    }
+
+
+
 
     fun clearAllPreferences() {
         loginSharedPreference.edit().clear().apply()

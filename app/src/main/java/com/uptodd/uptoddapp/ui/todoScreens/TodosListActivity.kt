@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,9 +37,11 @@ import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
+import com.uptodd.uptoddapp.CaptureMomentsActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
@@ -60,7 +63,7 @@ import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 
-class TodosListActivity : AppCompatActivity() {
+class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener {
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -99,12 +102,13 @@ class TodosListActivity : AppCompatActivity() {
 
         requestFireAllWorkManagers()
 
-        if(intent.getIntExtra("showUp",0)==1)
+        if(intent.getIntExtra("showUp",0)==1 ||UptoddSharedPreferences.getInstance(this).getShowUp())
         {
             findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+            UptoddSharedPreferences.getInstance(this).showUpgrade(0)
         }
         else
-        { if(!AllUtil.isUserPremium(this)) {
+        { if(!AllUtil.isUserPremium(this) && preferences.getInt("welcome_shown",0)==0) {
 
             val upToddDialogs = UpToddDialogs(this)
             upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
@@ -120,6 +124,7 @@ class TodosListActivity : AppCompatActivity() {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
 
                                     try {
+                                        preferences.edit().putInt("welcome_shown",1).apply()
                                         findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
                                     }catch (e:Exception)
                                     {
@@ -299,6 +304,8 @@ class TodosListActivity : AppCompatActivity() {
                 stage = "post"
 
             var res: Int
+
+
             if (stage == "pre")
                 res = R.drawable.pre_birth_profile
             else if (stage == "post")
@@ -519,5 +526,22 @@ class TodosListActivity : AppCompatActivity() {
 
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailySubscriptionCheckWorker)
+    }
+
+    override fun onCapturedAttach() {
+        drawerLayout.openDrawer(Gravity.LEFT)
+        drawerLayout.closeDrawer(Gravity.LEFT)
+    }
+
+    override fun onBackPressed() {
+
+        if(drawerLayout.isDrawerOpen(Gravity.LEFT))
+        {
+            drawerLayout.closeDrawer(Gravity.LEFT)
+        }
+        else
+        {
+            super.onBackPressed()
+        }
     }
 }

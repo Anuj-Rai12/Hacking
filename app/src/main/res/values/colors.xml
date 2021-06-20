@@ -34,6 +34,7 @@
     <color name="gradientEndColor">#3e6ce4</color>
     <color name="textGrey">#222222</color>
     <color name="solidButtonColor">#4CB8CB</color>
+    <color name="solidUpColor">#4C86CB</color>
     <color name="passwordErrorText">#ff0000</color>
     <color name="formFieldHeading">#787878</color>
     <color name="link">#3D9FF4</color>
@@ -45,4 +46,5 @@
     <color name="up_item_sp_color">#C1752E</color>
     <color name="up_item_key_color">#5E5656</color>
     <color name="success_payment">#269B32</color>
+    <color name="limited">#4067A2</color>
 </resources>

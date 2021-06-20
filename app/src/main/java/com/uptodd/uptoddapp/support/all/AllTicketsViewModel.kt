@@ -28,6 +28,11 @@ class AllTicketsViewModel : ViewModel() {
     var apiError = ""
 
     init {
+        _isLoading.value=0
+    }
+
+    fun init()
+    {
         _isLoading.value=1
         getAllTickets()
     }

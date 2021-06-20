@@ -61,8 +61,7 @@ class AllTicketsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
         binding.allTicketsBinding = viewModel
 
-        setupViewPager(binding)
-
+        val end=SimpleDateFormat("yyyy-mm-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
         if(!AllUtil.isUserPremium(requireContext()))
         {
             val upToddDialogs = UpToddDialogs(requireContext())
@@ -70,38 +69,52 @@ class AllTicketsFragment : Fragment() {
                 object :UpToddDialogs.UpToddDialogListener
                 {
                     override fun onDialogButtonClicked(dialog: Dialog) {
-                        view?.findNavController()?.navigateUp()
                         dialog.dismiss()
+                    }
+
+                    override fun onDialogDismiss() {
+                        view?.findNavController()?.navigateUp()
                     }
 
                 }
             )
         }
-
-        val end=SimpleDateFormat("yyyy-mm-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
-        if(AllUtil.isSubscriptionOver(end))
+        else if(AllUtil.isSubscriptionOver(end))
         {
             val upToddDialogs = UpToddDialogs(requireContext())
             upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
                 object :UpToddDialogs.UpToddDialogListener
                 {
                     override fun onDialogButtonClicked(dialog: Dialog) {
-                        view?.findNavController()?.navigateUp()
                         dialog.dismiss()
+                    }
+
+                    override fun onDialogDismiss() {
+                        view?.findNavController()?.navigateUp()
                     }
 
                 }
             )
         }
+        else{
+            setupViewPager(binding)
+            viewModel.init()
+        }
 
-        viewModel.isLoading.observe(viewLifecycleOwner, {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             it.let {
                 when (it) {
                     0 -> {
                         uptoddDialogs.dismissDialog()
                     }
                     1 -> {
-                        uptoddDialogs.showLoadingDialog(findNavController())
+                        if(AllUtil.isUserPremium(requireContext()))
+                            uptoddDialogs.showLoadingDialog(findNavController())
+                        else
+                        {
+
+                        }
+
                     }
                     else -> {
                         uptoddDialogs.dismissDialog()
@@ -118,7 +131,7 @@ class AllTicketsFragment : Fragment() {
                     }
                 }
             }
-        })
+        }
 
         return binding.root
     }
@@ -136,13 +149,11 @@ class AllTicketsFragment : Fragment() {
         adapter.apply {
             addFragment(SupportTeam())
             addFragment(ExpertTeam())
-            addFragment(AllSessions())
         }
 
         val fragmentTitleList = arrayListOf(
             "Support",
-            "Expert",
-            "Sessions"
+            "Expert"
         )
 
         TabLayoutMediator(binding.tabLayout, binding.allTicketsViewPager) { tab, position ->

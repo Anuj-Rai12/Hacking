@@ -431,30 +431,59 @@ class AccountFragment : Fragment() {
     private fun setFields(account: Account?) {
         //set textFields
         if (account != null) {
+
             editor.putString("profileImageUrl", account.profileImageURL)
             editor.commit()
             bindImage(binding.imageViewProfileImage, account.profileImageURL)
-            binding.textViewName.text = getString(R.string.welcome) + " " + account.name
-            binding.editTextName.setText(account.name)
-            binding.editTextEmail.setText(account.email)
-            binding.editTextPhone.setText(account.phone)
-            binding.editTextAddress.setText(account.address)
-            binding.editTextFinancialMail.setText(account.financeMailId)
-            binding.editTextKidsName.setText(account.kidsName)
-            if (account.motherStage == "pre birth")
-                binding.layoutKidsAgeGender.visibility = View.GONE
-            else {
-                binding.editTextKidsAge.setText(
-                    KidsPeriod(requireActivity()).getKidsAge()
-                        .toString() + getString(
-                        R.string.months
-                    )
+            binding.textViewName.text =
+                getString(R.string.welcome) + " " + if (account.name.isNullOrBlank()
+                        .or(account.name == "null")
+                ) "User"
+                else
+                    account.name
+            binding.editTextName.setText(
+                if (account.name.isNullOrBlank().or(account.name == "null")) ""
+                else
+                    account.name
+            )
+            binding.editTextEmail.setText(
+                if (account.email.isNullOrBlank().or(account.email == "null")) ""
+                else
+                    account.email
+            )
+            binding.editTextPhone.setText(
+                if (account.phone.isNullOrBlank().or(account.phone == "null")) ""
+                else
+                    account.phone
+            )
+            binding.editTextAddress.setText(
+                if (account.address.isNullOrBlank().or(account.address == "null")) ""
+                else
+                    account.address
+            )
+            binding.editTextKidsName.setText(
+                if (account.kidsName.isNullOrBlank().or(account.kidsName == "null")) ""
+                else
+                    account.kidsName
+            )
+            if (account.motherStage == "pre birth" || account.motherStage == "prenatal") {
+                binding.layoutKidsInfo.visibility = View.GONE
+            } else {
+                val months = KidsPeriod(requireActivity()).getKidsAge()
+                binding.editTextKidsAge.setText("$months")
+                binding.editTextKidsGender.setText(
+                    if (account.kidsGender.isNullOrEmpty().or(account.kidsGender == "null")) ""
+                    else
+                        account.kidsGender
                 )
-                binding.editTextKidsGender.setText(account.kidsGender)
             }
-            binding.editTextCurrentSubscribedPlan.setText(account.currentSubscribedPlan.toString())
-            binding.editTextSubscriptionStartDate.setText(account.subscriptionStartDate)
+            if (account.currentSubscribedPlan==0L)
+            binding.editTextCurrentSubscribedPlan.setText("Master Program")
+            else
+                binding.editTextCurrentSubscribedPlan.setText("Premium Program")
 
+            binding.editTextSubscriptionStartDate.setText(account.subscriptionStartDate)
+            binding.editTextSubscriptionStartDate2.setText(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
         }
     }
 
@@ -605,7 +634,6 @@ class AccountFragment : Fragment() {
                 convertFields(binding.editTextKidsName, true)
                 convertFields(binding.editTextPhone, true)
                 convertFields(binding.editTextAddress, true)
-                convertFields(binding.editTextFinancialMail, true)
                 convertFields(binding.editTextEmail, true)
                 //change background of non-editable fields
                 binding.editTextName.setBackgroundResource(0)
@@ -613,18 +641,19 @@ class AccountFragment : Fragment() {
                 binding.editTextKidsGender.setBackgroundResource(0)
                 binding.editTextCurrentSubscribedPlan.setBackgroundResource(0)
                 binding.editTextSubscriptionStartDate.setBackgroundResource(0)
-
             } else {
                 save()
                 viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {
                     if (!it && viewModel.isDataLoadedToDatabase) {
                         item.setIcon(R.drawable.ic_baseline_edit_24)
                     }
-                })
-
+                }
+                )
+                Log.d("save","clicked")
             }
-            return true
-        } else
+            return false
+        }
+        else
             return super.onOptionsItemSelected(item)
     }
 
@@ -635,8 +664,6 @@ class AccountFragment : Fragment() {
             binding.editTextPhone.error = getString(R.string.enter_valid_phone)
         else if (binding.editTextAddress.text.isNullOrBlank())
             binding.editTextAddress.error = getString(R.string.enter_valid_address)
-        else if (!AllUtil.isEmailValid(binding.editTextFinancialMail.text.toString()))
-            binding.editTextFinancialMail.error = getString(R.string.enter_valid_financial)
         else if (!AllUtil.isEmailValid(binding.editTextEmail.text.toString()))
             binding.editTextEmail.error = getString(R.string.enter_valid_email)
         //set conditions for validity of textFields
@@ -648,7 +675,7 @@ class AccountFragment : Fragment() {
             account.phone = binding.editTextPhone.text.toString()
             account.address = binding.editTextAddress.text.toString()
             account.email = binding.editTextEmail.text.toString()
-            account.financeMailId = binding.editTextFinancialMail.text.toString()
+            account.financeMailId =" "
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 viewModel.isLoadingDialogVisible.value = true
                 viewModel.isDataLoadedToDatabase = false
@@ -658,6 +685,7 @@ class AccountFragment : Fragment() {
                     viewModel.imageFile = saveFileToLocalCache(viewModel.imageBitmap)
 
                 viewModel.saveDetails(account)
+                Log.d("save","details")
 
                 viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {
                     if (!it) {

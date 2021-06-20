@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -165,10 +166,33 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null) {
+                            if (response != null && response["data"]!="null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 parseData(data)
+                            }
+                            else
+                            {
+                                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                                    if (!AllUtil.isUserPremium(requireContext())) {
+                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                                        val upToddDialogs = UpToddDialogs(requireContext())
+                                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                            "Close",
+                                            object : UpToddDialogs.UpToddDialogListener {
+                                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                                    dialog.dismiss()
+
+                                                }
+
+                                                override fun onDialogDismiss() {
+                                                    findNavController().navigateUp()
+                                                }
+                                            })
+
+                                    }
+                                }
                             }
                             binding.colorRefresh.isRefreshing = false
                             binding.colorProgress.visibility = View.GONE

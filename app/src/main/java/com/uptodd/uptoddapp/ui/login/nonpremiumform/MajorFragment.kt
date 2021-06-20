@@ -31,16 +31,9 @@ class MajorFragment : Fragment() {
     ): View? {
         binding= FragmentNonpremiumMajorBinding.inflate(inflater,container,false)
         binding.buttonNext.setOnClickListener {
-
-            if (binding.editTextMajor.text.toString().isNotEmpty())
-            {
                 viewModel?.putObjective(binding.editTextMajor.text.toString())
                 viewModel?.initialSetup(requireContext())
                 showLoadingDialog()
-            }
-            else
-                binding.editTextMajor.error="Required"
-
         }
         val preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
         editor = preferences!!.edit()
