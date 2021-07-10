@@ -26,6 +26,7 @@ class SpecialFragment : Fragment() {
         binding.buttonNext.setOnClickListener {
 
                 viewModel?.putSpecial(binding.editTextSpecial.text.toString())
+            BirthViewModel.npAcc.anythingSpecial=binding.editTextSpecial.text.toString()
                 view?.findNavController()?.navigate(R.id.action_specialFragment_to_majorFragment)
             }
         return binding.root

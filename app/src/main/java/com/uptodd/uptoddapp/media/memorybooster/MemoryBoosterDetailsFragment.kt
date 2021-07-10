@@ -63,7 +63,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -205,14 +205,18 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
         viewModel.isPlaying.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it) {
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", true)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
                 binding.musicPlay.setImageResource(R.drawable.material_pause)
             } else {
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", false)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
-            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-            intent.putExtra("toRun", true)
-            intent.putExtra("musicType", "poem")
-            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -220,7 +224,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
                 Glide.with(this)
                     .load(it)
                     .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.app_icon)
+                    .error(R.drawable.default_set_android_thumbnail)
                     .into(binding.mediaMusicImage)
 
                 Glide.with(this)
@@ -239,7 +243,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
     private fun redrawList(
         list: ArrayList<MusicFiles>,
-        binding: PoemFragmentBinding,
+        binding: PoemFragmentBinding
     ) {
         if (list.isNotEmpty()) {
             uptoddDialogs.showLoadingDialog(findNavController(), false)
@@ -422,32 +426,31 @@ class MemoryBoosterDetailsFragment: Fragment() {
     }
 
     override fun onPause() {
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
-
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//to restrict landscape orientation
 
         super.onPause()
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
         intent.putExtra("musicType", "poem")
         requireContext().sendBroadcast(intent)
+         */
     }
 
     override fun onResume() {
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT       //to restrict landscape orientation
 
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onResume()
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
         supportActionBar.title = "Details"
         supportActionBar.setHomeButtonEnabled(true)
         supportActionBar.setDisplayHomeAsUpEnabled(true)
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", false)
         intent.putExtra("musicType", "poem")
         requireContext().sendBroadcast(intent)
+         */
     }
 
     private fun askPermissions() {

@@ -18,6 +18,7 @@ import com.uptodd.uptoddapp.database.logindetails.Explorers
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -44,10 +45,12 @@ class LoginViewModel : ViewModel() {
     var tokenHeader: String = ""
     var parentType: String = ""
     var motherStage=""
+    var kidsGender=""
     var subscriptionStartDate=""
     var subsriptionEndDate=""
     var phoneNo=""
     var address=""
+    var appAccessingDate=""
     var currentPlan:Long=0
 
     var emailId = MutableLiveData<String>()
@@ -170,6 +173,9 @@ class LoginViewModel : ViewModel() {
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
                             if (response != null && response.get("status") == "Success") {
+
+
+                                Log.d("login data",response.get("data").toString())
                                 loginMethod = "EmailPassword"
                                 if (((response.get("data") as JSONObject).getJSONObject("user")).getString(
                                         "motherStage"
@@ -224,6 +230,11 @@ class LoginViewModel : ViewModel() {
                                     ((response.get("data") as JSONObject).getJSONObject("user")).getString(
                                         "kidsDob"
                                     )
+                                kidsGender =
+                                    ((response.get("data") as JSONObject).getJSONObject("user")).getString(
+                                        "kidsGender"
+                                    )
+
                                 if (kidsDob != "null")
                                     babyDOB =
                                         SimpleDateFormat(
@@ -245,8 +256,14 @@ class LoginViewModel : ViewModel() {
                                     .getString("subscriptionStartDate")
                                 subsriptionEndDate=(response["data"] as JSONObject).getJSONObject("user")
                                     .getString("subscriptionEndingDate")
+                                appAccessingDate=(response["data"] as JSONObject).getJSONObject("user")
+                                    .getString("appAccessEndingDate")
                                 Log.d("start",subscriptionStartDate)
                                 Log.d("end",subsriptionEndDate)
+
+                                isNewUser = ((babyName=="null" || babyName==null)|| (kidsGender=="null" ||kidsGender==""))
+
+
                                 val info = UserInfo(
                                     uid,
                                     userName,address,

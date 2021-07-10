@@ -12,15 +12,31 @@ import org.json.JSONObject
 
 class AddressViewModel() : ViewModel() {
 
+    var babyName: String?=""
     var uid: String? = null
+    var babyGender:String?=""
+    var stage:String?=""
+
 
     var isLoadingDialogVisible = MutableLiveData<Boolean>()
     var isDataLoadedToDatabase = false
+
+    companion object
+    {
+        var isGenderName=false
+
+    }
 
 
     fun insertAddressDetails(address:String) {
         val jsonObject: JSONObject = JSONObject()
         jsonObject.put("address",address)
+        if(isGenderName)
+        {
+            jsonObject.put("motherStage", stage)
+            jsonObject.put("kidsName", babyName)
+            jsonObject.put("kidsGender", babyGender)
+        }
 
         AndroidNetworking.put("https://uptodd.com/api/appusers/setup/{uid}")
             .addPathParameter("uid", uid)

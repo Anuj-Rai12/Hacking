@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -212,6 +213,27 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
                 Log.i("YOGA", "Added ${yoga.id}")
             }
             hashMap[yoga.name] = true
+        }
+
+
+        if(data.length()==0)
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                            super.onDialogDismiss()
+                        }
+                    })
+            }
         }
 
 

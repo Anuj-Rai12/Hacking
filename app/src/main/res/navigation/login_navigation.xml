@@ -43,6 +43,12 @@
         <action
             android:id="@+id/action_loginFragment_to_dobFragment"
             app:destination="@id/dobFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_babyGenderFragment"
+            app:destination="@id/babyGenderFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_babyNameFragment"
+            app:destination="@id/babyNameFragment" />
     </fragment>
 
     <!-- Language fragment not used for now -->
@@ -85,7 +91,14 @@
         android:id="@+id/babyNameFragment"
         android:name="com.uptodd.uptoddapp.ui.login.babyname.BabyNameFragment"
         android:label="fragment_baby_name"
-        tools:layout="@layout/fragment_baby_name" />
+        tools:layout="@layout/fragment_baby_name" >
+        <action
+            android:id="@+id/action_babyNameFragment_to_dobFragment"
+            app:destination="@id/dobFragment" />
+        <action
+            android:id="@+id/action_babyNameFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/stageFragment"
         android:name="com.uptodd.uptoddapp.ui.login.stage.StageFragment"
@@ -239,9 +252,17 @@
     <fragment
         android:id="@+id/upgradeFragment2"
         android:name="com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment"
-        android:label="UpgradeFragment" />
+        android:label="UpgradeFragment" >
+        <action
+            android:id="@+id/action_upgradeFragment2_to_paymentSuccessFragment2"
+            app:destination="@id/paymentSuccessFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/addressFragment"
         android:name="com.uptodd.uptoddapp.ui.login.selectaddress.AddressFragment"
         android:label="AddressFragment" />
+    <fragment
+        android:id="@+id/paymentSuccessFragment2"
+        android:name="com.uptodd.uptoddapp.ui.upgrade.PaymentSuccessFragment"
+        android:label="PaymentSuccessFragment" />
 </navigation>

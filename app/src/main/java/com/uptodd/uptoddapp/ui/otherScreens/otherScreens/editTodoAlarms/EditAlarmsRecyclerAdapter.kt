@@ -1,5 +1,7 @@
 package com.uptodd.uptoddapp.ui.otherScreens.otherScreens.editTodoAlarms
 
+import android.app.Dialog
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.score.TYPE_HEADER
 import com.uptodd.uptoddapp.database.todo.Todo
+import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.android.synthetic.main.daily_todo_recycler_item.view.*
 
 class EditAlarmsRecyclerAdapter(
@@ -56,6 +60,7 @@ class EditAlarmsRecyclerAdapter(
             if (todo.doType == 0) {  // dont's will not have alarm switch
                 holder.itemView.alarmSwitch.visibility = View.INVISIBLE
             }
+            holder.itemView.thumbnail_todo.visibility=View.GONE
 
             holder.bind(todo, todosInterface)
 
@@ -69,7 +74,22 @@ class EditAlarmsRecyclerAdapter(
 
         init {
             itemView.setOnClickListener {
-                todosInterface.onClickTodo(bindingAdapterPosition)
+                if(AllUtil.isUserPremium(itemView.context)) {
+                    todosInterface.onClickTodo(bindingAdapterPosition)
+                }
+                else
+                {
+                    val upToddDialogs = UpToddDialogs(itemView.context)
+                    upToddDialogs.showInfoDialog("This feature is only for Premium Subscribers","Close",
+                        object : UpToddDialogs.UpToddDialogListener
+                        {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
+
+                        }
+                    )
+                }
             }
 
 

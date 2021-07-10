@@ -17,6 +17,7 @@ class MinutesFragment : Fragment() {
     lateinit var binding: FragmentNonpremiumMinutesBinding
     var viewModel:BirthViewModel?=null
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,8 +25,15 @@ class MinutesFragment : Fragment() {
         binding= FragmentNonpremiumMinutesBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
-                viewModel?.putMinutes(binding.editTextMinutes.text.toString())
+
+            try {
+                BirthViewModel.npAcc.minutesForBaby=binding.editTextMinutes.text.toString().toInt()
                 view?.findNavController()?.navigate(R.id.action_minutesFragment_to_specialFragment)
+            }
+            catch (e:Exception)
+            {
+                binding.editTextMinutes.error="Enter Minutes"
+            }
         }
         return binding.root
     }

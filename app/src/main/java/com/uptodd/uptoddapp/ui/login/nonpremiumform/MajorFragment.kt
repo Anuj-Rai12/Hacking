@@ -9,14 +9,21 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.UptoddViewModelFactory
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentNonpremiumMajorBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
 class MajorFragment : Fragment() {
@@ -34,10 +41,21 @@ class MajorFragment : Fragment() {
                 viewModel?.putObjective(binding.editTextMajor.text.toString())
                 viewModel?.initialSetup(requireContext())
                 showLoadingDialog()
+            val viewModelFactory = UptoddViewModelFactory.getInstance(requireActivity().application)
+            val viewModel = ViewModelProvider(
+                this, viewModelFactory
+            ).get(TodosViewModel::class.java)
+
+            viewModel?.refreshDataByCallingApi(requireContext(),requireActivity())
+            UptoddSharedPreferences.getInstance(requireContext()).initSave(true)
+            //UptoddSharedPreferences.getInstance(requireContext()).setLastDailyTodoFetchedDate(null)
         }
+        editor?.putBoolean(UserInfo::isNewUser.name,true)?.apply()
+        editor?.putBoolean(UserInfo::loggedIn.name,true)?.apply()
         val preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
         editor = preferences!!.edit()
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
+        viewModel?.parent=preferences.getString("parentType","")
         return binding.root
     }
 
@@ -56,9 +74,8 @@ class MajorFragment : Fragment() {
 
                 override fun onDialogDismiss() {
                     if (viewModel?.isDataLoadedToDatabase!!) {
-                        editor?.putBoolean("loggedIn", true)
-                        editor?.putBoolean("isNewUser", false)
-                        editor?.commit()
+
+                        editor?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
                         //view?.findNavController()?.navigate(R.id.action_stageFragment_to_homeFragment)
                         startActivity(Intent(activity, TodosListActivity::class.java))
                         activity?.finish()

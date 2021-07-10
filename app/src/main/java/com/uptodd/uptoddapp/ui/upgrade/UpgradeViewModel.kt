@@ -27,12 +27,16 @@ class UpgradeViewModel: ViewModel(
     private var _isPaymentDone=MutableLiveData<Boolean>()
     val isPaymentDone:LiveData<Boolean>
     get() = _isPaymentDone
+    var error=""
+
+
 
 
    companion object
    {
        var paymentStatus=""
        var paymentDone=false
+       var isFromLogin=false
    }
 
 
@@ -105,6 +109,7 @@ class UpgradeViewModel: ViewModel(
                 }
 
                 override fun onError(error: ANError) {
+                    this@UpgradeViewModel.error=error.errorBody
                     _isPaymentDone.value=false
                     _isLoading.value=false
                     Log.i("payment status error", error.errorBody)

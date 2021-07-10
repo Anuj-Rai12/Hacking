@@ -1,10 +1,19 @@
 package com.uptodd.uptoddapp.utilities
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.work.WorkManager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -13,6 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.uptodd.uptoddapp.LoginActivity
+import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
@@ -21,9 +33,15 @@ import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.database.support.Experts
 import com.uptodd.uptoddapp.database.support.Sessions
 import com.uptodd.uptoddapp.database.support.Ticket
+import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
+import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
+import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
@@ -37,6 +55,107 @@ class AllUtil{
     companion object{
 
         private lateinit var sharedPreferences: SharedPreferences
+
+
+         fun logout(context: Context,activity: Activity) {
+            val dialogBinding = DataBindingUtil.inflate<DialogExtendSubscriptionBinding>(
+                LayoutInflater.from(context), R.layout.dialog_extend_subscription, null, false
+            )
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(dialogBinding.root)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialogBinding.textView.text = context.getString(R.string.are_you_sure_logout)
+            dialogBinding.buttonYes.setOnClickListener {
+                if(UpToddMediaPlayer.isPlaying)
+                {
+                    UpToddMediaPlayer.upToddMediaPlayer.stop()
+                    val intent = Intent(context, BackgroundPlayer::class.java)
+                    intent.putExtra("toRun", false)
+                    intent.putExtra("musicType", "music")
+                    context.sendBroadcast(intent)
+                }
+                val preferences =context.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
+                val editor = preferences.edit()
+                editor.putBoolean("loggedIn", false)
+                editor.remove("language")
+                editor.commit()
+
+                AndroidNetworking.get("https://uptodd.com/api/userlogout/{userId}")
+                    .addHeaders("Authorization", "Bearer ${getAuthToken()}")
+                    .addPathParameter("userId", getUserId().toString())
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+                            Log.i("debug", "$response")
+                            editor.remove("LaunchTime")
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            Log.i("debug", "${anError?.message}")
+                        }
+                    })
+
+
+                WorkManager.getInstance(context).cancelUptoddWorker()
+
+                unregisterToken()
+
+                UptoddSharedPreferences.getInstance(context).clearAllPreferences()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    UptoddDatabase.getInstance(context).clearAllTables()
+                }
+
+                context.startActivity(
+                    Intent(
+                        activity,
+                        LoginActivity::class.java
+                    )
+                )
+                activity?.finishAffinity()
+            }
+            dialogBinding.buttonNo.setOnClickListener { dialog.dismiss() }
+            dialog.setCancelable(false)
+            dialog.show()
+
+        }
+
+        fun logoutOnly(context: Context)
+        {
+
+                val preferences =context.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
+                val editor = preferences.edit()
+                editor.putBoolean("loggedIn", false)
+                editor.remove("language")
+                editor.commit()
+
+                AndroidNetworking.get("https://uptodd.com/api/userlogout/{userId}")
+                    .addHeaders("Authorization", "Bearer ${getAuthToken()}")
+                    .addPathParameter("userId", getUserId().toString())
+                    .build()
+                    .getAsJSONObject(object : JSONObjectRequestListener {
+                        override fun onResponse(response: JSONObject?) {
+                            Log.i("debug", "$response")
+                            editor.remove("LaunchTime")
+                        }
+
+                        override fun onError(anError: ANError?) {
+                            Log.i("debug", "${anError?.message}")
+                        }
+                    })
+
+
+                WorkManager.getInstance(context).cancelUptoddWorker()
+
+                unregisterToken()
+
+                UptoddSharedPreferences.getInstance(context).clearAllPreferences()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    UptoddDatabase.getInstance(context).clearAllTables()
+                }
+        }
 
         fun registerToken(userType:String) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -97,9 +216,14 @@ class AllUtil{
                 })
         }
 
+
+
         fun loadPreferences(context: Context, name: String){
             sharedPreferences = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
         }
+
+
+
 
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager =
@@ -272,7 +396,7 @@ class AllUtil{
         fun getUntilNextDayOfWeekAfterHour(
             dayOfWeek: Int,
             hourOfDay: Int,
-            calendarInstance: Calendar,
+            calendarInstance: Calendar
         ): Calendar {
             if (calendarInstance.get(Calendar.HOUR_OF_DAY) >= hourOfDay && calendarInstance.get(
                     Calendar.DAY_OF_WEEK) == dayOfWeek
@@ -388,17 +512,77 @@ class AllUtil{
             return cal.time.after(ending)
         }
 
+        /*
         fun isSubscriptionOverActive(context: Context):Boolean
         {
             val pref=UptoddSharedPreferences.getInstance(context)
             val month=pref.getCurrentPlan()
             val date =LocalDate.parse(pref.getSubEnd())
-            var added=date.plusMonths(month).toString()
-            val end = SimpleDateFormat("yyyy-MM-dd").parse(added)
+            Log.d("date",date.toString())
+
+           return when (month) {
+               6L -> {
+                   false
+               }
+               3L -> {
+
+                   var added= if (isRow(context))
+                       date.plusMonths(12).toString()
+                   else
+                       date.plusMonths(6).toString()
+
+
+
+                   Log.d("added date",added)
+                   val end = SimpleDateFormat("yyyy-MM-dd").parse(added)
+                   isSubscriptionOver(end)
+               }
+               else-> {
+                   false
+               }
+           }
+
+        }
+
+         */
+
+        fun isSubscriptionOverActive(context: Context):Boolean
+        {
+            val endDate=UptoddSharedPreferences.getInstance(context).getAppExpiryDate()
+            val end = SimpleDateFormat("yyyy-MM-dd").parse(endDate)
             return isSubscriptionOver(end)
         }
 
 
+        fun getAppAccessDate(context: Context):String?
+        {
+            val pref=UptoddSharedPreferences.getInstance(context)
+            val month=pref.getCurrentPlan()
+            val date =LocalDate.parse(pref.getSubEnd())
+            Log.d("date",date.toString())
+
+            return when (month) {
+                6L -> {
+                    null
+                }
+                3L -> {
+
+                    var added= if (isRow(context))
+                        date.plusMonths(12).toString()
+                    else
+                        date.plusMonths(6).toString()
+
+
+
+                    Log.d("added date",added)
+                    val end = SimpleDateFormat("yyyy-MM-dd").parse(added)
+                    added
+                }
+                else-> {
+                    null
+                }
+            }
+        }
 
 
         fun isUserPremium(context: Context):Boolean
@@ -417,6 +601,7 @@ class AllUtil{
         {
             return !UptoddSharedPreferences.getInstance(context).getPhone()?.startsWith("+91")!!
         }
+
 
 
 

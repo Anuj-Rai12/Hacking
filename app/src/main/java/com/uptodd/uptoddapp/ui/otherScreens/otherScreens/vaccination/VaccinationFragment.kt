@@ -66,7 +66,7 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         ChangeLanguage(requireContext()).setLanguage()
 
@@ -142,8 +142,10 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
             val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/vaccination?lang=$language&userType=$userType")
+                AndroidNetworking.get("https://uptodd.com/api/vaccination?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -220,6 +222,26 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
             )
             i++
         }
+        if(data.length()==0)
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                            super.onDialogDismiss()
+                        }
+                    })
+            }
+        }
+
 
         ioScope.launch {
             vaccinationDao.insertAll(list)

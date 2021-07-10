@@ -13,24 +13,24 @@
             android:layout_height="match_parent"
             tools:context="Sp">
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/resource_list_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:orientation="vertical"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/music_player_layout"
+                app:layout_constraintBottom_toTopOf="@+id/materialButton"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/resource_screen_item"
                 tools:visibility="visible" />
-
 
             <LinearLayout
                 android:id="@+id/poem_list_grid_view"
@@ -60,6 +60,19 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade"
+                android:background="@color/buttonBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                ></com.google.android.material.button.MaterialButton>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

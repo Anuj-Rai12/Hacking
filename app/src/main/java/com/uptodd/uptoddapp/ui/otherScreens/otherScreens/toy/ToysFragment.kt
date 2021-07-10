@@ -146,10 +146,12 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
             val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/toys/{age}?lang=$language&userType=$userType")
+                AndroidNetworking.get("https://uptodd.com/api/toys/{age}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-                    .addPathParameter("age", KidsPeriod(requireActivity()).getKidsAge().toString())
+                    .addPathParameter("age", if(stage=="prenatal") (-1).toString() else  KidsPeriod(requireActivity()).getKidsAge().toString())
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
@@ -213,20 +215,46 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
         val appendable = "https://uptodd.com/images/app/android/thumbnails/toys/$dpi/"
         var i = 0
         list.clear()
-        while (i < data.length()) {
-            val fetchedTodoData = data.get(i) as JSONObject
-            list.add(
-                Toy(
-                    name = fetchedTodoData.getString("name"),
-                    url = appendable + fetchedTodoData.getString("image") + ".webp",
-                    image = fetchedTodoData.getString("image"),
-                    description = fetchedTodoData.getString("description"),
-                    minAge = fetchedTodoData.getInt("min_age"),
-                    maxAge = fetchedTodoData.getInt("max_age")
-                )
-            )
-            i++
+
+        if(data.length()==0)
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+
+                            }
+
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                            }
+                        })
+
+            }
         }
+        else
+        {
+            while (i < data.length()) {
+                val fetchedTodoData = data.get(i) as JSONObject
+                list.add(
+                    Toy(
+                        name = fetchedTodoData.getString("name"),
+                        url = appendable + fetchedTodoData.getString("image") + ".webp",
+                        image = fetchedTodoData.getString("image"),
+                        description = fetchedTodoData.getString("description"),
+                        minAge = fetchedTodoData.getInt("min_age"),
+                        maxAge = fetchedTodoData.getInt("max_age")
+                    )
+                )
+                i++
+            }
+        }
+
 
         ioScope.launch {
             toysDatabase.insertAll(list)

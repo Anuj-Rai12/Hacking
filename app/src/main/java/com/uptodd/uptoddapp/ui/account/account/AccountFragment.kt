@@ -48,6 +48,7 @@ import com.uptodd.uptoddapp.databinding.DialogChangeLanguageBinding
 import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.databinding.DialogSwitchNannyBinding
 import com.uptodd.uptoddapp.databinding.FragmentAccountBinding
+import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.*
@@ -87,7 +88,7 @@ class AccountFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
 
         preferences = requireActivity().getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
@@ -189,6 +190,14 @@ class AccountFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogBinding.textView.text = getString(R.string.are_you_sure_logout)
         dialogBinding.buttonYes.setOnClickListener {
+            if(UpToddMediaPlayer.isPlaying)
+            {
+                UpToddMediaPlayer.upToddMediaPlayer.stop()
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", false)
+                intent.putExtra("musicType", "music")
+                requireContext().sendBroadcast(intent)
+            }
             editor.putBoolean("loggedIn", false)
             editor.remove("language")
             editor.commit()
@@ -532,10 +541,13 @@ class AccountFragment : Fragment() {
             )
                 stage = "post"
             var res = R.drawable.ic_broken_image
-            if (stage == "pre")
-                res = R.drawable.pre_birth_profile
+
+            stage= UptoddSharedPreferences.getInstance(requireContext()).getStage()!!
+            res = if (stage == "prenatal" ||stage=="pre birth")
+                R.drawable.pre_birth_profile
             else
-                res = R.drawable.post_birth_profile
+                R.drawable.post_birth_profile
+
             if (url == "null" || url == "") {
                 imgView.setImageResource(res)
             } else {
@@ -564,7 +576,7 @@ class AccountFragment : Fragment() {
                         .into(object : CustomTarget<Bitmap>() {
                             override fun onResourceReady(
                                 resource: Bitmap,
-                                transition: Transition<in Bitmap>?,
+                                transition: Transition<in Bitmap>?
                             ) {
                                 imgView.setImageBitmap(resource)
                                 val ostream = ByteArrayOutputStream()
@@ -658,12 +670,11 @@ class AccountFragment : Fragment() {
     }
 
     private fun save() {
-        if (binding.editTextKidsName.text.isEmpty())
-            binding.textViewKidsError.text = getString(R.string.enter_valid_name)
-        else if (binding.editTextPhone.text?.length!! < 10)
+       // if (binding.editTextKidsName.text.isEmpty())
+         //   binding.textViewKidsError.text = getString(R.string.enter_valid_name)
+        //else
+         if (binding.editTextPhone.text?.length!! < 10)
             binding.editTextPhone.error = getString(R.string.enter_valid_phone)
-        else if (binding.editTextAddress.text.isNullOrBlank())
-            binding.editTextAddress.error = getString(R.string.enter_valid_address)
         else if (!AllUtil.isEmailValid(binding.editTextEmail.text.toString()))
             binding.editTextEmail.error = getString(R.string.enter_valid_email)
         //set conditions for validity of textFields

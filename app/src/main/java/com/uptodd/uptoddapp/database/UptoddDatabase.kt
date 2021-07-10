@@ -53,7 +53,7 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         Vaccination::class, Toy::class, Story::class,
         ExpectedOutcomes::class, Yoga::class, Diet::class,
         Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class,ResourceFiles::class,NonPremiumAccount::class],
-    version = 6,
+    version = 9,
     exportSchema = false
 )
 

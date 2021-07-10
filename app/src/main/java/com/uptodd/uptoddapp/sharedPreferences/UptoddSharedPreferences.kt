@@ -12,7 +12,7 @@ import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
-class UptoddSharedPreferences private constructor(context: Context) {
+class UptoddSharedPreferences private constructor(var context: Context) {
 
     companion object {
 
@@ -53,6 +53,10 @@ class UptoddSharedPreferences private constructor(context: Context) {
         context.getSharedPreferences("ACCOUNT_INFO", Context.MODE_PRIVATE)
     }
 
+    private  val idealSizePreferences: SharedPreferences by lazy {
+        context.getSharedPreferences("IDEAL_SIZE", Context.MODE_PRIVATE)
+    }
+
     // blog category preference
     private val blogCategoryPreference: SharedPreferences by lazy {
         context.getSharedPreferences("BLOG_CAT", Context.MODE_PRIVATE)
@@ -63,6 +67,14 @@ class UptoddSharedPreferences private constructor(context: Context) {
         context.getSharedPreferences("WEBINAR_CAT", Context.MODE_PRIVATE)
     }
 
+    private val musicPreferences : SharedPreferences by lazy {
+        context.getSharedPreferences("MUSIC", Context.MODE_PRIVATE)
+    }
+    private val poemPreferences : SharedPreferences by lazy {
+        context.getSharedPreferences("POEM", Context.MODE_PRIVATE)
+    }
+
+
     // last updated
     private val lastUpdatedPreferences by lazy {
         context.getSharedPreferences("last_updated", Context.MODE_PRIVATE)
@@ -70,6 +82,15 @@ class UptoddSharedPreferences private constructor(context: Context) {
 
     fun getWorkManagerFiredStatus(): Boolean {
         return workManagerPreference.getBoolean("preferenceWorkManagerFired", false)
+    }
+
+    fun initSave(boolean: Boolean)
+    {
+        loginSharedPreference.edit().putBoolean("initSave",boolean).apply()
+    }
+    fun getInitSave():Boolean
+    {
+        return loginSharedPreference.getBoolean("initSave",false)
     }
 
 
@@ -105,7 +126,7 @@ class UptoddSharedPreferences private constructor(context: Context) {
         return todosRefreshPreferences.getString("DailyTodosFresh", null)
     }
 
-    fun setLastDailyTodoFetchedDate(date: String) {
+    fun setLastDailyTodoFetchedDate(date: String?) {
         val editor = todosRefreshPreferences.edit()
         editor.putString("DailyTodosFresh", date)
         editor.apply()
@@ -153,7 +174,6 @@ class UptoddSharedPreferences private constructor(context: Context) {
         editor.putLong(userInfo::loginTime.name, userInfo.loginTime)
         editor.putString(userInfo::token.name, userInfo.token)
         editor.putBoolean(userInfo::loggedIn.name, userInfo.loggedIn)
-
         editor.apply()
     }
     fun getEmail(): String?
@@ -163,6 +183,10 @@ class UptoddSharedPreferences private constructor(context: Context) {
     fun getName(): String?
     {
         return loginSharedPreference.getString(UserInfo::userName.name,"No Name")
+    }
+    fun getAddress(context: Context):String?
+    {
+        return loginSharedPreference.getString(UserInfo::address.name,"null")
     }
 
     fun saveStage(stage: String) {
@@ -175,13 +199,33 @@ class UptoddSharedPreferences private constructor(context: Context) {
         return loginSharedPreference.getString(Account::motherStage.name, "")
     }
 
+    fun saveMDownStatus(state: Boolean) {
+        val editor = loginSharedPreference.edit()
+        editor.putBoolean("personal_music_status", state).apply()
+    }
+
+    fun getMDownStatus():Boolean? {
+
+        return loginSharedPreference.getBoolean("personal_music_status",false)
+    }
+
+    fun saveAppExpiryDate(date: String) {
+        val editor = loginSharedPreference.edit()
+        editor.putString("app_expiry_date", date).apply()
+    }
+
+    fun getAppExpiryDate():String? {
+
+        return loginSharedPreference.getString("app_expiry_date", "2025-01-01")
+    }
+
     fun saveSubStartDate(date: String) {
         val editor = loginSharedPreference.edit()
         editor.putString(Account::subscriptionStartDate.name, date).apply()
 
     }
 
-    fun daysLeftNP():Long
+    fun daysLeftNP():Long //non premium
     {
         val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
         val start =Calendar.getInstance().time
@@ -194,6 +238,35 @@ class UptoddSharedPreferences private constructor(context: Context) {
 
     }
 
+    fun daysLeftP():Long // premium
+    {
+        val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
+        val start =Calendar.getInstance().time
+        val difference=AllUtil.getDifferenceDay(start.time,end.time)
+
+        return if(difference>=0)
+            difference
+        else
+            0
+    }
+
+    fun daysLeftA():Long // app access
+    {
+
+        val endDate=getAppExpiryDate()
+            return if(endDate==null) {
+            -1
+        } else {
+            val end =SimpleDateFormat("yyyy-MM-dd").parse(endDate)
+            val start =Calendar.getInstance().time
+            val difference=AllUtil.getDifferenceDay(start.time,end.time)
+
+            if(difference>=0)
+                difference
+            else
+                0
+        }
+    }
     fun getSubStart(): String? {
 
         return loginSharedPreference.getString(Account::subscriptionStartDate.name, "")
@@ -219,6 +292,7 @@ class UptoddSharedPreferences private constructor(context: Context) {
         return loginSharedPreference.getString(USER_TYPE,"")
     }
 
+
     fun saveNonPAccount(account: NonPremiumAccount)
     {
         val editor = loginSharedPreference.edit()
@@ -228,6 +302,7 @@ class UptoddSharedPreferences private constructor(context: Context) {
         editor.putString(account::kidsName.name,account.kidsName)
         editor.putString(account::kidsDob.name,account.kidsDob)
         editor.putString(account::kidsToy.name,account.kidsToy)
+        editor.putString(account::whichParent.name,account.whichParent)
         account.minutesForBaby?.let { editor.putInt(account::minutesForBaby.name, it) }
         editor.putString(account::anythingSpecial.name,account.anythingSpecial)
         editor.putString(account::majorObjective.name,account.majorObjective)
@@ -236,6 +311,8 @@ class UptoddSharedPreferences private constructor(context: Context) {
 
         editor.apply()
     }
+
+
     fun getNonPAccount():NonPremiumAccount
     {
         val pref=loginSharedPreference
@@ -251,7 +328,9 @@ class UptoddSharedPreferences private constructor(context: Context) {
             pref.getString(NonPremiumAccount::anythingSpecial.name,""),
             pref.getString(NonPremiumAccount::majorObjective.name,""),
             pref.getString(NonPremiumAccount::expectedMonthsOfDelivery.name,""),
-            pref.getString(NonPremiumAccount::anythingYouDo.name,""))
+            pref.getString(NonPremiumAccount::anythingYouDo.name,""),
+            pref.getString(NonPremiumAccount::whichParent.name,"")
+        )
 
         return nonPA
     }
@@ -369,8 +448,34 @@ class UptoddSharedPreferences private constructor(context: Context) {
        return loginSharedPreference.getInt("showUp",0)==1
     }
 
+    fun saveCountPodcast(count:Int)
+    {
+        loginSharedPreference.edit().putInt("save_podcast_count",count).apply()
+    }
+    fun saveCountSession(count:Int)
+    {
+        loginSharedPreference.edit().putInt("save_session_count",count).apply()
+    }
+    fun saveCountMemoryBooster(count:Int)
+    {
+        loginSharedPreference.edit().putInt("save_memory_count",count).apply()
+    }
 
+    fun getSaveCountPodcast():Int
+    {
+        return loginSharedPreference.getInt("save_podcast_count",0)
 
+    }
+    fun getSaveCountSession():Int
+    {
+        return loginSharedPreference.getInt("save_session_count",0)
+
+    }
+    fun getSaveCountMemory():Int
+    {
+        return loginSharedPreference.getInt("save_memory_count",0)
+
+    }
 
     fun clearAllPreferences() {
         loginSharedPreference.edit().clear().apply()
@@ -381,6 +486,10 @@ class UptoddSharedPreferences private constructor(context: Context) {
         blogCategoryPreference.edit().clear().apply()
         webinarCategoryPreferences.edit().clear().apply()
         lastUpdatedPreferences.edit().clear().apply()
+        idealSizePreferences.edit().clear().apply()
+        musicPreferences.edit().clear().apply()
+        poemPreferences.edit().clear().apply()
+
     }
 
 }

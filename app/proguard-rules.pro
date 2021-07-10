@@ -23,3 +23,12 @@
 -keep class com.razorpay.** {*;}
 -optimizations !method/inlining/*
 -keepclasseswithmembers class * {  public void onPayment*(...);}
+-keep class com.google.api.services.** {*;}
+-keep class com.google.android.youtube.player.** {*;}
+-keepclassmembers class *
+{
+ @com.google.api.client.util.Key <fields>;
+}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+
+}

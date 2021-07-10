@@ -66,7 +66,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -137,12 +137,33 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
             binding.musicPlayerLayout.visibility = View.GONE
         }
+        else
+        {
+
+        }
 
 
         viewModel.poems.observe(viewLifecycleOwner, Observer { poems ->
             Log.i("update", "$poems")
 //            redrawList(poems, binding)
-            if (poems.isEmpty()) {
+            if (poems.isEmpty()&& viewModel.notActive) {
+
+                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                        val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                        val upToddDialogs = UpToddDialogs(requireContext())
+                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                            "Close",
+                            object : UpToddDialogs.UpToddDialogListener {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                    dialog.dismiss()
+                                }
+
+                                override fun onDialogDismiss() {
+                                    findNavController().navigateUp()
+                                    super.onDialogDismiss()
+                                }
+                            })
+                }
                 binding.poemListGridView.isVisible = true
             } else {
                 binding.poemListGridView.isVisible = false
@@ -266,7 +287,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
     private fun redrawList(
         list: ArrayList<MusicFiles>,
-        binding: PoemFragmentBinding,
+        binding: PoemFragmentBinding
     ) {
         if (list.isNotEmpty()) {
             uptoddDialogs.showLoadingDialog(findNavController(), false)
@@ -449,14 +470,14 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
     }
 
     override fun onPause() {
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR       //to restrict landscape orientation
 
         super.onPause()
+            /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
         intent.putExtra("musicType", "poem")
         requireContext().sendBroadcast(intent)
+             */
     }
 
     override fun onResume() {
@@ -468,10 +489,12 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         supportActionBar.title = getString(R.string.poem)
         supportActionBar.setHomeButtonEnabled(true)
         supportActionBar.setDisplayHomeAsUpEnabled(true)
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", false)
         intent.putExtra("musicType", "poem")
         requireContext().sendBroadcast(intent)
+         */
     }
 
     private fun askPermissions() {
@@ -485,6 +508,22 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         //if time is already set and the user changes music, cancel the timer
         if (UpToddMediaPlayer.timer != null)
             binding.musicTimer.performClick()
+    }
+
+    override fun onLongClickPoem(poem: MusicFiles) {
+        val fonts: Array<String> = arrayOf("Details")
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(poem.name)
+        builder.setItems(fonts) { _, _ ->
+            findNavController().navigate(
+                PoemFragmentDirections.actionPoemFragmentToDetails(
+                    "Poem",
+                    poem.id,
+                    poem
+                )
+            )
+        }
+        builder.show()
     }
 
 }

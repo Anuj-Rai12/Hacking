@@ -57,7 +57,7 @@ class TodosViewPagerFragment : Fragment() {
         }
         binding.upgradeButton.setOnClickListener {
 
-            it.findNavController().navigate(R.id.action_activityPodcastFragment_to_upgradeFragment)
+            it.findNavController().navigate(R.id.action_todosViewPagerFragment_to_upgradeFragment)
         }
 //        viewModel.navigateToAppreciationScreenFlag.observe(viewLifecycleOwner, {
 //            if (it == true) {

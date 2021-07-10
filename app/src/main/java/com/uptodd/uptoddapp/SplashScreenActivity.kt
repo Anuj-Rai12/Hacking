@@ -18,12 +18,14 @@ import androidx.navigation.findNavController
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.database.score.*
 import com.uptodd.uptoddapp.databinding.ActivitySplashScreenBinding
 import com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboard
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.KidsPeriod
 import com.uptodd.uptoddapp.utilities.createUptoddNotificationChannels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,10 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
 
+    companion object
+    {
+        const val KEY_NEW="key_new_user"
+    }
     private val preferences: SharedPreferences by lazy {
         getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
     }
@@ -116,12 +122,48 @@ class SplashScreenActivity : AppCompatActivity() {
             val notIntent = Intent(this, TodosListActivity::class.java)
             notIntent.putExtras(intent)
 
-            if(intent.getIntExtra("showUp",0)==1)
-            {
-               notIntent.putExtra("showUp",1)
-                Log.d("ms splash","Show up")
+            if (intent.getIntExtra("showUp", 0) == 1) {
+                notIntent.putExtra("showUp", 1)
+                Log.d("ms splash", "Show up")
             }
-            startActivity(notIntent)
+
+            val isNewUser = preferences.getBoolean(UserInfo::isNewUser.name, false)
+
+            if (!isNewUser) {
+                val addr=UptoddSharedPreferences.getInstance(this).getAddress(this)
+                if( AllUtil.isUserPremium(this ) && !AllUtil.isRow(this) && (addr==null || addr=="" || addr=="null"))
+                {
+                    val newLInt = Intent(this, LoginActivity::class.java)
+                    newLInt.putExtra(KEY_NEW,3)
+                    startActivity(newLInt)
+                }
+                else{
+                    startActivity(notIntent)
+                }
+
+            }
+            else
+            {
+                val stage=UptoddSharedPreferences.getInstance(this).getStage()
+                val dob=KidsPeriod(this).getKidsDob()
+                val newLInt = Intent(this, LoginActivity::class.java)
+                if(!AllUtil.isUserPremium(this))
+                {
+                    newLInt.putExtra(KEY_NEW,0)
+                }
+                else if(stage=="postnatal"  &&dob=="null" || dob==null || dob=="")
+                {
+                    val newLInt = Intent(this, LoginActivity::class.java)
+                    newLInt.putExtra(KEY_NEW,1)
+                }
+                else
+                {
+                    newLInt.putExtra(KEY_NEW,2)
+                }
+
+                startActivity(newLInt)
+
+            }
             this.finishAffinity()
 
         } else if (preferences.contains("userType") && preferences.getString(

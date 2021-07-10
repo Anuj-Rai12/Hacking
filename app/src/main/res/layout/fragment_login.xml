@@ -127,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/mainLoginMail"
@@ -137,7 +138,6 @@
                     android:id="@+id/button_doctor"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
                     android:layout_weight="1"
                     android:enabled="@{loginViewModel.enableInput}"
                     android:fontFamily="@font/montserrat"
@@ -160,7 +160,8 @@
                     android:paddingVertical="8dp"
                     android:text="@string/nanny_mode"
                     android:textAllCaps="false"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

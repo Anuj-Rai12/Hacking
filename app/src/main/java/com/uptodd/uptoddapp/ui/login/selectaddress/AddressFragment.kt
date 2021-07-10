@@ -51,10 +51,11 @@ class AddressFragment : Fragment()
         preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
         editor = preferences!!.edit()
 
+        viewModel.babyGender = preferences!!.getString("gender", "girl")
+        viewModel.babyName=preferences!!.getString(UserInfo::babyName.name,"null")
         viewModel.uid = preferences!!.getString("uid", "")
-
+        viewModel.stage= UptoddSharedPreferences.getInstance(requireContext()).getStage()
         binding.next.setOnClickListener {
-
 
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
 
@@ -109,6 +110,8 @@ class AddressFragment : Fragment()
                 upToddDialogs.dismissDialog()
                 if (viewModel.isDataLoadedToDatabase) {
                         //view?.findNavController()?.navigate(R.id.action_stageFragment_to_homeFragment)
+
+                    preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
                         startActivity(Intent(activity, TodosListActivity::class.java))
                         activity?.finish()
 
@@ -126,6 +129,14 @@ class AddressFragment : Fragment()
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())
 
+    }
+
+    override fun onDestroy() {
+        if(AddressViewModel.isGenderName)
+        {
+            AddressViewModel.isGenderName=false
+        }
+        super.onDestroy()
     }
 
     }

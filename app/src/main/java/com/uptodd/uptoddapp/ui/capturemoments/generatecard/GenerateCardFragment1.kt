@@ -10,10 +10,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.StrictMode
+import android.os.*
 import android.os.StrictMode.VmPolicy
 import android.provider.MediaStore
 import android.text.Layout
@@ -522,27 +519,35 @@ class GenerateCardFragment : Fragment() {
         }
     }
 
-    private fun saveFileToLocal(finalBitmap: Bitmap) {
+    private fun saveFileToLocal(finalBitmap: Bitmap): File? {
+        var imageFile: File?=null
+
         try{
-            var imageFile: File?
             //val state: String = Environment.getExternalStorageState()
             var folder: File?
-            folder = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                .toString() + "/UpTodd/UpTodd Cards")
+                folder =
+                    File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
 
             var success = true
             if (!folder.exists()) {
                 success = folder.mkdirs()
+                if(!success)
+                {
+                    folder =
+                        File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
+                    success= folder.mkdirs()
+                }
+
             }
             if (success) {
                 //imageFile = File(imagePath!!)             //overwrite to capturedImage in CaptureImageFragment
                 val date= Date()
                 imageFile = File(
-                    folder.absolutePath + File.separator + Timestamp(date.time).toString() + "Card.jpg")
+                    folder.absolutePath + File.separator + Timestamp(date.time).time + "Card.jpg")
                 imageFile.createNewFile()
             } else {
                 Toast.makeText(activity, getString(R.string.image_not_saved), Toast.LENGTH_SHORT).show()
-                return
+
             }
             val ostream = ByteArrayOutputStream()
 
@@ -553,7 +558,7 @@ class GenerateCardFragment : Fragment() {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            values.put(MediaStore.MediaColumns.DATA, imageFile.absolutePath)
+            values.put(MediaStore.MediaColumns.DATA, imageFile?.absolutePath)
             activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
             //activity?.contentResolver?.openOutputStream(Uri.fromFile(imageFile))
             //Toast.makeText(activity, "Saved", Toast.LENGTH_LONG).show()
@@ -563,26 +568,39 @@ class GenerateCardFragment : Fragment() {
         } catch (e: Exception) {
             Log.d("div", "GenerateCardFragment L408 $e")
         }
+        return imageFile
     }
 
 
 
     private fun onClickShare() {
+        var finalBitmap:Bitmap? =null
+        try
+        {
+            finalBitmap= viewModel.getBitmapById(adapter.getCardId()).finalCard
+        }
+        catch (e:Exception)
+        {
+
+        }
+
         Log.d("div", "GenerateCardFragment L539 ")
-        val finalBitmap=viewModel.getBitmapById(adapter.getCardId()).finalCard
         if(finalBitmap!=null) {
             try {
+
                 Log.d("div", "GenerateCardFragment L543 ")
                 viewModel.isSavedToLocalCache=false
-                val file = saveFileToLocalCache(finalBitmap)
+                val pathBitmap=MediaStore.Images.Media.insertImage(requireContext().contentResolver,finalBitmap,"${System.currentTimeMillis()}",null)
                 Log.d("div", "GenerateCardFragment L546 ")
                 val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "image/*"
                 Log.d("div", "GenerateCardFragment L548 ")
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags=Intent.FLAG_GRANT_READ_URI_PERMISSION
                 Log.d("div", "GenerateCardFragment L550 ")
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(pathBitmap))
                 Log.d("div", "GenerateCardFragment L552 ")
-                intent.type = "image/png"
+
                 Log.d("div", "GenerateCardFragment L554 ")
                 startActivity(Intent.createChooser(intent, "Share image via"))
             } catch (e: Exception) {

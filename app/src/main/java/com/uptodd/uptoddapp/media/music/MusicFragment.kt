@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.makeramen.roundedimageview.RoundedImageView
@@ -37,6 +38,7 @@ import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MusicFragmentBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import java.util.*
@@ -54,6 +56,11 @@ class MusicFragment : Fragment() {
 
     private lateinit var preferences: SharedPreferences
 
+    companion object
+    {
+        var  dpi=""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,7 +74,7 @@ class MusicFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         ChangeLanguage(requireContext()).setLanguage()
 
@@ -108,8 +115,9 @@ class MusicFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, factory).get(MusicViewModel::class.java)
         binding.musicViewModel = viewModel
-
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
+        viewModel.recheckState()
+
 
         val lastUpdated: String = preferences.getString("last_updated", "")!!
 
@@ -120,9 +128,9 @@ class MusicFragment : Fragment() {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        if (lastUpdated.isBlank()) {
+        if (lastUpdated.isBlank() || UptoddSharedPreferences.getInstance(requireContext()).getMDownStatus()!!) {
             updateMusic(today)
-        } else if (lastUpdated.toLong() < today.timeInMillis) {
+        } else if (lastUpdated.toLong() < today.timeInMillis ) {
                 updateMusic(today)
         } else {
             viewModel.initializeOffline()
@@ -132,8 +140,17 @@ class MusicFragment : Fragment() {
 
         if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
             binding.musicPlayerLayout.visibility = View.GONE
-        }
 
+        }
+        else
+        {
+            Picasso.get()
+                .load(AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, viewModel.getDpi()))
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.default_set_android_thumbnail)
+                .into(binding.musicIcon)
+
+        }
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             when (it) {
                 1 -> {
@@ -155,22 +172,7 @@ class MusicFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                         })
-                    if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                        if (!AllUtil.isUserPremium(requireContext())) {
-                            val title = activity?.actionBar?.title.toString()
 
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                                "Close",
-                                object : UpToddDialogs.UpToddDialogListener {
-                                    override fun onDialogButtonClicked(dialog: Dialog) {
-                                        findNavController().navigateUp()
-
-                                    }
-                                })
-
-                        }
-                    }
                 }
                 else -> {
                     uptoddDialogs.dismissDialog()
@@ -352,7 +354,13 @@ class MusicFragment : Fragment() {
                     .load(viewModel.image.value)
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.app_icon)
+                    .resize(
+                Conversion.convertDpToPixel(64F, requireContext()),
+                Conversion.convertDpToPixel(64F, requireContext())
+            )
                     .into(binding.musicIcon)
+
+            Log.d("url",it)
         })
 
         viewModel.title.observe(viewLifecycleOwner, Observer {
@@ -364,7 +372,7 @@ class MusicFragment : Fragment() {
 
     private fun redrawList(
         list: HashMap<String, ArrayList<MusicFiles>>,
-        binding: MusicFragmentBinding,
+        binding: MusicFragmentBinding
     ) {
         if (list.isNotEmpty()) {
             viewModel.showLoading()
@@ -374,12 +382,13 @@ class MusicFragment : Fragment() {
             list.forEach {
                 val inflater = LayoutInflater.from(requireContext())
 
+
                 val v = inflater.inflate(R.layout.music_list_item, null)
                 val musicCategoryTitle: TextView = v.findViewById(R.id.music_item_category_name)
                 val musicCategoryList: LinearLayout = v.findViewById(R.id.music_item_layout)
-
                 musicCategoryTitle.text = it.key
 
+                musicCategoryList.removeAllViews()
                 //for each category, add its music files
                 it.value.forEach { music ->
                     val inflater1 =
@@ -441,6 +450,25 @@ class MusicFragment : Fragment() {
 
             viewModel.doneLoading()
         }
+        else
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline && viewModel.notActive) {
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
+
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                                super.onDialogDismiss()
+                            }
+                        })
+            }
+        }
     }
 
     private fun askPermissions() {
@@ -453,14 +481,13 @@ class MusicFragment : Fragment() {
     }
 
     override fun onPause() {
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR       //to restrict landscape orientation
-
         super.onPause()
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
         intent.putExtra("musicType", "music")
         requireContext().sendBroadcast(intent)
+         */
     }
 
     override fun onResume() {

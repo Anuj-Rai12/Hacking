@@ -18,6 +18,7 @@ class UpToddMediaPlayer {
         var isPlaying = false
         var timer: Long? = null
         var isMemoryBooster:Boolean?=false
+        var type=""
         private var mediaPlaylist: ArrayList<MusicFiles> = ArrayList()
     }
 

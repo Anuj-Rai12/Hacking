@@ -65,10 +65,12 @@ class DobFragment : Fragment() {
             if(binding.editTextDob.text.toString().compareTo("Select Date of Birth",true)!=0) {
 
 
+                editor?.putString("kidsDob",dob)?.apply()
                 if(AllUtil.isUserPremium(requireContext()))
                 {
 
                     editor?.putString(UserInfo::kidsDob.name,dob)?.apply()
+
 
                     showLoadingDialog()
                     viewModel?.insertDobDetails(binding.editTextDob.text.toString())
@@ -76,6 +78,8 @@ class DobFragment : Fragment() {
                 }
                 else
                 {
+                    BirthViewModel.npAcc.kidsDob=dob
+
                     view?.findNavController()?.navigate(R.id.action_dobFragment_to_toysFragment2)
                     viewModel?.putDob(dob)
                 }

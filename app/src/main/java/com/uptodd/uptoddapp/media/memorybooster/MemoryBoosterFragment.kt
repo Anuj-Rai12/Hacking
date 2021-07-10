@@ -74,7 +74,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
@@ -147,7 +147,24 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         viewModel.poems.observe(viewLifecycleOwner, Observer { poems ->
             Log.i("update", "$poems")
 //            redrawList(poems, binding)
-            if (poems.isEmpty()) {
+            if (poems.isEmpty() && viewModel.notActivate) {
+                if (!AllUtil.isUserPremium(requireContext())) {
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
+
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                                super.onDialogDismiss()
+                            }
+                        })
+
+                }
                 binding.poemListGridView.isVisible = true
             } else {
                 binding.poemListGridView.isVisible = false
@@ -163,6 +180,22 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 }
                 0 -> {
                     initializeObservers(binding)
+                    if (AppNetworkStatus.getInstance(requireContext()).isOnline && viewModel.notActivate) {
+                            val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                "Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        dialog.dismiss()
+                                    }
+
+                                    override fun onDialogDismiss() {
+                                        findNavController().navigateUp()
+                                        super.onDialogDismiss()
+                                    }
+                                })
+                    }
                     uptoddDialogs.dismissDialog()
                 }
                 -1 -> {
@@ -176,22 +209,6 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                                 findNavController().navigateUp()
                             }
                         })
-                    if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                        if (!AllUtil.isUserPremium(requireContext())) {
-                            val title = activity?.actionBar?.title.toString()
-
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                                "Close",
-                                object : UpToddDialogs.UpToddDialogListener {
-                                    override fun onDialogButtonClicked(dialog: Dialog) {
-                                        findNavController().navigateUp()
-
-                                    }
-                                })
-
-                        }
-                    }
                 }
                 else -> {
 
@@ -235,23 +252,6 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         })
 
 
-
-        viewModel.isPlaying.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.musicPlay.setImageResource(R.drawable.material_pause)
-                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-                intent.putExtra("toRun", true)
-                intent.putExtra("musicType", "poem")
-                requireContext().sendBroadcast(intent)
-            } else {
-                binding.musicPlay.setImageResource(R.drawable.material_play)
-                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-                intent.putExtra("toRun", false)
-                intent.putExtra("musicType", "poem")
-                requireContext().sendBroadcast(intent)
-            }
-        })
-
         viewModel.image.observe(viewLifecycleOwner, Observer {
             if (it != "")
                 Picasso.get()
@@ -273,7 +273,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
     private fun redrawList(
         list: ArrayList<MusicFiles>,
-        binding: PoemFragmentBinding,
+        binding: PoemFragmentBinding
     ) {
         if (list.isNotEmpty()) {
             uptoddDialogs.showLoadingDialog(findNavController(), false)
@@ -456,16 +456,13 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
     }
 
     override fun onPause() {
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR //to restrict landscape orientation
-
-        requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onPause()
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
         intent.putExtra("musicType", "poem")
         requireContext().sendBroadcast(intent)
+         */
     }
 
     override fun onResume() {

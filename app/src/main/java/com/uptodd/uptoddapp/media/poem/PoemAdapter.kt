@@ -40,6 +40,11 @@ class PoemAdapter(val clickListener: PoemAdapterInterface) :
             binding.root.setOnClickListener {
                 clickListener.onClickPoem(item)
             }
+            binding.root.setOnLongClickListener {
+
+                clickListener.onLongClickPoem(item)
+                true
+            }
         }
 
     }
@@ -59,4 +64,5 @@ class PoemDiff : DiffUtil.ItemCallback<MusicFiles>() {
 
 interface PoemAdapterInterface {
     fun onClickPoem(poem: MusicFiles)
+    fun onLongClickPoem(poem:MusicFiles)
 }

@@ -101,21 +101,37 @@ class UptoddNotificationUtilities {
             notificationContext: Context,
             notificationTitle: String,
             notificationText: String,
-            notificationIntent: Intent,
+            notificationIntent: Intent?,
             channelId: String
         ): NotificationCompat.Builder {
-            val pendingIntent: PendingIntent = TaskStackBuilder.create(notificationContext).run {
-                addNextIntentWithParentStack(notificationIntent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            var pendingIntent:PendingIntent?=null
+            if(notificationIntent==null)
+            {
+
+            }
+            else
+            {
+                pendingIntent= TaskStackBuilder.create(notificationContext).run {
+                    addNextIntentWithParentStack(notificationIntent)
+                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
+
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)
             notificationBuilder.setContentTitle(notificationTitle)
                 .setContentText(notificationText)
                 .setSmallIcon(R.drawable.exo_icon_play)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
                 .priority = NotificationCompat.PRIORITY_DEFAULT
+            if(notificationIntent==null)
+            {
+
+            }
+            else
+            {
+                notificationBuilder.setContentIntent(pendingIntent)
+            }
             return notificationBuilder
         }
 

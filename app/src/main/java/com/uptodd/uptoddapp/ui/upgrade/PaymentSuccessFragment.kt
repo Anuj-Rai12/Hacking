@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentPaymentSuccessBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AllUtil
+import java.text.SimpleDateFormat
 
 class PaymentSuccessFragment :Fragment()
 {
@@ -21,6 +24,20 @@ class PaymentSuccessFragment :Fragment()
 
         binding= FragmentPaymentSuccessBinding.inflate(inflater,container,false)
         UpgradeViewModel.paymentDone=true
+
+        if(!AllUtil.isUserPremium(requireContext()))
+        {
+            val end= SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+
+            if(AllUtil.isSubscriptionOver(end))
+            {
+                binding?.logout?.visibility=View.VISIBLE
+                binding?.logout?.setOnClickListener {
+                    AllUtil.logout(requireContext(),requireActivity())
+                }
+            }
+        }
+
         return binding?.root
     }
 

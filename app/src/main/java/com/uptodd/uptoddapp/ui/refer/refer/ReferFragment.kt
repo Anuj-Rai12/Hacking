@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentReferBinding
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -115,6 +116,10 @@ class ReferFragment : Fragment() {
                 }
             }
         })
+        if(AllUtil.isRow(requireContext()))
+        {
+
+        }
 
         return binding.root
     }

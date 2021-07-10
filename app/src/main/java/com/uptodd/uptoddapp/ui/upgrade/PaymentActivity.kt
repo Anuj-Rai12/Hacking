@@ -117,7 +117,6 @@ class PaymentActivity :AppCompatActivity(), PaymentResultListener
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
-
        UpgradeViewModel.paymentStatus=PAYMENT_FAILED
         finish()
     }

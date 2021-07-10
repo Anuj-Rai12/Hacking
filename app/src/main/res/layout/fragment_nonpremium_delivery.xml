@@ -77,7 +77,7 @@
             android:fontFamily="@font/montserrat"
             android:gravity="center"
             android:hint="Enter month"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             android:paddingLeft="20dp"
             android:paddingTop="20dp"
             android:paddingRight="20dp"

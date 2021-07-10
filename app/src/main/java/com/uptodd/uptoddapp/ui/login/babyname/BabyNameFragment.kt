@@ -17,9 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
-import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentBabyNameBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.login.selectaddress.AddressViewModel
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
@@ -48,8 +51,9 @@ class BabyNameFragment : Fragment() {
         viewModel.uid = preferences!!.getString("uid", "")
         viewModel.loginMethod = preferences!!.getString("loginMethod", "google")
         viewModel.parentType = preferences!!.getString("parentType", "mother")
-        viewModel.babyGender = preferences!!.getString("babyGender", "girl")
+        viewModel.babyGender = preferences!!.getString("gender", "girl")
         viewModel.email = preferences!!.getString("email", "")
+        viewModel.stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
         binding.buttonNext.setOnClickListener { onClickStart() }
         binding.buttonArrow.setOnClickListener { onClickStart() }
@@ -62,10 +66,24 @@ class BabyNameFragment : Fragment() {
             Toast.makeText(activity, getString(R.string.enter_valid_name), Toast.LENGTH_LONG).show()
         else {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                viewModel.isLoadingDialogVisible.value = true
-                showLoadingDialog()
-                viewModel.babyName = binding.editTextName.text.toString()
-                viewModel.insertLoginDetails()
+
+                var address = UptoddSharedPreferences.getInstance(requireContext())
+                    .getAddress(requireContext())
+
+                preferences?.edit()?.putString(UserInfo::babyName.name, binding.editTextName.text.toString())?.apply()
+
+                if ((address == "null" || address == "" || address == null ) && !AllUtil.isRow(requireContext()))
+                {
+                    AddressViewModel.isGenderName=true
+                    findNavController()?.navigate(R.id.action_babyNameFragment_to_addressFragment)
+                }
+                else
+                {
+                    viewModel.isLoadingDialogVisible.value = true
+                    showLoadingDialog()
+                    viewModel.babyName = binding.editTextName.text.toString()
+                    viewModel.insertLoginDetails()
+                }
                 //viewModel.getLoginDetails()
             } else {
                 //showInternetNotConnectedDialog()
@@ -111,9 +129,23 @@ class BabyNameFragment : Fragment() {
                     editor?.putBoolean("isNewUser", false)
                     editor?.putString("babyName", viewModel.babyName)
                     editor?.commit()
-                    //view?.findNavController()?.navigate(BabyNameFragmentDirections.actionBabyNameFragmentToHomeFragment())
-                    startActivity(Intent(activity, TodosListActivity::class.java))
-                    activity?.finishAffinity()
+
+                    var stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+
+                    val kidsDOB = preferences?.getString("kidsDob", "")
+
+                    if ((stage == "postnatal" || stage == "post birth") && !AllUtil.isRow(
+                            requireContext()
+                        ) && (kidsDOB == "null" || kidsDOB == null || kidsDOB == "")
+                    ) {
+                        findNavController()?.navigate(R.id.action_babyNameFragment_to_dobFragment)
+                    }
+                    else {
+                        preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                        //view?.findNavController()?.navigate(BabyNameFragmentDirections.actionBabyNameFragmentToHomeFragment())
+                        startActivity(Intent(activity, TodosListActivity::class.java))
+                        activity?.finishAffinity()
+                    }
                 } else {
                     Toast.makeText(
                         activity,

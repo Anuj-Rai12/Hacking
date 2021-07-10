@@ -29,7 +29,7 @@ class DailyFragment : Fragment(), AllTodosRecyclerAdapter.AllTodosListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         ChangeLanguage(requireContext()).setLanguage()
 

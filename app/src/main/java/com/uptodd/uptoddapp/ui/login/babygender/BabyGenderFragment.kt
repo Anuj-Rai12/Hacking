@@ -30,19 +30,19 @@ class BabyGenderFragment : Fragment() {
         editor= preferences!!.edit()
 
         binding.imageButtonBoy.setOnClickListener{
-            editor?.putString("gender","boy")
+            editor?.putString("gender","boy")?.apply()
             editor?.commit()
             view?.findNavController()?.navigate(BabyGenderFragmentDirections.actionBabyGenderFragmentToBabyNameFragment())
         }
 
         binding.imageButtonGirl.setOnClickListener{
-            editor?.putString("gender","girl")
+            editor?.putString("gender","girl")?.apply()
             editor?.commit()
             view?.findNavController()?.navigate(BabyGenderFragmentDirections.actionBabyGenderFragmentToBabyNameFragment())
         }
 
         binding.buttonNotDisclose.setOnClickListener{
-            editor?.putString("gender","notDisclose")
+            editor?.putString("gender","notDisclose")?.apply()
             editor?.commit()
             view?.findNavController()?.navigate(BabyGenderFragmentDirections.actionBabyGenderFragmentToBabyNameFragment())
         }

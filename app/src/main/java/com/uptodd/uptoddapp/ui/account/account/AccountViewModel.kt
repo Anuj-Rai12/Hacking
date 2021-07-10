@@ -65,7 +65,6 @@ class AccountViewModel(application: Application, val uid: String?, val token: St
             .addPathParameter("userId", uid!!)
             .addHeaders("Authorization", "Bearer $token")
             .addMultipartParameter("email", account.email)
-            .addMultipartParameter("financeMailId", account.financeMailId)
             .addMultipartParameter("address", account.address)
             .addMultipartParameter("phoneno", account.phone)
             .addMultipartParameter("kidsName", account.kidsName)

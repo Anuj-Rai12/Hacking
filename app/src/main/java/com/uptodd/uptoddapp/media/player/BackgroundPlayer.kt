@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.SplashScreenActivity
+import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.*
 
 class BackgroundPlayer : BroadcastReceiver() {
@@ -35,7 +36,7 @@ class BackgroundPlayer : BroadcastReceiver() {
                 notificationIntent,
                 "notification.music_player"
             )
-            notificationBuilder.priority = NotificationCompat.PRIORITY_LOW
+            notificationBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
             if (UpToddMediaPlayer.isPlaying) {
                 notificationBuilder.addAction(R.drawable.material_pause, "Pause", stopPendingIntent)
 //                UptoddNotificationUtilities.notify(

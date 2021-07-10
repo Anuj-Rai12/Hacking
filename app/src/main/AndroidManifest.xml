@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.uptodd.uptoddapp">
 
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE "
+        tools:ignore="ScopedStorage"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -51,7 +54,9 @@
         <activity android:name=".ui.home.homePage.HomeActivity" />
         <activity
             android:name=".ui.todoScreens.TodosListActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".doctor.dashboard.DoctorDashboard"
@@ -79,7 +84,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            />
         <activity
             android:name=".CaptureMomentsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" /> <!-- For facebook login -->
@@ -180,6 +187,11 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-    </application>
 
+    </application>
+    <queries>
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START"/>
+        </intent>
+    </queries>
 </manifest>

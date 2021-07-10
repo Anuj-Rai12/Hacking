@@ -270,13 +270,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.SplashScreenActivity
 import com.uptodd.uptoddapp.UptoddWebsiteActivity
 import com.uptodd.uptoddapp.database.account.Account
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentLoginBinding
 import com.uptodd.uptoddapp.doctor.DoctorLogin
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.login.facebooklogin.FacebookLoginActivity
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
+import com.uptodd.uptoddapp.ui.upgrade.UpgradeViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -295,6 +298,7 @@ class LoginFragment : Fragment() {
 
     var preferences: SharedPreferences? = null
     var editor: Editor? = null
+
 
     private var passwordEye = false
 
@@ -317,7 +321,6 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         binding.loginViewModel = viewModel
         binding.lifecycleOwner = this
-
 
         shakeAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
 
@@ -433,7 +436,40 @@ class LoginFragment : Fragment() {
                 LoginFragmentDirections.actionLoginFragmentToForgetPasswordFragment2(false)
             )
         }
+
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val isNew = activity?.intent?.getIntExtra(SplashScreenActivity.KEY_NEW, -1)
+
+
+
+        when (isNew)
+        {
+            0->
+            {
+                view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+            }
+            1->
+            {
+                view?.findNavController()
+                    ?.navigate(R.id.action_loginFragment_to_dobFragment)
+            }
+            2->
+            {
+                view?.findNavController()
+                    ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
+            }
+            3->
+            {
+                view?.findNavController()
+                    ?.navigate(R.id.action_loginFragment_to_addressFragment)
+            }
+
+
+        }
     }
 
     private fun initObservers() {
@@ -453,6 +489,7 @@ class LoginFragment : Fragment() {
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
+                UptoddSharedPreferences.getInstance(requireContext()).saveAppExpiryDate(viewModel.appAccessingDate)
                 UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
                 if(viewModel.motherStage=="pre birth")
                 {
@@ -484,34 +521,34 @@ class LoginFragment : Fragment() {
                 if (difference < 30) {
                     UptoddSharedPreferences.getInstance(requireContext()).saveUserType("nonPremium")
 
-
-
                     viewModel.getNPDetails(requireContext())
                     viewModel.iSNPNew.observe(viewLifecycleOwner, Observer {
 
-                        Log.d("userType", "nonPremium")
-                        if(AllUtil.isSubscriptionOver(end))
+                        if (it) {
+                            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+                        }
+                        else
                         {
+                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                        }
+                        Log.d("subscription"," not ended")
+
+                       /*
+                        if(!AllUtil.isSubscriptionOver(end))
+                        {
+                            UpgradeViewModel.isFromLogin=true
+                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
                             view?.findNavController()?.navigate(R.id.action_loginFragment_to_upgradeFragment2)
                             Log.d("subscription","ended")
                         }
                         else
                         {
-                            if (it) {
-                                view?.findNavController()
-                                    ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
-                            }
-                            else
-                            {
-                                AllUtil.registerToken("normal")
-                                startActivity(
-                                    Intent(activity, TodosListActivity::class.java)
-                                )
-                                activity?.finish()
-                            }
-
-                            Log.d("subscription"," not ended")
                         }
+                        */
                     })
                 } else {
                     UptoddSharedPreferences.getInstance(requireContext()).saveUserType("premium")
@@ -521,15 +558,27 @@ class LoginFragment : Fragment() {
                     else
                         "row"
 
-                    Log.d("userType", "Premium")
-                    if (userInfo.isNewUser) {
-                        view?.findNavController()
-                            ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
-                    } else {
+                    AllUtil.registerToken("normal")
+                    if(AllUtil.isSubscriptionOverActive(requireContext()))
+                    {
+                        AllUtil.logoutOnly(requireContext())
+                        val upToddDialogs = UpToddDialogs(requireContext())
+                        upToddDialogs.showInfoDialog("Your Premium Subscription is ended now","Close",
+                            object :UpToddDialogs.UpToddDialogListener {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                    dialog.dismiss()
+                                }
+                            }
+                        )
 
-                        AllUtil.registerToken("normal")
+                    }
+                    else if (userInfo.isNewUser) {
+                        view?.findNavController()
+                            ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
+                    } else {
                         if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
                         {
+
                                 view?.findNavController()
                                     ?.navigate(R.id.action_loginFragment_to_dobFragment)
                         }
@@ -540,10 +589,12 @@ class LoginFragment : Fragment() {
                                 ?.navigate(R.id.action_loginFragment_to_addressFragment)
                         }
                         else {
+
                             startActivity(
                                 Intent(activity, TodosListActivity::class.java)
                             )
                             activity?.finish()
+
                         }
                     }
                 }
