@@ -32,19 +32,31 @@ class UpToddMediaPlayer {
             mediaPlayer.stop()
             isPlaying = false
         }
+        Log.d("url source",generateUrl(song))
         thread = Thread {
             try {
                 mediaPlayer.reset()
                 if (song.filePath == "NA")
+                {
                     mediaPlayer.setDataSource(generateUrl(song))
+                    Log.d("downloaded",false.toString())
+                }
                 else
+                {
+                    Log.d("downloaded",true.toString())
                     mediaPlayer.setDataSource(song.filePath)
+                }
+
                 mediaPlayer.prepare()
                 mediaPlayer.setOnPreparedListener {
                     mediaPlayerListener!!.onReady()
                 }
+
             } catch (e: Exception) {
+
                 Log.e("Error", e.message!!)
+                isPlaying=false
+                mediaPlayerListener?.onError()
             }
         }
         thread.start()
@@ -79,7 +91,7 @@ class UpToddMediaPlayer {
             isPlaying = false
             mediaPlayerListener?.onPause()
         } else {
-            if (!thread.isAlive) {
+            if (!thread.isAlive || isMemoryBooster!!) {
                 mediaPlayer.start()
                 mediaPlayer.setOnCompletionListener {
                     if (songIndex < mediaPlaylist.size - 1) {
@@ -97,6 +109,10 @@ class UpToddMediaPlayer {
                 }
                 isPlaying = true
                 mediaPlayerListener?.onStartPlaying()
+            }
+            else
+            {
+                Log.d("false alive","true")
             }
         }
     }
@@ -133,6 +149,10 @@ class UpToddMediaPlayer {
         fun onReady()
 
         fun onReset(song: MusicFiles)
+
+        fun onError(){
+
+        }
 
         fun onStartPlaying()
 

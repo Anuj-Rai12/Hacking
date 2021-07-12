@@ -10,7 +10,7 @@ import com.uptodd.uptoddapp.databinding.KeyItemLayoutBinding
 import com.uptodd.uptoddapp.databinding.PoemListItemBinding
 import com.uptodd.uptoddapp.databinding.UpgradeOfferListItemBinding
 
-class UpgradeAdapter(val clickListener: UpgradeAdapterInterface) : RecyclerView.Adapter<UpgradeAdapter.UpgradeViewHolder>(){
+class UpgradeAdapter(var clickListener: UpgradeAdapterInterface?=null) : RecyclerView.Adapter<UpgradeAdapter.UpgradeViewHolder>(){
 
     var list:ArrayList<UpgradeItem>?= ArrayList()
     var status=false
@@ -82,7 +82,7 @@ class UpgradeAdapter(val clickListener: UpgradeAdapterInterface) : RecyclerView.
             binding.upKeyFeature.adapter=keyAdapter
 
             binding.upUpgrade.setOnClickListener {
-                clickListener.onClickPoem(item)
+                clickListener?.onClickPoem(item)
             }
         }
 

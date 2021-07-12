@@ -19,6 +19,7 @@ import com.coolerfall.download.DownloadRequest
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.score.*
 import com.uptodd.uptoddapp.database.todo.Todo
@@ -52,6 +53,7 @@ class TodosViewModel(
     private val todoDatabase = database.todoDatabaseDao
     private val updateApiDatabase = database.updateApiDatabaseDao
     private val musicDatabase = database.musicDatabaseDao
+    private  val memoryDatabase=database.memoryBoosterDao
 
     var dpi: String = ""
     var apiError: String = ""
@@ -79,6 +81,7 @@ class TodosViewModel(
         get() = _showDownloadingFlag
 
     private lateinit var downloadedMusic: List<MusicFiles>
+    private lateinit var downloadedMemoryMusic: List<MemoryBoosterFiles>
 
     var notificationIntent = MutableLiveData<Int>(0)
 
@@ -1264,6 +1267,7 @@ class TodosViewModel(
 
             val stage=UptoddSharedPreferences.getInstance(context).getStage()
             downloadedMusic = musicDatabase.getAllFiles()
+            downloadedMemoryMusic=memoryDatabase.getAllFiles()
             Log.i("downloaded", downloadedMusic.size.toString())
             val language = AllUtil.getLanguage()
             val userType=UptoddSharedPreferences.getInstance(context).getUserType()
@@ -1336,7 +1340,7 @@ class TodosViewModel(
                                 viewModelScope.launch {
                                     try {
                                         val speedBooster =
-                                            AllUtil.getAllMusic(response.get("data").toString())
+                                            AllUtil.getAllMemoryFiles(response.get("data").toString())
                                         val destDir = File(destinationDir, "speedbooster")
                                         downloadSpeedBoosterFiles(
                                             speedBooster,
@@ -1632,12 +1636,12 @@ class TodosViewModel(
     }
 
     fun downloadSpeedBoosterFiles(
-        files: List<MusicFiles>,
+        files: List<MemoryBoosterFiles>,
         destinationDir: File,
         mManager: DownloadManager
     ) {
         files.forEach {
-            if (!getIsMusicDownloaded(it)) {
+            if (!getIsMemoryDownloded(it)) {
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${it.file}.aac")
                 if (file.exists())
@@ -1678,7 +1682,7 @@ class TodosViewModel(
                         }
 
                         override fun onSuccess(downloadId: Int, filePath: String) {
-                            updatePath(it, file.path)
+                            updateMemoryPath(it, file.path)
                             Log.i("inserting", "on success")
                         }
 
@@ -1737,11 +1741,29 @@ class TodosViewModel(
             musicDatabase.insert(music)
         }
     }
+    private fun updateMemoryPath(music: MemoryBoosterFiles, path: String) {
+        Log.i("inserting", "inserting init")
+        viewModelScope.launch {
+            music.filePath = path
+            Log.i("inserting", "${music.name} -> ${music.filePath}")
+            memoryDatabase.insert(music)
+        }
+    }
 
     private fun getIsMusicDownloaded(music: MusicFiles): Boolean {
         downloadedMusic.forEach {
             if (it.id == music.id)
                 return@getIsMusicDownloaded true
+        }
+        return false
+    }
+
+
+    private fun getIsMemoryDownloded(m:MemoryBoosterFiles):Boolean
+    {
+        downloadedMemoryMusic.forEach {
+            if (it.id == m.id)
+                return@getIsMemoryDownloded true
         }
         return false
     }

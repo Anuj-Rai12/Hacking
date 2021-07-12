@@ -268,7 +268,10 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
     fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
         downloadedPoems.forEach {
             if (it.id == poem.id)
+            {
+                poem.filePath=it.filePath
                 return@getIsPoemDownloaded true
+            }
         }
         return false
     }

@@ -93,8 +93,8 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
     {
         val days= arrayOf<Long>(4,6,9,12,10,11,12,13,14,15)
         var daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftNP()
+        var mDaysLeft=10%daysLeft
         Log.d("daysLeft","$daysLeft")
-        var mDaysLeft=15-daysLeft
 
         if(days.contains(mDaysLeft))
         {

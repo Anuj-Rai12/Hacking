@@ -49,11 +49,12 @@ class UpgradeFragment :Fragment(),UpgradeAdapterInterface
 
         binding= UpgradeFragmentBinding.inflate(inflater,container,false)
         viewModel=ViewModelProvider(this)[UpgradeViewModel::class.java]
-        adapter= UpgradeAdapter(this)
+        adapter= UpgradeAdapter()
 
         if(!AllUtil.isUserPremium(requireContext()))
         {
             val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+
 
             if(AllUtil.isSubscriptionOver(end))
             {
@@ -118,6 +119,8 @@ class UpgradeFragment :Fragment(),UpgradeAdapterInterface
                         }
                     )
                 }
+                else
+                    adapter?.clickListener=this
             }
 
 
@@ -214,6 +217,7 @@ class UpgradeFragment :Fragment(),UpgradeAdapterInterface
 
 
     override fun onClickPoem(item: UpgradeItem) {
+
 
         viewModel?.notifySalesTeam(item,requireContext())
         val intent=Intent(requireActivity(),PaymentActivity::class.java)

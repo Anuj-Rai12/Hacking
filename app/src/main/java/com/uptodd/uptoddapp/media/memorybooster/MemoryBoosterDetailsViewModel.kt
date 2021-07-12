@@ -12,6 +12,9 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.api.getMonth
+import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -26,8 +29,9 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
     ) {
 
     private var dpi = ""
+    private var  memoryDatabase:MemoryFilesDao?=null
 
-    private lateinit var downloadedPoems: List<MusicFiles>
+    private lateinit var downloadedPoems: List<MemoryBoosterFiles>
 
     var _isLoading: MutableLiveData<Int> = MutableLiveData()
     val isLoading: LiveData<Int>
@@ -69,7 +73,6 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
 
     init {
 
-        initializePoems()
 
         _poems.value = ArrayList()
 
@@ -79,6 +82,12 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
 
         _isPlaying.value = UpToddMediaPlayer.isPlaying
 
+    }
+
+    fun initMemoryDatabase(context: Context)
+    {
+        memoryDatabase=UptoddDatabase.getInstance(context).memoryBoosterDao
+        initializePoems()
     }
 
     fun intializeSame()
@@ -94,8 +103,14 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
             }
 
             override fun onReady() {
+                mediaPlayer.playPause()
+                _isMediaReady.value = true
+            }
+
+            override fun onError() {
 
             }
+
 
             override fun onReset(song: MusicFiles) {
 
@@ -111,8 +126,13 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
     }
 
     private fun initializePoems() {
+
         viewModelScope.launch {
-            downloadedPoems = database.getAllSpeedBoosterFiles()
+            downloadedPoems=memoryDatabase?.getAllFiles()!!
+            downloadedPoems.forEach {
+                Log.d("file",it.toString())
+            }
+            Log.d("file",downloadedPoems.toString())
         }
     }
 
@@ -127,11 +147,10 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
         }
 
         viewModelScope.launch {
-            downloadedPoems = database.getAllSpeedBoosterFiles()
+            downloadedPoems = memoryDatabase?.getAllFiles()!!
             downloadedPoems.forEach {
                 Log.i("DP", "${it.id} -> ${it.name}")
             }
-            _poems.value = ArrayList(downloadedPoems)
             _poems.value?.forEach {
                 Log.i("PV", "${it.id} -> ${it.name}")
             }
@@ -154,6 +173,10 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
                 _title.value = song.name
                 _description.value=song.description
                 currentPlaying = song.id
+            }
+
+            override fun onError() {
+
             }
 
             override fun onStartPlaying() {
@@ -199,6 +222,10 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
             }
 
+            override fun onError() {
+
+            }
+
             override fun onPause() {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
             }
@@ -226,7 +253,7 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
                             val poems = AllUtil.getAllMusic(response.get("data").toString())
                             poems.forEach {
                                 if (getIsPoemDownloaded(it))
-                                    it.filePath = database.getFilePath(it.id)
+                                    it.filePath = memoryDatabase?.getFilePath(it.id)!!
                                 else
                                     it.filePath = "NA"
                             }
@@ -250,6 +277,8 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
 
     fun playPauseMusic() {
         if (UpToddMediaPlayer.songIndex != -1) {
+            Log.d("play/pause",isPlaying.value.toString()
+            )
             mediaPlayer.playPause()
             _isPlaying.value = UpToddMediaPlayer.isPlaying
         }
@@ -283,8 +312,12 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
 
     fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
         downloadedPoems.forEach {
+            Log.d("file",it.toString())
             if (it.id == poem.id)
+            {
+                poem.filePath=it.filePath
                 return@getIsPoemDownloaded true
+            }
         }
         return false
     }

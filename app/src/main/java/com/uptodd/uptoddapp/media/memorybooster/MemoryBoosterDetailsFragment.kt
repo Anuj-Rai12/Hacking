@@ -88,6 +88,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
             UptoddViewModelFactory.getInstance(requireActivity().application)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterDetailsViewModel::class.java)
+        viewModel.initMemoryDatabase(requireContext())
         binding.memoryBoosterViewModel=viewModel
 
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
@@ -230,7 +231,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
                 Glide.with(this)
                     .load(it)
                     .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.app_icon)
+                    .error(R.drawable.default_set_android_thumbnail)
                     .into(binding.musicIcon)
             }
         })

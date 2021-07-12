@@ -28,6 +28,8 @@ import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.NotificationBroadca
 import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -117,7 +119,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         val lang = AllUtil.getLanguage()
         val country= AllUtil.getCountry(context)
         val size= UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
-        val database= UptoddDatabase.getInstance(context).musicDatabaseDao
+        val database= UptoddDatabase.getInstance(context).memoryBoosterDao
         val manager: DownloadManager = DownloadManager.Builder().context(context)
             .downloader(OkHttpDownloader.create())
             .threadPoolSize(3)
@@ -134,8 +136,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
 
-                        val poems = AllUtil.getAllMusic(response.get("data").toString())
-
+                        val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
                         if(poems?.size>size)
                         {
 
@@ -152,7 +153,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
                             GlobalScope.launch {
 
                                 poems.forEach {
-                                    if (getIsPoemDownloaded(database.getAllDownloadedMusic(), it))
+                                    if (getIsMemoryDownloaded(database.getAllFiles(), it))
                                         it.filePath = database.getFilePath(it.id)
                                     else {
 
@@ -181,15 +182,15 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
             })
 
     }
-    fun getIsPoemDownloaded(downloadedPoems:List<MusicFiles>,poem: MusicFiles): Boolean {
+    fun getIsMemoryDownloaded(downloadedPoems:List<MemoryBoosterFiles>,poem: MemoryBoosterFiles): Boolean {
         downloadedPoems.forEach {
             if (it.id == poem.id)
-                return@getIsPoemDownloaded true
+                return@getIsMemoryDownloaded true
         }
         return false
     }
-    fun downloadMusicFile(musicDatabase: MusicFilesDatabaseDao,
-                          fileMusic: MusicFiles,
+    fun downloadMusicFile(musicDatabase: MemoryFilesDao,
+                          fileMusic: MemoryBoosterFiles,
                           destinationDir: File,
                           mManager: DownloadManager,
     ) {
@@ -254,12 +255,10 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
     }
 
 
-    private fun updatePath(musicDatabase: MusicFilesDatabaseDao, music: MusicFiles, path: String) {
+    private fun updatePath(musicDatabase: MemoryFilesDao, music: MemoryBoosterFiles, path: String) {
         Log.i("inserting", "inserting init")
         GlobalScope.launch {
             music.filePath = path
-            if (isMusic(music))
-                music.language = "NA"
             Log.i("inserting", "${music.name} -> ${music.filePath}")
             musicDatabase.insert(music)
         }

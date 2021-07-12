@@ -28,6 +28,10 @@ class UpgradeViewModel: ViewModel(
     val isPaymentDone:LiveData<Boolean>
     get() = _isPaymentDone
     var error=""
+    var _meetUrl=MutableLiveData<String>()
+    val meetUrl:LiveData<String>
+        get() = _meetUrl
+
 
 
 
@@ -177,5 +181,29 @@ class UpgradeViewModel: ViewModel(
                     Log.e("payment saved ", error.errorBody)
                 }
             })
+    }
+
+    fun getMeetUrl()
+    {
+
+        AndroidNetworking.get(" https://uptodd.com/api/nonPremiumAppusers/getSessionBookingLink")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    if (response.getString("status") == "Success") {
+                        val data=response.get("data") as String
+                        _meetUrl.value=data
+                    } else {
+
+                    }
+                }
+
+                override fun onError(error: ANError) {
+                    Log.e("payment saved ", error.errorBody)
+                }
+            })
+
     }
 }

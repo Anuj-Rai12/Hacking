@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken
 import com.uptodd.uptoddapp.LoginActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
@@ -267,6 +268,11 @@ class AllUtil{
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<MusicFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<MusicFiles>
+        }
+        fun getAllMemoryFiles(jsonString: String): ArrayList<MemoryBoosterFiles> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<MemoryBoosterFiles?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<MemoryBoosterFiles>
         }
         fun getAllUpgrade(jsonString: String): ArrayList<UpgradeItem> {
             val gson = Gson()

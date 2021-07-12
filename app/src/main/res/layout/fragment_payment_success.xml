@@ -72,6 +72,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23"
         app:layout_constraintVertical_bias="0.23000002" />
+
+
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
@@ -80,6 +82,18 @@
         android:text="Logout "
         android:textAllCaps="false"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choose_your_growth"
+        tools:visibility="visible" />
+    <Button
+        android:id="@+id/choose_your_growth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/meet_color"
+        android:text="Choose Your Growth Slot"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcome_decoration"

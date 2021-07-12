@@ -210,12 +210,14 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     //razor pay
-    implementation 'com.razorpay:checkout:1.6.6'
+    implementation 'com.razorpay:checkout:1.6.7'
 
     //paypal
     implementation ('com.paypal.sdk:paypal-android-sdk:2.16.0')
             {
                 exclude group:'io.card'
             }
+    implementation('com.paypal.checkout:android-sdk:0.2.0')
+
 
 }
