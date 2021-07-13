@@ -3,6 +3,8 @@ package com.uptodd.uptoddapp.database.logindetails
 
 data class UserInfo(
     val uid: String,
+    val userName:String,
+    val address:String?=null,
     val isNewUser: Boolean,
     val userType : String = "Normal",
     val email: String,

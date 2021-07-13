@@ -60,16 +60,18 @@ class StageFragment : Fragment() {
         binding.imageButtonBorn.setOnClickListener {
             editor?.putString("stage", "pre birth")
             editor?.commit()
-            UptoddSharedPreferences.getInstance(requireContext()).saveStage("post birth")
-
-            view?.findNavController()?.navigate(R.id.action_stageFragment_to_babyGenderFragment)
+            viewModel.stage="postnatal"
+            UptoddSharedPreferences.getInstance(requireContext()).saveStage("postnatal")
+           showLoadingDialog()
+            viewModel.insertLoginDetails()
         }
         binding.imageButtonPregnant.setOnClickListener {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                UptoddSharedPreferences.getInstance(requireContext()).saveStage("pre birth")
-                viewModel.isLoadingDialogVisible.value = true
-                showLoadingDialog()
-                viewModel.insertLoginDetails()
+                UptoddSharedPreferences.getInstance(requireContext()).saveStage("prenatal")
+                viewModel.stage="prenatal"
+                    viewModel.isLoadingDialogVisible.value = true
+                    showLoadingDialog()
+                    viewModel.insertLoginDetails()
                 //viewModel.getLoginDetails()
             } else {
                 //showInternetNotConnectedDialog()
@@ -116,9 +118,15 @@ class StageFragment : Fragment() {
                     editor?.putBoolean("loggedIn", true)
                     editor?.putBoolean("isNewUser", false)
                     editor?.commit()
-                    //view?.findNavController()?.navigate(R.id.action_stageFragment_to_homeFragment)
-                    startActivity(Intent(activity, TodosListActivity::class.java))
-                    activity?.finish()
+                    if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
+                    {
+                        view?.findNavController()?.navigate(R.id.action_stageFragment_to_nameFragment)
+                    }
+                    else {
+                        //view?.findNavController()?.navigate(R.id.action_stageFragment_to_homeFragment)
+                        startActivity(Intent(activity, TodosListActivity::class.java))
+                        activity?.finish()
+                    }
                 } else {
                     Toast.makeText(
                         activity,

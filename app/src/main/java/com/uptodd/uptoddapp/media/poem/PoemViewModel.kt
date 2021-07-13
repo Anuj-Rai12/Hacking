@@ -1,6 +1,7 @@
 package com.uptodd.uptoddapp.media.poem
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -12,7 +13,9 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -123,7 +126,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         })
     }
 
-    fun initializeAll() {
+    fun initializeAll(context: Context) {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
@@ -133,7 +136,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
             _image.value = ""
         }
 
-        getAllPoems()
+        getAllPoems(context)
 
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
@@ -162,8 +165,10 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         })
     }
 
-    private fun getAllPoems() {
-        AndroidNetworking.get("https://uptodd.com/api/poems")
+    private fun getAllPoems(context: Context) {
+        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
+        val country=AllUtil.getCountry(context)
+        AndroidNetworking.get("https://uptodd.com/api/poems?userType=$userType&country=$country")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

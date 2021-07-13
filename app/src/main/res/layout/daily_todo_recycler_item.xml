@@ -15,19 +15,31 @@
         android:layout_marginStart="20dp"
         android:checked="true"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/thumbnail_todo"
+        android:layout_width="100dp"
+        android:background="@drawable/round_rectangle"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/superman"
+        android:layout_toRightOf="@+id/completeStatus"
+        android:layout_height="100dp">
+    </ImageView>
 
 
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="15dp"
         android:layout_marginLeft="13dp"
-        android:layout_toRightOf="@+id/completeStatus"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:layout_toRightOf="@+id/thumbnail_todo"
         android:text="task name here"
         android:textColor="@color/textGrey"
-        android:textSize="16sp" />
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/timeTextView"

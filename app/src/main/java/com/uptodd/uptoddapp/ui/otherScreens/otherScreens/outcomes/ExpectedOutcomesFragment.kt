@@ -9,11 +9,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -25,6 +27,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.expectedoutcome.ExpectedOutcomeDao
 import com.uptodd.uptoddapp.databinding.FragmentExpectedOutcomesBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +76,17 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
         expectedOutcomeDao = UptoddDatabase.getInstance(requireContext()).expectedOutcomeDao
 
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_expectedOutcomesFragment3_to_upgradeFragment)
+        }
 
         return binding.root
     }
@@ -128,23 +142,48 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
                 val period = KidsPeriod(requireActivity()).getPeriod()
-                AndroidNetworking.get("https://uptodd.com/api/expected_outcomes/{period}?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType")
                     .addPathParameter("period", period.toString())
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null) {
+                            if (response != null && response["data"]!="null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "ExpectedOutcomesFragment L72 $data")
                                 parseData(data)
                             }
+                            else
+                            {
+                                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                                    if (!AllUtil.isUserPremium(requireContext())) {
+                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                                        val upToddDialogs = UpToddDialogs(requireContext())
+                                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                            "Close",
+                                            object : UpToddDialogs.UpToddDialogListener {
+                                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                                    dialog.dismiss()
+
+                                                }
+
+                                                override fun onDialogDismiss() {
+                                                    findNavController().navigateUp()
+                                                }
+                                            })
+
+                                    }
+                                }
+                            }
                             binding.expoutRefresh.isRefreshing = false
                         }
+
 
                         override fun onError(anError: ANError?) {
                             binding.expoutRefresh.isRefreshing = false

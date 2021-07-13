@@ -51,7 +51,7 @@ class BabyNameFragment : Fragment() {
         viewModel.babyGender = preferences!!.getString("babyGender", "girl")
         viewModel.email = preferences!!.getString("email", "")
 
-        binding.buttonStart.setOnClickListener { onClickStart() }
+        binding.buttonNext.setOnClickListener { onClickStart() }
         binding.buttonArrow.setOnClickListener { onClickStart() }
 
         return binding.root

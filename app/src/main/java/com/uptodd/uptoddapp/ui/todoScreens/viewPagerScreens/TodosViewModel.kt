@@ -63,6 +63,10 @@ class TodosViewModel(
     val isLoading: LiveData<Int>
         get() = _isLoading
 
+    private var _isNewUser: MutableLiveData<Boolean> = MutableLiveData()
+    val isNewUser: LiveData<Boolean>
+        get() = _isNewUser
+
     private var _webinars = MutableLiveData<ArrayList<Webinars>>()
     val webinars: LiveData<ArrayList<Webinars>>
         get() = _webinars
@@ -714,7 +718,8 @@ class TodosViewModel(
                 "TodosViewModel L664 ${"https://uptodd.com/api/activities?userId=$userId&period=$period&lang=$language"}"
             )
 
-            AndroidNetworking.get("https://uptodd.com/api/activities?userId=$userId&period=$period&lang=$language")        //replace music by blog in L54 and L55
+            val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+            AndroidNetworking.get("https://uptodd.com/api/activities?userId=$userId&period=$period&lang=$language&userType=$userType")        //replace music by blog in L54 and L55
 //                .addPathParameter("music", "music")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
@@ -1194,8 +1199,9 @@ class TodosViewModel(
         val month = KidsPeriod(activity).getKidsAge()
 
         if (!preferences.contains("idealWeight") || !preferences.contains("idealHeight")) {
+            var stage=UptoddSharedPreferences.getInstance(activity).getStage()
             viewModelScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/idealsize/$month")        //replace music by blog in L54 and L55
+                AndroidNetworking.get("https://uptodd.com/api/idealsize/${if(stage=="prenatal" || stage=="pre birth") -1 else month}")        //replace music by blog in L54 and L55
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -1206,8 +1212,8 @@ class TodosViewModel(
                                 val weight = data.getString("weight")
                                 val height = data.getString("height")
 
-                                idealHeight.value = height
-                                idealWeight.value = weight
+                                idealHeight.value = "$height cm"
+                                idealWeight.value = "$weight  Kg"
 
                                 editor.putString("idealWeight", weight)
                                 editor.putString("idealHeight", height)
@@ -1226,10 +1232,8 @@ class TodosViewModel(
         } else {
             val weight = preferences.getString("idealWeight", "")
             val height = preferences.getString("idealHeight", "")
-
-            idealHeight.value = height
-            idealWeight.value = weight
-
+            idealHeight.value = "$height cm"
+            idealWeight.value = "$weight  Kg"
         }
 
     }
@@ -1246,7 +1250,9 @@ class TodosViewModel(
             downloadedMusic = musicDatabase.getAllFiles()
             Log.i("downloaded", downloadedMusic.size.toString())
             val language = AllUtil.getLanguage()
-            AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language")
+            val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+            val country=AllUtil.getCountry(context)
+            AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language&userType=$userType&country=$country")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1265,7 +1271,8 @@ class TodosViewModel(
                     }
                 })
 
-            AndroidNetworking.get("https://uptodd.com/api/poems")
+
+            AndroidNetworking.get("https://uptodd.com/api/poems?userType=$userType&country=$country")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1284,9 +1291,10 @@ class TodosViewModel(
                 })
 
             val uid = AllUtil.getUserId()
-            val prenatal =if(getMonth(context) >0) 1 else 0
+            val stage=UptoddSharedPreferences.getInstance(context).getStage()
+            val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
             val lang = AllUtil.getLanguage()
-            AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={months}&lang={lang}")
+            AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addPathParameter("userId",uid.toString())
                 .addPathParameter("prenatal",prenatal.toString())
@@ -1320,6 +1328,52 @@ class TodosViewModel(
 
         }
 
+    }
+    fun getNPDetails(context: Context)
+    {
+        val uid = AllUtil.getUserId()
+        AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    if (response.getString("status") == "Success") {
+                        viewModelScope.launch {
+
+                            if(response["data"].toString()=="null")
+                            {
+                                _isNewUser.value=true
+                            }
+                            else {
+                                Log.d("data", response["data"].toString())
+                                val nonPremiumAccount =
+                                    AllUtil.getNonPAccount(response.get("data").toString())
+                                UptoddSharedPreferences.getInstance(context)
+                                    .saveNonPAccount(nonPremiumAccount)
+                                nonPremiumAccount.anythingSpecial?.let {
+                                    Log.d(
+                                        "anythingTodos",
+                                        it
+                                    )
+                                }
+                                _isNewUser.value=false
+                            }
+                        }
+
+                    } else {
+                        apiError = response.getString("message")
+                        _isLoading.value = -1
+                        _isNewUser.value=false
+                    }
+                }
+
+                override fun onError(error: ANError) {
+                    apiError = error.message.toString()
+                    _isLoading.value = -1
+                    Log.e("errorNonpremim", error.errorBody)
+                }
+            })
     }
 
     fun downloadPoemFiles(

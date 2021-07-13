@@ -1,9 +1,11 @@
 package com.uptodd.uptoddapp.ui.login.loginpage
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -15,6 +17,8 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.uptodd.uptoddapp.database.logindetails.Explorers
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AllUtil
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,6 +33,7 @@ class LoginViewModel : ViewModel() {
     private var authRepository = AuthRepository()
 
     var isNewUser: Boolean = true
+    var userName:String="No Name"
     var uid: String = ""
     var email: String = ""
     var loginMethod: String = ""
@@ -39,7 +44,11 @@ class LoginViewModel : ViewModel() {
     var tokenHeader: String = ""
     var parentType: String = ""
     var motherStage=""
-
+    var subscriptionStartDate=""
+    var subsriptionEndDate=""
+    var phoneNo=""
+    var address=""
+    var currentPlan:Long=0
 
     var emailId = MutableLiveData<String>()
     var sPassword = MutableLiveData<String>()
@@ -50,6 +59,7 @@ class LoginViewModel : ViewModel() {
         private set
 
     var loginResponse = MutableLiveData<UserInfo>()
+    var iSNPNew=MutableLiveData<Boolean>()
     var showLoginProgress = MutableLiveData<Boolean>(false)
     var enableInput = MutableLiveData<Boolean>(true)
 
@@ -166,6 +176,13 @@ class LoginViewModel : ViewModel() {
                                     ) != "null"
                                 )
                                     isNewUser = false
+                                if (((response.get("data") as JSONObject).getJSONObject("user")).getString(
+                                        "whichParent"
+                                    ) != "null"
+                                )
+                                    isNewUser = false
+
+
                                 uid =
                                     ((response.get("data") as JSONObject).getJSONObject("user")).getLong(
                                         "id"
@@ -194,6 +211,15 @@ class LoginViewModel : ViewModel() {
                                         "id"
                                     )
                                         .toString()
+                                phoneNo =
+                                    ((response.get("data") as JSONObject).getJSONObject("user")).getString(
+                                        "phoneno"
+                                    )
+                                userName =
+                                    ((response.get("data") as JSONObject).getJSONObject("user")).getString(
+                                        "name"
+                                    )
+
                                 kidsDob =
                                     ((response.get("data") as JSONObject).getJSONObject("user")).getString(
                                         "kidsDob"
@@ -210,8 +236,20 @@ class LoginViewModel : ViewModel() {
                                     (response.get("data") as JSONObject).getJSONObject("user").getString(
                                 "motherStage"
                                 )
+                                address=
+                                    (response.get("data") as JSONObject).getJSONObject("user").getString(
+                                        "address"
+                                    )
+
+                                subscriptionStartDate=(response["data"] as JSONObject).getJSONObject("user")
+                                    .getString("subscriptionStartDate")
+                                subsriptionEndDate=(response["data"] as JSONObject).getJSONObject("user")
+                                    .getString("subscriptionEndingDate")
+                                Log.d("start",subscriptionStartDate)
+                                Log.d("end",subsriptionEndDate)
                                 val info = UserInfo(
                                     uid,
+                                    userName,address,
                                     isNewUser,
                                     "Normal",
                                     email,
@@ -227,7 +265,6 @@ class LoginViewModel : ViewModel() {
                                     token,
                                     true
                                 )
-
                                 loginResponse.value = info
                                 toggleUI()
                             }
@@ -246,6 +283,7 @@ class LoginViewModel : ViewModel() {
                                     incorrectPassword.value = true
                                 }
 
+                                Log.d("div", "onError errorDetail : " + error.errorBody)
                                 errorFromApiResponse.value = errorRes
                             } else {
                                 // error.getErrorDetail() : connectionError, parseError, requestCancelledError
@@ -255,6 +293,52 @@ class LoginViewModel : ViewModel() {
                             toggleUI()
                         }
                     })
+            })
+    }
+    fun getNPDetails(context: Context)
+    {
+        toggleUI()
+        val uid = AllUtil.getUserId()
+        AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    if (response.getString("status") == "Success") {
+                        viewModelScope.launch {
+                            if(response["data"].toString()=="null")
+                            {
+                                iSNPNew.value=true
+                            }
+                            else {
+                                Log.d("data", response["data"].toString())
+
+                                val nonPremiumAccount =
+                                    AllUtil.getNonPAccount(response.get("data").toString())
+                                UptoddSharedPreferences.getInstance(context)
+                                    .saveNonPAccount(nonPremiumAccount)
+                                nonPremiumAccount.anythingSpecial?.let {
+                                    Log.d(
+                                        "anythingTodos",
+                                        it
+                                    )
+                                }
+                                iSNPNew.value=false
+                            }
+                        }
+
+                    } else {
+
+                    }
+                    toggleUI()
+                }
+
+                override fun onError(error: ANError) {
+                    toggleUI()
+                    Log.e("errorNonpremim", error.errorBody)
+                    errorFromApiResponse.value=error.errorDetail
+                }
             })
     }
 }

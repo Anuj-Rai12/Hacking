@@ -152,13 +152,13 @@ class ReferFragment : Fragment() {
     }
 
     private fun resetFields() {
-        binding.editTextName.setText("")
+        binding.editTextToys.setText("")
         binding.editTextEmail.setText("")
         binding.editTextPhone.setText("")
     }
 
     private fun onClickSubmit() {
-        if (binding.editTextName.text.isEmpty())
+        if (binding.editTextToys.text.isEmpty())
             binding.textViewError.text = getString(R.string.enter_valid_name)
         else if (binding.editTextEmail.text.isEmpty() || !isEmailValid(binding.editTextEmail.text.toString()))
             binding.textViewError.text = getString(R.string.enter_valid_email)
@@ -167,7 +167,7 @@ class ReferFragment : Fragment() {
         else {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 viewModel.sendReferral(
-                    binding.editTextName.text.toString(), binding.editTextEmail.text.toString(),
+                    binding.editTextToys.text.toString(), binding.editTextEmail.text.toString(),
                     binding.editTextPhone.text.toString(), System.currentTimeMillis()
                 )
             } else {

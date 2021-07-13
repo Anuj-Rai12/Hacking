@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import java.time.LocalDate
 import java.time.Period
+import java.time.format.DateTimeFormatter
 
 class KidsPeriod(context: Context) {
     var preferences: SharedPreferences = context.getSharedPreferences(
@@ -49,15 +50,22 @@ class KidsPeriod(context: Context) {
                 ),
                 LocalDate.now()
             ).years)
-            period = years * 12 + months
+            period = (years * 12) + months
+
+
+
             Log.d("div", "KidsPeriod L43 $period $years $months")
-            if (period < 12)
-                period = (((period) / 3) + 1) * 3
-            else
-                period = (((period) / 6) + 1) * 6
+
+            period = when {
+                period>36 -> 36
+                period < 12 -> (((period) / 3) + 1) * 3
+                else -> (((period) / 6) + 1) * 6
+            }
+
             Log.d("div", "KidsPeriod L45 $period")
             Log.d("div", "KidsPeriod L45 $period")
-            return period
+
+           return period
         }
     }
 

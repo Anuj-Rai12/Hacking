@@ -280,6 +280,7 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import java.text.SimpleDateFormat
 
 
 class LoginFragment : Fragment() {
@@ -453,16 +454,98 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
                 UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
-                UptoddSharedPreferences.getInstance(requireContext()).saveStage(viewModel.motherStage)
-                if (userInfo.isNewUser) {
-                    view?.findNavController()
-                        ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+                if(viewModel.motherStage=="pre birth")
+                {
+                    viewModel.motherStage="prenatal"
+                }
+                else if(viewModel.motherStage=="post birth")
+                {
+                    viewModel.motherStage="postnatal"
+                }
+
+
+                UptoddSharedPreferences.getInstance(requireContext()).savePhone(viewModel.phoneNo)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveStage(viewModel.motherStage)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveSubStartDate(viewModel.subscriptionStartDate)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveSubEndDate(viewModel.subsriptionEndDate)
+
+                val start = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subscriptionStartDate)
+                val end = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subsriptionEndDate)
+
+                val months=AllUtil.getDifferenceMonth(start.time,end.time)
+                UptoddSharedPreferences.getInstance(requireContext()).saveCurrentSubPlan(months)
+
+                val difference = AllUtil.getDifferenceDay(start.time, end.time)
+
+
+                if (difference < 30) {
+                    UptoddSharedPreferences.getInstance(requireContext()).saveUserType("nonPremium")
+
+
+
+                    viewModel.getNPDetails(requireContext())
+                    viewModel.iSNPNew.observe(viewLifecycleOwner, Observer {
+
+                        Log.d("userType", "nonPremium")
+                        if(AllUtil.isSubscriptionOver(end))
+                        {
+                            view?.findNavController()?.navigate(R.id.action_loginFragment_to_upgradeFragment2)
+                            Log.d("subscription","ended")
+                        }
+                        else
+                        {
+                            if (it) {
+                                view?.findNavController()
+                                    ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+                            }
+                            else
+                            {
+                                AllUtil.registerToken("normal")
+                                startActivity(
+                                    Intent(activity, TodosListActivity::class.java)
+                                )
+                                activity?.finish()
+                            }
+
+                            Log.d("subscription"," not ended")
+                        }
+                    })
                 } else {
-                    AllUtil.registerToken("normal")
-                    startActivity(
-                        Intent(activity, TodosListActivity::class.java)
-                    )
-                    activity?.finish()
+                    UptoddSharedPreferences.getInstance(requireContext()).saveUserType("premium")
+
+                    val country=if(viewModel.phoneNo?.startsWith("+91")!!)
+                        "india"
+                    else
+                        "row"
+
+                    Log.d("userType", "Premium")
+                    if (userInfo.isNewUser) {
+                        view?.findNavController()
+                            ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+                    } else {
+
+                        AllUtil.registerToken("normal")
+                        if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
+                        {
+                                view?.findNavController()
+                                    ?.navigate(R.id.action_loginFragment_to_dobFragment)
+                        }
+                        else if((userInfo.address==null ||userInfo.address=="null") && country=="india")
+                        {
+
+                            view?.findNavController()
+                                ?.navigate(R.id.action_loginFragment_to_addressFragment)
+                        }
+                        else {
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                        }
+                    }
                 }
             }
         })

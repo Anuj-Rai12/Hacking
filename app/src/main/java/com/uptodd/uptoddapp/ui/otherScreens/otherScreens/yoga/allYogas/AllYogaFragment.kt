@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -25,6 +26,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.yoga.YogaDao
 import com.uptodd.uptoddapp.databinding.FragmentAllYogaBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +72,17 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_allYogaFragment_to_upgradeFragment)
+        }
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         yogaDao = UptoddDatabase.getInstance(requireContext()).yogaDao
 
@@ -135,8 +148,9 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language&userType=$userType")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()

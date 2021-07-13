@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.activitypodcast
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,8 +9,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
@@ -18,13 +22,17 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckPodcastWorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +73,17 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentActivityPodcastBinding.inflate(inflater, container, false)
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if( !AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_activityPodcastFragment_to_upgradeFragment)
+        }
         return binding.root
     }
 
@@ -120,7 +139,9 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
         Log.d("months", months.toString())
 
-        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}")
+        val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val country=AllUtil.getCountry(requireContext())
+        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}?userType=$userType&country=$country")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
             .addPathParameter("lang", lang)
@@ -130,7 +151,9 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
 
-                    if (response == null) return
+                    if (response == null)
+                    {
+                    }
 
                     /* the get method doesn't support returning
                        nullable types so in order to handle nullable
@@ -139,16 +162,49 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                     */
 
                     try {
-                        val data = response.get("data") as JSONArray
+                        val data = response?.get("data") as JSONArray
                         if (data.length() <= 0) {
                             showNoData()
                             hideRecyclerView()
                         } else {
+
+
+
                             parseData(response.get("data") as JSONArray)
                             hideNodata()
                         }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
+                        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+
+                        if(stage=="prenatal" || stage=="pre birth")
+                        {
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("This section is only for postnatal user","Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        findNavController().navigateUp()
+
+                                    }
+                                })
+
+
+                        }
+                        if(!AllUtil.isUserPremium(requireContext()))
+                        {
+                            val title=activity?.actionBar?.title.toString()
+
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you","Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        findNavController().navigateUp()
+
+                                    }
+                                })
+
+                        }
+
                         showNoData()
                         hideRecyclerView()
                         return
@@ -157,6 +213,24 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                     }
                 }
                 override fun onError(anError: ANError?) {
+
+                   val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+
+                    if(stage=="prenatal" || stage=="pre birth")
+                    {
+                        val upToddDialogs = UpToddDialogs(requireContext())
+                        upToddDialogs.showInfoDialog("This section is only for postnatal user","Close",
+                            object : UpToddDialogs.UpToddDialogListener {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+
+                                    findNavController().navigateUp()
+
+                                }
+                            })
+
+
+                    }
+
                     binding.activityPodcastRefresh.isRefreshing = false
                 }
 
@@ -196,6 +270,26 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     }
 
     private fun showNoData() {
+        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+            if (!AllUtil.isUserPremium(requireContext())) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                        }
+                    })
+
+            }
+        }
         binding.noDataContainer.isVisible = true
     }
 

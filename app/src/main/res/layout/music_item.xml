@@ -17,10 +17,9 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/music_item_image"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
                 android:background="@android:color/transparent"
-                android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,7 +50,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/poem_item_image"
                 app:layout_constraintStart_toStartOf="@+id/poem_item_image"
-                app:layout_constraintTop_toBottomOf="@id/poem_item_image"
+                app:layout_constraintTop_toBottomOf="@+id/music_item_image"
                 tools:text="Poem" />
 
 

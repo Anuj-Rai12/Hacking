@@ -7,12 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -113,6 +115,12 @@ class SplashScreenActivity : AppCompatActivity() {
 
             val notIntent = Intent(this, TodosListActivity::class.java)
             notIntent.putExtras(intent)
+
+            if(intent.getIntExtra("showUp",0)==1)
+            {
+               notIntent.putExtra("showUp",1)
+                Log.d("ms splash","Show up")
+            }
             startActivity(notIntent)
             this.finishAffinity()
 
@@ -147,6 +155,7 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, DoctorDashboard::class.java))
             this.finishAffinity()
         } else {
+
             startActivity(Intent(this, LoginActivity::class.java))
             this.finishAffinity()
         }

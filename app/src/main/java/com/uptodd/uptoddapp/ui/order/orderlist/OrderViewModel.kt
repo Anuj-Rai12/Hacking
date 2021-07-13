@@ -9,6 +9,8 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.order.Order
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -31,7 +33,8 @@ class OrderViewModel:ViewModel()
 
     fun getOrdersFromDatabase() {
         if(_allOrderList.value==null) {
-            AndroidNetworking.get("https://uptodd.com/api/appusers/products/{userId}")
+            val userType= UptoddSharedPreferences.getInstance(context!!).getUserType()
+            AndroidNetworking.get("https://uptodd.com/api/appusers/products/{userId}?userType=$userType")
                 .addPathParameter("userId", userId)
                 .addHeaders("Authorization", "Bearer $token")
                 .setPriority(Priority.HIGH)

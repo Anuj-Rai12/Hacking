@@ -187,7 +187,7 @@ dependencies {
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
 
     //CameraView Library for Camera
-    api 'com.otaliastudios:cameraview:2.6.4'
+    api 'com.otaliastudios:cameraview:2.7.0'
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
@@ -209,5 +209,13 @@ dependencies {
     // swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    //razor pay
+    implementation 'com.razorpay:checkout:1.6.6'
+
+    //paypal
+    implementation ('com.paypal.sdk:paypal-android-sdk:2.16.0')
+            {
+                exclude group:'io.card'
+            }
 
 }

@@ -18,6 +18,12 @@
 
     <string name="your_daily_score_board">आपका दैनिक स्कोर बोर्ड </string>
 
+    <!--Upgrade-->
+    <string name="up_program_desc"></string>
+    <string name="up_program_title">Premium Program</string>
+    <string name="up_program_tagline">EMPOWER YOUR BABY WITH THE BEST</string>
+    <string name="up_program_plane_extra">(Complimentary app access of 3 extra months)</string>
+
     <string name="mark_activities">मार्क क्रियाएँ </string>
 
     <string name="today_s_tip">आज की युक्ति </string>
@@ -217,6 +223,7 @@
     <string name="end_date">अंतिम तिथि </string>
 
     <string name="my_patients">मेरे मरीज </string>
+    <string name="setupLoading">We are getting things ready for you</string>
 
     <string name="my_doctors">मेरे डॉक्टर्स </string>
 
@@ -225,6 +232,7 @@
     <string name="capture_moment">मोमेंट कैप्चर करें </string>
 
     <string name="expected_outcomes">अपेक्षित परिणाम </string>
+    <string name="subscriptionEnded">Thank you for taking the 10 days program for baby\'s growth and development</string>
 
     <string name="blogs">ब्लॉग </string>
 
@@ -641,4 +649,17 @@
     <string name="delivery_date">डिलीवरी की तारीख :</string>
 
     <string name="language_text">भाषा</string>
+
+    <!--Non premium forms-->
+    <string name="np_next">Next</string>
+    <string name="np_finish">Finish</string>
+    <string name="np_question_name">What\'s your name</string>
+    <string name="np_question_baby_name">Whats\'s your baby name</string>
+    <string name="np_question_baby_dob">What\'s baby dob</string>
+    <string name="np_question_delivery">Expected month of delivery</string>
+    <string name="np_question_anything">Anything that you do for your baby\'s growth?</string>
+    <string name="np_question_baby_toys">What toys do you use for your baby?</string>
+    <string name="np_question_baby_minutes">How many minutes a day can you give for your baby\'s development?</string>
+    <string name="np_question_baby_toys_special_needs">Any Special needs you have around your baby\'s development?</string>
+    <string name="np_question_baby_major_objective">What is the major objective to join this program?</string>
 </resources>

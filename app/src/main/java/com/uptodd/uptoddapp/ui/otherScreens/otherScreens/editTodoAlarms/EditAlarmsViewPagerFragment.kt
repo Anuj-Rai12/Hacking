@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.EditAlarmsViewPagerAdapter
 import com.uptodd.uptoddapp.databinding.FragmentEditAlarmsViewPagerBinding
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 
 
@@ -25,6 +27,18 @@ class EditAlarmsViewPagerFragment : Fragment() {
 
         initialiseBindingAndViewModel(inflater, container)
         setupViewPager()
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_editAlarmsViewPagerFragment_to_upgradeFragment)
+        }
 
         return binding.root
     }

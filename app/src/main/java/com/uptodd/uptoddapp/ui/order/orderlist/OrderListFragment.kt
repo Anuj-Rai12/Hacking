@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,10 +26,13 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.order.Order
 import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.databinding.FragmentOrderListBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.android.synthetic.main.order_item_view.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OrderListFragment : Fragment() {
@@ -37,7 +41,7 @@ class OrderListFragment : Fragment() {
     private lateinit var viewModel: OrderViewModel
 
     lateinit var preferences: SharedPreferences
-
+    var row=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -81,6 +85,17 @@ class OrderListFragment : Fragment() {
 
         binding.buttonUpgrade.setOnClickListener { onClickExtendSubscription() }
         binding.buttonExtendSubscription.setOnClickListener { onClickExtendSubscription() }
+        val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
+        val country=if(UptoddSharedPreferences.getInstance(requireContext()).getPhone()?.startsWith("+91")!!)
+            "india"
+        else
+            "row"
+        if(country=="row") {
+            row=true
+            supportActionBar.title = "Expert Prescription"
+        }
+        displayOrders(createOrderList())
+
 
         return binding.root
     }
@@ -94,9 +109,9 @@ class OrderListFragment : Fragment() {
                     "OrderListFragment L52 Observercalled ${viewModel.allOrderList.value!!}"
                 )
                 if (viewModel.allOrderList.value!!.isEmpty()) {
-                    binding.imageViewEmpty.visibility = View.VISIBLE
-                    binding.textViewEmpty.visibility = View.VISIBLE
-                    binding.buttonExtendSubscription.visibility = View.INVISIBLE
+                   // binding.imageViewEmpty.visibility = View.VISIBLE
+                    //binding.textViewEmpty.visibility = View.VISIBLE
+                    //binding.buttonExtendSubscription.visibility = View.INVISIBLE
                 } else {
                     binding.imageViewEmpty.visibility = View.INVISIBLE
                     binding.textViewEmpty.visibility = View.INVISIBLE
@@ -143,6 +158,23 @@ class OrderListFragment : Fragment() {
         }
     }
 
+    private fun createOrderList():List<Order>
+    {
+
+        var orderList= arrayListOf<Order>()
+        for (i in 0..2)
+        {
+            var order=Order(i.toLong(),
+                "${System.currentTimeMillis()}",
+                (Math.random()%2).toLong()+1,
+                "Demo $i",
+                (Math.random()%2).toLong()+1,true,
+                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),"","")
+            orderList.add(order)
+        }
+        return orderList.toList()
+    }
+
     private fun displayOrders(orderList: List<Order>?) {
         if (orderList != null) {
             for (order in orderList) {
@@ -151,16 +183,18 @@ class OrderListFragment : Fragment() {
                     activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 childView = inflater.inflate(R.layout.order_item_view, null)
 
+                if(row) {
+                    childView.textView2.text = " Prescription No: "
+                }
+                childView.textView_deliveryStatus.text="Date: "
                 childView.textView_orderNo.text = order.orderNo
-                childView.textView_monthNo.text = getString(R.string.month_no) + order.monthNo
-                childView.textView_productNameAndQty.text =
-                    order.productname + " | " + getString(R.string.qty) + order.quantity
+                childView.textView_monthNo.text ="Month: " + order.monthNo
+                if(row)
+                {
+                    childView.textView_productNameAndQty.text = "Prescription Name: "+order.productname + " | " + getString(R.string.qty) + order.quantity
+                }
                 //val date=decodeDate(order.deliveryDate)
                 childView.textView_date.text = "( " + order.deliveryDate + " )"
-                if (order.deliveryStatus)
-                    childView.textView_deliveryStatus.text = getString(R.string.delivered)
-                else
-                    childView.textView_deliveryStatus.text = getString(R.string.expected_delivery)
                 if (order.details == "null" || order.details == null) {
                     childView.button_viewDetails.visibility = View.GONE
                     childView.button_download.visibility = View.GONE

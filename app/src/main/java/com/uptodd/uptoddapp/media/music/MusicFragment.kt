@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -22,6 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -75,6 +77,20 @@ class MusicFragment : Fragment() {
             container,
             false
         )
+
+
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_music_to_upgradeFragment)
+        }
+
 
         preferences = requireActivity().getSharedPreferences("MUSIC", Context.MODE_PRIVATE)
 
@@ -139,6 +155,22 @@ class MusicFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                         })
+                    if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                        if (!AllUtil.isUserPremium(requireContext())) {
+                            val title = activity?.actionBar?.title.toString()
+
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                "Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        findNavController().navigateUp()
+
+                                    }
+                                })
+
+                        }
+                    }
                 }
                 else -> {
                     uptoddDialogs.dismissDialog()
@@ -154,7 +186,7 @@ class MusicFragment : Fragment() {
 
     private fun updateMusic(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext()))
-            viewModel.initializeAll()
+            viewModel.initializeAll(requireContext())
         preferences.edit {
 
             putString(
@@ -301,13 +333,17 @@ class MusicFragment : Fragment() {
         viewModel.isPlaying.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.musicPlay.setImageResource(R.drawable.material_pause)
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", true)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
             } else {
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", false)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
-            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-            intent.putExtra("toRun", true)
-            intent.putExtra("musicType", "poem")
-            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {
@@ -436,10 +472,13 @@ class MusicFragment : Fragment() {
         supportActionBar.title = getString(R.string.music)
         supportActionBar.setHomeButtonEnabled(true)
         supportActionBar.setDisplayHomeAsUpEnabled(true)
+        /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", false)
         intent.putExtra("musicType", "music")
         requireContext().sendBroadcast(intent)
+
+         */
     }
 
 }

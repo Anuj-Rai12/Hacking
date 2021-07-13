@@ -15,15 +15,21 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
+import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
 import com.uptodd.uptoddapp.database.referrals.ReferredListItemDoctor
 import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.database.support.Experts
 import com.uptodd.uptoddapp.database.support.Sessions
 import com.uptodd.uptoddapp.database.support.Ticket
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
+import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
 import org.json.JSONObject
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 
@@ -120,6 +126,12 @@ class AllUtil{
             val type: Type = object : TypeToken<ArrayList<Experts?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<Experts>
         }
+        fun getNonPAccount(jsonString: String): NonPremiumAccount {
+            val gson = Gson()
+            val type: Type = object : TypeToken<NonPremiumAccount>() {}.type
+            return gson.fromJson(jsonString, type) as NonPremiumAccount
+        }
+
 
         fun getAllDates(jsonString: String): ArrayList<Int> {
             val gson = Gson()
@@ -131,6 +143,11 @@ class AllUtil{
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<MusicFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<MusicFiles>
+        }
+        fun getAllUpgrade(jsonString: String): ArrayList<UpgradeItem> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<UpgradeItem?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<UpgradeItem>
         }
 
         fun getAllResources(jsonString: String): ArrayList<ResourceFiles> {
@@ -356,9 +373,54 @@ class AllUtil{
         {
             return "https://uptodd.com/resources/user/${name}"
         }
+        fun getDifferenceDay(start:Long,end:Long):Long
+        {
+            return TimeUnit.DAYS.convert(end-start,TimeUnit.MILLISECONDS)
+        }
+        fun getDifferenceMonth(start:Long,end:Long):Long
+        {
+            return TimeUnit.DAYS.convert(end-start,TimeUnit.MILLISECONDS)/30
+        }
+
+        fun isSubscriptionOver(ending:Date):Boolean
+        {
+            var cal=Calendar.getInstance()
+            return cal.time.after(ending)
+        }
+
+        fun isSubscriptionOverActive(context: Context):Boolean
+        {
+            val pref=UptoddSharedPreferences.getInstance(context)
+            val month=pref.getCurrentPlan()
+            val date =LocalDate.parse(pref.getSubEnd())
+            var added=date.plusMonths(month).toString()
+            val end = SimpleDateFormat("yyyy-MM-dd").parse(added)
+            return isSubscriptionOver(end)
+        }
+
+
+
+
+        fun isUserPremium(context: Context):Boolean
+        {
+            return UptoddSharedPreferences.getInstance(context).getUserType()=="premium"
+        }
+
+        fun getCountry(context: Context):String
+        {
+            return  if(UptoddSharedPreferences.getInstance(context).getPhone()?.startsWith("+91")!!)
+                "india"
+            else
+                "row"
+        }
+        fun isRow(context: Context):Boolean
+        {
+            return !UptoddSharedPreferences.getInstance(context).getPhone()?.startsWith("+91")!!
+        }
+
+
 
     }
-
     fun s() {
         val cal = Calendar.getInstance()
         val days = cal.getMaximum(Calendar.DAY_OF_MONTH)

@@ -23,6 +23,7 @@ class NannyLoginViewModel : ViewModel() {
     var babyDOB: Long = 0L
     var profileImageUrl: String = ""
     var tokenHeader: String = ""
+    var address=""
 
     var isValidatingEmailPassword = MutableLiveData<Boolean>()
     var errorFromApiResponse = MutableLiveData<String>()
@@ -41,6 +42,7 @@ class NannyLoginViewModel : ViewModel() {
 
     var loginIdMsg = ""
     var passwordMsg = ""
+    var userName:String="No Name"
     var showLoginProgress = MutableLiveData<Boolean>()
 
     fun beginLogin() {
@@ -93,10 +95,18 @@ class NannyLoginViewModel : ViewModel() {
                         uid =
                             ((response.get("data") as JSONObject).getJSONObject("user")).getLong("id")
                                 .toString()
+                        userName =
+                            ((response.get("data") as JSONObject).getJSONObject("user")).getString(
+                                "name"
+                            )
                         kidsDob =
                             ((response.get("data") as JSONObject).getJSONObject("user")).getString("kidsDob")
                         babyName =
                             ((response.get("data") as JSONObject).getJSONObject("user")).getString("kidsName")
+                        address=
+                            (response.get("data") as JSONObject).getJSONObject("user").getString(
+                                "address"
+                            )
                         if (babyName == "null")
                             babyName = "baby"
                         profileImageUrl =
@@ -106,7 +116,8 @@ class NannyLoginViewModel : ViewModel() {
                         tokenHeader = (response.get("data") as JSONObject).getString("token")
 
                         val userInfo = UserInfo(
-                            uid,
+                            uid,userName,
+                            address,
                             isNewUser,
                             "Nanny",
                             email,

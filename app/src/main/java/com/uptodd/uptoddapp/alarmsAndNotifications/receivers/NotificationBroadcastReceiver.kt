@@ -53,6 +53,8 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             checkPodcastAdded(context,intent)
         else if(intent.getStringExtra("type")=="MemoryBooster")
         checkMemoryBoosterAdded(context,intent)
+        else if(intent.getStringExtra("type")=="Upgrade")
+        showUpgradeNotification(context, intent)
         else
             showNotification(context,intent)
     }
@@ -60,6 +62,12 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
    private fun showNotification(context: Context,intent: Intent)
     {
         val notificationIntent = Intent(context, SplashScreenActivity::class.java)
+
+        if(intent.getStringExtra("type")=="Upgrade")
+        {
+            notificationIntent.putExtra("showUp",1)
+            UptoddSharedPreferences.getInstance(context).showUpgrade(0)
+        }
 
         val builder = UptoddNotificationUtilities.notificationBuilder(
             context,
@@ -85,10 +93,10 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val uid = AllUtil.getUserId()
         val months= getMonth(context!!)
         val lang= AllUtil.getLanguage()
-
+        val country=AllUtil.getCountry(context)
         val size=UptoddDatabase.getInstance(context).activityPodcastDao.getAll().value?.size
 
-        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}")
+        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&country=$country")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
             .addPathParameter("lang",lang)
@@ -144,9 +152,11 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
         val database=UptoddDatabase.getInstance(context).musicDatabaseDao
         val uid = AllUtil.getUserId()
-        val prenatal =if(UptoddSharedPreferences.getInstance(context).getStage()=="pre birth") 0 else 1
+        val stage=UptoddSharedPreferences.getInstance(context).getStage()
+        val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
         val lang = AllUtil.getLanguage()
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}")
+        val country=AllUtil.getCountry(context)
+        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&country=$country")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())
@@ -257,6 +267,19 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         return song.language == null
     }
 
+    private fun showUpgradeNotification(context: Context, intent: Intent)
+    {
+        val days= arrayOf<Long>(4,6,9,12,10,11,12,13,14,15)
+        var daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftNP()
+        var mDaysLeft=15-daysLeft
+
+        if(days.contains(mDaysLeft))
+        {
+            showNotification(context,intent)
+        }
+
+    }
+
     private fun updatePath(musicDatabase: MusicFilesDatabaseDao,music: MusicFiles, path: String) {
         Log.i("inserting", "inserting init")
         GlobalScope.launch {
@@ -267,5 +290,6 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             musicDatabase.insert(music)
         }
     }
+
 
 }

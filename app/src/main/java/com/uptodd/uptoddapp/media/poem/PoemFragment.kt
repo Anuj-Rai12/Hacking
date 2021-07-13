@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -73,6 +74,18 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
             container,
             false
         )
+
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_poemFragment_to_upgradeFragment)
+        }
 
         preferences = requireActivity().getSharedPreferences("POEM", Context.MODE_PRIVATE)
 
@@ -158,6 +171,22 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
                                 findNavController().navigateUp()
                             }
                         })
+                    if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                        if (!AllUtil.isUserPremium(requireContext())) {
+                            val title = activity?.actionBar?.title.toString()
+
+                            val upToddDialogs = UpToddDialogs(requireContext())
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                "Close",
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        findNavController().navigateUp()
+
+                                    }
+                                })
+
+                        }
+                    }
                 }
                 else -> {
 
@@ -174,7 +203,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
     private fun updatePoems(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext())) {
-            viewModel.initializeAll()
+            viewModel.initializeAll(requireContext())
             preferences.edit {
                 putString("last_updated", today.timeInMillis.toString())
                 apply()
@@ -203,13 +232,17 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         viewModel.isPlaying.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.musicPlay.setImageResource(R.drawable.material_pause)
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", true)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
             } else {
                 binding.musicPlay.setImageResource(R.drawable.material_play)
+                val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+                intent.putExtra("toRun", false)
+                intent.putExtra("musicType", "poem")
+                requireContext().sendBroadcast(intent)
             }
-            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-            intent.putExtra("toRun", true)
-            intent.putExtra("musicType", "poem")
-            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {

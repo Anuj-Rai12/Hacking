@@ -9,16 +9,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.AllTicketsFragmentBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.all.allsessions.AllSessions
 import com.uptodd.uptoddapp.support.all.expert.ExpertTeam
 import com.uptodd.uptoddapp.support.all.support.SupportTeam
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import java.text.SimpleDateFormat
 
 class AllTicketsFragment : Fragment() {
 
@@ -56,16 +61,60 @@ class AllTicketsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
         binding.allTicketsBinding = viewModel
 
-        setupViewPager(binding)
+        val end=SimpleDateFormat("yyyy-mm-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+        if(!AllUtil.isUserPremium(requireContext()))
+        {
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+                object :UpToddDialogs.UpToddDialogListener
+                {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                    }
 
-        viewModel.isLoading.observe(viewLifecycleOwner, {
+                    override fun onDialogDismiss() {
+                        view?.findNavController()?.navigateUp()
+                    }
+
+                }
+            )
+        }
+        else if(AllUtil.isSubscriptionOver(end))
+        {
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+                object :UpToddDialogs.UpToddDialogListener
+                {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                    }
+
+                    override fun onDialogDismiss() {
+                        view?.findNavController()?.navigateUp()
+                    }
+
+                }
+            )
+        }
+        else{
+            setupViewPager(binding)
+            viewModel.init()
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             it.let {
                 when (it) {
                     0 -> {
                         uptoddDialogs.dismissDialog()
                     }
                     1 -> {
-                        uptoddDialogs.showLoadingDialog(findNavController())
+                        if(AllUtil.isUserPremium(requireContext()))
+                            uptoddDialogs.showLoadingDialog(findNavController())
+                        else
+                        {
+
+                        }
+
                     }
                     else -> {
                         uptoddDialogs.dismissDialog()
@@ -82,7 +131,7 @@ class AllTicketsFragment : Fragment() {
                     }
                 }
             }
-        })
+        }
 
         return binding.root
     }
@@ -100,13 +149,11 @@ class AllTicketsFragment : Fragment() {
         adapter.apply {
             addFragment(SupportTeam())
             addFragment(ExpertTeam())
-            addFragment(AllSessions())
         }
 
         val fragmentTitleList = arrayListOf(
             "Support",
-            "Expert",
-            "Sessions"
+            "Expert"
         )
 
         TabLayoutMediator(binding.tabLayout, binding.allTicketsViewPager) { tab, position ->

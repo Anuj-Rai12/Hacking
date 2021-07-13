@@ -207,9 +207,11 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
 
     private fun getAllPoems(context: Context) {
         val uid = AllUtil.getUserId()
-        val prenatal =if(UptoddSharedPreferences.getInstance(context).getStage()=="pre birth") 0 else 1
+        val stage=UptoddSharedPreferences.getInstance(context).getStage()
+        val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
         val lang = AllUtil.getLanguage()
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}")
+        val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())

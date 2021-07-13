@@ -9,11 +9,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidnetworking.AndroidNetworking
@@ -26,6 +28,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.colour.ColourDao
 import com.uptodd.uptoddapp.databinding.FragmentColorsBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +77,17 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         colourDao = UptoddDatabase.getInstance(requireContext()).colourDao
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.materialButton.visibility= View.GONE
+            }
+        }
+        binding.materialButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_coloursFragment_to_upgradeFragment)
+        }
 
         return binding.root
     }
@@ -144,17 +158,41 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
             val language = ChangeLanguage(requireContext()).getLanguage()
             isLoadingDialogVisible.value = true
             showLoadingDialog()
+            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/colors?lang=$language")
+                AndroidNetworking.get("https://uptodd.com/api/colors?lang=$language&userType=$userType")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null) {
+                            if (response != null && response["data"]!="null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 parseData(data)
+                            }
+                            else
+                            {
+                                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                                    if (!AllUtil.isUserPremium(requireContext())) {
+                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+
+                                        val upToddDialogs = UpToddDialogs(requireContext())
+                                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                            "Close",
+                                            object : UpToddDialogs.UpToddDialogListener {
+                                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                                    dialog.dismiss()
+
+                                                }
+
+                                                override fun onDialogDismiss() {
+                                                    findNavController().navigateUp()
+                                                }
+                                            })
+
+                                    }
+                                }
                             }
                             binding.colorRefresh.isRefreshing = false
                             binding.colorProgress.visibility = View.GONE

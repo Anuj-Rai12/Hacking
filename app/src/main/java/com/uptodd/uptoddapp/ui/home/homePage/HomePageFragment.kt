@@ -239,11 +239,15 @@ class HomePageFragment : Fragment() {
 
 
         val months = KidsPeriod(requireActivity()).getKidsAge()
-        if (months == 0)
-            binding.babyAgeView.text = getString(R.string.babyMonthsFormat, -1)
-        else
+        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+        if(stage=="pre birth" ||stage=="prenatal")
+        {
+             binding.babyAgeView.text = getString(R.string.babyAgePrenatal)
+        }
+        else if (months <12)
             binding.babyAgeView.text = getString(R.string.babyMonthsFormat, months)
-
+        else
+            binding.babyAgeView.text=getString(R.string.babyYearFormat,months/12,months%12)
     }
 
 
