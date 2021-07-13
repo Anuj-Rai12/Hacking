@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/todos_navigation"
     app:startDestination="@id/homePageFragment">
     <fragment
         android:id="@+id/blogsFragment"
         android:name="com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsFragment"
-        android:label="Blogs" />
+        android:label="@string/blogs" />
     <!--    <fragment-->
     <!--        android:id="@+id/webinarsFragment"-->
     <!--        android:name="com.uptodd.uptoddapp.ui.webinars.webinarslist.WebinarsFragment"-->
@@ -504,7 +505,32 @@
 <!--            app:popEnterAnim="@android:anim/slide_in_left"-->
 <!--            app:popExitAnim="@android:anim/slide_out_right" />-->
     </fragment>
-<!--    <fragment-->
+    <fragment
+        android:id="@+id/activityPodcastFragment"
+        android:name="com.uptodd.uptoddapp.ui.activitypodcast.ActivityPodcastFragment"
+        android:label="@string/activity_podcast" />
+    <fragment
+        android:id="@+id/speedBoosterFragment"
+        android:name="com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterFragment"
+        tools:layout="@layout/memory_booster_fragment"
+        android:label="@string/memory_booster" >
+        <action
+            android:id="@+id/action_speedBoosterFragment_to_memoryBoosterDetailsFragment"
+            app:destination="@id/memoryBoosterDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/memoryBoosterDetailsFragment"
+        android:name="com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterDetailsFragment"
+        android:label="Details" />
+    <fragment
+        android:id="@+id/resourcesFragment"
+        android:name="com.uptodd.uptoddapp.media.resources.ResourceFragment"
+        android:label="@string/resources" />
+
+
+
+    <!--    <fragment-->
 <!--        android:id="@+id/activityVideoFragment"-->
 <!--        android:name="com.uptodd.uptoddapp.ui.activitysample.ActivityVideoFragment"-->
 <!--        android:label="Activity Sample">-->

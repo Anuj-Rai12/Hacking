@@ -1,4 +1,5 @@
-package com.uptodd.uptoddapp.media.poem
+package com.uptodd.uptoddapp.media.memorybooster
+
 
 import android.Manifest
 import android.app.Dialog
@@ -24,7 +25,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.makeramen.roundedimageview.RoundedImageView
@@ -33,23 +37,27 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
+import com.uptodd.uptoddapp.databinding.MemoryBoosterFragmentBinding
 import com.uptodd.uptoddapp.databinding.PoemFragmentBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
+import com.uptodd.uptoddapp.media.poem.PoemFragmentDirections
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckMemoryBoosterWorkManager
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckPodcastWorkManager
 import java.util.*
 
 
-class PoemFragment : Fragment(), PoemAdapterInterface {
+class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
-    private lateinit var binding: PoemFragmentBinding
+    private lateinit var binding: MemoryBoosterFragmentBinding
     private lateinit var downloadManager: UpToddDownloadManager
     private lateinit var uptoddDialogs: UpToddDialogs
-    private lateinit var viewModel: PoemViewModel
+    private lateinit var viewModel: MemoryBoosterViewModel
     private lateinit var preferences: SharedPreferences
 
-    private val adapter = PoemAdapter(this)
+    private val adapter = SpeedBoosterAdapter(this)
     var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +77,13 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.poem_fragment,
+            R.layout.memory_booster_fragment,
             container,
             false
         )
 
-        preferences = requireActivity().getSharedPreferences("POEM", Context.MODE_PRIVATE)
-
+        preferences = requireActivity().getSharedPreferences("SPEED_BOOSTER", Context.MODE_PRIVATE)
+        requestWorkManager()
         uptoddDialogs = UpToddDialogs(requireContext())
 
         downloadManager = UpToddDownloadManager(requireContext())
@@ -90,8 +98,8 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         val viewModelFactory =
             UptoddViewModelFactory.getInstance(requireActivity().application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PoemViewModel::class.java)
-        binding.poemViewModel = viewModel
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterViewModel::class.java)
+        binding.speedBoosterViewModel=viewModel
 
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
 
@@ -110,7 +118,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-            viewModel.initializeOffline()
+           updatePoems(today)
         }
 
 
@@ -119,12 +127,8 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 //        else
 //            viewModel.initializeOffline()
 
+
         setTimer(binding)
-
-        if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
-            binding.musicPlayerLayout.visibility = View.GONE
-        }
-
 
         viewModel.poems.observe(viewLifecycleOwner, Observer { poems ->
             Log.i("update", "$poems")
@@ -144,8 +148,8 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
                     uptoddDialogs.showLoadingDialog(findNavController())
                 }
                 0 -> {
-                    uptoddDialogs.dismissDialog()
                     initializeObservers(binding)
+                    uptoddDialogs.dismissDialog()
                 }
                 -1 -> {
                     uptoddDialogs.dismissDialog()
@@ -174,7 +178,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
     private fun updatePoems(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext())) {
-            viewModel.initializeAll()
+            viewModel.initializeAll(requireContext())
             preferences.edit {
                 putString("last_updated", today.timeInMillis.toString())
                 apply()
@@ -183,7 +187,9 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         binding.poemRefresh.isRefreshing = false
     }
 
-    private fun initializeObservers(binding: PoemFragmentBinding) {
+    private fun initializeObservers(binding: MemoryBoosterFragmentBinding) {
+
+
 
         viewModel.isMediaReady.observe(viewLifecycleOwner, Observer {
             it.let {
@@ -206,10 +212,6 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
             } else {
                 binding.musicPlay.setImageResource(R.drawable.material_play)
             }
-            val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-            intent.putExtra("toRun", true)
-            intent.putExtra("musicType", "poem")
-            requireContext().sendBroadcast(intent)
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {
@@ -327,7 +329,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         return row
     }
 
-    private fun setTimer(binding: PoemFragmentBinding) {
+    private fun setTimer(binding: MemoryBoosterFragmentBinding) {
 
         val dropDownMenu = PopupMenu(requireContext(), binding.musicTimer)
         val menu = dropDownMenu.menu
@@ -417,8 +419,10 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
     override fun onPause() {
         requireActivity().requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR       //to restrict landscape orientation
+            ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR //to restrict landscape orientation
 
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onPause()
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", true)
@@ -432,7 +436,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
         super.onResume()
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
-        supportActionBar.title = getString(R.string.poem)
+        supportActionBar.title = getString(R.string.memory_booster)
         supportActionBar.setHomeButtonEnabled(true)
         supportActionBar.setDisplayHomeAsUpEnabled(true)
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
@@ -445,13 +449,34 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
     }
 
-    override fun onClickPoem(poem: MusicFiles) {
-        viewModel.playFile(poem)
-        binding.musicTitle.text = poem.name
-        binding.musicPlayerLayout.visibility = View.VISIBLE
+    override fun onClickPoem(poem: MusicFiles,position:Int) {
         //if time is already set and the user changes music, cancel the timer
-        if (UpToddMediaPlayer.timer != null)
-            binding.musicTimer.performClick()
+
+        if(UpToddMediaPlayer.isPlaying)
+        {
+           if(UpToddMediaPlayer.songPlaying.id!=poem.id)
+           {
+               UpToddMediaPlayer.isPlaying=false
+           }
+        }
+        preferences.edit().putInt("currentFileIndex",position).apply()
+
+        Navigation.findNavController(requireView()).navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
+    }
+    private fun requestWorkManager()
+    {
+
+        val check=preferences.getInt("ALREADY_REQUESTED",0)
+
+        if(check==0) {
+            var workRequest = OneTimeWorkRequest.Builder(
+                CheckMemoryBoosterWorkManager::class.java
+            ).build()
+
+            context?.let { WorkManager.getInstance(it).enqueue(workRequest) }
+
+            preferences.edit().putInt("ALREADY_REQUESTED", 1).apply()
+        }
     }
 
 }

@@ -271,6 +271,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddWebsiteActivity
+import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.databinding.FragmentLoginBinding
 import com.uptodd.uptoddapp.doctor.DoctorLogin
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -452,6 +453,7 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
                 UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
+                UptoddSharedPreferences.getInstance(requireContext()).saveStage(viewModel.motherStage)
                 if (userInfo.isNewUser) {
                     view?.findNavController()
                         ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())

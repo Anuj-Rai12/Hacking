@@ -9,16 +9,24 @@ class UpToddMediaPlayer {
 
     private var thread = Thread {}
 
+
     companion object {
         val mediaPlayer: MediaPlayer = MediaPlayer()
+        val upToddMediaPlayer=UpToddMediaPlayer()
         var songPlaying: MusicFiles = MusicFiles()
         var songIndex: Int = -1
         var isPlaying = false
         var timer: Long? = null
+        var isMemoryBooster:Boolean?=false
         private var mediaPlaylist: ArrayList<MusicFiles> = ArrayList()
     }
 
+
+
     fun setSource(song: MusicFiles) {
+
+        isMemoryBooster = song.prenatal!=-1
+
         if (isPlaying) {
             mediaPlayer.stop()
             isPlaying = false
@@ -44,7 +52,9 @@ class UpToddMediaPlayer {
     }
 
     private fun generateUrl(song: MusicFiles): String {
-        if (song.language == null)
+        if (song.prenatal!=-1)
+            return  "https://uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
+        else if (song.language == null)
             return "https://uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
         else
             return "https://uptodd.com/files/poem/${song.name!!.trim()}.aac"

@@ -30,6 +30,9 @@ data class MusicFiles(
     var playtimeInMinutes:Int = 0,
 
     @ColumnInfo(name = "filePath")
-    var filePath:String = ""
+    var filePath:String = "",
+
+    @ColumnInfo(name = "prenatal")
+    var prenatal:Int = -1
 
 ) : Serializable

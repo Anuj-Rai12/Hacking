@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterDetailsViewModel
 import com.uptodd.uptoddapp.media.music.MusicViewModel
 import com.uptodd.uptoddapp.media.poem.PoemViewModel
+import com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterViewModel
 import com.uptodd.uptoddapp.ui.account.account.AccountViewModel
 import com.uptodd.uptoddapp.ui.blogs.blogslist.BlogsListViewModel
 import com.uptodd.uptoddapp.ui.capturemoments.selecttype.SelectTypeViewModel
@@ -88,6 +90,18 @@ class UptoddViewModelFactory private constructor(
         if (modelClass.isAssignableFrom(SelectTypeViewModel::class.java)) {
             val token = preferences.getString("token", "")
             return SelectTypeViewModel(application, token) as T
+        }
+
+        // memorybooster viewmodel
+        if(modelClass.isAssignableFrom(MemoryBoosterViewModel::class.java))
+        {
+            return MemoryBoosterViewModel(database.musicDatabaseDao, application) as T
+        }
+
+        // memoryboooster viewmodel
+        if(modelClass.isAssignableFrom(MemoryBoosterDetailsViewModel::class.java))
+        {
+            return MemoryBoosterDetailsViewModel(database.musicDatabaseDao,application) as T
         }
 
 

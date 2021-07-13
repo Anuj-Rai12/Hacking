@@ -22,6 +22,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.databinding.FragmentStageBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -59,11 +60,13 @@ class StageFragment : Fragment() {
         binding.imageButtonBorn.setOnClickListener {
             editor?.putString("stage", "pre birth")
             editor?.commit()
+            UptoddSharedPreferences.getInstance(requireContext()).saveStage("post birth")
 
             view?.findNavController()?.navigate(R.id.action_stageFragment_to_babyGenderFragment)
         }
         binding.imageButtonPregnant.setOnClickListener {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                UptoddSharedPreferences.getInstance(requireContext()).saveStage("pre birth")
                 viewModel.isLoadingDialogVisible.value = true
                 showLoadingDialog()
                 viewModel.insertLoginDetails()

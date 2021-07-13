@@ -21,6 +21,10 @@
                         android:icon="@drawable/ic_baseline_library_music_24"
                         android:title="@string/poem" />
                     <item
+                        android:id="@+id/speedBoosterFragment"
+                        android:icon="@drawable/ic_baseline_library_music_24"
+                        android:title="@string/memory_booster" />
+                    <item
                         android:id="@+id/toysFragment"
                         android:icon="@drawable/ic_baseline_toys_24"
                         android:title="@string/toys" />
@@ -64,6 +68,15 @@
                         android:id="@+id/activitySampleFragment"
                         android:icon="@drawable/ic_menu_slideshow"
                         android:title="@string/activity_sample" />
+                    <item
+                        android:id="@id/activityPodcastFragment"
+                        android:icon="@drawable/ic_menu_slideshow"
+                        android:title="@string/activity_podcast"/>
+                    <item
+                        android:id="@id/resourcesFragment"
+                        android:icon="@drawable/ic_baseline_library_books_24"
+                        android:iconTint="@color/black"
+                        android:title="@string/resources"/>
 
                 </group>
             </menu>

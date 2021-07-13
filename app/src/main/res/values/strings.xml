@@ -127,7 +127,7 @@
     <string name="refer">Refer</string>
     <string name="capture_moment">Capture Moment</string>
     <string name="expected_outcomes">Expected Outcomes</string>
-    <string name="blogs">Blogs</string>
+    <string name="blogs">Tips &amp; Guidelines</string>
     <string name="webinars">Webinars</string>
     <string name="not_now">Not Now</string>
     <string name="a_c_holder">A/C Holder:</string>
@@ -355,7 +355,7 @@
     <string name="general">General</string>
     <string name="user_section">User section</string>
     <string name="my_referrals">My referrals</string>
-
+    <string name="activity_podcast"> Activity Podcast</string>
     <string name="welcome">Welcome </string>
     <string name="landscape_not_allowed">Landscape not allowed</string>
     <string name="months">" months"</string>
@@ -368,6 +368,15 @@
     <string name="go_back" translatable="false">go back</string>
     <string name="activity_sample">Activity Sample</string>
     <string name="no_data" translatable="false">No Data</string>
+
+    <!--Activity Podcast-->
+
+    <!--Memory Booster-->
+    <string name="memory_booster">Memory Booster</string>
+
+    <!--Resource Files-->
+
+
 
 
 </resources>

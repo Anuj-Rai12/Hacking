@@ -14,6 +14,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
+import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
 import com.uptodd.uptoddapp.database.referrals.ReferredListItemDoctor
 import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.database.support.Experts
@@ -130,6 +131,12 @@ class AllUtil{
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<MusicFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<MusicFiles>
+        }
+
+        fun getAllResources(jsonString: String): ArrayList<ResourceFiles> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<ResourceFiles?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<ResourceFiles>
         }
 
         fun getJsonObject(jsonString: String): JSONObject {
@@ -288,9 +295,11 @@ class AllUtil{
                 AndroidNetworking.get("https://uptodd.com/api/appusers/checksubscription/{userId}")
                     .addPathParameter("userId", userId)
                     .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
+                    .getAsJSONObject(object : JSONObjectRequestListener
+                    {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response.get("status") == "Success") {
+                            if (response != null && response.get("status") == "Success")
+                            {
                                 val endingDate=(response.get("data") as JSONObject).getString("subscriptionEndingDate")
                                 val calendar=Calendar.getInstance()
                                 calendar.set(endingDate.substring(0,4).toInt(),endingDate.substring(5,7).toInt(),endingDate.substring(8,10).toInt())
@@ -338,8 +347,16 @@ class AllUtil{
         }
 
         fun getPoemImage(song: MusicFiles, dpi: String): String {
-            return "https://uptodd.com/images/app/android/thumbnails/poems/${dpi}/${song.image!!.trim()}.webp"
+            return if(song.prenatal!=-1)
+                "https://uptodd.com/images/app/android/details/memory_booster/${song.image!!}.webp"
+            else
+                "https://uptodd.com/images/app/android/thumbnails/poems/${dpi}/${song.image!!.trim()}.webp"
         }
+        fun getResourceUrl(name: String):String
+        {
+            return "https://uptodd.com/resources/user/${name}"
+        }
+
     }
 
     fun s() {

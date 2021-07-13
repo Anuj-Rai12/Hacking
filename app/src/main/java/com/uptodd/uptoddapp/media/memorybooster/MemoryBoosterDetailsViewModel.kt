@@ -1,6 +1,7 @@
-package com.uptodd.uptoddapp.media.poem
+package com.uptodd.uptoddapp.media.memorybooster
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,21 +11,25 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class PoemViewModel(val database: MusicFilesDatabaseDao, application: Application) : AndroidViewModel(
-    application)  {
+class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, application: Application) :
+    AndroidViewModel(
+        application
+    ) {
 
     private var dpi = ""
 
     private lateinit var downloadedPoems: List<MusicFiles>
 
-    private var _isLoading: MutableLiveData<Int> = MutableLiveData()
+    var _isLoading: MutableLiveData<Int> = MutableLiveData()
     val isLoading: LiveData<Int>
         get() = _isLoading
 
@@ -41,6 +46,14 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
     private var _title = MutableLiveData<String>()
     val title: LiveData<String>
         get() = _title
+
+    private var _description = MutableLiveData<String>()
+    val description: LiveData<String>
+        get() = _description
+
+    var _currentFile = MutableLiveData<MusicFiles>()
+    val currentFile: LiveData<MusicFiles>
+        get() = _currentFile
 
     private var _image = MutableLiveData<String>()
     val image: LiveData<String>
@@ -68,13 +81,42 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
     }
 
+    fun intializeSame()
+    {
+        val music=UpToddMediaPlayer.songPlaying
+        _description.value=music.description
+        _title.value=music.name
+        _image.value= AllUtil.getPoemImage(music, dpi)
+        mediaPlayer.setMediaPlayerListener(object :UpToddMediaPlayer.MediaPlayerListener
+        {
+            override fun onComplete() {
+
+            }
+
+            override fun onReady() {
+
+            }
+
+            override fun onReset(song: MusicFiles) {
+
+            }
+            override fun onStartPlaying() {
+                _isPlaying.value=true
+            }
+            override fun onPause() {
+                _isPlaying.value=false
+            }
+        })
+
+    }
+
     private fun initializePoems() {
         viewModelScope.launch {
-            downloadedPoems = database.getAllDownloadedPoem()
+            downloadedPoems = database.getAllSpeedBoosterFiles()
         }
     }
 
-    fun initializeOffline(){
+    fun initializeOffline() {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
@@ -85,12 +127,12 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         }
 
         viewModelScope.launch {
-            downloadedPoems = database.getAllDownloadedPoem()
-            downloadedPoems.forEach{
+            downloadedPoems = database.getAllSpeedBoosterFiles()
+            downloadedPoems.forEach {
                 Log.i("DP", "${it.id} -> ${it.name}")
             }
             _poems.value = ArrayList(downloadedPoems)
-            _poems.value?.forEach{
+            _poems.value?.forEach {
                 Log.i("PV", "${it.id} -> ${it.name}")
             }
             _isLoading.value = 0
@@ -110,6 +152,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
                 _image.value = AllUtil.getPoemImage(song, dpi)
                 _title.value = song.name
+                _description.value=song.description
                 currentPlaying = song.id
             }
 
@@ -123,7 +166,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         })
     }
 
-    fun initializeAll() {
+    fun initializeAll(context: Context) {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
@@ -133,7 +176,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
             _image.value = ""
         }
 
-        getAllPoems()
+        getAllPoems(context)
 
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
@@ -162,18 +205,24 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         })
     }
 
-    private fun getAllPoems() {
-        AndroidNetworking.get("https://uptodd.com/api/poems")
-            .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
+    private fun getAllPoems(context: Context) {
+        val uid = AllUtil.getUserId()
+        val prenatal =if(UptoddSharedPreferences.getInstance(context).getStage()=="pre birth") 0 else 1
+        val lang = AllUtil.getLanguage()
+        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .addPathParameter("userId",uid.toString())
+            .addPathParameter("prenatal",prenatal.toString())
+            .addPathParameter("lang",lang)
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
                         viewModelScope.launch {
-                            val  poems = AllUtil.getAllMusic(response.get("data").toString())
+                            val poems = AllUtil.getAllMusic(response.get("data").toString())
                             poems.forEach {
-                                if(getIsPoemDownloaded(it))
+                                if (getIsPoemDownloaded(it))
                                     it.filePath = database.getFilePath(it.id)
                                 else
                                     it.filePath = "NA"
@@ -199,6 +248,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
     fun playPauseMusic() {
         if (UpToddMediaPlayer.songIndex != -1) {
             mediaPlayer.playPause()
+            _isPlaying.value = UpToddMediaPlayer.isPlaying
         }
     }
 
@@ -206,12 +256,14 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         mediaPlayer.playNext()
     }
 
-    fun prevSong(){
+    fun prevSong() {
         mediaPlayer.playPrevious()
     }
 
     fun playFile(poem: MusicFiles) {
+        _currentFile.value=poem
         _title.value = poem.name
+        _description.value=poem.description
         _image.value = AllUtil.getPoemImage(poem, dpi)
         _isMediaReady.value = false
         mediaPlayer.setSource(poem)

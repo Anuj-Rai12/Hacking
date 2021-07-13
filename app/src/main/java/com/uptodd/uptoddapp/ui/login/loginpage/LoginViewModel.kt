@@ -14,6 +14,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.iid.FirebaseInstanceId
 import com.uptodd.uptoddapp.database.logindetails.Explorers
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +38,7 @@ class LoginViewModel : ViewModel() {
     var profileImageUrl: String = ""
     var tokenHeader: String = ""
     var parentType: String = ""
+    var motherStage=""
 
 
     var emailId = MutableLiveData<String>()
@@ -204,7 +206,10 @@ class LoginViewModel : ViewModel() {
                                         ).parse(kidsDob)!!.time
                                 tokenHeader =
                                     (response.get("data") as JSONObject).getString("token")
-
+                                motherStage=
+                                    (response.get("data") as JSONObject).getJSONObject("user").getString(
+                                "motherStage"
+                                )
                                 val info = UserInfo(
                                     uid,
                                     isNewUser,
@@ -222,6 +227,7 @@ class LoginViewModel : ViewModel() {
                                     token,
                                     true
                                 )
+
                                 loginResponse.value = info
                                 toggleUI()
                             }

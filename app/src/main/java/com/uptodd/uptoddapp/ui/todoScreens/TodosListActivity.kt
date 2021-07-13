@@ -40,6 +40,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
 import com.uptodd.uptoddapp.workManager.*
@@ -122,7 +123,7 @@ class TodosListActivity : AppCompatActivity() {
                 getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 "Downloads"
             ),
-            manager
+            manager,this
         )
 
 
@@ -164,6 +165,7 @@ class TodosListActivity : AppCompatActivity() {
                 R.id.vaccinationFragment,
                 R.id.blogsFragment,
                 R.id.activitySampleFragment,
+                R.id.activityPodcastFragment,
                 R.id.captureImageFragment,
                 R.id.orderListFragment,
                 R.id.referFragment,
@@ -205,6 +207,7 @@ class TodosListActivity : AppCompatActivity() {
                 R.id.toysFragment,
                 R.id.storiesFragment,
                 R.id.dietFragment,
+                R.id.speedBoosterFragment,
                 R.id.changeLanguageNanny
             ), drawerLayout
         )

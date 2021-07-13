@@ -9,9 +9,9 @@ class MediaStopReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         if(intent!=null) {
             if(intent.extras!=null) {
-                val upToddMediaPlayer = UpToddMediaPlayer()
+                val upToddMediaPlayer = UpToddMediaPlayer.upToddMediaPlayer
                 if(UpToddMediaPlayer.songIndex!=-1){
-                    upToddMediaPlayer.playNext()
+                    upToddMediaPlayer.playPause()
                     val broadcastIntent = Intent(context, BackgroundPlayer::class.java)
                     broadcastIntent.putExtra("toRun", true)
                     broadcastIntent.putExtra("musicType", intent.getStringExtra("musicType"))
