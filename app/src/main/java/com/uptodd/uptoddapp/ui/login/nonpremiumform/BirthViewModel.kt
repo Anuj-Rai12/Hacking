@@ -122,7 +122,7 @@ class BirthViewModel: ViewModel() {
         npAcc.kidsToy?.let { putToys(it) }
         npAcc.majorObjective?.let { putObjective(it) }
         parent?.let { putWhichParent(it) }
-        AndroidNetworking.post("https://uptodd.com/api/nonPremiumAppusers/initialSetup")
+        AndroidNetworking.post("https://www.uptodd.com/api/nonPremiumAppusers/initialSetup")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(json)
             .setPriority(Priority.MEDIUM)
