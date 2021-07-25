@@ -239,7 +239,8 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
                                     apiFiles.forEach {
                                         if (musicFiles.containsKey(it.image)) {
                                             Log.i("musicc", it.name!!)
-                                            musicFiles[it.image]!!.add(it)
+                                            if(!musicFiles[it.image]!!.contains(it))
+                                                musicFiles[it.image]!!.add(it)
                                         } else {
                                             Log.i("musicnc", it.name!!)
                                             musicFiles[it.image!!] = ArrayList()

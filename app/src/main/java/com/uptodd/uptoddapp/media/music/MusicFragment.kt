@@ -374,6 +374,7 @@ class MusicFragment : Fragment() {
         list: HashMap<String, ArrayList<MusicFiles>>,
         binding: MusicFragmentBinding
     ) {
+
         if (list.isNotEmpty()) {
             viewModel.showLoading()
             val musicList = binding.musicList
@@ -389,6 +390,7 @@ class MusicFragment : Fragment() {
                 musicCategoryTitle.text = it.key
 
                 musicCategoryList.removeAllViews()
+
                 //for each category, add its music files
                 it.value.forEach { music ->
                     val inflater1 =
@@ -397,6 +399,8 @@ class MusicFragment : Fragment() {
                     val musicTitle: TextView = musicItemView.findViewById(R.id.music_item_title)
                     val musicImage: RoundedImageView =
                         musicItemView.findViewById(R.id.music_item_image)
+
+
 
                     musicTitle.text = music.name
 
@@ -445,7 +449,6 @@ class MusicFragment : Fragment() {
                     musicCategoryList.addView(musicItemView)
                 }
                 musicList.addView(v)
-
             }
 
             viewModel.doneLoading()
