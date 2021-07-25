@@ -154,6 +154,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     }
 
 
+
     fun initializeOffline() {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
@@ -165,6 +166,8 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             _title.value = ""
             _image.value = ""
         }
+
+        musicFiles= HashMap()
 
         viewModelScope.launch {
             downloadedMusic = database.getAllDownloadedMusic()
@@ -180,6 +183,8 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             }
             _isLoading.value = 0
         }
+
+
 
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
@@ -218,6 +223,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     }
 
     private fun getAllMusicCategories(context: Context) {
+        _isLoading.value=1
         musicFiles = HashMap()
         val language = AllUtil.getLanguage()
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
@@ -236,11 +242,13 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
 
                                 try {
                                     val apiFiles = AllUtil.getAllMusic(response.get("data").toString())
+
+                                    musicFiles=HashMap()
                                     apiFiles.forEach {
                                         if (musicFiles.containsKey(it.image)) {
                                             Log.i("musicc", it.name!!)
-                                            if(!musicFiles[it.image]!!.contains(it))
-                                                musicFiles[it.image]!!.add(it)
+                                            if(!musicFiles[it.image]?.contains(it)!!)
+                                                musicFiles[it.image]?.add(it)
                                         } else {
                                             Log.i("musicnc", it.name!!)
                                             musicFiles[it.image!!] = ArrayList()

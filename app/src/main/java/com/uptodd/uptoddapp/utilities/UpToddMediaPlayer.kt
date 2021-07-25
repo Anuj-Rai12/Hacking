@@ -112,8 +112,6 @@ class UpToddMediaPlayer {
             }
             else
             {
-                thread.stop()
-                playPause()
                 Log.d("false alive","true")
             }
         }

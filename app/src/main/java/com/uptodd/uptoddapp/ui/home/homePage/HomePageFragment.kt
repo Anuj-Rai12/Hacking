@@ -889,9 +889,15 @@ class HomePageFragment : Fragment() {
                             if (it.getString("data") != "null") {
 
                                 val data = it.get("data") as String
+                                var url = if(!data.startsWith("https://wwww")) {
+                                    "https://www.${data.substring(8)}"
+                                } else
+                                    data
+
+                                Log.d("url","$url")
 
                                 JishnuDownloadManager(
-                                    data,
+                                    url,
                                     "UptoddAppGuidelines.pdf",
                                     File(
                                         requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
