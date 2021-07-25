@@ -7,6 +7,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 
 class ForgetPasswordViewModel :ViewModel()
@@ -30,7 +31,8 @@ class ForgetPasswordViewModel :ViewModel()
         jsonObject.put("email",email)
 
         if(!isDoctorReset) {
-            AndroidNetworking.post("https://uptodd.com/api/appusers/forgotpassword")
+            AndroidNetworking.post("https://www.uptodd.com/api/appusers/forgotpassword")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -63,7 +65,8 @@ class ForgetPasswordViewModel :ViewModel()
                 })
         }
         else{
-            AndroidNetworking.post("https://uptodd.com/api/doctor/forgotpassword")
+            AndroidNetworking.post("https://www.uptodd.com/api/doctor/forgotpassword")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()

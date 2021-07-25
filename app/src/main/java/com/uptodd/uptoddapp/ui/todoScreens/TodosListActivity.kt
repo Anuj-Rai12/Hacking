@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,7 +20,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +30,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.ANRequest
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -37,7 +39,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
-import com.uptodd.uptoddapp.CaptureMomentsActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -45,7 +46,6 @@ import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment
 import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -180,6 +180,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             DEFAULT_HOMEPAGE_INTENT
         )
         viewModel.notificationIntentExtras.value = intent.extras
+
 
 
 
@@ -347,7 +348,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             if (url == "null" || url == "") {
                 headerImage.setImageResource(res)
             } else {
-                url = "https:uptodd.com/uploads/$url"
+                url = "https://www.uptodd.com/uploads/$url"
 
 
                 var imageFile: File?
@@ -495,8 +496,16 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                 .addTag(DAILY_WORK_MANAGER_TAG)
                 .build()
 
+
+
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyAlarmScheduler)
+    }
+
+    fun AndroidNetworking.get(url: String):ANRequest.GetRequestBuilder<*>
+    {
+        return AndroidNetworking.get(url)
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
     }
 
     private fun fireWeeklyAlarmWorkManager() {
@@ -537,7 +546,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
     private fun fireDailyActivities()
     {
-        val dailyCheckWorker = PeriodicWorkRequestBuilder<CheckDailyActivites>(3, TimeUnit.HOURS)
+        val dailyCheckWorker = PeriodicWorkRequestBuilder<CheckDailyActivites>(5,TimeUnit.HOURS)
             .setInitialDelay(24,TimeUnit.HOURS)
             .addTag(DAILYCHECK_WORK_MANAGER_TAG)
             .build()
@@ -577,6 +586,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         drawerLayout.openDrawer(Gravity.LEFT)
         drawerLayout.closeDrawer(Gravity.LEFT)
     }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        navController?.popBackStack(R.id.homePageFragment,false)
+    }
+
 
 
     override fun onBackPressed() {

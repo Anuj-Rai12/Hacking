@@ -27,7 +27,7 @@ class ReferViewModel :ViewModel()
         jsonObject.put("patientMail", email)
         jsonObject.put("patientPhone", phone)
 
-        AndroidNetworking.post("https://uptodd.com/api/referredpatients")
+        AndroidNetworking.post("https://www.uptodd.com/api/referredpatients")
             .addHeaders("Authorization","Bearer $token")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)

@@ -126,6 +126,13 @@ class SplashScreenActivity : AppCompatActivity() {
                 notIntent.putExtra("showUp", 1)
                 Log.d("ms splash", "Show up")
             }
+            val notifyId=intent.getStringExtra("notifyId")
+            notifyId.let {
+                Log.d("notfiyId",it.toString())
+                notIntent.putExtra("notifyId",it)
+                notIntent.flags=Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+
 
             val isNewUser = preferences.getBoolean(UserInfo::isNewUser.name, false)
 
@@ -153,7 +160,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 }
                 else if(stage=="postnatal"  &&dob=="null" || dob==null || dob=="")
                 {
-                    val newLInt = Intent(this, LoginActivity::class.java)
                     newLInt.putExtra(KEY_NEW,1)
                 }
                 else
@@ -197,7 +203,6 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, DoctorDashboard::class.java))
             this.finishAffinity()
         } else {
-
             startActivity(Intent(this, LoginActivity::class.java))
             this.finishAffinity()
         }
@@ -283,6 +288,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
             UptoddSharedPreferences.getInstance(this).setScoreDatabaseCreatedStatusTrue()
         } else return
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 
 }

@@ -132,7 +132,7 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
             val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
             val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/yoga?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -186,7 +186,7 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/details/yogas/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/details/yogas/$dpi/"
         var i = 0
         var step = 0
         list.clear()

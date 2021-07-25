@@ -31,7 +31,7 @@ class NoteViewModel : ViewModel() {
             jsonObject.put("doctorFeedback", note)
             _isLoading.value = 1
 
-            AndroidNetworking.put("https://uptodd.com/api/doctor/referreddoctors")
+            AndroidNetworking.put("https://www.uptodd.com/api/doctor/referreddoctors")
                 .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .addHeaders("Content-Type", "application/json")
@@ -65,7 +65,7 @@ class NoteViewModel : ViewModel() {
             jsonObject.put("feedback", note)
             _isLoading.value = 1
 
-            AndroidNetworking.put("https://uptodd.com/api/referredpatients")
+            AndroidNetworking.put("https://www.uptodd.com/api/referredpatients")
                 .addJSONObjectBody(jsonObject)
                 .addHeaders("Content-Type", "application/json")
                 .setPriority(Priority.MEDIUM)

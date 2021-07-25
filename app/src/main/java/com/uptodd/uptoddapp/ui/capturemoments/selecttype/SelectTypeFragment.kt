@@ -188,7 +188,7 @@ class SelectTypeFragment : Fragment(), SelectTypeAdapter.OnClickListener {
                 imgUrl.let {
                     val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
                     val appendable =
-                        "https://uptodd.com/images/app/android/details/cards_category/$dpi/"
+                        "https://www.uptodd.com/images/app/android/details/cards_category/$dpi/"
                     val url = appendable + imgUrl + ".webp"
                     Glide.with(imageView.context)
                         .load(url)

@@ -61,8 +61,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val amount = 1.0
-            intent.getDoubleExtra(AMOUNT_KEY, 0.0)
+        val amount = intent.getDoubleExtra(AMOUNT_KEY, 0.0)
         val payment_type = intent.getStringExtra(PAYMENT_TYPE)
 
         productMonth = intent.getIntExtra(PAYMENT_PRODUCT_MONTH, 0)
@@ -98,7 +97,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener
                             PurchaseUnit(
                                 amount = Amount(
                                     currencyCode = CurrencyCode.USD,
-                                    value = "0.1"
+                                    value = "$amount"
                                 )
                             )
                         )

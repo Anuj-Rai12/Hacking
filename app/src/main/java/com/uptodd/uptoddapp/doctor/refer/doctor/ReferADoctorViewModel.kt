@@ -60,7 +60,7 @@ class ReferADoctorViewModel : ViewModel() {
             jsonObject.put("phone", phone.value)
             jsonObject.put("city", city.value)
 
-            AndroidNetworking.post("https://uptodd.com/api/doctor/referreddoctors")
+            AndroidNetworking.post("https://www.uptodd.com/api/doctor/referreddoctors")
                 .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)

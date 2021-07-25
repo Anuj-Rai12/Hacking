@@ -64,10 +64,11 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         val months= getMonth(context!!)
         val lang= AllUtil.getLanguage()
         val country= AllUtil.getCountry(context)
+        val stage=UptoddSharedPreferences.getInstance(context).getStage()
         val userType= UptoddSharedPreferences.getInstance(context).getUserType()
         val size= UptoddSharedPreferences.getInstance(context).getSaveCountPodcast()
 
-        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&country=$country&userType=$userType")
+        AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
             .addPathParameter("lang",lang)
@@ -83,6 +84,8 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
 
                         val data = response.get("data") as JSONArray
 
+                        Log.d("size p","${data.length()} > $size")
+
                         if(data.length()>size)
                         {
                             showNotification(
@@ -92,7 +95,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
                                 60009,
                                 NotificationCompat.PRIORITY_DEFAULT
                             )
-                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("lACTIVITY_PODCAST",-1).apply()
+                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("ACTIVITY_PODCAST",-1).apply()
                         }
 
                     }
@@ -118,6 +121,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
         val lang = AllUtil.getLanguage()
         val country= AllUtil.getCountry(context)
+        val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val size= UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
         val database= UptoddDatabase.getInstance(context).memoryBoosterDao
         val manager: DownloadManager = DownloadManager.Builder().context(context)
@@ -125,7 +129,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
             .threadPoolSize(3)
             .logger { message -> Log.d("TAG", message!!) }
             .build()
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&country=$country")
+        AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())
@@ -137,10 +141,9 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
                     if (response.getString("status") == "Success") {
 
                         val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
+                        Log.d("size m","${poems.size} > $size")
                         if(poems?.size>size)
                         {
-
-
                             showNotification(
                                 context,"New Memory  Booster Music  Added",
                                 "Hey Mom/Dad, Check new Memory Booster Music Added for you.",
@@ -149,6 +152,9 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
                                 NotificationCompat.PRIORITY_DEFAULT
 
                                 )
+
+
+
 
                             GlobalScope.launch {
 
@@ -209,7 +215,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         )
 
         val request: DownloadRequest = DownloadRequest.Builder()
-            .url("https://uptodd.com/files/memory_booster/${fileMusic.file?.trim()}.aac")
+            .url("https://www.uptodd.com/files/memory_booster/${fileMusic.file?.trim()}.aac")
             .retryTime(3)
             .retryInterval(2, TimeUnit.SECONDS)
             .progressInterval(1, TimeUnit.SECONDS)
@@ -273,7 +279,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         val country= AllUtil.getCountry(context)
         val size= UptoddSharedPreferences.getInstance(context).getSaveCountSession()
 
-        AndroidNetworking.get("https://uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
+        AndroidNetworking.get("https://www.uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("period", period.toString())
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -315,7 +321,9 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
             })
     }
 
-    private fun showNotification(context: Context,title:String,text:String,notificationChannelId:String,notificationId:Int,priority:Int)
+    companion object
+    {
+     fun showNotification(context: Context,title:String,text:String,notificationChannelId:String,notificationId:Int,priority:Int)
     {
         val notificationManager=context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -346,6 +354,8 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         }
 
         val notificationIntent = Intent(context, SplashScreenActivity::class.java)
+        notificationIntent?.flags=Intent.FLAG_ACTIVITY_CLEAR_TOP
+        notificationIntent.putExtra("notifyId",notificationChannelId)
 
         val builder = UptoddNotificationUtilities.notificationBuilder(
             context,
@@ -362,6 +372,7 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
         )
 
     }
+        }
 
 
 

@@ -26,7 +26,7 @@ class AccountRepository(private val accountPreference: UptoddSharedPreferences) 
 
     suspend fun refreshAccountDetails(userId: String, token: String?) {
         withContext(Dispatchers.IO) {
-            AndroidNetworking.get("https://uptodd.com/api/appusers/{userId}")
+            AndroidNetworking.get("https://www.uptodd.com/api/appusers/{userId}")
                 .addPathParameter("userId", userId)
                 .addHeaders("Authorization", "Bearer $token")
                 .setPriority(Priority.HIGH)

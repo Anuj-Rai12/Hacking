@@ -38,7 +38,7 @@ class DailyFragment : Fragment(), AllTodosRecyclerAdapter.AllTodosListener {
         val period = getPeriod(requireContext())
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val appendable =
-            "https://uptodd.com/images/app/android/details/activities/$period/$dpi/"
+            "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
         uiScope.launch {
             val list = database.getTodosOfType(DAILY_TODO, period)

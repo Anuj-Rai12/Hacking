@@ -66,11 +66,11 @@ class UpToddMediaPlayer {
 
     private fun generateUrl(song: MusicFiles): String {
         if (song.prenatal!=-1)
-            return  "https://uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
-        else if (song.language == null)
-            return "https://uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
+            return  "https://www.uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
+        else if (song.language == null || song.language=="null")
+            return "https://www.uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
         else
-            return "https://uptodd.com/files/poem/${song.name!!.trim()}.aac"
+            return "https://www.uptodd.com/files/poem/${song.name!!.trim()}.aac"
     }
 
     fun setPlaylist(playlist: ArrayList<MusicFiles>, indexOf: Int) {
@@ -112,6 +112,8 @@ class UpToddMediaPlayer {
             }
             else
             {
+                thread.stop()
+                playPause()
                 Log.d("false alive","true")
             }
         }

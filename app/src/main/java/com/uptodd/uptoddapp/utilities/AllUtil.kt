@@ -82,7 +82,7 @@ class AllUtil{
                 editor.remove("language")
                 editor.commit()
 
-                AndroidNetworking.get("https://uptodd.com/api/userlogout/{userId}")
+                AndroidNetworking.get("https://www.uptodd.com/api/userlogout/{userId}")
                     .addHeaders("Authorization", "Bearer ${getAuthToken()}")
                     .addPathParameter("userId", getUserId().toString())
                     .build()
@@ -131,7 +131,7 @@ class AllUtil{
                 editor.remove("language")
                 editor.commit()
 
-                AndroidNetworking.get("https://uptodd.com/api/userlogout/{userId}")
+                AndroidNetworking.get("https://www.uptodd.com/api/userlogout/{userId}")
                     .addHeaders("Authorization", "Bearer ${getAuthToken()}")
                     .addPathParameter("userId", getUserId().toString())
                     .build()
@@ -174,9 +174,10 @@ class AllUtil{
 
                 var url=""
                 if(userType=="doctor")
-                    url="https://uptodd.com/api/doctor/deviceToken/{userId}"
+                    url="https://www.uptodd.com/api/doctor/deviceToken/{userId}"
                 else if(userType=="normal" || userType=="nanny")
-                    url="https://uptodd.com/api/appusers/deviceToken/{userId}"
+                    url="https://www.uptodd.com/api/appusers/deviceToken/{userId}"
+
                 if(userType=="normal" || userType=="nanny" || userType=="doctor") {
                     Log.d("div","AllUtil L55 $url $userType ${getUserId()}")
                     AndroidNetworking.put(url)
@@ -201,7 +202,7 @@ class AllUtil{
         fun unregisterToken() {
             val jsonObject = JSONObject()
             jsonObject.put("deviceToken", "")
-            AndroidNetworking.put("https://uptodd.com/api/appusers/deviceToken/{userId}")
+            AndroidNetworking.put("https://www.uptodd.com/api/appusers/deviceToken/{userId}")
                 .addPathParameter("userId", getUserId().toString())
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -439,7 +440,7 @@ class AllUtil{
             if (sharedPreferences.contains("uid") && sharedPreferences.getString("uid", "") != null) {
                 val userId = sharedPreferences.getString("uid", "")!!
 
-                AndroidNetworking.get("https://uptodd.com/api/appusers/checksubscription/{userId}")
+                AndroidNetworking.get("https://www.uptodd.com/api/appusers/checksubscription/{userId}")
                     .addPathParameter("userId", userId)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener
@@ -486,7 +487,7 @@ class AllUtil{
         }
 
         fun getMusicImage(song: MusicFiles, dpi: String): String {
-            return "https://uptodd.com/images/app/android/thumbnails/musics/${dpi}/${song.image!!.trim()}.webp"
+            return "https://www.uptodd.com/images/app/android/thumbnails/musics/${dpi}/${song.image!!.trim()}.webp"
         }
 
         fun getAuthToken():String?{
@@ -495,18 +496,22 @@ class AllUtil{
 
         fun getPoemImage(song: MusicFiles, dpi: String): String {
             return if(song.prenatal!=-1)
-                "https://uptodd.com/images/app/android/details/memory_booster/${song.image!!}.webp"
+                "https://www.uptodd.com/images/app/android/details/memory_booster/${song.image!!}.webp"
             else
-                "https://uptodd.com/images/app/android/thumbnails/poems/${dpi}/${song.image!!.trim()}.webp"
+                "https://www.uptodd.com/images/app/android/thumbnails/poems/${dpi}/${song.image!!.trim()}.webp"
         }
+
         fun getResourceUrl(name: String):String
         {
-            return "https://uptodd.com/resources/user/${name}"
+
+            return "https://www.uptodd.com/resources/user/${name}"
         }
+
         fun getDifferenceDay(start:Long,end:Long):Long
         {
             return TimeUnit.DAYS.convert(end-start,TimeUnit.MILLISECONDS)
         }
+
         fun getDifferenceMonth(start:Long,end:Long):Long
         {
             return TimeUnit.DAYS.convert(end-start,TimeUnit.MILLISECONDS)/30

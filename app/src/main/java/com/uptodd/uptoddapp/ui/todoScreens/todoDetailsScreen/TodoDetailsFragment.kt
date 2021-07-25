@@ -59,7 +59,8 @@ class TodoDetailsFragment : Fragment() {
                 upToddDialogs.showInfoDialog("This feature is only for Premium Subscribers","Close",
                     object :UpToddDialogs.UpToddDialogListener
                     {
-                        override fun onDialogButtonClicked(dialog: Dialog) {
+                        override fun onDialogButtonClicked(dialog: Dialog)
+                        {
                             dialog.dismiss()
                         }
 
@@ -73,7 +74,7 @@ class TodoDetailsFragment : Fragment() {
                 val period = KidsPeriod(requireActivity()).getPeriod()
                 val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
                 val appendable =
-                    "https://uptodd.com/images/app/android/details/activities/$period/$dpi/"
+                    "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
 
                 Log.d("thumbnail details","$appendable$imageUrl.webp")

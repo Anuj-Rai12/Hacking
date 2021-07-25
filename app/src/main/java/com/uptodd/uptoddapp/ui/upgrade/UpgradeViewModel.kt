@@ -61,7 +61,7 @@ class UpgradeViewModel: ViewModel(
 
 
         _isLoading.value=true
-            AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/productDetails?stage=$stage&country=$country")
+            AndroidNetworking.get("https://www.uptodd.com/api/nonPremiumAppusers/productDetails?stage=$stage&country=$country")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -87,7 +87,7 @@ class UpgradeViewModel: ViewModel(
     {
         val userId= getUserId(context)
         _isLoading.value=true
-        AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/isPaymentDone/$userId")
+        AndroidNetworking.get("https://www.uptodd.com/api/nonPremiumAppusers/isPaymentDone/$userId")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -134,7 +134,7 @@ class UpgradeViewModel: ViewModel(
         json.put("productMonth",upgradeItem.productMonth)
 
 
-        AndroidNetworking.post("https://uptodd.com/api/nonPremiumAppusers/upgrade")
+        AndroidNetworking.post("https://www.uptodd.com/api/nonPremiumAppusers/upgrade")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .addJSONObjectBody(json)
@@ -163,7 +163,7 @@ class UpgradeViewModel: ViewModel(
         json.put("paymentId",paymentId)
         json.put("productMonth",productMonth)
 
-        AndroidNetworking.post("https://uptodd.com/api/nonPremiumAppusers/savePaymentDetails")
+        AndroidNetworking.post("https://www.uptodd.com/api/nonPremiumAppusers/savePaymentDetails")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .addJSONObjectBody(json)
@@ -186,7 +186,7 @@ class UpgradeViewModel: ViewModel(
     fun getMeetUrl()
     {
 
-        AndroidNetworking.get(" https://uptodd.com/api/nonPremiumAppusers/getSessionBookingLink")
+        AndroidNetworking.get(" https://www.uptodd.com/api/nonPremiumAppusers/getSessionBookingLink")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

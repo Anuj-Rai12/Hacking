@@ -61,7 +61,7 @@ class AccountViewModel(application: Application, val uid: String?, val token: St
 
     fun saveDetails(account: Account) {
 
-        AndroidNetworking.upload("https://uptodd.com/api/appusers/editprofile/{userId}")
+        AndroidNetworking.upload("https://www.uptodd.com/api/appusers/editprofile/{userId}")
             .addPathParameter("userId", uid!!)
             .addHeaders("Authorization", "Bearer $token")
             .addMultipartParameter("email", account.email)
@@ -117,7 +117,7 @@ class AccountViewModel(application: Application, val uid: String?, val token: St
         jsonObject.put("updateTime", date)
 
 
-        AndroidNetworking.put("https://uptodd.com/api/appusers/nannysetup/{userId}")
+        AndroidNetworking.put("https://www.uptodd.com/api/appusers/nannysetup/{userId}")
             .addPathParameter("userId", uid!!)
             .addHeaders("Authorization", "Bearer $token")
             .addJSONObjectBody(jsonObject)

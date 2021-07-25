@@ -151,7 +151,7 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
             val language = ChangeLanguage(requireContext()).getLanguage()
             val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language&userType=$userType")
+                AndroidNetworking.get("https://www.uptodd.com/api/yoga?lang=$language&userType=$userType")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -186,7 +186,7 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/yogas/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/yogas/$dpi/"
 
         val yogaList = mutableListOf<Yoga>()
 

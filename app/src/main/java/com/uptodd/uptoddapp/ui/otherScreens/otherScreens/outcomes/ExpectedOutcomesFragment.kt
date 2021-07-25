@@ -147,7 +147,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
                 val period = KidsPeriod(requireActivity()).getPeriod()
-                AndroidNetworking.get("https://uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addPathParameter("period", period.toString())
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
@@ -209,7 +209,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
         var i = 0
         list.clear()
         while (i < data.length()) {

@@ -41,7 +41,7 @@ class ReferredPatientsListViewModel : ViewModel() {
 
     private fun getFullList(){
         Log.i("api", "calling api")
-        AndroidNetworking.get("https://uptodd.com/api/referredpatients")
+        AndroidNetworking.get("https://www.uptodd.com/api/referredpatients")
             .addQueryParameter("referredBy", "doctor")
             .addQueryParameter("referredById", AllUtil.getDoctorId().toString())
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")

@@ -144,7 +144,7 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
             val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
             val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/stories?userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/stories?userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -202,7 +202,7 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/stories/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/stories/$dpi/"
         var i = 0
         list.clear()
         while (i < data.length()) {

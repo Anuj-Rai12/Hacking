@@ -30,7 +30,7 @@ class AllSessionsViewModel : ViewModel() {
 
     fun getAllSessions(){
         _isLoading.value = 1
-        AndroidNetworking.get("https://uptodd.com/api/appusers/sessions/{userId}")
+        AndroidNetworking.get("https://www.uptodd.com/api/appusers/sessions/{userId}")
             .addPathParameter("userId", AllUtil.getUserId().toString())
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
@@ -74,7 +74,7 @@ class AllSessionsViewModel : ViewModel() {
         jsonObject.put("sessionRating", session.sessionRating)
         _isLoading.value = 11
 
-        AndroidNetworking.put("https://uptodd.com/api/appusers/sessions/{sessionID}")
+        AndroidNetworking.put("https://www.uptodd.com/api/appusers/sessions/{sessionID}")
             .addPathParameter("sessionId", session.id.toString())
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(jsonObject)

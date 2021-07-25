@@ -154,7 +154,7 @@ class TodosRecyclerAdapter(
             val period = mContext?.let { KidsPeriod(it).getPeriod() }
             val dpi = mContext?.let { ScreenDpi(it).getScreenDrawableType() }
             val appendable =
-                "https://uptodd.com/images/app/android/details/activities/$period/$dpi/"
+                "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
             mContext?.let {
                 Glide.with(it)

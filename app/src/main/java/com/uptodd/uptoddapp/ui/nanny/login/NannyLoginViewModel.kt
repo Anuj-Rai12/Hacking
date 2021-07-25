@@ -80,7 +80,7 @@ class NannyLoginViewModel : ViewModel() {
         jsonObject.put("nannyLoginId", loginId)
         jsonObject.put("nannyLoginPassword", password)
 
-        AndroidNetworking.post("https://uptodd.com/api/appusers/nanny")
+        AndroidNetworking.post("https://www.uptodd.com/api/appusers/nanny")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.MEDIUM)
             .build()

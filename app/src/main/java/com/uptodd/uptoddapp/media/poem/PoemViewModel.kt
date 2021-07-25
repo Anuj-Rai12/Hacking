@@ -175,7 +175,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         val userType= UptoddSharedPreferences.getInstance(context).getUserType()
         val country=AllUtil.getCountry(context)
         val stage=UptoddSharedPreferences.getInstance(context).getStage()
-        AndroidNetworking.get("https://uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage")
+        AndroidNetworking.get("https://www.uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

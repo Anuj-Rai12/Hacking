@@ -111,15 +111,39 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     {
         if(UpToddMediaPlayer.isPlaying && UpToddMediaPlayer.songPlaying!=null)
         {
-            _image.value=AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+            if(UpToddMediaPlayer.type=="music" )
+            {
+                Log.d("type","music")
+                _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+            }
+            else
+            {
+                Log.d("type","poem")
+                _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
+            }
         }
+
     }
 
     fun initializeAll(context: Context) {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
-            _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+            if(UpToddMediaPlayer.isPlaying && UpToddMediaPlayer.songPlaying!=null)
+            {
+                if(UpToddMediaPlayer.type=="music" )
+                {
+                    Log.d("type","music")
+                    _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+                }
+                else
+                {
+                    Log.d("type","poem")
+                    _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
+                }
+            }
         } else {
             _title.value = "Dummy text will always be dummy"
             _image.value =
@@ -135,10 +159,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
 
-                if(UpToddMediaPlayer.type=="music")
-                    _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
-                else
-                    _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
 
         } else {
             _title.value = ""
@@ -162,6 +183,10 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
 
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
+                if(UpToddMediaPlayer.type=="music" )
+                    _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+                else
+                    _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
             }
 
@@ -198,7 +223,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val stage=UptoddSharedPreferences.getInstance(context).getStage()
         val country=AllUtil.getCountry(context)
-        AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+        AndroidNetworking.get("https://www.uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

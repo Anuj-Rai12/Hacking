@@ -143,9 +143,16 @@ class UptoddNotificationUtilities {
             channelId: String,
             priority: Int = NotificationCompat.PRIORITY_DEFAULT
         ): NotificationCompat.Builder {
+            var requestCode=0
+            when (channelId) {
+                "MemoryBooster" -> requestCode=2
+                "ActivitySample" -> requestCode=3
+                "Podcast" -> requestCode=4
+            }
+
             val pendingIntent: PendingIntent = TaskStackBuilder.create(notificationContext).run {
                 addNextIntentWithParentStack(notificationIntent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                getPendingIntent(requestCode, PendingIntent.FLAG_UPDATE_CURRENT)
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)

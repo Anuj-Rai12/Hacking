@@ -283,6 +283,7 @@ import com.uptodd.uptoddapp.ui.upgrade.UpgradeViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import java.text.SimpleDateFormat
 
 
@@ -443,6 +444,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val isNew = activity?.intent?.getIntExtra(SplashScreenActivity.KEY_NEW, -1)
+
 
 
 

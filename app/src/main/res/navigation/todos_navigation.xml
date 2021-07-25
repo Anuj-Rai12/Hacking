@@ -290,6 +290,18 @@
         <action
             android:id="@+id/action_homePageFragment_to_selectParentFragment2"
             app:destination="@id/selectParentFragment2" />
+        <action
+            android:id="@+id/action_homePageFragment_to_memoryBoosterDetailsFragment"
+            app:destination="@id/memoryBoosterDetailsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_activityPodcastFragment"
+            app:destination="@id/activityPodcastFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_speedBoosterFragment"
+            app:destination="@id/speedBoosterFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_activitySampleFragment"
+            app:destination="@id/activitySampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"

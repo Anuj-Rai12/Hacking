@@ -94,7 +94,7 @@ class GenerateCardViewModel(application: Application, val type: String?,val toke
     var isSavedToLocal=MutableLiveData<Boolean>()
     fun saveFinalCardToDatabase(finalCard: FinalCard, type: String, imagePath: String?) {
         val bitmapFile= File(imagePath)
-        AndroidNetworking.upload("https://uptodd.com/api/generatecard")
+        AndroidNetworking.upload("https://www.uptodd.com/api/generatecard")
             .addHeaders("Authorization","Bearer $token")
             .setTag("save")
             .addMultipartFile("generatedCard", bitmapFile)

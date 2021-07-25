@@ -104,6 +104,7 @@ class ViewTicketViewModel : ViewModel() {
         jsonObject.put("ticketReopen", 1)
 
         AndroidNetworking.post("https://uptodd.com/api/appusers/support/newmessage")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)
             .build()
@@ -132,6 +133,7 @@ class ViewTicketViewModel : ViewModel() {
         jsonObject.put("ticketReopen", 0)
 
         AndroidNetworking.post("https://uptodd.com/api/appusers/support/newmessage")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)
             .build()
@@ -161,6 +163,7 @@ class ViewTicketViewModel : ViewModel() {
         AndroidNetworking.put("https://uptodd.com/api/appuser/support")
             .addJSONObjectBody(jsonObject)
             .addHeaders("Content-Type", "application/json")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.MEDIUM)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
@@ -196,6 +199,7 @@ class ViewTicketViewModel : ViewModel() {
         AndroidNetworking.put("https://uptodd.com/api/appuser/support")
             .addJSONObjectBody(jsonObject)
             .addHeaders("Content-Type", "application/json")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.MEDIUM)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {

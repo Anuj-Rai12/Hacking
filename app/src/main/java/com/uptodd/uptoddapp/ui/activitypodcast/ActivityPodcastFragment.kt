@@ -139,7 +139,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
         val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
         val country=AllUtil.getCountry(requireContext())
-        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
+        AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
             .addPathParameter("lang", lang)
@@ -148,6 +148,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
+
 
                     if (response == null)
                     {
@@ -161,6 +162,9 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
                     try {
                         val data = response?.get("data") as JSONArray
+
+                        Log.d("activity podcast c","${data.length()}")
+
                         if (data.length() <= 0) {
                             showNoData()
                             hideRecyclerView()
@@ -168,24 +172,12 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                             UptoddSharedPreferences.getInstance(requireContext()).saveCountPodcast(data.length())
                             parseData(response.get("data") as JSONArray)
                             hideNodata()
+                            showRecyclerView()
                         }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
                         val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
-                        if(stage=="prenatal" || stage=="pre birth")
-                        {
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("This section is only for postnatal user","Close",
-                                object : UpToddDialogs.UpToddDialogListener {
-                                    override fun onDialogButtonClicked(dialog: Dialog) {
-                                        findNavController().navigateUp()
-
-                                    }
-                                })
-
-
-                        }
                         if(!AllUtil.isUserPremium(requireContext()))
                         {
                             val title=activity?.actionBar?.title.toString()
@@ -276,7 +268,6 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                     object : UpToddDialogs.UpToddDialogListener {
                         override fun onDialogButtonClicked(dialog: Dialog) {
                             dialog.dismiss()
-
                         }
                         override fun onDialogDismiss() {
                             findNavController().navigateUp()

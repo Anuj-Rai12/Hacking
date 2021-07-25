@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,6 +131,8 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
     override fun onClickPoem(resourceFiles: ResourceFiles) {
         resourceFiles.link?.let {
             resourceFiles.link?.let { AllUtil.getResourceUrl(it) }?.let { it1 ->
+
+                Log.d("ok","$it1")
                 downloadGuidelinesPdf(
                     it1,
                     it

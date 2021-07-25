@@ -38,7 +38,7 @@ class WebinarsListViewModel(webinarsDatabase: UptoddDatabase) : ViewModel() {
 
 
     fun getAllCategories() {
-        AndroidNetworking.get("https://uptodd.com/api/category/{webinars}")
+        AndroidNetworking.get("https://www.uptodd.com/api/category/{webinars}")
             .addPathParameter("webinars", "webinar")
             .addHeaders("Authorization", "Bearer $token")
             .setPriority(Priority.HIGH)
@@ -97,9 +97,9 @@ class WebinarsListViewModel(webinarsDatabase: UptoddDatabase) : ViewModel() {
     fun getWebinarListByCategoryId() {
         var link: String? = null
         if (categoryId == -1L)                         //for "All webinars" categories, the categoryId=-1
-            link = "https://uptodd.com/api/webinar?page=${pageNumber + 1}"
+            link = "https://www.uptodd.com/api/webinar?page=${pageNumber + 1}"
         else
-            link = "https://uptodd.com/api/webinar?page=${pageNumber + 1}&categoryId=$categoryId"
+            link = "https://www.uptodd.com/api/webinar?page=${pageNumber + 1}&categoryId=$categoryId"
         AndroidNetworking.get(link)
             .addHeaders("Authorization", "Bearer $token")
             .setPriority(Priority.HIGH)
@@ -128,7 +128,7 @@ class WebinarsListViewModel(webinarsDatabase: UptoddDatabase) : ViewModel() {
         val list = ArrayList<Webinars?>()
         var i = 0
 
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/webinars/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/webinars/$dpi/"
         while (i < webinarsListData.length()) {
             val obj = webinarsListData.get(i) as JSONObject
             Log.d("div", "WebinarsListViewModel L118 $obj")

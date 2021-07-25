@@ -32,13 +32,13 @@ class DetailsFragment : Fragment() {
             folderName = it.getString("folder")
             val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
             val period = KidsPeriod(requireActivity()).getPeriod()
-            val appendable = "https://uptodd.com/images/app/android/details/$folderName/$dpi/"
+            val appendable = "https://www.uptodd.com/images/app/android/details/$folderName/$dpi/"
             if (it.getString("image") == "vaccination")
                 imageUrl =
-                    "https://uptodd.com/images/app/android/details/vaccination/vaccination.webp"
+                    "https://www.uptodd.com/images/app/android/details/vaccination/vaccination.webp"
             else if (folderName == "diets")
                 imageUrl =
-                    "https://uptodd.com/images/app/android/details/activities/$period/$dpi/${it.getString(
+                    "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/${it.getString(
                         "image"
                     )}.webp"
             else

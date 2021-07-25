@@ -632,7 +632,7 @@ class TodosViewModel(
             jsonObject.put("activityCompleted", updateData.activityId)
             jsonObject.put("scoreDate", updateData.swipeDate)
 
-            AndroidNetworking.put("hts://uptodd.com/api/activity/score")
+            AndroidNetworking.put("hts://www.uptodd.com/api/activity/score")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -677,7 +677,7 @@ class TodosViewModel(
             jsonObject.put("period", period)
             jsonObject.put("scoreDate", updateData.swipeDate)
 
-            AndroidNetworking.post("https://uptodd.com/api/activity/score")
+            AndroidNetworking.post("https://www.uptodd.com/api/activity/score")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -727,7 +727,7 @@ class TodosViewModel(
             val userType=UptoddSharedPreferences.getInstance(context).getUserType()
             val stage=UptoddSharedPreferences.getInstance(context).getStage()
             val country=AllUtil.getCountry(context)
-            AndroidNetworking.get("https://uptodd.com/api/activities?userId=$userId&period=$period&lang=$language&userType=$userType&country=$country&motherStage=$stage")        //replace music by blog in L54 and L55
+            AndroidNetworking.get("https://www.uptodd.com/api/activities?userId=$userId&period=$period&lang=$language&userType=$userType&country=$country&motherStage=$stage")        //replace music by blog in L54 and L55
 //                .addPathParameter("music", "music")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
@@ -1217,7 +1217,7 @@ class TodosViewModel(
         if (!preferences.contains("idealWeight") || !preferences.contains("idealHeight")) {
             var stage=UptoddSharedPreferences.getInstance(activity).getStage()
             viewModelScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/idealsize/${if(stage=="prenatal" || stage=="pre birth") -1 else month}")        //replace music by blog in L54 and L55
+                AndroidNetworking.get("https://www.uptodd.com/api/idealsize/${if(stage=="prenatal" || stage=="pre birth") -1 else month}")        //replace music by blog in L54 and L55
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -1272,7 +1272,7 @@ class TodosViewModel(
             val language = AllUtil.getLanguage()
             val userType=UptoddSharedPreferences.getInstance(context).getUserType()
             val country=AllUtil.getCountry(context)
-            AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+            AndroidNetworking.get("https://www.uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1300,7 +1300,7 @@ class TodosViewModel(
                 })
 
 
-            AndroidNetworking.get("https://uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage")
+            AndroidNetworking.get("https://www.uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -1327,7 +1327,7 @@ class TodosViewModel(
             val uid = AllUtil.getUserId()
             val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
             val lang = AllUtil.getLanguage()
-            AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
+            AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addPathParameter("userId",uid.toString())
                 .addPathParameter("prenatal",prenatal.toString())
@@ -1375,7 +1375,7 @@ class TodosViewModel(
     fun getNPDetails(context: Context)
     {
         val uid = AllUtil.getUserId()
-        AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
+        AndroidNetworking.get("https://www.uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -1439,11 +1439,11 @@ class TodosViewModel(
 
                 Log.i(
                     "inserting",
-                    "starting -> ${poem.name}. Downloading from: https://uptodd.com/files/poem/${poem.file!!.trim()}.aac"
+                    "starting -> ${poem.name}. Downloading from: https://www.uptodd.com/files/poem/${poem.file!!.trim()}.aac"
                 )
 
                 val request: DownloadRequest = DownloadRequest.Builder()
-                    .url("https://uptodd.com/files/poem/${poem.file!!.trim()}.aac")
+                    .url("https://www.uptodd.com/files/poem/${poem.file!!.trim()}.aac")
                     .retryTime(3)
                     .retryInterval(2, TimeUnit.SECONDS)
                     .progressInterval(1, TimeUnit.SECONDS)
@@ -1547,11 +1547,11 @@ class TodosViewModel(
                 val destinationUri = Uri.fromFile(file)
                 Log.i(
                     "inserting",
-                    "starting -> ${it.name}. Downloading from : https://uptodd.com/files/music/${it.image!!.trim()}/${it.file!!.trim()}.aac"
+                    "starting -> ${it.name}. Downloading from : https://www.uptodd.com/files/music/${it.image!!.trim()}/${it.file!!.trim()}.aac"
                 )
 
                 val request: DownloadRequest = DownloadRequest.Builder()
-                    .url("https://uptodd.com/files/music/${it.image!!.trim()}/${it.file!!.trim()}.aac")
+                    .url("https://www.uptodd.com/files/music/${it.image!!.trim()}/${it.file!!.trim()}.aac")
                     .retryTime(3)
                     .retryInterval(2, TimeUnit.SECONDS)
                     .progressInterval(1, TimeUnit.SECONDS)
@@ -1654,11 +1654,12 @@ class TodosViewModel(
                 val destinationUri = Uri.fromFile(file)
                 Log.i(
                     "inserting",
-                    "starting -> ${it.name}. Downloading from : https://uptodd.com/files/memory_booster/${it.file!!.trim()}.aac"
+                    "starting -> ${it.name}. Downloading from : https://www.uptodd.com/files/memory_booster/${it.file!!.trim()}.aac"
                 )
 
+
                 val request: DownloadRequest = DownloadRequest.Builder()
-                    .url("https://uptodd.com/files/memory_booster/${it.file!!.trim()}.aac")
+                    .url("https://www.uptodd.com/files/memory_booster/${it.file!!.trim()}.aac")
                     .retryTime(3)
                     .retryInterval(2, TimeUnit.SECONDS)
                     .progressInterval(1, TimeUnit.SECONDS)
@@ -1702,7 +1703,7 @@ class TodosViewModel(
     fun downloadGuidelines(context: Context) {
         val downloader = Downloader
         downloader.startDocumentDownload(context,
-            "https://uptodd.com/resources/user/UserGuide.pdf",
+            "https://www.uptodd.com/resources/user/UserGuide.pdf",
             "UptoddAppGuidelines",
             object : DownloadCallback {
                 override fun onStart(downloadId: Int, totalBytes: Long) {
@@ -1771,7 +1772,7 @@ class TodosViewModel(
     fun getWebinars() {
         //TODO change this to webinars when they are ready
         _isLoading.value = 1
-        AndroidNetworking.get("https://uptodd.com/api/blogs?page=0")
+        AndroidNetworking.get("https://www.uptodd.com/api/blogs?page=0")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -1797,7 +1798,7 @@ class TodosViewModel(
         val list = ArrayList<Webinars>()
         var i = 0
         //TODO change this to webinars when they are ready
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
         while (i < 4) {
             if (jsonArray.length() == i)
                 break

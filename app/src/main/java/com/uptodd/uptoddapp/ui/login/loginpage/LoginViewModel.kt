@@ -154,19 +154,19 @@ class LoginViewModel : ViewModel() {
 
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    return@OnCompleteListener
-                }
-
-                token = task.result.token
+                token = if (!task.isSuccessful) {
+                    " "
+                } else
+                    task.result.token
 
                 val loginCreds = JSONObject().apply {
                     put("email", email)
                     put("password", password)
+                    if(token!=" ")
                     put("deviceToken", token)
                 }
 
-                AndroidNetworking.post("https://uptodd.com/api/appusers")
+                AndroidNetworking.post("https://www.uptodd.com/api/appusers")
                     .addJSONObjectBody(loginCreds)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -316,7 +316,7 @@ class LoginViewModel : ViewModel() {
     {
         toggleUI()
         val uid = AllUtil.getUserId()
-        AndroidNetworking.get("https://uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
+        AndroidNetworking.get("https://www.uptodd.com/api/nonPremiumAppusers/initialSetupDetails/${uid}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()

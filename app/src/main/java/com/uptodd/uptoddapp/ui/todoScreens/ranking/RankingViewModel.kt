@@ -51,7 +51,7 @@ class RankingViewModel(val uid: String?) : ViewModel() {
     fun getRankingUsingApi() {
         if (uid == null) return
         viewModelScope.launch {
-            AndroidNetworking.get("https://uptodd.com/api/activity/score/{userID}")        //replace music by blog in L54 and L55
+            AndroidNetworking.get("https://www.uptodd.com/api/activity/score/{userID}")        //replace music by blog in L54 and L55
                 .addPathParameter("userID", uid)
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)

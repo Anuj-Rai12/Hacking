@@ -239,7 +239,7 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
         val lang = AllUtil.getLanguage()
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val country=AllUtil.getCountry(context)
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
+        AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())

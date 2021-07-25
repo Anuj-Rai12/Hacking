@@ -551,7 +551,7 @@ class AccountFragment : Fragment() {
             if (url == "null" || url == "") {
                 imgView.setImageResource(res)
             } else {
-                url = "https:uptodd.com/uploads/$url"
+                url = "https://www.uptodd.com/uploads/$url"
 
 
                 var imageFile: File?

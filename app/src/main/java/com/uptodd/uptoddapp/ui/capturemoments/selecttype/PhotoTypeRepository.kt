@@ -23,7 +23,7 @@ class PhotoTypeRepository(private val database: PhotoTypeDatabase)
     suspend fun refreshPhotoTypes(token: String?)
     {
         withContext(Dispatchers.IO){
-            AndroidNetworking.get("https://uptodd.com/api/framescategory")        //replace music by blog in L54 and L55
+            AndroidNetworking.get("https://www.uptodd.com/api/framescategory")        //replace music by blog in L54 and L55
                 .addHeaders("Authorization","Bearer $token")
                 .setPriority(Priority.HIGH)
                 .build()

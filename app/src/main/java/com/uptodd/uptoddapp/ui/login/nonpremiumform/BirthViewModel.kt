@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 import java.lang.reflect.Type
 import java.util.ArrayList
@@ -122,6 +123,7 @@ class BirthViewModel: ViewModel() {
         npAcc.majorObjective?.let { putObjective(it) }
         parent?.let { putWhichParent(it) }
         AndroidNetworking.post("https://uptodd.com/api/nonPremiumAppusers/initialSetup")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(json)
             .setPriority(Priority.MEDIUM)
             .build()
@@ -152,7 +154,8 @@ class BirthViewModel: ViewModel() {
         jsonObject.put("kidsDob",dob)
 
 
-        AndroidNetworking.put("https://uptodd.com/api/appusers/setup/{uid}")
+        AndroidNetworking.put("https://www.uptodd.com/api/appusers/setup/{uid}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("uid", uid)
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.MEDIUM)

@@ -39,7 +39,7 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
                 userId = preferences.getString("uid", "")!!
                 token = preferences.getString("token", "")!!
 
-                AndroidNetworking.get("https://uptodd.com/api/appusers/checksubscription/{userId}")
+                AndroidNetworking.get("https://www.uptodd.com/api/appusers/checksubscription/{userId}")
                     .addHeaders("Authorization", "Bearer $token")
                     .addPathParameter("userId", userId)
                     .build()
@@ -133,7 +133,7 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
 
         if (user == "Nanny") {
             val uid = preferences.getString("uid", "")
-            AndroidNetworking.get("https://uptodd.com/api/nannylogout/{userId}")
+            AndroidNetworking.get("https://www.uptodd.com/api/nannylogout/{userId}")
                 .addHeaders("Authorization", "Bearer $token")
                 .addPathParameter("userId", uid)
                 .build()

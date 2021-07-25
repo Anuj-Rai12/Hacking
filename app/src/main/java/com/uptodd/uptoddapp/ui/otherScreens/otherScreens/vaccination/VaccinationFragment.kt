@@ -145,7 +145,7 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
             val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
             val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/vaccination?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/vaccination?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -205,7 +205,7 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val appendable =
-            "https://uptodd.com/images/app/android/details/vaccination/vaccination.webp"
+            "https://www.uptodd.com/images/app/android/details/vaccination/vaccination.webp"
         var i = 0
         list.clear()
         while (i < data.length()) {

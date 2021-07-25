@@ -71,6 +71,11 @@ class HomePageFragment : Fragment() {
     private lateinit var uptoddDialogs: UpToddDialogs
     private lateinit var binding: FragmentHomePageBinding
     private val viewModel: TodosViewModel by activityViewModels()
+
+    companion object
+    {
+        var visited=false
+    }
     val dialogs by lazy {
         UpToddDialogs(requireContext())
     }
@@ -559,7 +564,7 @@ class HomePageFragment : Fragment() {
             if (url == "null" || url == "") {
                 binding.profileImage.setImageResource(res)
             } else {
-                url = "https:uptodd.com/uploads/$url"
+                url = "https://www.uptodd.com/uploads/$url"
 
 
                 val imageFile: File?
@@ -869,16 +874,53 @@ class HomePageFragment : Fragment() {
 
     private fun downloadGuidelinesPdf() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            JishnuDownloadManager(
-                "https://uptodd.com/resources/user/UserGuide.pdf",
-                "UptoddAppGuidelines.pdf",
-                File(
-                    requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
-                    "Downloads"
-                ),
-                requireContext(),
-                requireActivity()
-            )
+
+
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val type=UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+
+            AndroidNetworking.get("https://www.uptodd.com/api/appGuidelines?motherStage=$stage&userType=$type")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        response?.let { it ->
+                            if (it.getString("data") != "null") {
+
+                                val data = it.get("data") as String
+
+                                JishnuDownloadManager(
+                                    data,
+                                    "UptoddAppGuidelines.pdf",
+                                    File(
+                                        requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
+                                        "Downloads"
+                                    ),
+                                    requireContext(),
+                                    requireActivity()
+                                )
+
+                            } else {
+
+                            }
+                        }
+
+                    }
+
+                    override fun onError(error: ANError) {
+                        val snackbar = Snackbar.make(
+                            binding.mainConstraintLayout,
+                            error.errorDetail,
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(getString(R.string.retry)) {
+                                downloadGuidelinesPdf()
+                            }
+                        snackbar.show()
+                    }
+                })
+
         } else {
             val snackbar = Snackbar.make(
                 binding.mainConstraintLayout,
@@ -900,7 +942,7 @@ class HomePageFragment : Fragment() {
             val editor = preferences.edit()
 
             val date = DateClass().getCurrentDateStringAsYYYYMMDD()
-            AndroidNetworking.get("http://uptodd.com/api/todaytip/$date")
+            AndroidNetworking.get("http://www.uptodd.com/api/todaytip/$date")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -957,6 +999,36 @@ class HomePageFragment : Fragment() {
             tipDescription.height = 0
             todaysTipTextView.height = 0
         }
+    }
+
+    override fun onResume() {
+
+        val notifyId=activity?.intent?.getStringExtra("notifyId").toString()
+
+        Log.d("todo come",notifyId)
+
+        if(!visited)
+        {
+            when(notifyId) {
+                "Podcast" -> {
+                    findNavController()?.navigate(R.id.action_homePageFragment_to_activityPodcastFragment)
+                    visited=true
+                }
+                "MemoryBooster" -> { findNavController()?.navigate(R.id.action_homePageFragment_to_speedBoosterFragment)
+                    visited=true
+                }
+                "ActivitySample" ->
+                {
+
+                    findNavController()?.navigate(R.id.action_homePageFragment_to_activitySampleFragment)
+                    visited=true
+                }
+
+            }
+        }
+        else
+            visited=false
+        super.onResume()
     }
 }
 

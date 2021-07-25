@@ -69,7 +69,7 @@ class DoctorLoginViewModel : ViewModel() {
             put("password", password)
         }
 
-        AndroidNetworking.post("https://uptodd.com/api/doctor")
+        AndroidNetworking.post("https://www.uptodd.com/api/doctor")
             .addJSONObjectBody(loginCreds)
             .setPriority(Priority.HIGH)
             .build()

@@ -70,7 +70,7 @@ class DoctorDashboardViewModel : ViewModel() {
 
     private fun getWebinars() {
         //TODO change this to webinars when they are ready
-        AndroidNetworking.get("https://uptodd.com/api/blogs?page=0")
+        AndroidNetworking.get("https://www.uptodd.com/api/blogs?page=0")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -96,7 +96,7 @@ class DoctorDashboardViewModel : ViewModel() {
         val list = ArrayList<Webinars>()
         var i = 0
         //TODO change this to webinars when they are ready
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
         while (i < 4) {
             if (jsonArray.length() == i)
                 break
@@ -154,7 +154,7 @@ class DoctorDashboardViewModel : ViewModel() {
     }
 
     private fun getDoctorDetails() {
-        AndroidNetworking.get("https://uptodd.com/api/doctor/{doctorId}")
+        AndroidNetworking.get("https://www.uptodd.com/api/doctor/{doctorId}")
             .addPathParameter("doctorId", AllUtil.getDoctorId().toString())
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)

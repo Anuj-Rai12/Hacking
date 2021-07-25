@@ -106,7 +106,7 @@ class ReferralDetailsViewModel : ViewModel() {
 
         Log.i("apiError", "Sending: $jsonObject")
 
-        AndroidNetworking.put("https://uptodd.com/api/referredpatients")
+        AndroidNetworking.put("https://www.uptodd.com/api/referredpatients")
             .addJSONObjectBody(jsonObject)
             .addHeaders("Content-Type", "application/json")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
@@ -133,7 +133,7 @@ class ReferralDetailsViewModel : ViewModel() {
 
     fun getReferralDetails(doctor: Boolean, referredPersonId: Int){
         if(doctor){
-            AndroidNetworking.get("https://uptodd.com/api/doctor/referral/{referredId}")
+            AndroidNetworking.get("https://www.uptodd.com/api/doctor/referral/{referredId}")
                 .addPathParameter("referredId", referredPersonId.toString())
                 .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
@@ -163,7 +163,7 @@ class ReferralDetailsViewModel : ViewModel() {
                 })
         }
         else{
-            AndroidNetworking.get("https://uptodd.com/api/referredpatients/{referredPatientId}")
+            AndroidNetworking.get("https://www.uptodd.com/api/referredpatients/{referredPatientId}")
                 .addPathParameter("referredPatientId", referredPersonId.toString())
                 .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)

@@ -280,7 +280,7 @@ class GenerateCardFragment : Fragment() {
         for((i, imgUrl) in viewModel.cardTypeList.value!!.withIndex()) {
             imgUrl.let {
                 val dpi= ScreenDpi(requireContext()).getScreenDrawableType()
-                val appendable = "https://uptodd.com/images/app/android/details/cards/$dpi/"
+                val appendable = "https://www.uptodd.com/images/app/android/details/cards/$dpi/"
                 Log.d("div", "GenerateCardFragment L243 ${appendable + imgUrl.imageURL + ".webp"}")
                 var cardBitmap:Bitmap?
                 Glide.
@@ -533,8 +533,10 @@ class GenerateCardFragment : Fragment() {
                 success = folder.mkdirs()
                 if(!success)
                 {
-                    folder =
-                        File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
+                    folder = File(
+                    requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        .toString() + "/UpToddCards"
+                )
                     success= folder.mkdirs()
                 }
 
