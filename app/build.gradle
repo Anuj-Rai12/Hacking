@@ -59,4 +59,37 @@ dependencies {
     //Dagger Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    //FireBase Auth
+    implementation "com.google.firebase:firebase-auth-ktx:$firebase_auth"
+    //FireBase Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$firebase_couroutine")
+    //JetPack DataStore
+    implementation("androidx.datastore:datastore-preferences:$jetpack_data_store")
+    //kotlin coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_couritnes"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_couritnes"
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    //Android Activity KTX
+    implementation "androidx.activity:activity-ktx:$activity_version"
+    // Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    //Pin View
+    implementation 'com.chaos.view:pinview:1.4.4'
+    //Code Picker
+    implementation 'com.hbb20:ccp:2.4.5'
+    //Circular Image view
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
+    //Permission
+    implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
+    //Coil
+    implementation("io.coil-kt:coil:1.2.2")
+    //Paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    // MultiDex
+    implementation "androidx.multidex:multidex:$multidex_version"
 }
