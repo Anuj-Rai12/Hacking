@@ -41,6 +41,7 @@ interface TodoDatabaseDao {
     @Query("SELECT COUNT(*) FROM todo_table WHERE id = :todoId")
     suspend fun checkTodo(todoId: Int): Int
 
+
     @Query("SELECT * FROM todo_table")
     suspend fun fetchAllTodosFromDB(): List<Todo>
 

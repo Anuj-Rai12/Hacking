@@ -14,6 +14,9 @@ data class ResourceFiles(
     @ColumnInfo(name = "name")
     var name: String? = null,
 
+    @ColumnInfo(name="link")
+    var link:String?=null,
+
     @ColumnInfo(name = "filePath")
     var filePath:String = ""
 

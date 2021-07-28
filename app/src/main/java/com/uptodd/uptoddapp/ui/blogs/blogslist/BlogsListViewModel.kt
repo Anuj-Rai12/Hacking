@@ -39,7 +39,7 @@ class BlogsListViewModel(blogDatabase: UptoddDatabase) : ViewModel() {
 
 
     fun getAllCategories() {
-        AndroidNetworking.get("https://uptodd.com/api/category/{blogs}")
+        AndroidNetworking.get("https://www.uptodd.com/api/category/{blogs}")
             .addPathParameter("blogs", "blog")
             .addHeaders("Authorization", "Bearer $token")
             .setPriority(Priority.HIGH)
@@ -99,9 +99,9 @@ class BlogsListViewModel(blogDatabase: UptoddDatabase) : ViewModel() {
     fun getBlogListByCategoryId() {
         var link: String? = null
         if (categoryId == -1L)                         //for "All blogs" categories, the categoryId=-1
-            link = "https://uptodd.com/api/blogs?page=${pageNumber + 1}"
+            link = "https://www.uptodd.com/api/blogs?page=${pageNumber + 1}"
         else
-            link = "https://uptodd.com/api/blogs?page=${pageNumber + 1}&categoryId=$categoryId"
+            link = "https://www.uptodd.com/api/blogs?page=${pageNumber + 1}&categoryId=$categoryId"
         Log.d("div", "BlogsListViewModel L88 $link")
         AndroidNetworking.get(link)
             .addHeaders("Authorization", "Bearer $token")
@@ -130,7 +130,7 @@ class BlogsListViewModel(blogDatabase: UptoddDatabase) : ViewModel() {
         Log.d("div", "BlogsListViewModel L120 ${blogsListData.length()}")
         val list = ArrayList<Blogs?>()
         var i = 0
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/blogs/$dpi/"
         while (i < blogsListData.length()) {
             val obj = blogsListData.get(i) as JSONObject
 

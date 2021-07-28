@@ -39,7 +39,7 @@ class AllTicketsViewModel : ViewModel() {
 
     fun getAllTickets(){
         _isLoading.value = 1
-        AndroidNetworking.get("https://uptodd.com/api/appuser/support/{userId}")
+        AndroidNetworking.get("https://www.uptodd.com/api/appuser/support/{userId}")
             .addPathParameter("userId", getUserId().toString())
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
@@ -89,7 +89,7 @@ class AllTicketsViewModel : ViewModel() {
         jsonObject.put("rating", ticket.rating)
         _isLoading.value = 11
 
-        AndroidNetworking.put("https://uptodd.com/api/appuser/support/")
+        AndroidNetworking.put("https://www.uptodd.com/api/appuser/support/")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.MEDIUM)
             .build()

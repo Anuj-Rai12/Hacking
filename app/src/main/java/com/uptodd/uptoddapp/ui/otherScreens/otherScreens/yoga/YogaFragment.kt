@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -73,11 +74,17 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
         if(AllUtil.isUserPremium(requireContext()))
         {
-            if(AllUtil.isSubscriptionOverActive(requireContext()))
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
             {
                 binding.upgradeButton.visibility= View.GONE
             }
         }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_allYogaFragment_to_upgradeFragment)
+        }
+
+
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.yoga)
 
         val args = YogaFragmentArgs.fromBundle(requireArguments())
@@ -122,8 +129,10 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
             val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
-                AndroidNetworking.get("https://uptodd.com/api/yoga?lang=$language&userType=$userType")
+                AndroidNetworking.get("https://www.uptodd.com/api/yoga?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
                     .build()
@@ -177,7 +186,7 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/details/yogas/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/details/yogas/$dpi/"
         var i = 0
         var step = 0
         list.clear()
@@ -200,6 +209,26 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
             i++
         }
+        if(data.length()==0)
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                            super.onDialogDismiss()
+                        }
+                    })
+            }
+        }
+
 
         isLoadingDialogVisible.value = false
 

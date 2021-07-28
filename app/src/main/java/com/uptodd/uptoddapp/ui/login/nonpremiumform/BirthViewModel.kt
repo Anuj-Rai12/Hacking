@@ -11,35 +11,40 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.uptodd.uptoddapp.api.getUserId
-import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
-import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 import java.lang.reflect.Type
 import java.util.ArrayList
 
 class BirthViewModel: ViewModel() {
 
-    var nonPremiumAccount:NonPremiumAccount?=null
-
+    companion object
+    {
+        var npAcc:NonPremiumAccount=NonPremiumAccount()
+    }
     var isLoadingDialogVisible = MutableLiveData<Boolean>()
     var jsonObject:MutableLiveData<JSONObject> = MutableLiveData()
     var isDataLoadedToDatabase = false
     var uid: String? = null
+    var parent:String?=null
 
 
     init {
-        jsonObject.value= JSONObject()
+        if(jsonObject.value==null)
+            jsonObject.value= JSONObject()
     }
 
     fun putUserId(userID:Long)
     {
         jsonObject.value?.put("userId",userID)
 
+    }
+
+    fun putWhichParent(parent:String)
+    {
+        jsonObject.value?.put("whichParent",parent)
     }
 
     fun putMotherStage(stage:String)
@@ -65,7 +70,7 @@ class BirthViewModel: ViewModel() {
     {
         jsonObject.value?.put("kidsToy",toys)
     }
-    fun putMinutes(minutes:String)
+    fun putMinutes(minutes: Int?)
     {
         jsonObject.value?.put("minutesForBaby",minutes)
     }
@@ -94,6 +99,7 @@ class BirthViewModel: ViewModel() {
         val type: Type = object : TypeToken<NonPremiumAccount>() {}.type
 
         val stage=UptoddSharedPreferences.getInstance(context).getStage()
+        parent?.let { Log.d("whichParent", it) }
         if(stage=="pre birth" ||stage=="prenatal"){
             putBabyName("")
             putDob("")
@@ -103,9 +109,21 @@ class BirthViewModel: ViewModel() {
             putDelivery("")
            putAnything("")
         }
+
         putMotherStage(stage!!)
         putUserId(getUserId(context)!!)
-        AndroidNetworking.post("https://uptodd.com/api/nonPremiumAppusers/initialSetup")
+        npAcc.kidsDob?.let { putDob(it) }
+        npAcc.anythingYouDo?.let { putAnything(it) }
+        npAcc.name?.let { putName(it) }
+        npAcc.anythingSpecial?.let { putSpecial(it) }
+        npAcc.kidsName?.let { putBabyName(it) }
+        npAcc.expectedMonthsOfDelivery?.let { putDelivery(it) }
+        putMinutes(npAcc.minutesForBaby)
+        npAcc.kidsToy?.let { putToys(it) }
+        npAcc.majorObjective?.let { putObjective(it) }
+        parent?.let { putWhichParent(it) }
+        AndroidNetworking.post("https://www.uptodd.com/api/nonPremiumAppusers/initialSetup")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(json)
             .setPriority(Priority.MEDIUM)
             .build()
@@ -136,7 +154,8 @@ class BirthViewModel: ViewModel() {
         jsonObject.put("kidsDob",dob)
 
 
-        AndroidNetworking.put("https://uptodd.com/api/appusers/setup/{uid}")
+        AndroidNetworking.put("https://www.uptodd.com/api/appusers/setup/{uid}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("uid", uid)
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.MEDIUM)

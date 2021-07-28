@@ -38,6 +38,7 @@
     <color name="passwordErrorText">#ff0000</color>
     <color name="formFieldHeading">#787878</color>
     <color name="link">#3D9FF4</color>
+    <color name="meet_color">#FC9290</color>
     <color name="orangeButtonBackground">#ff6a4c</color>
     <color name="brown_lg">#744D4D</color>
     <color name="desc_color">#1C0202</color>

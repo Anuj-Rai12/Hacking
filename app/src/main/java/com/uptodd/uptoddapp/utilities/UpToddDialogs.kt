@@ -153,6 +153,30 @@ class UpToddDialogs(val context: Context) {
             })
     }
 
+    fun showOnlyLoadingDialog() {
+        this.showDialog(
+            R.drawable.gif_loading,
+            context.getString(R.string.loading),
+            context.getString(R.string.cancel),
+            object : UpToddDialogListener {
+                override fun onDialogButtonClicked(dialog: Dialog) {}
+                override fun onDialogReady(
+                    dialog: Dialog,
+                    dialogText: TextView,
+                    dialogButton: Button,
+                    dialogGIF: GifImageView
+                ) {
+                   dialogButton.visibility = View.INVISIBLE
+                    dialog.setCancelable(false)
+
+                }
+
+                override fun onDialogCancelled(dialog: Dialog) {
+
+                }
+            })
+    }
+
     fun showSetupDialog(navController: NavController, goBack: Boolean = false) {
         this.showDialog(
             R.drawable.gif_loading,

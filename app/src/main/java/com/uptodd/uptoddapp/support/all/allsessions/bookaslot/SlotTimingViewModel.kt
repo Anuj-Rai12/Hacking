@@ -45,7 +45,7 @@ class SlotTimingViewModel : ViewModel() {
         }
         jsonObject.put("bestTimeForSession", slotTime)
 
-        AndroidNetworking.post("https://uptodd.com/api/appusers/sessions")
+        AndroidNetworking.post("https://www.uptodd.com/api/appusers/sessions")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)

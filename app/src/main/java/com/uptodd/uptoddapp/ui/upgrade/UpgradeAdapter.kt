@@ -10,7 +10,7 @@ import com.uptodd.uptoddapp.databinding.KeyItemLayoutBinding
 import com.uptodd.uptoddapp.databinding.PoemListItemBinding
 import com.uptodd.uptoddapp.databinding.UpgradeOfferListItemBinding
 
-class UpgradeAdapter(val clickListener: UpgradeAdapterInterface) : RecyclerView.Adapter<UpgradeAdapter.UpgradeViewHolder>(){
+class UpgradeAdapter(var clickListener: UpgradeAdapterInterface?=null) : RecyclerView.Adapter<UpgradeAdapter.UpgradeViewHolder>(){
 
     var list:ArrayList<UpgradeItem>?= ArrayList()
     var status=false
@@ -64,25 +64,25 @@ class UpgradeAdapter(val clickListener: UpgradeAdapterInterface) : RecyclerView.
             if(item.discount>0)
             {
 
-                    binding.upUpgrade.text="UpGrade Now@$currency ${item.amountToBePaid}"
+                    binding.upUpgrade.text="UpGrade Now @  $currency ${item.amountToBePaid}"
                 if (item.country == "india")
-                    binding.upEmi.text="Interest FREE EMI start@$currency ${item.emiAmount}"
+                    binding.upEmi.text="Interest FREE EMI start @ $currency ${item.emiAmount}"
                 else
                     binding.upEmi.text=""
             }
             else {
                 if (item.country == "india")
-                    binding.upEmi.text="Interest FREE EMI start@$currency ${item.emiAmount}"
+                    binding.upEmi.text="Interest FREE EMI start @ $currency ${item.emiAmount}"
                 else
                     binding.upEmi.text=""
 
-                    binding.upUpgrade.text = "UpGrade Now@$currency ${item.amountToBePaid}"
+                    binding.upUpgrade.text = "UpGrade Now @ $currency ${item.amountToBePaid}"
             }
             val keyAdapter= item.keyFeatures?.let { KeyAdapter(it) }
             binding.upKeyFeature.adapter=keyAdapter
 
             binding.upUpgrade.setOnClickListener {
-                clickListener.onClickPoem(item)
+                clickListener?.onClickPoem(item)
             }
         }
 

@@ -62,6 +62,8 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
     val isPlaying: LiveData<Boolean>
         get() = _isPlaying
 
+    var notActivate=false
+
     private var currentPlaying = 0
 
     private var mediaPlayer: UpToddMediaPlayer = UpToddMediaPlayer()
@@ -183,7 +185,7 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
         val lang = AllUtil.getLanguage()
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val country=AllUtil.getCountry(context)
-        AndroidNetworking.get("https://uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country")
+        AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
             .addPathParameter("prenatal",prenatal.toString())
@@ -193,15 +195,27 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
-                        viewModelScope.launch {
-                            val poems = AllUtil.getAllMusic(response.get("data").toString())
-                            poems.forEach {
-                                if (getIsPoemDownloaded(it))
-                                    it.filePath = database.getFilePath(it.id)
-                                else
-                                    it.filePath = "NA"
+                        if(response.get("data").toString()!="null") {
+                            viewModelScope.launch {
+                                val poems = AllUtil.getAllMusic(response.get("data").toString())
+                                UptoddSharedPreferences.getInstance(context)
+                                    .saveCountMemoryBooster(poems.size)
+                                poems.forEach {
+                                    if (getIsPoemDownloaded(it))
+                                        it.filePath = database.getFilePath(it.id)
+                                    else
+                                        it.filePath = "NA"
+                                }
+                                notActivate=poems.isEmpty()
+                                _poems.value = poems
+
+                                _isLoading.value = 0
                             }
-                            _poems.value = poems
+                        }
+                        else
+                        {
+                            notActivate=true
+                            _poems.value = ArrayList()
                             _isLoading.value = 0
                         }
 
@@ -254,7 +268,10 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
     fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
         downloadedPoems.forEach {
             if (it.id == poem.id)
+            {
+                poem.filePath=it.filePath
                 return@getIsPoemDownloaded true
+            }
         }
         return false
     }

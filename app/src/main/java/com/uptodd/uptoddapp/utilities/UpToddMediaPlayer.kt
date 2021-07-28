@@ -18,6 +18,7 @@ class UpToddMediaPlayer {
         var isPlaying = false
         var timer: Long? = null
         var isMemoryBooster:Boolean?=false
+        var type=""
         private var mediaPlaylist: ArrayList<MusicFiles> = ArrayList()
     }
 
@@ -31,19 +32,31 @@ class UpToddMediaPlayer {
             mediaPlayer.stop()
             isPlaying = false
         }
+        Log.d("url source",generateUrl(song))
         thread = Thread {
             try {
                 mediaPlayer.reset()
                 if (song.filePath == "NA")
+                {
                     mediaPlayer.setDataSource(generateUrl(song))
+                    Log.d("downloaded",false.toString())
+                }
                 else
+                {
+                    Log.d("downloaded",true.toString())
                     mediaPlayer.setDataSource(song.filePath)
+                }
+
                 mediaPlayer.prepare()
                 mediaPlayer.setOnPreparedListener {
                     mediaPlayerListener!!.onReady()
                 }
+
             } catch (e: Exception) {
+
                 Log.e("Error", e.message!!)
+                isPlaying=false
+                mediaPlayerListener?.onError()
             }
         }
         thread.start()
@@ -53,11 +66,11 @@ class UpToddMediaPlayer {
 
     private fun generateUrl(song: MusicFiles): String {
         if (song.prenatal!=-1)
-            return  "https://uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
-        else if (song.language == null)
-            return "https://uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
+            return  "https://www.uptodd.com/files/memory_booster/${song.file!!.trim()}.aac"
+        else if (song.language == null || song.language=="null")
+            return "https://www.uptodd.com/files/music/${song.image!!.trim()}/${song.file!!.trim()}.aac"
         else
-            return "https://uptodd.com/files/poem/${song.name!!.trim()}.aac"
+            return "https://www.uptodd.com/files/poem/${song.name!!.trim()}.aac"
     }
 
     fun setPlaylist(playlist: ArrayList<MusicFiles>, indexOf: Int) {
@@ -78,7 +91,7 @@ class UpToddMediaPlayer {
             isPlaying = false
             mediaPlayerListener?.onPause()
         } else {
-            if (!thread.isAlive) {
+            if (!thread.isAlive || isMemoryBooster!!) {
                 mediaPlayer.start()
                 mediaPlayer.setOnCompletionListener {
                     if (songIndex < mediaPlaylist.size - 1) {
@@ -96,6 +109,10 @@ class UpToddMediaPlayer {
                 }
                 isPlaying = true
                 mediaPlayerListener?.onStartPlaying()
+            }
+            else
+            {
+                Log.d("false alive","true")
             }
         }
     }
@@ -132,6 +149,10 @@ class UpToddMediaPlayer {
         fun onReady()
 
         fun onReset(song: MusicFiles)
+
+        fun onError(){
+
+        }
 
         fun onStartPlaying()
 

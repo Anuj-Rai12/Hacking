@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -50,7 +52,19 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
         viewModel=ViewModelProvider(this)[ResourceViewModel::class.java]
         uptoddDialogs = UpToddDialogs(requireContext())
         binding?.resourceListRecyclerView?.adapter=adapter
-        viewModel.getAllResources()
+        viewModel.getAllResources(requireContext())
+
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding?.materialButton?.visibility= View.GONE
+            }
+        }
+        binding?.materialButton?.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_resourcesFragment_to_upgradeFragment)
+        }
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
 
             when(it) {
@@ -82,7 +96,7 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
         })
 
         binding?.resourceRefresh?.setOnRefreshListener {
-            viewModel.getAllResources()
+            viewModel.getAllResources(requireContext())
             binding?.resourceRefresh?.isRefreshing=false
         }
         return binding?.root
@@ -90,16 +104,14 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
 
     private fun downloadGuidelinesPdf(url:String,name:String) {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            JishnuDownloadManager(
-                url,
-                name,
-                File(
-                    requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
-                    "Downloads"
-                ),
-                requireContext(),
-                requireActivity()
-            )
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.let {
+                JishnuDownloadManager(
+                    url,
+                    name,
+                    it, requireContext(),
+                    requireActivity()
+                )
+            }
         } else {
             val snackbar = binding?.resourceConstraint?.let {
                 Snackbar.make(
@@ -117,8 +129,10 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
     }
 
     override fun onClickPoem(resourceFiles: ResourceFiles) {
-        resourceFiles.name?.let {
-            resourceFiles.name?.let { AllUtil.getResourceUrl(it) }?.let { it1 ->
+        resourceFiles.link?.let {
+            resourceFiles.link?.let { AllUtil.getResourceUrl(it) }?.let { it1 ->
+
+                Log.d("ok","$it1")
                 downloadGuidelinesPdf(
                     it1,
                     it

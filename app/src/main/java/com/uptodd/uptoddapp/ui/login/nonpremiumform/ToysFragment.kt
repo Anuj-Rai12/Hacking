@@ -25,6 +25,7 @@ class ToysFragment : Fragment() {
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
                 viewModel?.putToys(binding.editTextToys.text.toString())
+            BirthViewModel.npAcc.kidsToy=binding.editTextToys.text.toString()
                 view?.findNavController()?.navigate(R.id.action_toysFragment2_to_minutesFragment)
 
         }

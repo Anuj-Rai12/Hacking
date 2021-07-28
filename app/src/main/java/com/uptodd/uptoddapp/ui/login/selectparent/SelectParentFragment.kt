@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentSelectParentBinding
 
 class SelectParentFragment : Fragment() {
@@ -50,7 +51,8 @@ class SelectParentFragment : Fragment() {
 
     private fun navigateToNext()
     {
-        editor?.putString("parentType",parent)
+        editor?.putString("parentType",parent)?.apply()
+        editor?.putString(UserInfo::parentType.name,parent)?.apply()
         editor?.commit()
         view?.findNavController()?.navigate(R.id.action_selectParentFragment_to_stageFragment)
     }

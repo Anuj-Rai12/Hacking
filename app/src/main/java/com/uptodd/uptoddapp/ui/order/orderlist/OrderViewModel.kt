@@ -34,7 +34,7 @@ class OrderViewModel:ViewModel()
     fun getOrdersFromDatabase() {
         if(_allOrderList.value==null) {
             val userType= UptoddSharedPreferences.getInstance(context!!).getUserType()
-            AndroidNetworking.get("https://uptodd.com/api/appusers/products/{userId}?userType=$userType")
+            AndroidNetworking.get("https://www.uptodd.com/api/appusers/products/{userId}?userType=$userType")
                 .addPathParameter("userId", userId)
                 .addHeaders("Authorization", "Bearer $token")
                 .setPriority(Priority.HIGH)
@@ -93,7 +93,7 @@ class OrderViewModel:ViewModel()
     var isExtendSubscriptionRequestMade:Boolean=false
     fun requestExtendSubscription() {
 
-        AndroidNetworking.post("https://uptodd.com/api/appusers/products/{userId}")
+        AndroidNetworking.post("https://www.uptodd.com/api/appusers/products/{userId}")
             .addPathParameter("userId",userId)
             .addHeaders("Authorization","Bearer $token")
             .setPriority(Priority.MEDIUM)

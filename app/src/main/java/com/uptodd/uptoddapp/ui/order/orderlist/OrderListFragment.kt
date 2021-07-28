@@ -27,6 +27,7 @@ import com.uptodd.uptoddapp.database.order.Order
 import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.databinding.FragmentOrderListBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -83,6 +84,17 @@ class OrderListFragment : Fragment() {
         initObservers()
 
 
+        if(AllUtil.isUserPremium(requireContext()))
+        {
+            if(!AllUtil.isSubscriptionOverActive(requireContext()))
+            {
+                binding.upgradeButton.visibility= View.GONE
+            }
+        }
+        binding.upgradeButton.setOnClickListener {
+
+            it.findNavController().navigate(R.id.action_orderListFragment_to_upgradeFragment)
+        }
         binding.buttonUpgrade.setOnClickListener { onClickExtendSubscription() }
         binding.buttonExtendSubscription.setOnClickListener { onClickExtendSubscription() }
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
@@ -94,8 +106,6 @@ class OrderListFragment : Fragment() {
             row=true
             supportActionBar.title = "Expert Prescription"
         }
-        displayOrders(createOrderList())
-
 
         return binding.root
     }
@@ -115,7 +125,6 @@ class OrderListFragment : Fragment() {
                 } else {
                     binding.imageViewEmpty.visibility = View.INVISIBLE
                     binding.textViewEmpty.visibility = View.INVISIBLE
-                    binding.buttonExtendSubscription.visibility = View.VISIBLE
                 }
                 displayOrders(viewModel.allOrderList.value!!)
             }
@@ -147,7 +156,7 @@ class OrderListFragment : Fragment() {
         } else {
             Log.d("div", "OrderListFragment L76")
             Snackbar.make(
-                binding.layout,
+                binding.linearLayout,
                 getString(R.string.no_internet_connection),
                 Snackbar.LENGTH_LONG
             )
@@ -189,10 +198,17 @@ class OrderListFragment : Fragment() {
                 childView.textView_deliveryStatus.text="Date: "
                 childView.textView_orderNo.text = order.orderNo
                 childView.textView_monthNo.text ="Month: " + order.monthNo
-                if(row)
+                childView.textView_productNameAndQty.text = "${order.productname} "+" | " + getString(R.string.qty) + order.quantity
+               /* if(row)
                 {
-                    childView.textView_productNameAndQty.text = "Prescription Name: "+order.productname + " | " + getString(R.string.qty) + order.quantity
+                    childView.textView_productNameAndQty.text = "${order.productname} "+ getString(R.string.qty) + order.quantity
                 }
+                else
+                {
+                    childView.textView_productNameAndQty.text = "Product Name: "+order.productname + " | " + getString(R.string.qty) + order.quantity
+                }
+                */
+
                 //val date=decodeDate(order.deliveryDate)
                 childView.textView_date.text = "( " + order.deliveryDate + " )"
                 if (order.details == "null" || order.details == null) {
@@ -269,7 +285,7 @@ class OrderListFragment : Fragment() {
             } else {
                 //showInternetNotConnectedDialog()
                 Snackbar.make(
-                    binding.layout,
+                    binding.linearLayout,
                     getString(R.string.no_internet_connection),
                     Snackbar.LENGTH_LONG
                 ).show()

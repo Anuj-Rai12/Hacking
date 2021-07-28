@@ -27,6 +27,7 @@ class AnyThingFragment: Fragment() {
         binding.buttonNext.setOnClickListener {
 
                 viewModel?.putAnything(binding.editTextToys.text.toString())
+            BirthViewModel.npAcc.anythingYouDo=binding.editTextToys.text.toString()
                 view?.findNavController()?.navigate(R.id.action_anyThingFragment_to_specialFragment)
         }
         return binding.root

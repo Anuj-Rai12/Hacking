@@ -61,11 +61,11 @@ class AllTicketsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
         binding.allTicketsBinding = viewModel
 
-        val end=SimpleDateFormat("yyyy-mm-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+        val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
         if(!AllUtil.isUserPremium(requireContext()))
         {
             val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers","Close",
                 object :UpToddDialogs.UpToddDialogListener
                 {
                     override fun onDialogButtonClicked(dialog: Dialog) {
@@ -82,7 +82,7 @@ class AllTicketsFragment : Fragment() {
         else if(AllUtil.isSubscriptionOver(end))
         {
             val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("24*7 Support is ony for Premium Subscribers","Close",
+            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers","Close",
                 object :UpToddDialogs.UpToddDialogListener
                 {
                     override fun onDialogButtonClicked(dialog: Dialog) {

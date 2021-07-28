@@ -63,6 +63,8 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
 
     private var mediaPlayer: UpToddMediaPlayer = UpToddMediaPlayer.upToddMediaPlayer
 
+    var notActive=true
+
     //Initialize the required variables and set media-player-listener
     init {
 
@@ -79,6 +81,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
+
             }
 
             override fun onReady() {
@@ -103,11 +106,44 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         })
     }
 
+
+    fun recheckState()
+    {
+        if(UpToddMediaPlayer.isPlaying && UpToddMediaPlayer.songPlaying!=null)
+        {
+            if(UpToddMediaPlayer.type=="music" )
+            {
+                Log.d("type","music")
+                _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+            }
+            else
+            {
+                Log.d("type","poem")
+                _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
+            }
+        }
+
+    }
+
     fun initializeAll(context: Context) {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
-            _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+            if(UpToddMediaPlayer.isPlaying && UpToddMediaPlayer.songPlaying!=null)
+            {
+                if(UpToddMediaPlayer.type=="music" )
+                {
+                    Log.d("type","music")
+                    _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+                }
+                else
+                {
+                    Log.d("type","poem")
+                    _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
+                }
+            }
         } else {
             _title.value = "Dummy text will always be dummy"
             _image.value =
@@ -118,21 +154,28 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     }
 
 
+
     fun initializeOffline() {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
-            _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
+
+
+
         } else {
             _title.value = ""
             _image.value = ""
         }
 
+        musicFiles= HashMap()
+
         viewModelScope.launch {
             downloadedMusic = database.getAllDownloadedMusic()
             downloadedMusic.forEach {
                 if (musicFiles.containsKey(it.image)) {
-                    musicFiles[it.image]!!.add(it)
+
+                    if(!musicFiles[it.image]!!.contains(it))
+                        musicFiles[it.image]!!.add(it)
                 } else {
                     musicFiles[it.image!!] = ArrayList()
                     musicFiles[it.image!!]?.add(it)
@@ -141,8 +184,14 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             _isLoading.value = 0
         }
 
+
+
         mediaPlayer.setMediaPlayerListener(object : UpToddMediaPlayer.MediaPlayerListener {
             override fun onComplete() {
+                if(UpToddMediaPlayer.type=="music" )
+                    _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
+                else
+                    _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
             }
 
@@ -174,36 +223,59 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     }
 
     private fun getAllMusicCategories(context: Context) {
+        _isLoading.value=1
         musicFiles = HashMap()
         val language = AllUtil.getLanguage()
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+        val stage=UptoddSharedPreferences.getInstance(context).getStage()
         val country=AllUtil.getCountry(context)
-        AndroidNetworking.get("https://uptodd.com/api/musics?lang=$language&userType=$userType&country=$country")
+        AndroidNetworking.get("https://www.uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
-                        viewModelScope.launch {
-                            val apiFiles = AllUtil.getAllMusic(response.get("data").toString())
-                            apiFiles.forEach {
-                                if (musicFiles.containsKey(it.image)) {
-                                    Log.i("musicc", it.name!!)
-                                    musicFiles[it.image]!!.add(it)
-                                } else {
-                                    Log.i("musicnc", it.name!!)
-                                    musicFiles[it.image!!] = ArrayList()
-                                    musicFiles[it.image!!]?.add(it)
+
+                        if (response.get("data").toString() != "null") {
+                            viewModelScope.launch {
+
+                                try {
+                                    val apiFiles = AllUtil.getAllMusic(response.get("data").toString())
+
+                                    musicFiles=HashMap()
+                                    apiFiles.forEach {
+                                        if (musicFiles.containsKey(it.image)) {
+                                            Log.i("musicc", it.name!!)
+                                            if(!musicFiles[it.image]?.contains(it)!!)
+                                                musicFiles[it.image]?.add(it)
+                                        } else {
+                                            Log.i("musicnc", it.name!!)
+                                            musicFiles[it.image!!] = ArrayList()
+                                            musicFiles[it.image!!]?.add(it)
+                                        }
+                                        if (getIsMusicDownloaded(it))
+                                            it.filePath = database.getFilePath(it.id)
+                                        else
+                                            it.filePath = "NA"
+                                    }
+                                    notActive=apiFiles.isEmpty()
+                                    _isLoading.value = 0
                                 }
-                                if (getIsMusicDownloaded(it))
-                                    it.filePath = database.getFilePath(it.id)
-                                else
-                                    it.filePath = "NA"
+                                catch (e:Exception)
+                                {
+                                    notActive=true
+                                    _isLoading.value = 1
+                                }
                             }
-                            _isLoading.value = 0
                         }
-                    } else {
+                        else {
+                            notActive=true
+                            _isLoading.value = 1
+                        }
+
+                    }
+                    else {
                         apiError = response.getString("message")
                         _isLoading.value = -1
                     }
@@ -242,6 +314,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
             musicFiles[musicCategory]!!,
             musicFiles[musicCategory]!!.indexOf(music)
         )
+        UpToddMediaPlayer.type="music"
         _isMediaReady.value = false
         if (music.playtimeInMinutes != 0) {
             _presetTimer.value = music.playtimeInMinutes

@@ -152,7 +152,10 @@ class JishnuDownloadManager(
             request.setMimeType("application/pdf")
         }
         else{
-            request.setDestinationUri(Uri.fromFile(File(destinationFile,newtitle)))
+            request.run {
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, newtitle)
+                setMimeType("application/pdf")
+            }
         }
 
 
@@ -162,13 +165,15 @@ class JishnuDownloadManager(
             val query = DownloadManager.Query().setFilterById(downloadId)
             Thread(Runnable {
                 var downloading = true
-                while (downloading) {
+                while (downloading ) {
                     val cursor: Cursor = downloadManager.query(query)
                     cursor.moveToFirst()
-                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                    if (cursor.count>0 && cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                         downloading = false
                     }
-                    val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                    val status = if(cursor.count>0)cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                    else
+                        0
                     msg = statusMessage(url, destinationFile, status)
                     if (msg != lastMsg) {
                         activity.runOnUiThread {

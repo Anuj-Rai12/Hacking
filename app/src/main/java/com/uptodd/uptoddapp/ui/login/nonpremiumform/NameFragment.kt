@@ -29,6 +29,7 @@ class NameFragment : Fragment() {
             if(binding.editTextToys.text.toString().isNotEmpty()) {
 
                 viewModel?.putName(binding.editTextToys.text.toString())
+                BirthViewModel.npAcc.name=binding.editTextToys.text.toString()
                 val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
                 if (stage == "pre birth" || stage=="prenatal") {
                     it?.findNavController()

@@ -50,14 +50,15 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             bundle.putString("activityIntent", intent.getStringExtra("activityIntent"))
         }
         if(intent.getStringExtra("type")=="Podcast")
-            checkPodcastAdded(context,intent)
+           // checkPodcastAdded(context,intent)
         else if(intent.getStringExtra("type")=="MemoryBooster")
-        checkMemoryBoosterAdded(context,intent)
+        // checkMemoryBoosterAdded(context,intent)
         else if(intent.getStringExtra("type")=="Upgrade")
         showUpgradeNotification(context, intent)
         else
             showNotification(context,intent)
     }
+
 
    private fun showNotification(context: Context,intent: Intent)
     {
@@ -88,7 +89,21 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     }
 
-    fun checkPodcastAdded(context: Context,intent: Intent)
+    private fun showUpgradeNotification(context: Context, intent: Intent)
+    {
+        val days= arrayOf<Long>(4,6,9,12,10,11,12,13,14,15)
+        var daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftNP()
+        var mDaysLeft=10%daysLeft
+        Log.d("daysLeft","$daysLeft")
+
+        if(days.contains(mDaysLeft))
+        {
+            showNotification(context,intent)
+        }
+
+    }
+
+  /*  fun checkPodcastAdded(context: Context,intent: Intent)
     {
         val uid = AllUtil.getUserId()
         val months= getMonth(context!!)
@@ -267,18 +282,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         return song.language == null
     }
 
-    private fun showUpgradeNotification(context: Context, intent: Intent)
-    {
-        val days= arrayOf<Long>(4,6,9,12,10,11,12,13,14,15)
-        var daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftNP()
-        var mDaysLeft=15-daysLeft
 
-        if(days.contains(mDaysLeft))
-        {
-            showNotification(context,intent)
-        }
-
-    }
 
     private fun updatePath(musicDatabase: MusicFilesDatabaseDao,music: MusicFiles, path: String) {
         Log.i("inserting", "inserting init")
@@ -290,6 +294,6 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             musicDatabase.insert(music)
         }
     }
-
+*/
 
 }

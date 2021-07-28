@@ -1,17 +1,23 @@
 package com.uptodd.uptoddapp.ui.otherScreens.otherScreens.allTodos
 
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.ui.todoScreens.todoDetailsScreen.TodoDetailsFragmentDirections
+import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.android.synthetic.main.colours_grid_item.view.*
 
 class AllTodosRecyclerAdapter(
     var itemList: ArrayList<AllTodos>,
-    private val allTodosListener: AllTodosListener,
+    private val allTodosListener: AllTodosListener
 ) :
     RecyclerView.Adapter<AllTodosRecyclerAdapter.ViewHolder>() {
 
@@ -43,7 +49,9 @@ class AllTodosRecyclerAdapter(
 
         init {
             itemView.setOnClickListener {
-                allTodosListener.onClickAllTodos(bindingAdapterPosition)
+                    allTodosListener.onClickAllTodos(bindingAdapterPosition)
+
+
             }
 
         }

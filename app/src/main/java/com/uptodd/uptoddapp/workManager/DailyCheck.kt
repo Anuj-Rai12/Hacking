@@ -4,20 +4,40 @@ import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.os.Environment
+import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.coolerfall.download.DownloadManager
+import com.coolerfall.download.OkHttpDownloader
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.SplashScreenActivity
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddNotifications
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.NotificationBroadcastReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.DailyNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.EssentialsNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.MonthlyNotificationsReceiver
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.activity.WeeklyNotificationsReceiver
+import com.uptodd.uptoddapp.api.getMonth
+import com.uptodd.uptoddapp.api.getPeriod
+import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
 import java.util.*
 
 class DailyCheck(val context: Context, parameters: WorkerParameters) :
@@ -43,35 +63,6 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
 
     }
 
-    private fun checkPodcast()
-    {
-
-        val notificationManager=context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel("Podcast", "PodcastNotification", NotificationManager.IMPORTANCE_HIGH).apply {
-                description = "new channel"
-            }
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        var cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY,11)
-        cal.set(Calendar.MINUTE,0)
-        val stringIntentExtras = HashMap<String, String>()
-        stringIntentExtras["notificationTitle"] = "New Podcast Added"
-        stringIntentExtras["notificationText"] = "Hey Mom/Dad, Check new Podcast Added."
-        stringIntentExtras["type"]="Podcast"
-        stringIntentExtras["notificationChannelId"] = "Podcast"
-        val intIntentExtras = HashMap<String, Int>()
-        intIntentExtras["notificationPriority"] = NotificationCompat.PRIORITY_DEFAULT
-        intIntentExtras["notificationId"] =60007
-
-        UptoddNotificationUtilities.setRepeatingAlarm(context
-            ,cal.timeInMillis, AlarmManager.INTERVAL_DAY,DAILY_ALARM_REQUEST_CODE,NotificationBroadcastReceiver::class.java
-            ,intentStringExtras = stringIntentExtras,intentIntegerExtras = intIntentExtras)
-
-    }
 
     private fun setPhotoNotification() {
         var calendarInstance = Calendar.getInstance()
@@ -209,8 +200,14 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             setDailyActivityCheck()
             setWeeklyActivityNotification()
             setMonthlyActivityNotification()
+
+            if(AllUtil.isUserPremium(context))
+            {
+                checkAppAccess()
+                checkPersonalisedExpiry()
+            }
             //setSessionLeftReminder()
-            checkPodcast()
+
         } else {
             //TODO: add doctor notifications
             setWeeklyDoctorReferralNotification()
@@ -314,5 +311,100 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             DAILY_ALARM_REQUEST_CODE,
             DailyNotificationsReceiver::class.java)
     }
+
+
+    private fun  checkPersonalisedExpiry()
+    { val daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftP()
+        Log.d("Personal expiry","$daysLeft")
+        if(daysLeft==7L || daysLeft==1L)
+        {
+            val endDate=UptoddSharedPreferences.getInstance(context).getSubEnd()
+            showNotification(
+                context,"Personalised Subscription expiry",
+                "Your Personalised subscription will expire on $endDate",
+                "ExNotify",
+                60012,
+                NotificationCompat.PRIORITY_DEFAULT
+            )
+        }
+        else if(daysLeft==0L)
+        {
+            showNotification(
+                context,"Personalised Subscription expiry",
+                "Your Personalised subscription expired",
+                "ExNotify",
+                60012,
+                NotificationCompat.PRIORITY_DEFAULT
+            )
+        }
+    }
+    private fun checkAppAccess()
+    {
+        val plan=UptoddSharedPreferences.getInstance(context).getCurrentPlan()
+        if(plan==3L)
+        {
+            val daysLeft=UptoddSharedPreferences.getInstance(context).daysLeftA()
+
+            Log.d("App Access expiry","$daysLeft")
+            if(daysLeft!=-1L)
+            {
+
+                if(daysLeft==7L || daysLeft==1L)
+                {
+                    val endDate=UptoddSharedPreferences.getInstance(context).getAppExpiryDate()
+                    showNotification(
+                        context,"Subscription expiry",
+                        "Your subscription will expire on $endDate",
+                        "ExNotify",
+                        60012,
+                        NotificationCompat.PRIORITY_DEFAULT
+                    )
+                }
+                else if(daysLeft==0L)
+                {
+                    showNotification(
+                        context,"Subscription expiry",
+                        "Your subscription expired",
+                        "ExNotify",
+                        60012,
+                        NotificationCompat.PRIORITY_DEFAULT
+                    )
+                }
+
+
+
+
+
+
+
+            }
+        }
+    }
+    private fun showNotification(context: Context,title:String,text:String,notificationChannelId:String,notificationId:Int,priority:Int)
+    {
+        val notificationManager=context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("ExNotify", "ExpiryNotification", NotificationManager.IMPORTANCE_HIGH).apply {
+                description = "new channel"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+        val notificationIntent = Intent(context, SplashScreenActivity::class.java)
+        val builder = UptoddNotificationUtilities.notificationBuilder(
+            context,
+            title,
+            text,
+            notificationIntent,
+            notificationChannelId,
+            priority
+        )
+
+        NotificationManagerCompat.from(context).UptoddNotify(
+            builder,
+            notificationId
+        )
+
+    }
+
 
 }

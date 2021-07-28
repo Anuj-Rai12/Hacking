@@ -88,6 +88,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/gif">
 
                     <TextView
+                        android:id="@+id/text_inr_usd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

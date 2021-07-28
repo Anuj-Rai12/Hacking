@@ -143,9 +143,11 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
             val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country=AllUtil.getCountry(requireContext())
             uiScope.launch {
                 val period = KidsPeriod(requireActivity()).getPeriod()
-                AndroidNetworking.get("https://uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType")
+                AndroidNetworking.get("https://www.uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addPathParameter("period", period.toString())
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)
@@ -207,7 +209,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
+        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
         var i = 0
         list.clear()
         while (i < data.length()) {
@@ -223,6 +225,26 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             )
             i++
         }
+        if(data.length()==0)
+        {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                        }
+
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                            super.onDialogDismiss()
+                        }
+                    })
+            }
+        }
+
 
         ioScope.launch {
             expectedOutcomeDao.insertAll(list)

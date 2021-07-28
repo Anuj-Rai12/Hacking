@@ -238,7 +238,7 @@
     <fragment
         android:id="@+id/todosViewPagerFragment"
         android:name="com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.TodosViewPagerFragment"
-        android:label="Todos">
+        android:label="Routines">
         <action
             android:id="@+id/action_todosViewPagerFragment_to_todoDetailsFragment"
             app:destination="@id/todoDetailsFragment" />
@@ -290,6 +290,18 @@
         <action
             android:id="@+id/action_homePageFragment_to_selectParentFragment2"
             app:destination="@id/selectParentFragment2" />
+        <action
+            android:id="@+id/action_homePageFragment_to_memoryBoosterDetailsFragment"
+            app:destination="@id/memoryBoosterDetailsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_activityPodcastFragment"
+            app:destination="@id/activityPodcastFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_speedBoosterFragment"
+            app:destination="@id/speedBoosterFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_activitySampleFragment"
+            app:destination="@id/activitySampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -581,7 +593,11 @@
     <fragment
         android:id="@+id/resourcesFragment"
         android:name="com.uptodd.uptoddapp.media.resources.ResourceFragment"
-        android:label="@string/resources" />
+        android:label="@string/resources" >
+        <action
+            android:id="@+id/action_resourcesFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/upgradeFragment"
         android:name="com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment"

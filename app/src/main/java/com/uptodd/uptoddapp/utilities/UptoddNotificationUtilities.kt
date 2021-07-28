@@ -101,21 +101,37 @@ class UptoddNotificationUtilities {
             notificationContext: Context,
             notificationTitle: String,
             notificationText: String,
-            notificationIntent: Intent,
+            notificationIntent: Intent?,
             channelId: String
         ): NotificationCompat.Builder {
-            val pendingIntent: PendingIntent = TaskStackBuilder.create(notificationContext).run {
-                addNextIntentWithParentStack(notificationIntent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            var pendingIntent:PendingIntent?=null
+            if(notificationIntent==null)
+            {
+
+            }
+            else
+            {
+                pendingIntent= TaskStackBuilder.create(notificationContext).run {
+                    addNextIntentWithParentStack(notificationIntent)
+                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
+
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)
             notificationBuilder.setContentTitle(notificationTitle)
                 .setContentText(notificationText)
                 .setSmallIcon(R.drawable.exo_icon_play)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
                 .priority = NotificationCompat.PRIORITY_DEFAULT
+            if(notificationIntent==null)
+            {
+
+            }
+            else
+            {
+                notificationBuilder.setContentIntent(pendingIntent)
+            }
             return notificationBuilder
         }
 
@@ -127,9 +143,16 @@ class UptoddNotificationUtilities {
             channelId: String,
             priority: Int = NotificationCompat.PRIORITY_DEFAULT
         ): NotificationCompat.Builder {
+            var requestCode=0
+            when (channelId) {
+                "MemoryBooster" -> requestCode=2
+                "ActivitySample" -> requestCode=3
+                "Podcast" -> requestCode=4
+            }
+
             val pendingIntent: PendingIntent = TaskStackBuilder.create(notificationContext).run {
                 addNextIntentWithParentStack(notificationIntent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                getPendingIntent(requestCode, PendingIntent.FLAG_UPDATE_CURRENT)
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)

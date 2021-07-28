@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentStageBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
@@ -58,20 +59,39 @@ class StageFragment : Fragment() {
         )
 
         binding.imageButtonBorn.setOnClickListener {
-            editor?.putString("stage", "pre birth")
+            editor?.putString("stage", "postnatal")
             editor?.commit()
-            viewModel.stage="postnatal"
             UptoddSharedPreferences.getInstance(requireContext()).saveStage("postnatal")
-           showLoadingDialog()
-            viewModel.insertLoginDetails()
+
+            if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
+            {
+                view?.findNavController()?.navigate(R.id.action_stageFragment_to_nameFragment)
+            }
+            else {
+                viewModel.stage="postnatal"
+                viewModel.isLoadingDialogVisible.value = true
+                showLoadingDialog()
+                viewModel.insertLoginDetails()
+            }
         }
         binding.imageButtonPregnant.setOnClickListener {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+
+                editor?.putString("stage", "prenatal")?.apply()
+                editor?.commit()
                 UptoddSharedPreferences.getInstance(requireContext()).saveStage("prenatal")
-                viewModel.stage="prenatal"
+                if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
+                {
+                    view?.findNavController()?.navigate(R.id.action_stageFragment_to_nameFragment)
+                }
+                else {
+                    viewModel.stage="prenatal"
                     viewModel.isLoadingDialogVisible.value = true
                     showLoadingDialog()
                     viewModel.insertLoginDetails()
+                }
+
+
                 //viewModel.getLoginDetails()
             } else {
                 //showInternetNotConnectedDialog()
@@ -115,8 +135,6 @@ class StageFragment : Fragment() {
             if (!it) {
                 upToddDialogs.dismissDialog()
                 if (viewModel.isDataLoadedToDatabase) {
-                    editor?.putBoolean("loggedIn", true)
-                    editor?.putBoolean("isNewUser", false)
                     editor?.commit()
                     if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
                     {

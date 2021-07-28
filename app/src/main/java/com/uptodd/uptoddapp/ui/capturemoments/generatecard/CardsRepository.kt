@@ -26,7 +26,7 @@ class CardsRepository(private val database: GenerateCardDatabase)
     suspend fun refreshCards(type: String?,token:String?)
     {
         withContext(Dispatchers.IO){
-            AndroidNetworking.get("https://uptodd.com/api/frames/$type")
+            AndroidNetworking.get("https://www.uptodd.com/api/frames/$type")
                 .addHeaders("Authorization","Bearer $token")
                 .setPriority(Priority.HIGH)
                 .build()

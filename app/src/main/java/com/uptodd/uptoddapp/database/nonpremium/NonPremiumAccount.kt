@@ -38,4 +38,6 @@ data class NonPremiumAccount(
 
     @ColumnInfo(name = "anything_you_do")
     var anythingYouDo: String? = null,
+    @ColumnInfo(name = "which_parent")
+    var whichParent: String? = null
 )

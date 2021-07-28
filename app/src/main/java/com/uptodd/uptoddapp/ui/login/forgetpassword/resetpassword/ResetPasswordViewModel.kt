@@ -7,6 +7,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 import java.time.LocalDate
 
@@ -87,7 +88,8 @@ class ResetPasswordViewModel : ViewModel() {
         val date = LocalDate.now().toString()
         jsonObject.put("updateTime", date)
         if (!isDoctorReset) {
-            AndroidNetworking.post("https://uptodd.com/api/appusers/newpassword")
+            AndroidNetworking.post("https://www.uptodd.com/api/appusers/newpassword")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -107,7 +109,8 @@ class ResetPasswordViewModel : ViewModel() {
                     }
                 })
         } else {
-            AndroidNetworking.post("https://uptodd.com/api/doctor/newpassword")
+            AndroidNetworking.post("https://www.uptodd.com/api/doctor/newpassword")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.MEDIUM)
                 .build()

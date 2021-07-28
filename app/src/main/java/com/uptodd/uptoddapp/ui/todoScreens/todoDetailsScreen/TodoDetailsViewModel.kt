@@ -28,7 +28,7 @@ class TodoDetailsViewModel() : ViewModel() {
         viewModelScope.launch {
             _imageUrl.value = null
             val language = AllUtil.getLanguage()
-            AndroidNetworking.get("https://uptodd.com/api/activities/{activityId}?lang=$language")
+            AndroidNetworking.get("https://www.uptodd.com/api/activities/{activityId}?lang=$language")
                 .addPathParameter("activityId", "$todoId")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)

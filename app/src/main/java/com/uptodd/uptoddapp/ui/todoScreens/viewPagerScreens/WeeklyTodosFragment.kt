@@ -172,7 +172,7 @@ class WeeklyTodosFragment : Fragment(), TodosRecyclerAdapter.TodosInterface {
 
     private fun initialiseRecyclerView() {
 
-        todosRecyclerAdapter = TodosRecyclerAdapter(emptyList(), this)
+        todosRecyclerAdapter = TodosRecyclerAdapter(emptyList(), this,requireContext())
         binding.recyclerView.adapter = todosRecyclerAdapter
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)  // for swipe behaviour

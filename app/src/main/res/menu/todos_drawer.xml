@@ -14,7 +14,7 @@
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/music"
-                        android:icon="@drawable/ic_baseline_library_music_24"
+                        android:icon="@drawable/ic_baseline_surround_sound_24"
                         android:title="@string/music" />
                     <item
                         android:id="@+id/poemFragment"
@@ -22,7 +22,7 @@
                         android:title="@string/poem" />
                     <item
                         android:id="@+id/speedBoosterFragment"
-                        android:icon="@drawable/ic_baseline_library_music_24"
+                        android:icon="@drawable/ic_baseline_memory_24"
                         android:title="@string/memory_booster" />
                     <item
                         android:id="@+id/toysFragment"
@@ -42,11 +42,11 @@
                         android:title="@string/yoga" />
                     <item
                         android:id="@+id/allTodosViewPagerFragment"
-                        android:icon="@drawable/ic_baseline_accessibility_new_24"
+                        android:icon="@drawable/ic_baseline_add_reaction_24"
                         android:title="@string/all_activities" />
                     <item
                         android:id="@+id/editAlarmsViewPagerFragment"
-                        android:icon="@drawable/ic_baseline_accessibility_new_24"
+                        android:icon="@drawable/ic_baseline_pending_actions_24"
                         android:title="@string/activity_alarms" />
                     <item
                         android:id="@+id/expectedOutcomesFragment3"

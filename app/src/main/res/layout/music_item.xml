@@ -44,12 +44,12 @@
                 android:id="@+id/music_item_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:padding="4dp"
                 android:textAlignment="center"
                 android:textAppearance="@style/AppTheme.TextAppearance.Body2"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/poem_item_image"
-                app:layout_constraintStart_toStartOf="@+id/poem_item_image"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/music_item_image"
                 tools:text="Poem" />
 

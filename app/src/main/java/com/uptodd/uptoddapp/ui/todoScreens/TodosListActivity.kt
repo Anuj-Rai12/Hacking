@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,7 +20,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +30,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.ANRequest
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -37,14 +39,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
-import com.uptodd.uptoddapp.CaptureMomentsActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
+import com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment
 import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -52,6 +53,7 @@ import com.uptodd.uptoddapp.workManager.*
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.DailyAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.MonthlyAndEssentialsAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.WeeklyAlarmSchedulerWorker
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.UpgradeWorkManager
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -60,6 +62,7 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 
@@ -102,30 +105,35 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
         requestFireAllWorkManagers()
 
+
         if(intent.getIntExtra("showUp",0)==1 ||UptoddSharedPreferences.getInstance(this).getShowUp())
         {
             findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
             UptoddSharedPreferences.getInstance(this).showUpgrade(0)
         }
         else
-        { if(!AllUtil.isUserPremium(this) && preferences.getInt("welcome_shown",0)==0) {
+        {
+            val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
+            val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
+            if(!AllUtil.isUserPremium(this)  && !AllUtil.isSubscriptionOver(end) && preferences.getInt("welcome_shown",0)==0) {
 
             val upToddDialogs = UpToddDialogs(this)
             upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
                 object :UpToddDialogs.UpToddDialogListener {
                     override fun onDialogButtonClicked(dialog: Dialog) {
+
                         dialog.dismiss()
                     }
 
                     override fun onDialogDismiss() {
-                        upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Upgrade Now",
+                        upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Continue",
                             object :UpToddDialogs.UpToddDialogListener
                             {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
 
                                     try {
                                         preferences.edit().putInt("welcome_shown",1).apply()
-                                        findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+                                     //   findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
                                     }catch (e:Exception)
                                     {
                                         Log.e("dialog error",e.localizedMessage)
@@ -142,6 +150,24 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         }
         }
 
+        val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
+        val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
+        if(!AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOver(end))
+        {
+            findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+        }
+        else if(AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOverActive(this))
+        {
+            val upToddDialogs = UpToddDialogs(this)
+            upToddDialogs.showInfoDialog("Your premium Subscription is ended now","Logout",
+                object :UpToddDialogs.UpToddDialogListener {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        AllUtil.logout(this@TodosListActivity,this@TodosListActivity)
+                    }
+                }
+            )
+
+        }
         val viewModelFactory = UptoddViewModelFactory.getInstance(application)
 
         val viewModel = ViewModelProvider(
@@ -157,11 +183,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
 
 
+
         val manager: DownloadManager = DownloadManager.Builder().context(this)
             .downloader(OkHttpDownloader.create())
             .threadPoolSize(3)
             .logger { message -> Log.d("TAG", message!!) }
             .build()
+
 
         viewModel.startMusicDownload(
             File(
@@ -172,12 +200,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         )
 
 
+
         if(!AllUtil.isUserPremium(this)) {
             viewModel.getNPDetails(this)
             viewModel.isNewUser.observe(this, Observer {
-
                 if(it)
                 {
+
                 }
                 else
                 {
@@ -188,6 +217,9 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                     np.expectedMonthsOfDelivery?.let { Log.d("expectedMonthOfDelivery", it) }
                 }
             })
+
+
+
         }
     }
 
@@ -316,7 +348,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             if (url == "null" || url == "") {
                 headerImage.setImageResource(res)
             } else {
-                url = "https:uptodd.com/uploads/$url"
+                url = "https://www.uptodd.com/uploads/$url"
 
 
                 var imageFile: File?
@@ -447,8 +479,12 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                 fireWeeklyAlarmWorkManager()
                 fireMonthlyAndEssentialsAlarmWorkManager()
                 fireDailyCheckWorkManager()
+                fireDailyActivities()
                 fireDailySubscriptionCheckWorkManager()
-                fireUpgradeCheckWorkManager()
+                if(!AllUtil.isUserPremium(this@TodosListActivity))
+                {
+                    fireUpgradeCheckWorkManager()
+                }
                 uptoddSharedPreferences.setWorkManagerFiredStatusTrue()
             } else Log.d("Todos list Activity", "Work manager fired already")
         }
@@ -460,8 +496,16 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                 .addTag(DAILY_WORK_MANAGER_TAG)
                 .build()
 
+
+
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyAlarmScheduler)
+    }
+
+    fun AndroidNetworking.get(url: String):ANRequest.GetRequestBuilder<*>
+    {
+        return AndroidNetworking.get(url)
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
     }
 
     private fun fireWeeklyAlarmWorkManager() {
@@ -496,6 +540,16 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             .addTag(DAILYCHECK_WORK_MANAGER_TAG)
             .build()
 
+        val workManager = WorkManager.getInstance(application)
+        workManager.enqueue(dailyCheckWorker)
+    }
+
+    private fun fireDailyActivities()
+    {
+        val dailyCheckWorker = PeriodicWorkRequestBuilder<CheckDailyActivites>(5,TimeUnit.HOURS)
+            .setInitialDelay(24,TimeUnit.HOURS)
+            .addTag(DAILYCHECK_WORK_MANAGER_TAG)
+            .build()
 
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyCheckWorker)
@@ -533,15 +587,28 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         drawerLayout.closeDrawer(Gravity.LEFT)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        navController?.popBackStack(R.id.homePageFragment,false)
+    }
+
+
+
     override fun onBackPressed() {
 
         if(drawerLayout.isDrawerOpen(Gravity.LEFT))
         {
             drawerLayout.closeDrawer(Gravity.LEFT)
         }
+        else if(UpgradeFragment.over)
+        {
+            finish()
+        }
         else
         {
             super.onBackPressed()
         }
     }
+
 }

@@ -40,6 +40,7 @@ private const val TAG = "ActivitySampleFragment"
 
 class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
+
     private lateinit var binding: FragmentActivitySampleBinding
 
     private val sharedPreferences: SharedPreferences by lazy {
@@ -69,6 +70,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
             }
         }
         binding.upgradeButton.setOnClickListener {
+
 
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
@@ -119,9 +121,11 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         val period = getPeriod(requireContext())
         val uid = AllUtil.getUserId()
         val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
         val country=AllUtil.getCountry(requireContext())
 
-        AndroidNetworking.get("https://uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
+
+        AndroidNetworking.get("https://www.uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("period", period.toString())
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -146,6 +150,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
                             showNoData()
                             hideRecyclerView()
                         } else {
+                            UptoddSharedPreferences.getInstance(requireContext()).saveCountSession(data.length())
                             parseData(response.get("data") as JSONArray)
 
                             hideNodata()
@@ -171,6 +176,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
     private fun parseData(data: JSONArray) {
 
+        activitySampleList.clear()
         for (i in 0 until data.length()) {
             val obj = data.get(i) as JSONObject
             val sample = ActivitySample(
@@ -203,7 +209,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
     private fun showNoData() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            if (!AllUtil.isUserPremium(requireContext())) {
                 val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                 val upToddDialogs = UpToddDialogs(requireContext())
@@ -220,7 +225,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
                         }
                     })
 
-            }
         }
         binding.noDataContainer.isVisible = true
     }
@@ -232,6 +236,8 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     private fun hideRecyclerView() {
         binding.activitySampleRecycler.isVisible = false
     }
+
+
 
     override fun onClick(act_sample: ActivitySample) {
         val intent = Intent(context, FullWebinarActivity::class.java)

@@ -8,6 +8,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.logindetails.Explorers
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 
 class FacebookLoginViewModel :ViewModel()
@@ -24,7 +25,8 @@ class FacebookLoginViewModel :ViewModel()
         jsonObject.put("deviceToken",token)
 
 
-        AndroidNetworking.post("https://uptodd.com/api/explorers")
+        AndroidNetworking.post("https://www.uptodd.com/api/explorers")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.HIGH)
             .build()

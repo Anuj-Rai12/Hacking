@@ -25,6 +25,7 @@ class ChangePasswordViewModel : ViewModel() {
     var isPasswordUpdated: Boolean = false
     var errorInChangePassword: String = "Something went wrong"
 
+
     fun checkCurrentPassword(enteredPassword: String) {
         if (currentPassword == null) {
             AndroidNetworking.get("https://uptodd.com/api/appusers/{userId}")

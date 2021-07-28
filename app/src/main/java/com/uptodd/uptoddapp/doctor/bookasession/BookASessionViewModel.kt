@@ -63,7 +63,7 @@ class BookASessionViewModel : ViewModel() {
 //        if(feedback.isNotEmpty())
 //            jsonObject.put("message", feedback)*/
 
-            AndroidNetworking.post("https://uptodd.com/api/referredpatients")
+            AndroidNetworking.post("https://www.uptodd.com/api/referredpatients")
                 .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)

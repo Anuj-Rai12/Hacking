@@ -72,6 +72,14 @@ class HomePageFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
     private val viewModel: TodosViewModel by activityViewModels()
 
+    companion object
+    {
+        var visited=false
+    }
+    val dialogs by lazy {
+        UpToddDialogs(requireContext())
+    }
+
     var dialogShown = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +93,7 @@ class HomePageFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         ChangeLanguage(requireContext()).setLanguage()
@@ -148,6 +156,19 @@ class HomePageFragment : Fragment() {
 //            }
 //        })
 
+        viewModel?.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
+
+            if(it)
+            {
+               changeToLoading()
+            }
+            else
+            {
+                changeToNormalLayout()
+            }
+
+
+        })
         viewModel.notificationIntent.observe(viewLifecycleOwner, Observer {
             when (viewModel.notificationIntent.value) {
                 1 -> {
@@ -243,6 +264,10 @@ class HomePageFragment : Fragment() {
         if(stage=="pre birth" ||stage=="prenatal")
         {
              binding.babyAgeView.text = getString(R.string.babyAgePrenatal)
+        }
+        else if(months==0)
+        {
+            binding.babyAgeView.text="The Baby is in womb"
         }
         else if (months <12)
             binding.babyAgeView.text = getString(R.string.babyMonthsFormat, months)
@@ -491,12 +516,14 @@ class HomePageFragment : Fragment() {
 
     private fun initiateDataRefresh() {
         val freshness = validateFreshness()
-        if (freshness) {
+
+        if (freshness && !UptoddSharedPreferences.getInstance(requireContext()).getInitSave()) {
             Log.i("h_debug", "Todos are fresh")
             return
         } else {
             Log.i("h_debug", "Refreshing Todos")
             viewModel.refreshDataByCallingApi(requireContext(), requireActivity())
+            UptoddSharedPreferences.getInstance(requireContext()).initSave(false)
 //            val connection =
 //                testInternetConnectionAndRefreshData() // test internet connection and assign a disposable to connection so that we can dispose it after data is refreshed
 //
@@ -528,15 +555,16 @@ class HomePageFragment : Fragment() {
                 && preferences.getString("babyName", "") != "baby"
             )
                 stage = "post"
-            var res = R.drawable.ic_broken_image
-            if (stage == "pre")
-                res = R.drawable.pre_birth_profile
+            stage= UptoddSharedPreferences.getInstance(requireContext()).getStage()!!
+           val res = if (stage == "prenatal" ||stage=="pre birth")
+                R.drawable.pre_birth_profile
             else
-                res = R.drawable.post_birth_profile
+                R.drawable.post_birth_profile
+
             if (url == "null" || url == "") {
                 binding.profileImage.setImageResource(res)
             } else {
-                url = "https:uptodd.com/uploads/$url"
+                url = "https://www.uptodd.com/uploads/$url"
 
 
                 val imageFile: File?
@@ -569,7 +597,7 @@ class HomePageFragment : Fragment() {
                             .into(object : CustomTarget<Bitmap>() {
                                 override fun onResourceReady(
                                     resource: Bitmap,
-                                    transition: Transition<in Bitmap>?,
+                                    transition: Transition<in Bitmap>?
                                 ) {
                                     binding.profileImage.setImageBitmap(resource)
 
@@ -724,6 +752,9 @@ class HomePageFragment : Fragment() {
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
+
+
                 when (tab?.position) {
                     0 -> viewModel.loadDailyTodoScore()
                     1 -> viewModel.loadWeeklyTodoScore()
@@ -787,18 +818,23 @@ class HomePageFragment : Fragment() {
 
     private fun changeToAppreciationLayout() {
         binding.apply {
-            btnSeeAllActivites.visibility = View.INVISIBLE
-            superParentTextView.visibility = View.INVISIBLE
-            scoreView.visibility = View.INVISIBLE
 
-            superManImageView.visibility = View.VISIBLE
-            youAreASuperParentTextView.visibility = View.VISIBLE
-            allActivitiesCompletedTextView.visibility = View.VISIBLE
-            confettiImageView.visibility = View.VISIBLE
-            Glide.with(requireActivity())
-                .load(R.drawable.superparentgif)
-                .into(confettiImageView)
 
+            if(!viewModel?.isRefreshing.value!!)
+            {
+                btnSeeAllActivites.visibility = View.INVISIBLE
+                superParentTextView.visibility = View.INVISIBLE
+                scoreView.visibility = View.INVISIBLE
+                superManImageView.visibility = View.VISIBLE
+                youAreASuperParentTextView.visibility = View.VISIBLE
+                allActivitiesCompletedTextView.visibility = View.VISIBLE
+                confettiImageView.visibility = View.VISIBLE
+                Glide.with(requireActivity())
+                    .load(R.drawable.superparentgif)
+                    .into(confettiImageView)
+            }
+            else
+                changeToLoading()
         }
     }
 
@@ -816,18 +852,81 @@ class HomePageFragment : Fragment() {
         }
     }
 
+
+    private fun changeToLoading()
+    {
+        binding.apply {
+            btnSeeAllActivites.visibility = View.INVISIBLE
+            superParentTextView.visibility = View.INVISIBLE
+            scoreView.visibility = View.INVISIBLE
+
+            superManImageView.visibility = View.VISIBLE
+            youAreASuperParentTextView.visibility = View.INVISIBLE
+            allActivitiesCompletedTextView.visibility = View.INVISIBLE
+            confettiImageView.visibility = View.VISIBLE
+            Glide.with(requireActivity()).load(R.drawable.loading_animation)
+                .into(confettiImageView)
+
+        }
+
+
+    }
+
     private fun downloadGuidelinesPdf() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            JishnuDownloadManager(
-                "https://uptodd.com/resources/user/UserGuide.pdf",
-                "UptoddAppGuidelines.pdf",
-                File(
-                    requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
-                    "Downloads"
-                ),
-                requireContext(),
-                requireActivity()
-            )
+
+
+            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val type=UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+
+            AndroidNetworking.get("https://www.uptodd.com/api/appGuidelines?motherStage=$stage&userType=$type")
+                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        response?.let { it ->
+                            if (it.getString("data") != "null") {
+
+                                val data = it.get("data") as String
+                                var url = if(!data.startsWith("https://wwww")) {
+                                    "https://www.${data.substring(8)}"
+                                } else
+                                    data
+
+                                Log.d("url","$url")
+
+                                JishnuDownloadManager(
+                                    url,
+                                    "UptoddAppGuidelines.pdf",
+                                    File(
+                                        requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
+                                        "Downloads"
+                                    ),
+                                    requireContext(),
+                                    requireActivity()
+                                )
+
+                            } else {
+
+                            }
+                        }
+
+                    }
+
+                    override fun onError(error: ANError) {
+                        val snackbar = Snackbar.make(
+                            binding.mainConstraintLayout,
+                            error.errorDetail,
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(getString(R.string.retry)) {
+                                downloadGuidelinesPdf()
+                            }
+                        snackbar.show()
+                    }
+                })
+
         } else {
             val snackbar = Snackbar.make(
                 binding.mainConstraintLayout,
@@ -849,7 +948,7 @@ class HomePageFragment : Fragment() {
             val editor = preferences.edit()
 
             val date = DateClass().getCurrentDateStringAsYYYYMMDD()
-            AndroidNetworking.get("http://uptodd.com/api/todaytip/$date")
+            AndroidNetworking.get("http://www.uptodd.com/api/todaytip/$date")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -906,6 +1005,36 @@ class HomePageFragment : Fragment() {
             tipDescription.height = 0
             todaysTipTextView.height = 0
         }
+    }
+
+    override fun onResume() {
+
+        val notifyId=activity?.intent?.getStringExtra("notifyId").toString()
+
+        Log.d("todo come",notifyId)
+
+        if(!visited)
+        {
+            when(notifyId) {
+                "Podcast" -> {
+                    findNavController()?.navigate(R.id.action_homePageFragment_to_activityPodcastFragment)
+                    visited=true
+                }
+                "MemoryBooster" -> { findNavController()?.navigate(R.id.action_homePageFragment_to_speedBoosterFragment)
+                    visited=true
+                }
+                "ActivitySample" ->
+                {
+
+                    findNavController()?.navigate(R.id.action_homePageFragment_to_activitySampleFragment)
+                    visited=true
+                }
+
+            }
+        }
+        else
+            visited=false
+        super.onResume()
     }
 }
 

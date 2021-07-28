@@ -7,6 +7,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.utilities.AllUtil
 import org.json.JSONObject
 
 class StageViewModel() : ViewModel() {
@@ -27,7 +28,8 @@ class StageViewModel() : ViewModel() {
         jsonObject.put("kidsName", null)
         jsonObject.put("kidsGender", null)
 
-        AndroidNetworking.put("https://uptodd.com/api/appusers/setup/{uid}")
+        AndroidNetworking.put("https://www.uptodd.com/api/appusers/setup/{uid}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("uid", uid)
             .addJSONObjectBody(jsonObject)
             .setPriority(Priority.MEDIUM)

@@ -51,7 +51,7 @@ class Details : Fragment() {
 
     private fun setUpPoemDetails(poems: MusicFiles, binding: DetailsFragmentBinding) {
         Picasso.get()
-            .load("https://uptodd.com/images/app/android/details/poems/${ScreenDpi(requireContext()).getScreenDrawableType()}/${poems.image}.webp")
+            .load("https://www.uptodd.com/images/app/android/details/poems/${ScreenDpi(requireContext()).getScreenDrawableType()}/${poems.image}.webp")
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.default_set_android_detail)
             .into(binding.detailsImage)
@@ -62,14 +62,14 @@ class Details : Fragment() {
 
     private fun setUpMusicDetails(music: MusicFiles) {
         Picasso.get()
-            .load("https://uptodd.com/images/app/android/details/musics/${ScreenDpi(requireContext()).getScreenDrawableType()}/${music.image}.webp")
+            .load("https://www.uptodd.com/images/app/android/details/musics/${ScreenDpi(requireContext()).getScreenDrawableType()}/${music.image}.webp")
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.default_set_android_detail)
             .into(binding.detailsImage)
 
         Log.i(
             "imageLink",
-            "https://uptodd.com/images/app/android/details/musics/${ScreenDpi(requireContext()).getScreenDrawableType()}/${music.image}.webp"
+            "https://www.uptodd.com/images/app/android/details/musics/${ScreenDpi(requireContext()).getScreenDrawableType()}/${music.image}.webp"
         )
     }
 

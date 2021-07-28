@@ -42,7 +42,7 @@ class BookASlotViewModel : ViewModel() {
     }
 
     private fun getAllExpertList(){
-        AndroidNetworking.get("https://uptodd.com/api/appusers/sessions/experts/{userId}")
+        AndroidNetworking.get("https://www.uptodd.com/api/appusers/sessions/experts/{userId}")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId", AllUtil.getUserId().toString())
             .setPriority(Priority.HIGH)
@@ -83,7 +83,8 @@ class BookASlotViewModel : ViewModel() {
     fun getAllExpertDates(){
         _isLoading.value = 1
         availableDates.clear()
-        AndroidNetworking.get("https://uptodd.com/api/appuser/expertavailability")
+        AndroidNetworking.get("https://www.uptodd.com/api/appuser/expertavailability")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addQueryParameter("month", thisMonth.toString())
             .setPriority(Priority.HIGH)
             .build()
@@ -132,9 +133,10 @@ class BookASlotViewModel : ViewModel() {
     fun getSpecificExpertAvailability(id: Int) {
         _isLoading.value = 1
         availableDates.clear()
-        AndroidNetworking.get("https://uptodd.com/api/appuser/expertavailability")
+        AndroidNetworking.get("https://www.uptodd.com/api/appuser/expertavailability")
             .addQueryParameter("month", thisMonth.toString())
             .addQueryParameter("expertid", id.toString())
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {

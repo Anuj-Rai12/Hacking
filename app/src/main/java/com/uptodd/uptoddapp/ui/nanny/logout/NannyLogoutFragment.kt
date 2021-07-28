@@ -78,7 +78,7 @@ class NannyLogoutFragment : Fragment() {
             editor?.putBoolean("loggedIn", false)
             editor?.commit()
 
-            AndroidNetworking.get("https://uptodd.com/api/nannylogout/{userId}")
+            AndroidNetworking.get("https://www.uptodd.com/api/nannylogout/{userId}")
                 .addHeaders("Authorization", "Bearer $token")
                 .addPathParameter("userId", uid)
                 .build()

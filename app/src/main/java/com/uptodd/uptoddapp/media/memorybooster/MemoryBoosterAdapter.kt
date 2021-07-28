@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MemoryBoosterItemBinding
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ScreenDpi
 
 
@@ -32,9 +33,9 @@ class SpeedBoosterAdapter(val clickListener: SpeedBoosterAdpaterInterface) :
 
           val dpi = ScreenDpi(binding.speedBoosterItemImage.context).getScreenDrawableType()
             Glide.with(binding.root)
-                .load(R.drawable.ic_baseline_library_music_24)
+                .load(AllUtil.getPoemImage(item,dpi))
                 .placeholder(R.drawable.loading_animation)
-                .error(R.drawable.ic_broken_image)
+                .error(R.drawable.default_set_android_thumbnail)
                 .into(binding.speedBoosterItemImage)
 
             binding.root.setOnClickListener {

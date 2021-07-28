@@ -17,6 +17,8 @@ import com.uptodd.uptoddapp.database.blogs.Blogs
 import com.uptodd.uptoddapp.database.colour.ColourDao
 import com.uptodd.uptoddapp.database.diet.DietDao
 import com.uptodd.uptoddapp.database.expectedoutcome.ExpectedOutcomeDao
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
@@ -52,8 +54,8 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         Webinars::class, WebinarCategories::class,
         Vaccination::class, Toy::class, Story::class,
         ExpectedOutcomes::class, Yoga::class, Diet::class,
-        Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class,ResourceFiles::class,NonPremiumAccount::class],
-    version = 6,
+        Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class,ResourceFiles::class,NonPremiumAccount::class,MemoryBoosterFiles::class],
+    version = 10,
     exportSchema = false
 )
 
@@ -140,5 +142,7 @@ abstract class UptoddDatabase : RoomDatabase() {
     // nonpremium account dao
     abstract val nonPremiumAccountDao:NonPremiumAccountDao
     // provide migration here if any
+    abstract val memoryBoosterDao:MemoryFilesDao
+
 
 }

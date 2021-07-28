@@ -5,20 +5,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.order.orderlist.OrderListFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff">
+            android:layout_height="match_parent"
+            >
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:background="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
 
             <TextView
                 android:id="@+id/textView5"
@@ -30,7 +40,7 @@
                 android:textColor="#000000"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.35"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,15 +48,16 @@
                 android:id="@+id/button_upgrade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/upgrade"
-                android:textColor="#ffffff"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_corners_button"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/upgrade"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,37 +66,37 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="20dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_upgrade"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
             <ImageView
                 android:id="@+id/imageView_empty"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_baseline_hourglass_empty_24"
                 android:layout_marginTop="100dp"
+                android:contentDescription="@string/no_items"
+                android:src="@drawable/ic_baseline_hourglass_empty_24"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:contentDescription="@string/no_items" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
             <TextView
                 android:id="@+id/textView_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/montserrat"
                 android:text="@string/no_orders"
                 android:textColor="@color/textGrey"
                 android:textSize="20sp"
-                android:fontFamily="@font/montserrat"
-                android:layout_marginTop="30dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/imageView_empty"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/imageView_empty" />
 
             <Button
                 android:id="@+id/button_extendSubscription"
@@ -101,12 +112,25 @@
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/upgradeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/buttonBlue"
+                android:text="@string/upgrade"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                >
+            </com.google.android.material.button.MaterialButton>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

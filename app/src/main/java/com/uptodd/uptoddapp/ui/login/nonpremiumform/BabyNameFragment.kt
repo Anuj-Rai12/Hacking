@@ -26,6 +26,7 @@ class BabyNameFragment : Fragment() {
 
             if (binding.editTextName.text.toString().isNotEmpty()) {
                 viewModel?.putBabyName(binding.editTextName.text.toString())
+                BirthViewModel.npAcc.kidsName=binding.editTextName.text.toString()
                 view?.findNavController()?.navigate(R.id.action_babyNameFragment2_to_dobFragment)
             }
             else

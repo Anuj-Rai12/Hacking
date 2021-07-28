@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.adapters.todoListAdapters
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.score.TYPE_HEADER
 import com.uptodd.uptoddapp.database.score.WEEKLY_TODO
@@ -25,7 +27,7 @@ import kotlin.collections.ArrayList
 
 class TodosRecyclerAdapter(
     var todoList: List<Todo>,
-    private val todosInterface: TodosInterface,
+    private val todosInterface: TodosInterface,var mContext:Context?=null
 ) :
     RecyclerView.Adapter<TodosRecyclerAdapter.ViewHolder>() {
 
@@ -39,6 +41,8 @@ class TodosRecyclerAdapter(
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+
+
     fun selectAllItems() {
         uiScope.launch {
             selectedItemList.clear()
@@ -49,10 +53,13 @@ class TodosRecyclerAdapter(
         }
     }
 
+
+
     fun clearAllSelected() {
         selectedItemList.clear()
         notifyDataSetChanged()
     }
+
 
     fun notifySelectedItemRemovedAt(position: Int) {
         uiScope.launch {
@@ -97,6 +104,7 @@ class TodosRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val todo = todoList[position]
         if (todo.doType != TYPE_HEADER) {
+
             when(holder.bindingAdapterPosition % 5) {
                 1->   holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#F0FCF9"))
                 1->   holder.itemView.todoRecyclerItem.setBackgroundColor(Color.parseColor("#F8F3E9"))
@@ -111,7 +119,6 @@ class TodosRecyclerAdapter(
             } else {
                 holder.itemView.completeStatus.visibility = View.GONE
             }
-
             if (todo.doType == 0) {  // dont's will not have alarm switch
                 holder.itemView.alarmSwitch.visibility = View.INVISIBLE
             }
@@ -122,9 +129,8 @@ class TodosRecyclerAdapter(
 
     }
 
-    class ViewHolder(itemView: View, todosInterface: TodosInterface) :
+    inner class ViewHolder(itemView: View, todosInterface: TodosInterface) :
         RecyclerView.ViewHolder(itemView) {
-
 
         init {
             itemView.setOnClickListener {
@@ -140,27 +146,30 @@ class TodosRecyclerAdapter(
 //                todosInterface.onClickMultipleSelectionItem(bindingAdapterPosition, isChecked)
 //            }
 
-
         }
 
         fun bind(todo: Todo, todosInterface: TodosInterface) {
 
-          //  Glide.with(itemView).load(todo.imageUrl).into(itemView.thumbnail_todo)
-            val period = KidsPeriod(itemView.context).getPeriod()
-            val dpi = ScreenDpi(itemView.context).getScreenDrawableType()
+            //  Glide.with(itemView).load(todo.imageUrl).into(itemView.thumbnail_todo)
+            val period = mContext?.let { KidsPeriod(it).getPeriod() }
+            val dpi = mContext?.let { ScreenDpi(it).getScreenDrawableType() }
             val appendable =
-                "https://uptodd.com/images/app/android/details/activities/$period/$dpi/"
+                "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
-            Glide.with(itemView)
-                .load("$appendable${todo.imageUrl}.webp")
-                .into(itemView.thumbnail_todo)
-                .onLoadStarted(
-                    ContextCompat.getDrawable(
-                        itemView.context,
+            mContext?.let {
+                Glide.with(it)
+                    .load("$appendable${todo.imageUrl}.webp")
+                    .error(R.drawable.default_set_android_thumbnail)
+                    .placeholder(  ContextCompat.getDrawable(
+                        it,
                         R.drawable.loading_animation
-                    )
-                )
-            Log.e("thumbanail",todo.imageUrl)
+                    ))
+                    .into(itemView.thumbnail_todo)
+
+            }
+
+
+            Log.d("thumbnail details","$appendable${todo.imageUrl}.webp")
             itemView.nameTextView.text = todo.task
             itemView.timeTextView.text = todo.alarmTimeByUser.substringBeforeLast(':')
             itemView.alarmSwitch.isChecked = todo.isAlarmNeededByUser

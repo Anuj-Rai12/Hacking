@@ -40,7 +40,7 @@ class ReferredDoctorsListViewModel : ViewModel() {
     }
 
     private fun getFullList() {
-        AndroidNetworking.get("https://uptodd.com/api/doctor/referreddoctors/{doctorId}")
+        AndroidNetworking.get("https://www.uptodd.com/api/doctor/referreddoctors/{doctorId}")
             .addPathParameter("doctorId", AllUtil.getDoctorId().toString())
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)

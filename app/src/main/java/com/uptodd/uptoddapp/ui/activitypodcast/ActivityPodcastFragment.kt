@@ -32,6 +32,7 @@ import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.KidsPeriod
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckPodcastWorkManager
 import kotlinx.coroutines.CoroutineScope
@@ -54,9 +55,6 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
     }
 
-    private val sharedPrefWorkManager: SharedPreferences by lazy {
-        requireActivity().getSharedPreferences("podcast_work_manager", Context.MODE_PRIVATE)
-    }
 
     private val uptoddDatabase: UptoddDatabase by lazy {
         UptoddDatabase.getInstance(requireContext())
@@ -90,7 +88,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requestWorkManager()
+
         val lastFetched = sharedPreferences.getLong("ACTIVITY_PODCAST", -1)
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -134,14 +132,14 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
     private fun fetchDataFromApi() {
         val uid = AllUtil.getUserId()
-        val months = getMonth(requireContext())
+        val months = KidsPeriod(requireContext()).getKidsAge()
         val lang = AllUtil.getLanguage()
 
         Log.d("months", months.toString())
-
         val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
         val country=AllUtil.getCountry(requireContext())
-        AndroidNetworking.get("https://uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}?userType=$userType&country=$country")
+        AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
             .addPathParameter("lang", lang)
@@ -150,6 +148,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
+
 
                     if (response == null)
                     {
@@ -163,33 +162,22 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
                     try {
                         val data = response?.get("data") as JSONArray
+
+                        Log.d("activity podcast c","${data.length()}")
+
                         if (data.length() <= 0) {
                             showNoData()
                             hideRecyclerView()
                         } else {
-
-
-
+                            UptoddSharedPreferences.getInstance(requireContext()).saveCountPodcast(data.length())
                             parseData(response.get("data") as JSONArray)
                             hideNodata()
+                            showRecyclerView()
                         }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
                         val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
-                        if(stage=="prenatal" || stage=="pre birth")
-                        {
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("This section is only for postnatal user","Close",
-                                object : UpToddDialogs.UpToddDialogListener {
-                                    override fun onDialogButtonClicked(dialog: Dialog) {
-                                        findNavController().navigateUp()
-
-                                    }
-                                })
-
-
-                        }
                         if(!AllUtil.isUserPremium(requireContext()))
                         {
                             val title=activity?.actionBar?.title.toString()
@@ -239,6 +227,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
     private fun parseData(data: JSONArray) {
 
+        activityPodcastList.clear()
         for (i in 0 until data.length()) {
             val obj = data.get(i) as JSONObject
             val sample = ActivityPodcast(
@@ -271,7 +260,6 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
     private fun showNoData() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            if (!AllUtil.isUserPremium(requireContext())) {
                 val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                 val upToddDialogs = UpToddDialogs(requireContext())
@@ -280,15 +268,12 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                     object : UpToddDialogs.UpToddDialogListener {
                         override fun onDialogButtonClicked(dialog: Dialog) {
                             dialog.dismiss()
-
                         }
-
                         override fun onDialogDismiss() {
                             findNavController().navigateUp()
                         }
                     })
 
-            }
         }
         binding.noDataContainer.isVisible = true
     }
@@ -308,24 +293,5 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         intent.putExtra("kit_content",act_podacast.kitContent)
         intent.putExtra("description",act_podacast.description)
         startActivity(intent)
-    }
-
-
-
-
-    private fun requestWorkManager()
-    {
-
-        val check=sharedPrefWorkManager.getInt("ALREADY_REQUESTED",0)
-
-        if(check==0) {
-            var workRequest = OneTimeWorkRequest.Builder(
-                CheckPodcastWorkManager::class.java
-            ).build()
-
-            context?.let { WorkManager.getInstance(it).enqueue(workRequest) }
-
-            sharedPrefWorkManager.edit().putInt("ALREADY_REQUESTED", 1).apply()
-        }
     }
 }

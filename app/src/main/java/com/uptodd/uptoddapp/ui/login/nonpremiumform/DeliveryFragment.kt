@@ -25,7 +25,8 @@ class DeliveryFragment: Fragment() {
         viewModel= ViewModelProvider(this)[BirthViewModel::class.java]
         binding.buttonNext.setOnClickListener {
                 viewModel?.putDelivery(binding.editTextToys.text.toString())
-                view?.findNavController()?.navigate(R.id.action_deliveryFragment_to_anyThingFragment)
+            BirthViewModel.npAcc.expectedMonthsOfDelivery=binding.editTextToys.text.toString()
+            view?.findNavController()?.navigate(R.id.action_deliveryFragment_to_anyThingFragment)
 
         }
         return binding.root
