@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">HackingWork</string>
+    <!-- App String -->
+    <string name="app_tag">HACK</string>
+    <string name="app_login">Login Screen.</string>
+    <string name="app_create_acc">Create Account.</string>
+    <string name="app_email_hint">Email</string>
+    <string name="app_pass_hint">Password</string>
+    <string name="app_remember">Remember Me</string>
+    <string name="app_login_btn">Login</string>
+    <string name="app_sign_btn">Sign Up</string>
+    <string name="forgot_password">Forget Password?</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_num">Phone Number</string>
+    <string name="app_next">Next</string>
+    <string name="verify">Verification</string>
+    <string name="app_verify_btn">Verify</string>
+    <string name="opt_verify">OTP is send successfully to you phone no</string>
+    <string name="timer_count">%1$d sec</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="create_file">Create a new account?</string>
+    <string name="vai_text">Via Text.</string>
+    <string name="vai_phone">Via Email.</string>
 </resources>
