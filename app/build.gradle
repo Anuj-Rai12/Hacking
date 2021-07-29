@@ -92,4 +92,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // MultiDex
     implementation "androidx.multidex:multidex:$multidex_version"
+    //G-Auth
+    implementation "com.google.android.gms:play-services-auth:19.2.0"
 }

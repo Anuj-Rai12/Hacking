@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/loginWithEmailPassword"
         android:name="com.example.hackingwork.auth.LoginWithEmailPassword"
-        android:label="login_with_email_password"
-        tools:layout="@layout/login_with_email_password" >
+        android:label="@string/app_login"
+        tools:layout="@layout/login_with_email_password">
         <action
             android:id="@+id/action_loginWithEmailPassword_to_createUserAccount"
             app:destination="@id/createUserAccount" />
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/createUserAccount"
         android:name="com.example.hackingwork.auth.CreateUserAccount"
-        android:label="create_user_account"
+        android:label="@string/app_create_acc"
         tools:layout="@layout/create_user_account" >
         <action
             android:id="@+id/action_createUserAccount_to_loginWithEmailPassword"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/phoneNumberOtp"
         android:name="com.example.hackingwork.auth.PhoneNumberOtp"
-        android:label="phone_otp_faragment"
+        android:label="OTP"
         tools:layout="@layout/phone_otp_faragment" >
         <action
             android:id="@+id/action_phoneNumberOtp_to_adminActivity"
@@ -41,12 +41,12 @@
     <activity
         android:id="@+id/adminActivity"
         android:name="com.example.hackingwork.AdminActivity"
-        android:label="admin_actitvity_main"
+        android:label="Admin"
         tools:layout="@layout/admin_actitvity_main" />
     <fragment
         android:id="@+id/forgetFragment"
         android:name="com.example.hackingwork.auth.forgetpass.ForgetFragment"
-        android:label="forget_fragment"
+        android:label="@string/forgot_password"
         tools:layout="@layout/forget_fragment" >
         <action
             android:id="@+id/action_forgetFragment_to_makeSelection"
@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/makeSelection"
         android:name="com.example.hackingwork.auth.forgetpass.MakeSelection"
-        android:label="mke_framgent"
+        android:label="Make Selection"
         tools:layout="@layout/mke_framgent" />
     <action android:id="@+id/action_global_phoneNumberOtp" app:destination="@id/phoneNumberOtp" />
 </navigation>
