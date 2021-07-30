@@ -22,4 +22,8 @@
     <string name="create_file">Create a new account?</string>
     <string name="vai_text">Via Text.</string>
     <string name="vai_phone">Via Email.</string>
+    <string name="wrong_detail">Pleas,Enter the Correct Info</string>
+    <string name="wrong_email">Please,Enter the Correct Email</string>
+    <string name="wrong_password">Please,Enter the Correct Password</string>
+    <string name="wrong_phone">Please,Enter the Correct Phone Number</string>
 </resources>

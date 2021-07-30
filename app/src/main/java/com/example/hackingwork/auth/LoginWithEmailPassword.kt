@@ -16,13 +16,11 @@ import com.example.hackingwork.utils.getIntent
 
 class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
     private lateinit var binding: LoginWithEmailPasswordBinding
-    private var deviceEmail:String?=null
     private val onActivityStart = registerForActivityResult(ActivityDataInfo()) {output->
         output.email?.let { email ->
             if (output.requestCode)
-            deviceEmail=email
+            binding.emailText.setText(email)
         }
-        Log.i(TAG, "onViewCreated: $deviceEmail")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

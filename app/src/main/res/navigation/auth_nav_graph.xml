@@ -61,4 +61,15 @@
         android:label="Make Selection"
         tools:layout="@layout/mke_framgent" />
     <action android:id="@+id/action_global_phoneNumberOtp" app:destination="@id/phoneNumberOtp" />
+    <dialog
+        android:id="@+id/passwordDialog"
+        android:name="com.example.hackingwork.utils.PasswordDialog"
+        android:label="PasswordDialog" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument android:name="message"
+            app:argType="string" />
+    </dialog>
+    <action android:id="@+id/action_global_passwordDialog" app:destination="@id/passwordDialog" />
 </navigation>
