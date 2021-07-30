@@ -13,8 +13,8 @@ android {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 11
-        versionName "2.7"
+        versionCode 12
+        versionName "2.8"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -210,13 +210,9 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     //razor pay
-    implementation 'com.razorpay:checkout:1.6.7'
+    implementation 'com.razorpay:checkout:1.6.9'
 
     //paypal
-    implementation ('com.paypal.sdk:paypal-android-sdk:2.16.0')
-            {
-                exclude group:'io.card'
-            }
     implementation('com.paypal.checkout:android-sdk:0.2.0')
 
 

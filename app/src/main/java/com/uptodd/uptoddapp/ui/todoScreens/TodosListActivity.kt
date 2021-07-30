@@ -39,6 +39,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -66,7 +68,8 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 
-class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener {
+class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener,
+    PaymentResultListener {
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -82,10 +85,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     private lateinit var editor: SharedPreferences.Editor
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
+    var rpListener:RazorPayListener?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Checkout.preload(applicationContext);
         ChangeLanguage(this).setLanguage()
 
         var userType: String? = ""
@@ -609,6 +615,26 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         {
             super.onBackPressed()
         }
+    }
+
+
+
+    interface  RazorPayListener
+    {
+
+        fun onPaymentSuccess(id: String?)
+        fun onPaymentFailure(d: Int, error: String?)
+    }
+
+    override fun onPaymentSuccess(id: String?)
+    {
+
+        rpListener?.onPaymentSuccess(id)
+
+    }
+
+    override fun onPaymentError(id: Int, error: String?) {
+        rpListener?.onPaymentFailure(id,error)
     }
 
 }

@@ -1,9 +1,11 @@
 package com.uptodd.uptoddapp.ui.upgrade
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.facebook.all.All
+import com.razorpay.Checkout
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.UpgradeFragmentBinding
@@ -23,13 +26,18 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 
-class UpgradeFragment :Fragment(),UpgradeAdapterInterface
-{
+class UpgradeFragment :Fragment(),UpgradeAdapterInterface, TodosListActivity.RazorPayListener {
     var binding:UpgradeFragmentBinding?=null
     var viewModel:UpgradeViewModel?=null
     var adapter:UpgradeAdapter?=null
+    private val checkout by lazy {
+        Checkout()
+    }
+    private var productMonth:Int=0
+
     val dialogs by lazy {
         UpToddDialogs(requireContext())
     }
@@ -68,6 +76,17 @@ class UpgradeFragment :Fragment(),UpgradeAdapterInterface
             binding?.upGradeRecyclerView?.adapter=adapter
         binding?.upGradeRecyclerView?.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
         return binding?.root
+    }
+
+    override fun onAttach(context: Context) {
+
+        var ac=activity
+        if(ac is TodosListActivity)
+        {
+            ac.rpListener=this
+        }
+
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -216,16 +235,68 @@ class UpgradeFragment :Fragment(),UpgradeAdapterInterface
 
 
 
-    override fun onClickPoem(item: UpgradeItem) {
+    override fun onClickOffer(item: UpgradeItem) {
 
 
         viewModel?.notifySalesTeam(item,requireContext())
-        val intent=Intent(requireActivity(),PaymentActivity::class.java)
-        intent.putExtra(PaymentActivity.AMOUNT_KEY,item.amountToBePaid.toDouble())
-        intent.putExtra(PaymentActivity.PAYMENT_TYPE,item.country)
-        intent.putExtra(PaymentActivity.PAYMENT_PRODUCT_MONTH,item.productMonth)
-        startActivity(intent)
+
+        if(!AllUtil.isRow(requireContext()))
+        {
+            startRazorPayPayment(item.productMonth,item.amountToBePaid.toDouble(),requireContext())
+        }
+        else
+        {
+            val intent=Intent(requireActivity(),PaymentActivity::class.java)
+            intent.putExtra(PaymentActivity.AMOUNT_KEY,item.amountToBePaid.toDouble())
+            intent.putExtra(PaymentActivity.PAYMENT_TYPE,item.country)
+            intent.putExtra(PaymentActivity.PAYMENT_PRODUCT_MONTH,item.productMonth)
+            startActivity(intent)
+
+        }
+
     }
+
+    override fun onPaymentSuccess(id: String?) {
+        UpgradeViewModel.paymentStatus = PaymentActivity.PAYMENT_SUCCESS
+        id?.let { viewModel?.savePaymentDetails(requireContext(), it,productMonth ) }
+        id?.let { Log.d("succces paymentID:id", it) }
+    }
+
+    override fun onPaymentFailure(d: Int, error: String?) {
+        UpgradeViewModel.paymentStatus = PaymentActivity.PAYMENT_FAILED
+
+    }
+
+
+    private fun startRazorPayPayment(productMonth:Int,amounts: Double,context: Context) {
+
+        this.productMonth=productMonth
+        var paisa =
+            amounts * 100 //Generate your razorpay key from Settings-> API Keys-> copy Key Id
+        checkout.setKeyID(PaymentActivity.razorpayKey)
+
+        val pref = UptoddSharedPreferences.getInstance(context)
+
+        try {
+            val options = JSONObject()
+            options.put("name", pref.getName())
+            options.put("description", "charge for $productMonth month plan")
+            options.put("currency", "INR")
+            options.put("amount", paisa)
+
+            val preFill = JSONObject()
+            pref.getEmail().let {   preFill.put("email",it)}
+            pref.getPhone().let {  preFill.put("contact",it) }
+            options.put("prefill", preFill)
+            checkout.open(requireActivity(), options)
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error in payment: " + e.message, Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+
+    }
+
 
 
 }

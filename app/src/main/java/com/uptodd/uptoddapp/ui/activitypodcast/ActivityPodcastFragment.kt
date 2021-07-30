@@ -23,6 +23,7 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.api.NetworkingApi
 import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
@@ -130,15 +131,27 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
             })
     }
 
+
+    fun AndroidNetworking.postS(s:String)
+    {
+
+    }
+
     private fun fetchDataFromApi() {
         val uid = AllUtil.getUserId()
         val months = KidsPeriod(requireContext()).getKidsAge()
         val lang = AllUtil.getLanguage()
 
+
+
+
+
         Log.d("months", months.toString())
         val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
         val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
         val country=AllUtil.getCountry(requireContext())
+
+
         AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())

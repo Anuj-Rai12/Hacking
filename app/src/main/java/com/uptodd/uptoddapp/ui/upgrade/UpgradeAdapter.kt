@@ -82,7 +82,7 @@ class UpgradeAdapter(var clickListener: UpgradeAdapterInterface?=null) : Recycle
             binding.upKeyFeature.adapter=keyAdapter
 
             binding.upUpgrade.setOnClickListener {
-                clickListener?.onClickPoem(item)
+                clickListener?.onClickOffer(item)
             }
         }
 
@@ -133,5 +133,5 @@ class UpgradeAdapter(var clickListener: UpgradeAdapterInterface?=null) : Recycle
 }
 
 interface UpgradeAdapterInterface {
-    fun onClickPoem(item:UpgradeItem)
+    fun onClickOffer(item:UpgradeItem)
 }
