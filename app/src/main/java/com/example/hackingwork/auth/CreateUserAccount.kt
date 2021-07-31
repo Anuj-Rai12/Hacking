@@ -11,18 +11,25 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.CreateUserAccountBinding
 import com.example.hackingwork.utils.*
+import com.example.hackingwork.viewmodels.PrimaryViewModel
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.snackbar.Snackbar
+import java.net.Inet4Address
+import java.net.NetworkInterface
+import java.net.SocketException
+import java.util.*
 
 class CreateUserAccount : Fragment(R.layout.create_user_account) {
     private lateinit var binding: CreateUserAccountBinding
-    private var dialogPhoneFlag:Boolean?=null
+    private var dialogPhoneFlag: Boolean? = null
+    private val primaryViewModel: PrimaryViewModel by activityViewModels()
     private val requestPhone =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activity ->
             val credential: Credential? = activity.data?.getParcelableExtra(Credential.EXTRA_KEY)
@@ -52,45 +59,53 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreateUserAccountBinding.bind(view)
         savedInstanceState?.let {
-            dialogPhoneFlag=it.getBoolean(GetConstStringObj.My_Dialog_Once)
+            dialogPhoneFlag = it.getBoolean(GetConstStringObj.My_Dialog_Once)
         }
-        if (dialogPhoneFlag ==null){
+        if (dialogPhoneFlag == null) {
             phoneSelection()
         }
         binding.nextBtn.setOnClickListener {
-            val firstName=binding.firstName.text.toString()
-            val lastName=binding.lastName.text.toString()
-            val email=binding.emailAddress.text.toString()
-            val pass=binding.password.text.toString()
-            val phone=binding.countryCode.selectedCountryCodeWithPlus+binding.phone.text.toString()
+            val firstName = binding.firstName.text.toString()
+            val lastName = binding.lastName.text.toString()
+            val email = binding.emailAddress.text.toString()
+            val pass = binding.password.text.toString()
+            val phone =
+                binding.countryCode.selectedCountryCodeWithPlus + binding.phone.text.toString()
             if (checkFieldValue(firstName)
-                || checkFieldValue(lastName)||
-                checkFieldValue(email)||
-                checkFieldValue(pass)||
+                || checkFieldValue(lastName) ||
+                checkFieldValue(email) ||
+                checkFieldValue(pass) ||
                 checkFieldValue(phone)
-            ){
-                Snackbar.make(requireView(),getString(R.string.wrong_detail),Snackbar.LENGTH_SHORT).show()
+            ) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.wrong_detail),
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
-            if (!isValidEmail(email)){
-                Snackbar.make(requireView(),getString(R.string.wrong_email),Snackbar.LENGTH_SHORT).show()
+            if (!isValidEmail(email)) {
+                Snackbar.make(requireView(), getString(R.string.wrong_email), Snackbar.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            if (!isValidPassword(pass)){
-                Snackbar.make(requireView(),getString(R.string.wrong_password),Snackbar.LENGTH_LONG).setAction("INFO"){
-                    dir(1,message = msg())
+            if (!isValidPassword(pass)) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.wrong_password),
+                    Snackbar.LENGTH_LONG
+                ).setAction("INFO") {
+                    dir(1, message = msg())
                 }.show()
                 return@setOnClickListener
             }
-            if (!isValidPhone(phone)){
-                Snackbar.make(requireView(),getString(R.string.wrong_phone),Snackbar.LENGTH_SHORT).show()
+            if (!isValidPhone(phone)) {
+                Snackbar.make(requireView(), getString(R.string.wrong_phone), Snackbar.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            Log.i(TAG, "onViewCreated: Email ->$email")
-            Log.i(TAG, "onViewCreated: Phone ->$phone")
-            Log.i(TAG, "onViewCreated: LastName ->$lastName")
-            Log.i(TAG, "onViewCreated: firstName ->$firstName")
-            Log.i(TAG, "onViewCreated: passWord ->$$pass")
+
+
         }
         binding.backTo.setOnClickListener {
             //Back to Set On click
@@ -98,14 +113,30 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
     }
 
+    private fun getLocalIpAddress(): String? {
+        try {
+            val en = NetworkInterface.getNetworkInterfaces()
+            while (en.hasMoreElements()) {
+                val into = en.nextElement()
+                val enumIpAdder = into.inetAddresses
+                while (enumIpAdder.hasMoreElements()) {
+                    val inetAddress = enumIpAdder.nextElement()
+                    if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
+                        return inetAddress.hostAddress
+                    }
+                }
+            }
+        } catch (ex: SocketException) {
+            Log.i(TAG, "getLocalIpAddress: ${ex.localizedMessage}")
+            ex.printStackTrace()
+        }
+        return null
+    }
+
     private fun dir(choose: Int = 0, title: String = "Good Password", message: String = "") {
         val action = when (choose) {
-            1 -> {
-                CreateUserAccountDirections.actionGlobalPasswordDialog(title, message)
-            }
-            else -> {
-                CreateUserAccountDirections.actionCreateUserAccountToLoginWithEmailPassword()
-            }
+            1 -> CreateUserAccountDirections.actionGlobalPasswordDialog(title, message)
+            else -> CreateUserAccountDirections.actionCreateUserAccountToLoginWithEmailPassword()
         }
         findNavController().navigate(action)
     }
@@ -120,7 +151,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
 
     @SuppressLint("BanParcelableUsage", "WrongConstant")
     private fun phoneSelection() {
-        dialogPhoneFlag=true
+        dialogPhoneFlag = true
         val credentialsClient = Credentials.getClient(requireActivity(), options())
         val intent = credentialsClient.getHintPickerIntent(hintRequest())
         try {
@@ -131,6 +162,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
             Log.i(TAG, "phoneSelection: ${e.localizedMessage}")
         }
     }
+
     private fun msg() = "The Good Password Must contain Following thing ;) :- \n\n" +
             "1.At least 1 digit i.e [0-9]\n" +
             "2.At least 1 lower case letter i.e [a-z]\n" +
@@ -143,7 +175,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         dialogPhoneFlag?.let {
-            outState.putBoolean(GetConstStringObj.My_Dialog_Once,it)
+            outState.putBoolean(GetConstStringObj.My_Dialog_Once, it)
         }
     }
 }

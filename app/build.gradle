@@ -94,4 +94,6 @@ dependencies {
     implementation "androidx.multidex:multidex:$multidex_version"
     //G-Auth
     implementation "com.google.android.gms:play-services-auth:19.2.0"
+    //Lottie
+    implementation 'com.airbnb.android:lottie:3.7.2'
 }

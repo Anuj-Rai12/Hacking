@@ -1,10 +1,12 @@
 package com.example.hackingwork.utils
 
 import android.accounts.AccountManager
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
+import javax.inject.Inject
 
 class ActivityDataInfo : ActivityResultContract<InputDataBitch, OutPutDataBitch>() {
     override fun createIntent(context: Context, input: InputDataBitch?): Intent {
@@ -27,3 +29,15 @@ class OutPutDataBitch(
     val requestCode: Boolean,
     val email: String?
 )
+
+class CustomProgress @Inject constructor(private val customProgressBar: CustomProgressBar) {
+    fun hideLoading() {
+        customProgressBar.dismiss()
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    fun showLoading(context: Context, string: String?, boolean: Boolean = false) {
+        val con = context as Activity
+        customProgressBar.show(con, string, boolean)
+    }
+}

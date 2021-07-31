@@ -26,4 +26,5 @@
     <string name="wrong_email">Please,Enter the Correct Email</string>
     <string name="wrong_password">Please,Enter the Correct Password</string>
     <string name="wrong_phone">Please,Enter the Correct Phone Number</string>
+    <string name="pleas_wait">Please, Wait</string>
 </resources>

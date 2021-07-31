@@ -93,4 +93,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // MultiDex
     implementation "androidx.multidex:multidex:$multidex_version"
+    //Lottie
+    implementation 'com.airbnb.android:lottie:3.7.2'
 }
