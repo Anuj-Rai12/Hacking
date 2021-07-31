@@ -57,13 +57,17 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
         ipAddress: String,
         firstname: String,
         lastname: String,
-        phone: String
+        phone: String,
+        email: String,
+        password: String
     ) {
         context.dataStore.edit {mutablePreferences ->
             mutablePreferences[data.Ip_Address]=ipAddress
             mutablePreferences[data.First_Name]=firstname
             mutablePreferences[data.Last_Name]=lastname
             mutablePreferences[data.Phone_Number]=phone
+            mutablePreferences[data.EMAIL_ADDRESS]=email
+            mutablePreferences[data.USER_PASSWORD]=password
         }
     }
 
@@ -81,7 +85,7 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
 data class UserStore(
     val email: String,
     val password: String,
-    val flag: Boolean,
+    var flag: Boolean,
     val ipAddress: String,
     val phone: String,
     val firstname: String,

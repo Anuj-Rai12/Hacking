@@ -61,6 +61,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     //FireBase Auth
     implementation "com.google.firebase:firebase-auth-ktx:$firebase_auth"
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
     //FireBase Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$firebase_couroutine")
     //JetPack DataStore
@@ -92,8 +93,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // MultiDex
     implementation "androidx.multidex:multidex:$multidex_version"
-    //G-Auth
-    implementation "com.google.android.gms:play-services-auth:19.2.0"
     //Lottie
     implementation 'com.airbnb.android:lottie:3.7.2'
 }

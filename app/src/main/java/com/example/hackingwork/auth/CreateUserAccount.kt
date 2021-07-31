@@ -21,15 +21,21 @@ import com.example.hackingwork.viewmodels.PrimaryViewModel
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CreateUserAccount : Fragment(R.layout.create_user_account) {
     private lateinit var binding: CreateUserAccountBinding
     private var dialogPhoneFlag: Boolean? = null
     private val primaryViewModel: PrimaryViewModel by activityViewModels()
+
+    @Inject
+    lateinit var customProgress: CustomProgress
     private val requestPhone =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activity ->
             val credential: Credential? = activity.data?.getParcelableExtra(Credential.EXTRA_KEY)
@@ -53,6 +59,10 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
     }
 
+    private fun hideLoading() = customProgress.hideLoading()
+    private fun showLoading(string: String) =
+        customProgress.showLoading(context = requireActivity(), string = string)
+
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,6 +73,14 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
         if (dialogPhoneFlag == null) {
             phoneSelection()
+        }
+        if (primaryViewModel.mutableStateFlow.value?.flag == true) {
+            Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value}")
+            /*val firstName =primaryViewModel.mutableStateFlow.value?.firstname
+            val lastName =primaryViewModel.mutableStateFlow.value?.lastname
+            val email = primaryViewModel.mutableStateFlow.value?.email
+            val pass =primaryViewModel.mutableStateFlow.value?.password
+            val phone =primaryViewModel.mutableStateFlow.value?.phone*/
         }
         binding.nextBtn.setOnClickListener {
             val firstName = binding.firstName.text.toString()
@@ -104,13 +122,61 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
                     .show()
                 return@setOnClickListener
             }
-
-
+            sendEmailLink(firstName, lastName, email, pass, phone)
         }
         binding.backTo.setOnClickListener {
             //Back to Set On click
             dir()
         }
+    }
+
+    private fun sendEmailLink(
+        firstName: String,
+        lastName: String,
+        email: String,
+        pass: String,
+        phone: String
+    ) {
+        primaryViewModel.mutableStateFlow.value =
+            UserStore(
+                email,
+                pass,
+                flag = true,
+                ipAddress = getLocalIpAddress() ?: "",
+                phone,
+                firstName,
+                lastName
+            )
+        primaryViewModel.sendEmailLinkWithToVerify(email).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    primaryViewModel.mutableStateFlow.value?.flag=false
+                    dir(1, "Error", "${it.exception?.localizedMessage}")
+                }
+                is MySealed.Loading -> {
+                    showLoading(it.data!!)
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    primaryViewModel.mutableStateFlow.value?.flag=false
+                    primaryViewModel.storeInitUserDetail(
+                        ipAddress = getLocalIpAddress() ?: "",
+                        firstname = firstName,
+                        lastname = lastName,
+                        phone = phone,
+                        email = email,
+                        password = pass
+                    )
+                    dir(1, "Success", "${it.data}")
+                }
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideLoading()
     }
 
     private fun getLocalIpAddress(): String? {

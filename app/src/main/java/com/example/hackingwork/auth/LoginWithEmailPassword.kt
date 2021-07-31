@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.hackingwork.MainActivity
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.LoginWithEmailPasswordBinding
@@ -49,4 +50,11 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        MainActivity.emailAuthLink?.let {
+            val action=LoginWithEmailPasswordDirections.actionGlobalPhoneNumberOtp()
+            findNavController().navigate(action)
+        }
+    }
 }
