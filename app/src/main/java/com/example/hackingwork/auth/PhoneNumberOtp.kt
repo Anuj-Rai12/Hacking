@@ -15,9 +15,7 @@ import com.example.hackingwork.MainActivity
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.PhoneOtpFaragmentBinding
-import com.example.hackingwork.utils.CustomProgress
-import com.example.hackingwork.utils.MySealed
-import com.example.hackingwork.utils.checkFieldValue
+import com.example.hackingwork.utils.*
 import com.example.hackingwork.viewmodels.PrimaryViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
@@ -32,6 +30,7 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     private lateinit var binding: PhoneOtpFaragmentBinding
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var verificationProg: Boolean? = null
+    private var flag: Boolean? = null
     private var verificationId: String? = null
     private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     private var myCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
@@ -53,22 +52,48 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = PhoneOtpFaragmentBinding.bind(view)
-        MainActivity.emailAuthLink?.let { link ->
-            primaryViewModel.read.observe(viewLifecycleOwner) { store ->
-                binding.phoneno.text = store.phone
-                signInWithLink(store.email, link)
-            }
+        binding.phoneno.text=primaryViewModel.read.value?.phone
+        savedInstanceState?.let {
+            flag = it.getBoolean(GetConstStringObj.USERS)
+        }
+        if (flag == null) {
+            Log.i(TAG, "onViewCreated: Phone $flag")
+            initialAccountVerification()
+        }
+        if (flag == true) {
+            Log.i(TAG, "onViewCreated:Phone  Flags is $flag")
+            signInWithLink(
+                link = MainActivity.emailAuthLink!!,
+                email = primaryViewModel.read.value?.email!!
+            )
+        }
+        if (primaryViewModel.mutableStateFlow.value?.email == GetConstStringObj.My_Dialog_Once && primaryViewModel.credential != null) {
+            Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value?.email}")
+            Log.i(TAG, "onViewCreated: ${primaryViewModel.credential}")
+            signInWithCredential(primaryViewModel.credential!!)
+        }
+        if (primaryViewModel.mutableStateFlow.value?.firstname == GetConstStringObj.USERS) {
+            Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value?.firstname}")
+            createUserAccount()
         }
         binding.verify.setOnClickListener {
             if (checkFieldValue(binding.pinView.text.toString())) {
                 Snackbar.make(requireView(), "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             checkCode(verificationId, code = binding.pinView.text.toString())
         }
         binding.resendotp.setOnClickListener {
             resendCode(primaryViewModel.read.value?.phone!!, resendToken)
+        }
+        getCallBack()
+    }
+
+    private fun initialAccountVerification() {
+        MainActivity.emailAuthLink?.let { link ->
+            primaryViewModel.read.observe(viewLifecycleOwner) { store ->
+                signInWithLink(store.email, link)
+            }
         }
     }
 
@@ -125,16 +150,29 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
 
     private fun signInWithCredential(credential: PhoneAuthCredential) {
         val password = primaryViewModel.read.value?.password!!
+        primaryViewModel.mutableStateFlow.value =
+            UserStore(
+                GetConstStringObj.My_Dialog_Once,
+                "pass",
+                flag = true,
+                ipAddress = "",
+                "phone",
+                "firstName",
+                "lastName"
+            )
+        primaryViewModel.credential = credential
         primaryViewModel.updatePhoneNumber(credential, password).observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
+                    primaryViewModel.credential = null
                     timer.cancel()
                     dir(message = it.exception?.localizedMessage!!)
                 }
                 is MySealed.Loading -> showLoading(it.data as String)
                 is MySealed.Success -> {
                     hideLoading()
+                    primaryViewModel.credential = null
                     timer.cancel()
                     createUserAccount()
                 }
@@ -144,15 +182,20 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
 
     private fun createUserAccount() {
         val userData = primaryViewModel.read.value
+        primaryViewModel.mutableStateFlow.value?.firstname = GetConstStringObj.USERS
         primaryViewModel.createUserAccount(userData!!).observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
+                    primaryViewModel.mutableStateFlow.value?.firstname =
+                        GetConstStringObj.My_Dialog_Once
                     dir(message = it.exception?.localizedMessage!!)
                 }
                 is MySealed.Loading -> showLoading(it.data as String)
                 is MySealed.Success -> {
                     hideLoading()
+                    primaryViewModel.mutableStateFlow.value?.firstname =
+                        GetConstStringObj.My_Dialog_Once
                     primaryViewModel.storeInitUserDetail(
                         ipAddress = "",
                         firstname = "",
@@ -177,8 +220,10 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
 
     override fun onStart() {
         super.onStart()
-        if (verificationProg == true)
+        if (verificationProg == true) {
+            Log.i(TAG, "onStart: SingInWithPhoneNumber Activated")
             signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
+        }
     }
 
     private fun signInWithPhoneNumber(phone: String) {
@@ -196,10 +241,12 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     }
 
     private fun signInWithLink(email: String, link: String) {
+        flag = true
         primaryViewModel.createInWithEmail(email, link).observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
+                    flag = false
                     val e = it.exception?.localizedMessage!!
                     Log.i(TAG, "createInWithEmail:$e")
                     if (e != getString(R.string.Exception_one) && e != getString(R.string.Exception_two))
@@ -210,7 +257,7 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
                 }
                 is MySealed.Success -> {
                     hideLoading()
-                    getCallBack()
+                    flag = false
                     Log.i(TAG, "signInWithLink: Sent Otp for SignInWithLink")
                     signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
                 }
@@ -235,4 +282,11 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
         customProgress.showLoading(requireActivity(), string = message)
 
     private fun hideLoading() = customProgress.hideLoading()
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        flag?.let {
+            outState.putBoolean(GetConstStringObj.USERS, it)
+        }
+    }
 }

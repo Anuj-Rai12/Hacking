@@ -19,7 +19,8 @@ class PrimaryViewModel @Inject constructor(
 ) : ViewModel() {
     //For CreateUserAccount.kt
     var mutableStateFlow = MutableStateFlow<UserStore?>(null)
-
+    // For PhoneOtp
+    var credential:PhoneAuthCredential?=null
     val read = classPersistence.read.asLiveData()
 
     private fun storeUserInfo(email: String, password: String, flag: Boolean) =

@@ -47,8 +47,9 @@ class AuthRepository @Inject constructor() {
     }.flowOn(IO)
 
     fun createInWithEmail(email: String, link: String) = flow {
-        emit(MySealed.Loading("Create User Profile."))
+        emit(MySealed.Loading("User account is been creating.."))
         val data = try {
+            kotlinx.coroutines.delay(20000)
             authInstance.signInWithEmailLink(email, link).await()
             MySealed.Success(null)
         } catch (e: Exception) {
@@ -58,8 +59,9 @@ class AuthRepository @Inject constructor() {
     }.flowOn(IO)
 
     fun updatePhoneNumber(credential: PhoneAuthCredential, password: String) = flow {
-        emit(MySealed.Loading("Checking Otp ..."))
+        emit(MySealed.Loading("Checking OTP ..."))
         val data = try {
+            kotlinx.coroutines.delay(20000)
             currentUser?.updatePhoneNumber(credential)?.await()
             currentUser?.updatePassword(password)?.await()
             MySealed.Success(null)
@@ -70,7 +72,7 @@ class AuthRepository @Inject constructor() {
     }.flowOn(IO)
 
     fun createUserAccount(userStore: UserStore) = flow {
-        emit(MySealed.Loading("Creating User Profile"))
+        emit(MySealed.Loading("Creating User Profile.."))
         val data = try {
             val createUserAccount = CreateUserAccount(
                 email = userStore.email,
@@ -79,6 +81,7 @@ class AuthRepository @Inject constructor() {
                 lastname = userStore.lastname,
                 ipaddress = userStore.ipAddress,
             )
+            kotlinx.coroutines.delay(20000)
             fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!)
                 .set(createUserAccount).await()
             MySealed.Success(null)

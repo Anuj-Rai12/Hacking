@@ -83,11 +83,11 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
 }
 
 data class UserStore(
-    val email: String,
+    var email: String,
     val password: String,
     var flag: Boolean,
     val ipAddress: String,
     val phone: String,
-    val firstname: String,
+    var firstname: String,
     val lastname: String
 )

@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         if (intent != null && intent.data != null) {
             if (FirebaseAuth.getInstance().isSignInWithEmailLink(intent.data!!.toString())) {
                 emailAuthLink = intent.data!!.toString()
-                Log.i(TAG, "onStart: $emailAuthLink")
             }
         }
         val navHostFragment =

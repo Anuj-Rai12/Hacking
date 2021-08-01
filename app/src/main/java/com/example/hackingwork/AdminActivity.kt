@@ -29,7 +29,5 @@ class AdminActivity : AppCompatActivity() {
         Log.i(TAG, "onBackPressed: Admin-Side ${MainActivity.emailAuthLink}")
         if (MainActivity.emailAuthLink==null)
         super.onBackPressed()
-        else
-            finish()
     }
 }
