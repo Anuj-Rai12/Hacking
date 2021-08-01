@@ -28,6 +28,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginWithEmailPasswordBinding.bind(view)
         try {
+            if (MainActivity.emailAuthLink ==null)
             onActivityStart.launch(InputDataBitch(getIntent()))
         }catch (e:ActivityNotFoundException){
             Log.i(TAG, "onViewCreated: Activity Not Found Exception")

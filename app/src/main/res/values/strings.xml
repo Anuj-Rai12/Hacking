@@ -24,7 +24,9 @@
     <string name="vai_phone">Via Email.</string>
     <string name="wrong_detail">Pleas,Enter the Correct Info</string>
     <string name="wrong_email">Please,Enter the Correct Email</string>
-    <string name="wrong_password">Please,Enter the Correct Password</string>
+    <string name="wrong_password">Password is Weak :( </string>
     <string name="wrong_phone">Please,Enter the Correct Phone Number</string>
     <string name="pleas_wait">Please, Wait</string>
+    <string name="Exception_one">The out of band code is invalid. This can happen if the code is malformed, expired, or has already been used.</string>
+    <string name="Exception_two">Given String is empty or null</string>
 </resources>

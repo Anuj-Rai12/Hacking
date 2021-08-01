@@ -70,4 +70,5 @@ fun getIntent(): Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 }
 object GetConstStringObj {
     const val My_Dialog_Once="my_Dialog_Once"
+    const val USERS="USERS"
 }

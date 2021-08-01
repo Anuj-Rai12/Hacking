@@ -91,7 +91,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="@string/timer_count"
             android:textColor="@color/color_red"
             android:textSize="15sp"
             android:textStyle="bold" />

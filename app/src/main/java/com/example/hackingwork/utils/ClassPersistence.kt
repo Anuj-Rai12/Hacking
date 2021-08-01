@@ -30,10 +30,10 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
         val email = preferences[data.EMAIL_ADDRESS] ?: ""
         val password = preferences[data.USER_PASSWORD] ?: ""
         val flag = preferences[data.REMEMBER_ME] ?: false
-        val ipAddress = preferences[data.Ip_Address] ?: "UnKnown"
-        val firstname = preferences[data.First_Name] ?: "UnKnownName"
-        val lastname = preferences[data.Last_Name] ?: "UnknownLast"
-        val phone = preferences[data.Phone_Number] ?: "UnKnownPhone"
+        val ipAddress = preferences[data.Ip_Address] ?: ""
+        val firstname = preferences[data.First_Name] ?: ""
+        val lastname = preferences[data.Last_Name] ?: ""
+        val phone = preferences[data.Phone_Number] ?: ""
         UserStore(
             email = email,
             password = password,

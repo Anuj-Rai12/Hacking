@@ -62,6 +62,8 @@ dependencies {
     //FireBase Auth
     implementation "com.google.firebase:firebase-auth-ktx:$firebase_auth"
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    //FireBase FireStore
+    implementation "com.google.firebase:firebase-firestore-ktx:$firebase_store"
     //FireBase Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$firebase_couroutine")
     //JetPack DataStore

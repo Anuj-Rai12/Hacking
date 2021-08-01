@@ -1,35 +1,238 @@
 package com.example.hackingwork.auth
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hackingwork.MainActivity
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.PhoneOtpFaragmentBinding
+import com.example.hackingwork.utils.CustomProgress
+import com.example.hackingwork.utils.MySealed
+import com.example.hackingwork.utils.checkFieldValue
 import com.example.hackingwork.viewmodels.PrimaryViewModel
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneNumberOtp :Fragment(R.layout.phone_otp_faragment){
-    private lateinit var binding:PhoneOtpFaragmentBinding
-    private val primaryViewModel:PrimaryViewModel by activityViewModels()
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding= PhoneOtpFaragmentBinding.bind(view)
-        Log.i(TAG, "onViewCreated: ${MainActivity.emailAuthLink}")
-        primaryViewModel.read.observe(viewLifecycleOwner){
-            binding.phoneno.text=it.phone
+class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
+    private lateinit var binding: PhoneOtpFaragmentBinding
+    private val primaryViewModel: PrimaryViewModel by viewModels()
+    private var verificationProg: Boolean? = null
+    private var verificationId: String? = null
+    private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
+    private var myCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
+
+    @Inject
+    lateinit var customProgress: CustomProgress
+    private val timer = object : CountDownTimer(60000, 1000) {
+        @SuppressLint("SetTextI18n")
+        override fun onTick(millisUntilFinished: Long) {
+            binding.otpCountDown.text = "${millisUntilFinished / 1000} sec"
         }
-        binding.verify.setOnClickListener {
-            val action=PhoneNumberOtpDirections.actionPhoneNumberOtpToAdminActivity()
-            findNavController().navigate(action)
-            activity?.finish()
+
+        override fun onFinish() {
+            binding.resendotp.isVisible = true
+            binding.otpCountDown.text = ""
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = PhoneOtpFaragmentBinding.bind(view)
+        MainActivity.emailAuthLink?.let { link ->
+            primaryViewModel.read.observe(viewLifecycleOwner) { store ->
+                binding.phoneno.text = store.phone
+                signInWithLink(store.email, link)
+            }
+        }
+        binding.verify.setOnClickListener {
+            if (checkFieldValue(binding.pinView.text.toString())) {
+                Snackbar.make(requireView(), "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            checkCode(verificationId, code = binding.pinView.text.toString())
+        }
+        binding.resendotp.setOnClickListener {
+            resendCode(primaryViewModel.read.value?.phone!!, resendToken)
+        }
+    }
+
+    private fun resendCode(phone: String, resendToken: PhoneAuthProvider.ForceResendingToken?) {
+        val provide = PhoneAuthOptions.newBuilder()
+            .setPhoneNumber(phone)
+            .setTimeout(60, TimeUnit.SECONDS)
+            .setActivity(requireActivity())
+            .setCallbacks(myCallBack!!)
+            .setForceResendingToken(resendToken!!).build()
+        PhoneAuthProvider.verifyPhoneNumber(provide)
+        timer.start()
+        binding.resendotp.isVisible = false
+        Toast.makeText(activity, "OTP Sent Successfully", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getCallBack() {
+        myCallBack = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                Log.i(TAG, "onVerificationCompleted: Credential Created Successfully")
+                verificationProg = false
+                signInWithCredential(credential)
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                binding.errorMsg.isVisible = true
+                binding.errorMsg.text = when (e) {
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        "Error :(\nInvalid Phone Number"
+                    }
+                    is FirebaseTooManyRequestsException -> {
+                        "Error :(\nUsed Too Many Messages Try After 8 hrs."
+                    }
+                    else -> "Error :(\n ${e.message.toString()}"
+                }
+                verificationProg = false
+                timer.cancel()
+                binding.otpCountDown.text = ""
+            }
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                super.onCodeSent(verificationId, token)
+                activity?.let {
+                    Toast.makeText(activity, "OTP Sent Successfully", Toast.LENGTH_SHORT).show()
+                }
+                this@PhoneNumberOtp.verificationId = verificationId
+                resendToken = token
+            }
+        }
+    }
+
+    private fun signInWithCredential(credential: PhoneAuthCredential) {
+        val password = primaryViewModel.read.value?.password!!
+        primaryViewModel.updatePhoneNumber(credential, password).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    timer.cancel()
+                    dir(message = it.exception?.localizedMessage!!)
+                }
+                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Success -> {
+                    hideLoading()
+                    timer.cancel()
+                    createUserAccount()
+                }
+            }
+        }
+    }
+
+    private fun createUserAccount() {
+        val userData = primaryViewModel.read.value
+        primaryViewModel.createUserAccount(userData!!).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    dir(message = it.exception?.localizedMessage!!)
+                }
+                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Success -> {
+                    hideLoading()
+                    primaryViewModel.storeInitUserDetail(
+                        ipAddress = "",
+                        firstname = "",
+                        lastname = "",
+                        phone = "",
+                        password = "",
+                        email = ""
+                    )
+                    dir(2)
+                    activity?.finish()
+                }
+            }
+        }
+    }
+
+    private fun checkCode(verificationId: String?, code: String) {
+        verificationId?.let {
+            val pro = PhoneAuthProvider.getCredential(it, code)
+            signInWithCredential(pro)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (verificationProg == true)
+            signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
+    }
+
+    private fun signInWithPhoneNumber(phone: String) {
+        val action = PhoneAuthOptions.newBuilder()
+            .setPhoneNumber(phone)
+            .setTimeout(60, TimeUnit.SECONDS)
+            .setActivity(requireActivity())
+            .setCallbacks(myCallBack!!)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(action)
+        verificationProg = true
+        timer.start()
+        binding.resendotp.isVisible = false
+        Log.i(TAG, "signInWithPhoneNumber: WELCOME")
+    }
+
+    private fun signInWithLink(email: String, link: String) {
+        primaryViewModel.createInWithEmail(email, link).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    val e = it.exception?.localizedMessage!!
+                    Log.i(TAG, "createInWithEmail:$e")
+                    if (e != getString(R.string.Exception_one) && e != getString(R.string.Exception_two))
+                        dir(message = e)
+                }
+                is MySealed.Loading -> {
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    getCallBack()
+                    Log.i(TAG, "signInWithLink: Sent Otp for SignInWithLink")
+                    signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
+                }
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideLoading()
+    }
+
+    private fun dir(choose: Int = 0, title: String = "Error", message: String = "") {
+        val action = when (choose) {
+            0 -> PhoneNumberOtpDirections.actionGlobalPasswordDialog(title, message)
+            else -> PhoneNumberOtpDirections.actionPhoneNumberOtpToAdminActivity()
+        }
+        findNavController().navigate(action)
+    }
+
+    private fun showLoading(message: String) =
+        customProgress.showLoading(requireActivity(), string = message)
+
+    private fun hideLoading() = customProgress.hideLoading()
 }

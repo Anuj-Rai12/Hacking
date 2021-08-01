@@ -76,11 +76,12 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
         if (primaryViewModel.mutableStateFlow.value?.flag == true) {
             Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value}")
-            /*val firstName =primaryViewModel.mutableStateFlow.value?.firstname
-            val lastName =primaryViewModel.mutableStateFlow.value?.lastname
-            val email = primaryViewModel.mutableStateFlow.value?.email
-            val pass =primaryViewModel.mutableStateFlow.value?.password
-            val phone =primaryViewModel.mutableStateFlow.value?.phone*/
+            val firstName =primaryViewModel.mutableStateFlow.value?.firstname!!
+            val lastName =primaryViewModel.mutableStateFlow.value?.lastname!!
+            val email = primaryViewModel.mutableStateFlow.value?.email!!
+            val pass =primaryViewModel.mutableStateFlow.value?.password!!
+            val phone =primaryViewModel.mutableStateFlow.value?.phone!!
+            sendEmailLink(firstName, lastName, email, pass, phone)
         }
         binding.nextBtn.setOnClickListener {
             val firstName = binding.firstName.text.toString()
