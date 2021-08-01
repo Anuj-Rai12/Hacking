@@ -1,9 +1,6 @@
 package com.example.hackingwork.repos
 
-import com.example.hackingwork.utils.CreateUserAccount
-import com.example.hackingwork.utils.GetConstStringObj
-import com.example.hackingwork.utils.MySealed
-import com.example.hackingwork.utils.UserStore
+import com.example.hackingwork.utils.*
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -49,7 +46,6 @@ class AuthRepository @Inject constructor() {
     fun createInWithEmail(email: String, link: String) = flow {
         emit(MySealed.Loading("User account is been creating.."))
         val data = try {
-            kotlinx.coroutines.delay(20000)
             authInstance.signInWithEmailLink(email, link).await()
             MySealed.Success(null)
         } catch (e: Exception) {
@@ -61,7 +57,6 @@ class AuthRepository @Inject constructor() {
     fun updatePhoneNumber(credential: PhoneAuthCredential, password: String) = flow {
         emit(MySealed.Loading("Checking OTP ..."))
         val data = try {
-            kotlinx.coroutines.delay(20000)
             currentUser?.updatePhoneNumber(credential)?.await()
             currentUser?.updatePassword(password)?.await()
             MySealed.Success(null)
@@ -80,8 +75,8 @@ class AuthRepository @Inject constructor() {
                 firstname = userStore.firstname,
                 lastname = userStore.lastname,
                 ipaddress = userStore.ipAddress,
+                password=userStore.password
             )
-            kotlinx.coroutines.delay(20000)
             fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!)
                 .set(createUserAccount).await()
             MySealed.Success(null)
@@ -91,4 +86,14 @@ class AuthRepository @Inject constructor() {
         emit(data)
     }.flowOn(IO)
 
+    fun checkEmailOfUsers(email: String, password: String) = flow {
+        emit(MySealed.Loading("Checking Users Account.."))
+        val data = try {
+            authInstance.signInWithEmailAndPassword(email, password).await()
+            MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
 }

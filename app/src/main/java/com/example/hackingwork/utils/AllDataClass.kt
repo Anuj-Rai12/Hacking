@@ -9,4 +9,5 @@ data class CreateUserAccount(
     val phone: String? = null,
     val email: String? = null,
     val ipaddress: String? = null,
+    val password: String? = null,
 )

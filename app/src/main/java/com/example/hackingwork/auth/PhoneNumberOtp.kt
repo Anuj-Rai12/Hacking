@@ -52,7 +52,10 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = PhoneOtpFaragmentBinding.bind(view)
-        binding.phoneno.text=primaryViewModel.read.value?.phone
+        Log.i(TAG, "onViewCreated: OPT value is -> ${primaryViewModel.read.value}")
+        primaryViewModel.read.observe(viewLifecycleOwner){
+            binding.phoneno.text=it.phone
+        }
         savedInstanceState?.let {
             flag = it.getBoolean(GetConstStringObj.USERS)
         }

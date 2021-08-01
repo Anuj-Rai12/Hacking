@@ -23,7 +23,7 @@ class PrimaryViewModel @Inject constructor(
     var credential:PhoneAuthCredential?=null
     val read = classPersistence.read.asLiveData()
 
-    private fun storeUserInfo(email: String, password: String, flag: Boolean) =
+     fun storeUserInfo(email: String, password: String, flag: Boolean) =
         viewModelScope.launch {
             classPersistence.updateInfo(email, password, flag)
         }
@@ -50,5 +50,7 @@ class PrimaryViewModel @Inject constructor(
 
     fun createUserAccount(userStore: UserStore) =
         authRepository.createUserAccount(userStore).asLiveData()
+
+    fun checkEmailOfUsers(email: String, password: String) =authRepository.checkEmailOfUsers(email,password).asLiveData()
 
 }

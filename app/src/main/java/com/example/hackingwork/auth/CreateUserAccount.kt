@@ -180,25 +180,6 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         hideLoading()
     }
 
-    private fun getLocalIpAddress(): String? {
-        try {
-            val en = NetworkInterface.getNetworkInterfaces()
-            while (en.hasMoreElements()) {
-                val into = en.nextElement()
-                val enumIpAdder = into.inetAddresses
-                while (enumIpAdder.hasMoreElements()) {
-                    val inetAddress = enumIpAdder.nextElement()
-                    if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
-                        return inetAddress.hostAddress
-                    }
-                }
-            }
-        } catch (ex: SocketException) {
-            Log.i(TAG, "getLocalIpAddress: ${ex.localizedMessage}")
-            ex.printStackTrace()
-        }
-        return null
-    }
 
     private fun dir(choose: Int = 0, title: String = "Good Password", message: String = "") {
         val action = when (choose) {

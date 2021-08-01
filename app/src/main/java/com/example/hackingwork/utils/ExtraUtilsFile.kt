@@ -3,10 +3,15 @@ package com.example.hackingwork.utils
 import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.util.Patterns
+import com.example.hackingwork.TAG
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
+import java.net.Inet4Address
+import java.net.NetworkInterface
+import java.net.SocketException
 import java.util.regex.Pattern
 
 fun hintRequest(): HintRequest = HintRequest.Builder()
@@ -68,7 +73,28 @@ fun getIntent(): Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         null
     )
 }
+fun getLocalIpAddress(): String? {
+    try {
+        val en = NetworkInterface.getNetworkInterfaces()
+        while (en.hasMoreElements()) {
+            val into = en.nextElement()
+            val enumIpAdder = into.inetAddresses
+            while (enumIpAdder.hasMoreElements()) {
+                val inetAddress = enumIpAdder.nextElement()
+                if (!inetAddress.isLoopbackAddress && inetAddress is Inet4Address) {
+                    return inetAddress.hostAddress
+                }
+            }
+        }
+    } catch (ex: SocketException) {
+        Log.i(TAG, "getLocalIpAddress: ${ex.localizedMessage}")
+        ex.printStackTrace()
+    }
+    return null
+}
 object GetConstStringObj {
     const val My_Dialog_Once="my_Dialog_Once"
     const val USERS="USERS"
+    const val EMAIL="EMAIL"
+    const val VERSION="version"
 }
