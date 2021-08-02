@@ -53,8 +53,8 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = PhoneOtpFaragmentBinding.bind(view)
         Log.i(TAG, "onViewCreated: OPT value is -> ${primaryViewModel.read.value}")
-        primaryViewModel.read.observe(viewLifecycleOwner){
-            binding.phoneno.text=it.phone
+        primaryViewModel.read.observe(viewLifecycleOwner) {
+            binding.phoneno.text = it.phone
         }
         savedInstanceState?.let {
             flag = it.getBoolean(GetConstStringObj.USERS)
@@ -192,7 +192,7 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
                     hideLoading()
                     primaryViewModel.mutableStateFlow.value?.firstname =
                         GetConstStringObj.My_Dialog_Once
-                    dir(message = it.exception?.localizedMessage!!)
+                    dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
                 }
                 is MySealed.Loading -> showLoading(it.data as String)
                 is MySealed.Success -> {

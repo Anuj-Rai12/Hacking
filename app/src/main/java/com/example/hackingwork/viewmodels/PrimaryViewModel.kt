@@ -52,5 +52,6 @@ class PrimaryViewModel @Inject constructor(
         authRepository.createUserAccount(userStore).asLiveData()
 
     fun checkEmailOfUsers(email: String, password: String) =authRepository.checkEmailOfUsers(email,password).asLiveData()
+    fun sendPasswordRestEmail(email: String)=authRepository.sendPasswordRestEmail(email).asLiveData()
 
 }

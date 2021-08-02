@@ -1,5 +1,7 @@
 package com.example.hackingwork.repos
 
+import android.util.Log
+import com.example.hackingwork.TAG
 import com.example.hackingwork.utils.*
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
@@ -13,9 +15,9 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
-    private val authInstance:FirebaseAuth,
+    private val authInstance: FirebaseAuth,
     private val actionCodeSettings: ActionCodeSettings,
-    private val currentUser:FirebaseUser?,
+    private val currentUser: FirebaseUser?,
     private val fireStore: FirebaseFirestore
 ) {
 
@@ -67,8 +69,9 @@ class AuthRepository @Inject constructor(
                 firstname = userStore.firstname,
                 lastname = userStore.lastname,
                 ipaddress = userStore.ipAddress,
-                password=userStore.password
+                password = userStore.password
             )
+            Log.i(TAG, "createUserAccount: ${currentUser?.uid}")
             fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!)
                 .set(createUserAccount).await()
             MySealed.Success(null)
@@ -82,6 +85,18 @@ class AuthRepository @Inject constructor(
         emit(MySealed.Loading("Checking Users Account.."))
         val data = try {
             authInstance.signInWithEmailAndPassword(email, password).await()
+            MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+    fun sendPasswordRestEmail(email: String) = flow {
+        emit(MySealed.Loading("Your Request is in Process"))
+        val data = try {
+            kotlinx.coroutines.delay(20000)
+            authInstance.sendPasswordResetEmail(email).await()
             MySealed.Success(null)
         } catch (e: Exception) {
             MySealed.Error(null, e)
