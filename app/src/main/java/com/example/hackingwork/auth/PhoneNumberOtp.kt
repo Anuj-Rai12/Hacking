@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.hackingwork.MainActivity
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
@@ -34,6 +35,7 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     private var verificationId: String? = null
     private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     private var myCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
+    private val args: PhoneNumberOtpArgs by navArgs()
 
     @Inject
     lateinit var customProgress: CustomProgress
@@ -49,16 +51,43 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = PhoneOtpFaragmentBinding.bind(view)
         Log.i(TAG, "onViewCreated: OPT value is -> ${primaryViewModel.read.value}")
         primaryViewModel.read.observe(viewLifecycleOwner) {
-            binding.phoneno.text = it.phone
+            binding.phoneno.text = args.userphone ?: it.phone
         }
         savedInstanceState?.let {
             flag = it.getBoolean(GetConstStringObj.USERS)
         }
+        getCallBack()
+        if (MainActivity.emailAuthLink != null) {
+            forFirstTimeSignIn()
+        }
+        Log.i(TAG, "onViewCreated: flag value is -> $flag")
+        if (args.userphone != null) {
+            Log.i(TAG, "onViewCreated: Enter in the UserPhone ")
+            Log.i(TAG, "onViewCreated: ${primaryViewModel.credential}")
+            if (primaryViewModel.credential != null && flag == false)
+                signInWithExitingUser(pro = primaryViewModel.credential!!)
+            else if (primaryViewModel.credential == null && flag == null)
+                signInWithPhoneNumber(args.userphone!!)
+        }
+        binding.verify.setOnClickListener {
+            if (checkFieldValue(binding.pinView.text.toString())) {
+                Snackbar.make(requireView(), "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            checkCode(verificationId, code = binding.pinView.text.toString())
+        }
+        binding.resendotp.setOnClickListener {
+            resendCode(getPhone()!!, resendToken)
+        }
+    }
+
+    private fun forFirstTimeSignIn() {
         if (flag == null) {
             Log.i(TAG, "onViewCreated: Phone $flag")
             initialAccountVerification()
@@ -79,17 +108,6 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
             Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value?.firstname}")
             createUserAccount()
         }
-        binding.verify.setOnClickListener {
-            if (checkFieldValue(binding.pinView.text.toString())) {
-                Snackbar.make(requireView(), "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            checkCode(verificationId, code = binding.pinView.text.toString())
-        }
-        binding.resendotp.setOnClickListener {
-            resendCode(primaryViewModel.read.value?.phone!!, resendToken)
-        }
-        getCallBack()
     }
 
     private fun initialAccountVerification() {
@@ -118,7 +136,10 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Log.i(TAG, "onVerificationCompleted: Credential Created Successfully")
                 verificationProg = false
-                signInWithCredential(credential)
+                if (args.userphone != null)
+                    signInWithExitingUser(credential)
+                else
+                    signInWithCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -217,17 +238,50 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     private fun checkCode(verificationId: String?, code: String) {
         verificationId?.let {
             val pro = PhoneAuthProvider.getCredential(it, code)
-            signInWithCredential(pro)
+            if (args.userphone != null)
+                signInWithExitingUser(pro)
+            else
+                signInWithCredential(pro)
+        }
+    }
+
+    private fun signInWithExitingUser(pro: PhoneAuthCredential) {
+        primaryViewModel.credential = pro
+        primaryViewModel.checkoutCredential(pro, args.userphone!!).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    primaryViewModel.credential = null
+                    dir(message = it.exception?.localizedMessage!!)
+                }
+                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Success -> {
+                    hideLoading()
+                    primaryViewModel.credential = null
+                    if (it.data == GetConstStringObj.My_Dialog_Once) {
+                        flag = true
+                        dir(message = getString(R.string.Miss_request))
+                    } else {
+                        dir(32)
+                        activity?.finish()
+                    }
+                }
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
         if (verificationProg == true) {
-            Log.i(TAG, "onStart: SingInWithPhoneNumber Activated")
-            signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
+            Log.i(TAG, "onStart: SingInWithPhoneNumber Activated ${args.userphone}")
+            signInWithPhoneNumber(getPhone()!!)
         }
     }
+
+    private fun getPhone() = if (primaryViewModel.read.value?.phone.isNullOrEmpty())
+        args.userphone
+    else
+        primaryViewModel.read.value?.phone
 
     private fun signInWithPhoneNumber(phone: String) {
         val action = PhoneAuthOptions.newBuilder()

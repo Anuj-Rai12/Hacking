@@ -103,4 +103,27 @@ class AuthRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+    fun checkoutCredential(credential: PhoneAuthCredential, phoneNumber: String) = flow {
+        emit(MySealed.Loading("validating OTP..."))
+        val data = try {
+            kotlinx.coroutines.delay(20000)
+            val auth = authInstance.signInWithCredential(credential).await()
+            if (auth.user == null)
+                MySealed.Success(GetConstStringObj.My_Dialog_Once)
+            else {
+                val doc =
+                    fireStore.collection(GetConstStringObj.USERS).whereEqualTo("phone", phoneNumber)
+                        .get().await()
+                if (doc.isEmpty) {
+                    MySealed.Success(GetConstStringObj.My_Dialog_Once)
+                }
+                else
+                MySealed.Success("Sign In Success")
+            }
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
 }

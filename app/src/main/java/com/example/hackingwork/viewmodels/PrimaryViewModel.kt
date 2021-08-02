@@ -19,11 +19,12 @@ class PrimaryViewModel @Inject constructor(
 ) : ViewModel() {
     //For CreateUserAccount.kt
     var mutableStateFlow = MutableStateFlow<UserStore?>(null)
+
     // For PhoneOtp
-    var credential:PhoneAuthCredential?=null
+    var credential: PhoneAuthCredential? = null
     val read = classPersistence.read.asLiveData()
 
-     fun storeUserInfo(email: String, password: String, flag: Boolean) =
+    fun storeUserInfo(email: String, password: String, flag: Boolean) =
         viewModelScope.launch {
             classPersistence.updateInfo(email, password, flag)
         }
@@ -51,7 +52,13 @@ class PrimaryViewModel @Inject constructor(
     fun createUserAccount(userStore: UserStore) =
         authRepository.createUserAccount(userStore).asLiveData()
 
-    fun checkEmailOfUsers(email: String, password: String) =authRepository.checkEmailOfUsers(email,password).asLiveData()
-    fun sendPasswordRestEmail(email: String)=authRepository.sendPasswordRestEmail(email).asLiveData()
+    fun checkEmailOfUsers(email: String, password: String) =
+        authRepository.checkEmailOfUsers(email, password).asLiveData()
+
+    fun sendPasswordRestEmail(email: String) =
+        authRepository.sendPasswordRestEmail(email).asLiveData()
+
+    fun checkoutCredential(credential: PhoneAuthCredential, phone: String) =
+        authRepository.checkoutCredential(credential, phone).asLiveData()
 
 }

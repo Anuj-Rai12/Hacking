@@ -37,6 +37,11 @@
         <action
             android:id="@+id/action_phoneNumberOtp_to_adminActivity"
             app:destination="@id/adminActivity" />
+        <argument
+            android:name="userphone"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <activity
         android:id="@+id/adminActivity"

@@ -53,7 +53,7 @@ class MakeSelection : Fragment(R.layout.mke_framgent) {
                 title = title,
                 message = message
             )
-            else -> MakeSelectionDirections.actionGlobalPhoneNumberOtp()
+            else -> MakeSelectionDirections.actionGlobalPhoneNumberOtp(userphone = args.phone)
         }
         findNavController().navigate(action)
     }
