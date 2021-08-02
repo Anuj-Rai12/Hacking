@@ -59,7 +59,14 @@
         android:id="@+id/makeSelection"
         android:name="com.example.hackingwork.auth.forgetpass.MakeSelection"
         android:label="Make Selection"
-        tools:layout="@layout/mke_framgent" />
+        tools:layout="@layout/mke_framgent" >
+        <argument
+            android:name="phone"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
     <action android:id="@+id/action_global_phoneNumberOtp" app:destination="@id/phoneNumberOtp" />
     <dialog
         android:id="@+id/passwordDialog"

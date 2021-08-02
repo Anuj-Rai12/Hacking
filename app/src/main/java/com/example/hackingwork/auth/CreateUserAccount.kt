@@ -22,9 +22,6 @@ import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.Inet4Address
-import java.net.NetworkInterface
-import java.net.SocketException
 import java.util.*
 import javax.inject.Inject
 
@@ -40,7 +37,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activity ->
             val credential: Credential? = activity.data?.getParcelableExtra(Credential.EXTRA_KEY)
             credential?.apply {
-                getPhoneNumber(credential)
+                getPhoneNumber(credential)?.let {number-> binding.phone.setText(number) }
             }
             getEmailId()
         }
@@ -49,13 +46,6 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         output.email?.let { email ->
             if (output.requestCode)
                 binding.emailAddress.setText(email)
-        }
-    }
-
-    private fun getPhoneNumber(credential: Credential) {
-        val codedPhoneNumber = credential.id
-        if (codedPhoneNumber.contains("+91")) {
-            binding.phone.setText(codedPhoneNumber.split("+91").last())
         }
     }
 
@@ -76,11 +66,11 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
         if (primaryViewModel.mutableStateFlow.value?.flag == true) {
             Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value}")
-            val firstName =primaryViewModel.mutableStateFlow.value?.firstname!!
-            val lastName =primaryViewModel.mutableStateFlow.value?.lastname!!
+            val firstName = primaryViewModel.mutableStateFlow.value?.firstname!!
+            val lastName = primaryViewModel.mutableStateFlow.value?.lastname!!
             val email = primaryViewModel.mutableStateFlow.value?.email!!
-            val pass =primaryViewModel.mutableStateFlow.value?.password!!
-            val phone =primaryViewModel.mutableStateFlow.value?.phone!!
+            val pass = primaryViewModel.mutableStateFlow.value?.password!!
+            val phone = primaryViewModel.mutableStateFlow.value?.phone!!
             sendEmailLink(firstName, lastName, email, pass, phone)
         }
         binding.nextBtn.setOnClickListener {
@@ -88,8 +78,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
             val lastName = binding.lastName.text.toString()
             val email = binding.emailAddress.text.toString()
             val pass = binding.password.text.toString()
-            val phone =
-                binding.countryCode.selectedCountryCodeWithPlus + binding.phone.text.toString()
+            var phone = binding.phone.text.toString()
             if (checkFieldValue(firstName)
                 || checkFieldValue(lastName) ||
                 checkFieldValue(email) ||
@@ -118,6 +107,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
                 }.show()
                 return@setOnClickListener
             }
+            phone = binding.countryCode.selectedCountryCodeWithPlus + phone
             if (!isValidPhone(phone)) {
                 Snackbar.make(requireView(), getString(R.string.wrong_phone), Snackbar.LENGTH_SHORT)
                     .show()
@@ -152,7 +142,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    primaryViewModel.mutableStateFlow.value?.flag=false
+                    primaryViewModel.mutableStateFlow.value?.flag = false
                     dir(1, "Error", "${it.exception?.localizedMessage}")
                 }
                 is MySealed.Loading -> {
@@ -160,7 +150,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
                 }
                 is MySealed.Success -> {
                     hideLoading()
-                    primaryViewModel.mutableStateFlow.value?.flag=false
+                    primaryViewModel.mutableStateFlow.value?.flag = false
                     primaryViewModel.storeInitUserDetail(
                         ipAddress = getLocalIpAddress() ?: "",
                         firstname = firstName,
@@ -197,7 +187,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
     }
 
-    @SuppressLint("BanParcelableUsage", "WrongConstant")
+    @SuppressLint("WrongConstant")
     private fun phoneSelection() {
         dialogPhoneFlag = true
         val credentialsClient = Credentials.getClient(requireActivity(), options())

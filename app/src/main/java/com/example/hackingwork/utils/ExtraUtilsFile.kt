@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.Patterns
 import com.example.hackingwork.TAG
 import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
 import java.net.Inet4Address
@@ -35,6 +36,7 @@ fun isValidEmail(target: CharSequence?): Boolean {
         Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 }
+
 fun checkFieldValue(string: String) = string.isEmpty() || string.isBlank()
 
 fun isValidPassword(password: String): Boolean {
@@ -51,6 +53,7 @@ fun isValidPassword(password: String): Boolean {
     )
     return passwordREGEX.matcher(password).matches()
 }
+
 fun getIntent(): Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
     AccountManager.newChooseAccountIntent(
         null,
@@ -73,6 +76,7 @@ fun getIntent(): Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         null
     )
 }
+
 fun getLocalIpAddress(): String? {
     try {
         val en = NetworkInterface.getNetworkInterfaces()
@@ -92,9 +96,18 @@ fun getLocalIpAddress(): String? {
     }
     return null
 }
+
+fun getPhoneNumber(credential: Credential): String? {
+    val codedPhoneNumber = credential.id
+    return if (codedPhoneNumber.contains("+91")) {
+        codedPhoneNumber.split("+91").last()
+    } else
+        null
+}
 object GetConstStringObj {
-    const val My_Dialog_Once="my_Dialog_Once"
-    const val USERS="USERS"
-    const val EMAIL="EMAIL"
-    const val VERSION="version"
+    const val My_Dialog_Once = "my_Dialog_Once"
+    const val USERS = "USERS"
+    const val EMAIL = "EMAIL"
+    const val VERSION = "version"
+    const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
 }
