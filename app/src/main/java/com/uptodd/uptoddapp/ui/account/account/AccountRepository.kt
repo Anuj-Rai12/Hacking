@@ -6,8 +6,10 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.api.AndroidNetworkingApi
 import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.utilities.AllUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -25,6 +27,9 @@ class AccountRepository(private val accountPreference: UptoddSharedPreferences) 
     }
 
     suspend fun refreshAccountDetails(userId: String, token: String?) {
+
+
+        AllUtil.getAuthToken()?.let { Log.e("header token", it) }
         withContext(Dispatchers.IO) {
             AndroidNetworking.get("https://www.uptodd.com/api/appusers/{userId}")
                 .addPathParameter("userId", userId)

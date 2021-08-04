@@ -26,7 +26,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener
 {
     companion object {
         private var checkout = Checkout()
-        var razorpayKey ="rzp_test_TiIY5TBUldHEak"
+        var razorpayKey ="rzp_live_D7gCizgg0p9pKe"
             //"rzp_live_D7gCizgg0p9pKe"
             //"rzp_test_TiIY5TBUldHEak"
         private const val client_id ="AQuc-0JVLyhbDaFZl2-0z09kTqOciiyQURnbwbENRCJXrlH9lGTPTSjuF6TlArXdUR_fP0QMuSv5PZo-"

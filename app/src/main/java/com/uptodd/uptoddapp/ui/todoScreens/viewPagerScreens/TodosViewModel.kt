@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.navigation.NavController
 import androidx.work.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -16,6 +17,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.DownloadRequest
+import com.uptodd.uptoddapp.BuildConfig
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -63,6 +66,10 @@ class TodosViewModel(
     private var _isLoading: MutableLiveData<Int> = MutableLiveData()
     val isLoading: LiveData<Int>
         get() = _isLoading
+
+    private var _isOutdatedVersion: MutableLiveData<Boolean> = MutableLiveData()
+    val isOutDatedVersion: LiveData<Boolean>
+        get() = _isOutdatedVersion
 
     private var _isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
     val isRefreshing: LiveData<Boolean>
@@ -526,6 +533,41 @@ class TodosViewModel(
             refreshDataByCallingApi(context, activity)
         }
     }
+
+
+    fun checkForAppUpdate()
+    {
+        val json= JSONObject().apply {
+            put("version", BuildConfig.VERSION_NAME.toDouble())
+            put("deviceType","android")
+        }
+
+        AndroidNetworking.post("https://www.uptodd.com/api/isValidVersion")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .addJSONObjectBody(json)
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object :JSONObjectRequestListener
+            {
+                override fun onResponse(response: JSONObject?) {
+
+                    val res=response?.get("data") as Int
+
+                    Log.d("data version","$res")
+
+                    _isOutdatedVersion.value = res==0
+
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("data version error","${anError?.errorDetail}")
+                    _isOutdatedVersion.value=false
+                }
+
+            })
+    }
+
+
 
     private suspend fun addToUpdateApiDatabase(todo: Todo) {
         viewModelScope.launch {

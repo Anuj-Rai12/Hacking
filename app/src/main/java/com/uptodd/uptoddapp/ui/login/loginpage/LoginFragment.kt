@@ -346,6 +346,8 @@ class LoginFragment : Fragment() {
 
         initObservers()
 
+
+
         //val textView: TextView = binding.googleSignInButton.getChildAt(0) as TextView
         //textView.setText("")
         //binding.googleSignInButton.setStyle(2,0)

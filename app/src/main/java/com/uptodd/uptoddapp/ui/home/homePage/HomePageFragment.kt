@@ -100,14 +100,38 @@ class HomePageFragment : Fragment() {
 
         Log.d("div", "${System.currentTimeMillis()}")
 
+        viewModel?.checkForAppUpdate()
+        viewModel?.isOutDatedVersion?.observe(viewLifecycleOwner
+            , {
+
+                if(!it)
+                {
+
+                    initiateDataRefresh()
+                    setupViewPager()
+                    viewModel.loadDailyTodoScore()
+                    initialiseScoreDisplay()
+                    initialiseBabyPhoto()
+                    initialiseOtherInformation()
+                    loadTodaysTip()
+                }
+                else
+                {
+                     try {
+                         findNavController().navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
+                     }
+                     catch (e:Exception)
+                     {
+                         findNavController().navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
+                     }
+                }
+            })
+
         initialiseBindingAndViewModel(inflater, container)
-        initiateDataRefresh()
-        setupViewPager()
-        viewModel.loadDailyTodoScore()
-        initialiseScoreDisplay()
-        initialiseBabyPhoto()
-        initialiseOtherInformation()
-        loadTodaysTip()
+
+
+
+
 
         uptoddDialogs = UpToddDialogs(requireContext())
 

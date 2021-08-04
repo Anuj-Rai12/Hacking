@@ -14,35 +14,26 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.R
-import com.uptodd.uptoddapp.api.NetworkingApi
-import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.KidsPeriod
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
-import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckPodcastWorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 private const val TAG = "ActivityPodcastFragment"
 
@@ -132,7 +123,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     }
 
 
-    fun AndroidNetworking.postS(s:String)
+    fun com.androidnetworking.AndroidNetworking.postS(s:String)
     {
 
     }
