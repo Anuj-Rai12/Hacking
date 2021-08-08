@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/loginWithEmailPassword">
+
+    <fragment
+        android:id="@+id/loginWithEmailPassword"
+        android:name="com.example.hackerstudent.auth.LoginWithEmailPassword"
+        android:label="@string/app_login"
+        tools:layout="@layout/login_with_email_password">
+        <action
+            android:id="@+id/action_loginWithEmailPassword_to_createUserAccount"
+            app:destination="@id/createUserAccount" />
+        <action
+            android:id="@+id/action_loginWithEmailPassword_to_adminActivity"
+            app:destination="@id/adminActivity" />
+        <action
+            android:id="@+id/action_loginWithEmailPassword_to_forgetFragment"
+            app:destination="@id/forgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createUserAccount"
+        android:name="com.example.hackerstudent.auth.CreateUserAccount"
+        android:label="@string/app_create_acc"
+        tools:layout="@layout/create_user_account" >
+        <action
+            android:id="@+id/action_createUserAccount_to_loginWithEmailPassword"
+            app:destination="@id/loginWithEmailPassword" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneNumberOtp"
+        android:name="com.example.hackerstudent.auth.PhoneNumberOtp"
+        android:label="OTP"
+        tools:layout="@layout/phone_otp_faragment" >
+        <action
+            android:id="@+id/action_phoneNumberOtp_to_adminActivity"
+            app:destination="@id/adminActivity" />
+        <argument
+            android:name="userphone"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <activity
+        android:id="@+id/adminActivity"
+        android:name="com.example.hackerstudent.ClientActivity"
+        android:label="Admin"
+        tools:layout="@layout/client_actitvity_main" />
+    <fragment
+        android:id="@+id/forgetFragment"
+        android:name="com.example.hackerstudent.auth.forgetpass.ForgetFragment"
+        android:label="@string/forgot_password"
+        tools:layout="@layout/forget_fragment" >
+        <action
+            android:id="@+id/action_forgetFragment_to_makeSelection"
+            app:destination="@id/makeSelection" />
+        <action
+            android:id="@+id/action_forgetFragment_to_createUserAccount"
+            app:destination="@id/createUserAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/makeSelection"
+        android:name="com.example.hackerstudent.auth.forgetpass.MakeSelection"
+        android:label="Make Selection"
+        tools:layout="@layout/mke_framgent" >
+        <argument
+            android:name="phone"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_phoneNumberOtp" app:destination="@id/phoneNumberOtp" />
+    <dialog
+        android:id="@+id/passwordDialog"
+        android:name="com.example.hackerstudent.utils.PasswordDialog"
+        android:label="PasswordDialog" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument android:name="message"
+            app:argType="string" />
+    </dialog>
+    <action android:id="@+id/action_global_passwordDialog" app:destination="@id/passwordDialog" />
+</navigation>
