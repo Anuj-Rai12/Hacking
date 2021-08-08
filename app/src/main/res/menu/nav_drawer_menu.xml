@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/storageScreenFragment"
+        android:icon="@drawable/ic_upload"
+        android:iconTint="@color/white"
+        android:title="@string/storage_Screen_app" />
+    <item
+        android:id="@+id/cloudStorageFragment"
+        android:icon="@drawable/ic_upload"
+        android:iconTint="@color/white"
+        android:title="@string/cloud_Screen_app" />
+    <item
+        android:id="@+id/passwordDialog"
+        android:icon="@drawable/ic_baseline_login_24"
+        android:iconTint="@color/white"
+        android:title="@string/app_tag" />
+</menu>

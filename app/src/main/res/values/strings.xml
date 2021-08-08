@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HackingWork</string>
     <!-- App String -->
-    <string name="app_tag">HACK</string>
+    <string name="app_tag">Log Out</string>
     <string name="app_login">Login Screen.</string>
     <string name="app_create_acc">Create Account.</string>
     <string name="app_email_hint">Email</string>
@@ -30,4 +30,7 @@
     <string name="Exception_one">The out of band code is invalid. This can happen if the code is malformed, expired, or has already been used.</string>
     <string name="Exception_two">Given String is empty or null</string>
     <string name="Miss_request">User Request is Denied!!,Try To Create New Account</string>
+    <!--- UI App -->
+    <string name="storage_Screen_app">Storage Screen.</string>
+    <string name="cloud_Screen_app">Cloud Screen.</string>
 </resources>

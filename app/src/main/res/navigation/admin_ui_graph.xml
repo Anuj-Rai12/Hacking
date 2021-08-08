@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_ui_graph"
+    app:startDestination="@id/storageScreenFragment">
+
+    <fragment
+        android:id="@+id/storageScreenFragment"
+        android:name="com.example.hackingwork.ui.StorageScreenFragment"
+        android:label="@string/storage_Screen_app"
+        tools:layout="@layout/storage_screen_fragment" />
+    <fragment
+        android:id="@+id/cloudStorageFragment"
+        android:name="com.example.hackingwork.ui.CloudStorageFragment"
+        android:label="@string/cloud_Screen_app"
+        tools:layout="@layout/cloud_storage_fragment" />
+    <dialog
+        android:id="@+id/passwordDialog"
+        android:name="com.example.hackingwork.utils.PasswordDialog"
+        android:label="PasswordDialog" >
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue="Are you Sure want to LogOut?" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Log Out!!" />
+        <argument
+            android:name="flag"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_passwordDialog2"
+        app:destination="@id/passwordDialog" />
+</navigation>

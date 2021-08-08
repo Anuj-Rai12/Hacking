@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hackingwork.repos.AuthRepository
 import com.example.hackingwork.utils.ClassPersistence
 import com.example.hackingwork.utils.UserStore
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,7 @@ class PrimaryViewModel @Inject constructor(
             classPersistence.updateInfo(email, password, flag)
         }
 
+    fun getCurrentUser()=FirebaseAuth.getInstance().currentUser
     fun storeInitUserDetail(
         ipAddress: String,
         firstname: String,

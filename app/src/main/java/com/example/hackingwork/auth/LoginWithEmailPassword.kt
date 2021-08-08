@@ -14,6 +14,7 @@ import com.example.hackingwork.databinding.LoginWithEmailPasswordBinding
 import com.example.hackingwork.utils.*
 import com.example.hackingwork.viewmodels.PrimaryViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,8 +22,6 @@ import javax.inject.Inject
 class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
     private lateinit var binding: LoginWithEmailPasswordBinding
     private val primaryViewModel: PrimaryViewModel by viewModels()
-
-
     @Inject
     lateinit var customProgress: CustomProgress
     private val onActivityStart = registerForActivityResult(ActivityDataInfo()) { output ->
@@ -44,7 +43,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
             binding.passwordText.setText(it.password)
             binding.remeberme.isChecked = it.flag
         }
-        if (primaryViewModel.mutableStateFlow.value == null)
+        if (primaryViewModel.mutableStateFlow.value == null &&primaryViewModel.getCurrentUser()==null)
             getEmail()
         if (primaryViewModel.mutableStateFlow.value?.flag == true)
             checkEmail(
@@ -148,6 +147,13 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         MainActivity.emailAuthLink?.let {
             val action = LoginWithEmailPasswordDirections.actionGlobalPhoneNumberOtp()
             findNavController().navigate(action)
+            return
+        }
+        FirebaseAuth.getInstance().currentUser?.let {
+            val action=LoginWithEmailPasswordDirections.actionLoginWithEmailPasswordToAdminActivity()
+            findNavController().navigate(action)
+            activity?.finish()
+            return
         }
     }
 }
