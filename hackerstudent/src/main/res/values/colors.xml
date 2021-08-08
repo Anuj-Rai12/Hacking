@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--- App Name Client-->
+    <color name="cheery_red">#ee5c3f</color>
+    <color name="color_red">#D50000</color>
+    <color name="trans_parent_btn_color">#00000000</color>
+    <color name="otp_box_bg">#65EAEAEA</color>
+    <color name="link_type_bg">#0000FF</color>
+    <color name="light_grey">#f8f8ff</color>
+    <color name="forget_text_color">#696969</color>
+
 </resources>

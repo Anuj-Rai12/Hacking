@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">HackerStudent</string>
+    <!--- String HackerStudent -->
+    <string name="app_tag">HACK</string>
+    <string name="app_login">Login Screen.</string>
+    <string name="app_create_acc">Create Account.</string>
+    <string name="app_email_hint">Email</string>
+    <string name="app_pass_hint">Password</string>
+    <string name="app_remember">Remember Me</string>
+    <string name="app_login_btn">Login</string>
+    <string name="app_sign_btn">Sign Up</string>
+    <string name="forgot_password">Forget Password?</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_num">Phone Number</string>
+    <string name="app_next">Next</string>
+    <string name="verify">Verification</string>
+    <string name="app_verify_btn">Verify</string>
+    <string name="opt_verify">OTP is send successfully to you phone no</string>
+    <string name="timer_count">%1$d sec</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="create_file">Create a new account?</string>
+    <string name="vai_text">Via Text.</string>
+    <string name="vai_phone">Via Email.</string>
+    <string name="wrong_detail">Pleas,Enter the Correct Info</string>
+    <string name="wrong_email">Please,Enter the Correct Email</string>
+    <string name="wrong_password">Password is Weak :( </string>
+    <string name="wrong_phone">Please,Enter the Correct Phone Number</string>
+    <string name="pleas_wait">Please, Wait</string>
+    <string name="Exception_one">The out of band code is invalid. This can happen if the code is malformed, expired, or has already been used.</string>
+    <string name="Exception_two">Given String is empty or null</string>
+    <string name="Miss_request">User Request is Denied!!,Try To Create New Account</string>
 </resources>
