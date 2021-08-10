@@ -8,7 +8,6 @@ import com.example.hackerstudent.utils.MySealed
 import com.example.hackerstudent.utils.UserStore
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers.IO
@@ -18,11 +17,15 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
-    private val authInstance: FirebaseAuth,
     private val actionCodeSettings: ActionCodeSettings,
-    private val currentUser: FirebaseUser?,
     private val fireStore: FirebaseFirestore
 ) {
+    private val authInstance by lazy {
+        FirebaseAuth.getInstance()
+    }
+    private val currentUser by lazy {
+        authInstance.currentUser
+    }
 
     fun sendEmailLinkWithToVerify(email: String) = flow {
         emit(MySealed.Loading("Verification Link is been Sending"))
@@ -110,7 +113,6 @@ class AuthRepository @Inject constructor(
     fun checkoutCredential(credential: PhoneAuthCredential, phoneNumber: String) = flow {
         emit(MySealed.Loading("validating OTP..."))
         val data = try {
-            kotlinx.coroutines.delay(20000)
             val auth = authInstance.signInWithCredential(credential).await()
             if (auth.user == null)
                 MySealed.Success(GetConstStringObj.My_Dialog_Once)
@@ -120,9 +122,8 @@ class AuthRepository @Inject constructor(
                         .get().await()
                 if (doc.isEmpty) {
                     MySealed.Success(GetConstStringObj.My_Dialog_Once)
-                }
-                else
-                MySealed.Success("Sign In Success")
+                } else
+                    MySealed.Success("Sign In Success")
             }
         } catch (e: Exception) {
             MySealed.Error(null, e)

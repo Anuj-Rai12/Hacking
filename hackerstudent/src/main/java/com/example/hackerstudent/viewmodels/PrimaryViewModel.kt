@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hackerstudent.utils.ClassPersistence
 import com.example.hackerstudent.repos.AuthRepository
 import com.example.hackerstudent.utils.UserStore
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,7 @@ class PrimaryViewModel @Inject constructor(
     // For PhoneOtp
     var credential: PhoneAuthCredential? = null
     val read = classPersistence.read.asLiveData()
+    fun getCurrentUser() = FirebaseAuth.getInstance().currentUser
 
     fun storeUserInfo(email: String, password: String, flag: Boolean) =
         viewModelScope.launch {

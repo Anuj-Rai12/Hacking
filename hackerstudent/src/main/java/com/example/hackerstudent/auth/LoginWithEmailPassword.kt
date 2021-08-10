@@ -39,13 +39,13 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginWithEmailPasswordBinding.bind(view)
         primaryViewModel.read.observe(viewLifecycleOwner) {
-            Log.i(TAG, "onViewCreated: for login $it")
-            binding.emailText.setText(it.email)
-            binding.passwordText.setText(it.password)
-            binding.remeberme.isChecked = it.flag
+            if (it.flag) {
+                binding.emailText.setText(it.email)
+                binding.passwordText.setText(it.password)
+                binding.remeberme.isChecked = it.flag
+            } else if (primaryViewModel.mutableStateFlow.value == null && primaryViewModel.getCurrentUser() == null)
+                getEmail()
         }
-        if (primaryViewModel.mutableStateFlow.value == null)
-            getEmail()
         if (primaryViewModel.mutableStateFlow.value?.flag == true)
             checkEmail(
                 password = primaryViewModel.mutableStateFlow.value?.password!!,
