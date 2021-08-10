@@ -5,7 +5,6 @@ import com.example.hackingwork.TAG
 import com.example.hackingwork.utils.*
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers.IO
@@ -17,9 +16,11 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authInstance: FirebaseAuth,
     private val actionCodeSettings: ActionCodeSettings,
-    private val currentUser: FirebaseUser?,
     private val fireStore: FirebaseFirestore
 ) {
+    private val userUdi by lazy {
+        FirebaseAuth.getInstance().currentUser
+    }
 
     fun sendEmailLinkWithToVerify(email: String) = flow {
         emit(MySealed.Loading("Verification Link is been Sending"))
@@ -50,9 +51,11 @@ class AuthRepository @Inject constructor(
 
     fun updatePhoneNumber(credential: PhoneAuthCredential, password: String) = flow {
         emit(MySealed.Loading("Checking OTP ..."))
+        Log.i(TAG, "updatePhoneNumber: password And Phone Number is Updating ")
         val data = try {
-            currentUser?.updatePhoneNumber(credential)?.await()
-            currentUser?.updatePassword(password)?.await()
+            userUdi?.updatePhoneNumber(credential)?.await()
+            userUdi?.updatePassword(password)?.await()
+            Log.i(TAG, "updatePhoneNumber: Password is Updated")
             MySealed.Success(null)
         } catch (e: Exception) {
             MySealed.Error(null, e)
@@ -71,8 +74,8 @@ class AuthRepository @Inject constructor(
                 ipaddress = userStore.ipAddress,
                 password = userStore.password
             )
-            Log.i(TAG, "createUserAccount: ${currentUser?.uid}")
-            fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!)
+            Log.i(TAG, "createUserAccount: User Id -> $userUdi")
+            fireStore.collection(GetConstStringObj.USERS).document(userUdi?.uid!!)
                 .set(createUserAccount).await()
             MySealed.Success(null)
         } catch (e: Exception) {
@@ -107,7 +110,6 @@ class AuthRepository @Inject constructor(
     fun checkoutCredential(credential: PhoneAuthCredential, phoneNumber: String) = flow {
         emit(MySealed.Loading("validating OTP..."))
         val data = try {
-            kotlinx.coroutines.delay(20000)
             val auth = authInstance.signInWithCredential(credential).await()
             if (auth.user == null)
                 MySealed.Success(GetConstStringObj.My_Dialog_Once)
@@ -117,9 +119,8 @@ class AuthRepository @Inject constructor(
                         .get().await()
                 if (doc.isEmpty) {
                     MySealed.Success(GetConstStringObj.My_Dialog_Once)
-                }
-                else
-                MySealed.Success("Sign In Success")
+                } else
+                    MySealed.Success("Sign In Success")
             }
         } catch (e: Exception) {
             MySealed.Error(null, e)

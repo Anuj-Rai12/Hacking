@@ -2,6 +2,7 @@ package com.example.hackingwork.auth
 
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -30,8 +31,7 @@ import javax.inject.Inject
 class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     private lateinit var binding: PhoneOtpFaragmentBinding
     private val primaryViewModel: PrimaryViewModel by viewModels()
-    private var verificationProg: Boolean? = null
-    private var flag: Boolean? = null
+    private var verificationProg: Boolean = false
     private var verificationId: String? = null
     private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
     private var myCallBack: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
@@ -55,68 +55,73 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = PhoneOtpFaragmentBinding.bind(view)
-        Log.i(TAG, "onViewCreated: OPT value is -> ${primaryViewModel.read.value}")
-        primaryViewModel.read.observe(viewLifecycleOwner) {
-            binding.phoneno.text = args.userphone ?: it.phone
-        }
         savedInstanceState?.let {
-            flag = it.getBoolean(GetConstStringObj.USERS)
+            verificationProg = it.getBoolean(GetConstStringObj.USERS)
         }
         getCallBack()
-        if (MainActivity.emailAuthLink != null) {
-            forFirstTimeSignIn()
+        MainActivity.emailAuthLink?.let { link ->
+            Log.i(TAG, "onViewCreated: OTP Link ->$link")
+            primaryViewModel.read.observe(viewLifecycleOwner) {
+                Log.i(TAG, "onViewCreated: The Value of Create User Detail is -> $it")
+                binding.phoneno.text = it.phone
+                if (primaryViewModel.credential == null)
+                    signInWithEmailLink(link, it.email, it.phone)
+            }
         }
-        Log.i(TAG, "onViewCreated: flag value is -> $flag")
-        if (args.userphone != null) {
-            Log.i(TAG, "onViewCreated: Enter in the UserPhone ")
-            Log.i(TAG, "onViewCreated: ${primaryViewModel.credential}")
-            if (primaryViewModel.credential != null && flag == false)
-                signInWithExitingUser(pro = primaryViewModel.credential!!)
-            else if (primaryViewModel.credential == null && flag == null)
-                signInWithPhoneNumber(args.userphone!!)
+        args.userphone?.let { phone ->
+            Log.i(TAG, "onViewCreated: Login Via Phone Number $phone")
+            binding.phoneno.text = phone
+            signInWithPhoneNumber(phone)
         }
         binding.verify.setOnClickListener {
-            if (checkFieldValue(binding.pinView.text.toString())) {
-                Snackbar.make(requireView(), "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
+            binding.errorMsg.isVisible = false
+            val otp = binding.pinView.text.toString()
+            if (checkFieldValue(otp)) {
+                Snackbar.make(requireView(), getText(R.string.wrong_detail), Snackbar.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            checkCode(verificationId, code = binding.pinView.text.toString())
+            checkCode(verificationId, otp)
         }
         binding.resendotp.setOnClickListener {
-            resendCode(getPhone()!!, resendToken)
+            val phone = binding.phoneno.text.toString()
+            if (checkFieldValue(phone)) {
+                Snackbar.make(requireView(), getText(R.string.wrong_detail), Snackbar.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+            MainActivity.emailAuthLink?.let {
+                resendCode(phone, resendToken)
+            }
+            args.userphone?.let {
+                resendCode(phone, resendToken)
+            }
+            Log.i(TAG, "onViewCreated: Sending Resend Code")
         }
     }
 
-    private fun forFirstTimeSignIn() {
-        if (flag == null) {
-            Log.i(TAG, "onViewCreated: Phone $flag")
-            initialAccountVerification()
-        }
-        if (flag == true) {
-            Log.i(TAG, "onViewCreated:Phone  Flags is $flag")
-            signInWithLink(
-                link = MainActivity.emailAuthLink!!,
-                email = primaryViewModel.read.value?.email!!
-            )
-        }
-        if (primaryViewModel.mutableStateFlow.value?.email == GetConstStringObj.My_Dialog_Once && primaryViewModel.credential != null) {
-            Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value?.email}")
-            Log.i(TAG, "onViewCreated: ${primaryViewModel.credential}")
-            signInWithCredential(primaryViewModel.credential!!)
-        }
-        if (primaryViewModel.mutableStateFlow.value?.firstname == GetConstStringObj.USERS) {
-            Log.i(TAG, "onViewCreated: ${primaryViewModel.mutableStateFlow.value?.firstname}")
-            createUserAccount()
-        }
-    }
-
-    private fun initialAccountVerification() {
-        MainActivity.emailAuthLink?.let { link ->
-            primaryViewModel.read.observe(viewLifecycleOwner) { store ->
-                signInWithLink(store.email, link)
+    private fun signInWithEmailLink(link: String, email: String, phone: String) {
+        primaryViewModel.createInWithEmail(email, link).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    val str = it.exception?.localizedMessage!!
+                    Log.i(TAG, "signInWithEmailLink:Error-> $str")
+                    if (str != getString(R.string.Exception_one) && str != getString(R.string.Exception_one))
+                        dir(message = str)
+                }
+                is MySealed.Loading -> {
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    Log.i(TAG, "signInWithEmailLink: Phone is Send $phone")
+                    signInWithPhoneNumber(phone)
+                }
             }
         }
     }
+
 
     private fun resendCode(phone: String, resendToken: PhoneAuthProvider.ForceResendingToken?) {
         val provide = PhoneAuthOptions.newBuilder()
@@ -136,10 +141,8 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Log.i(TAG, "onVerificationCompleted: Credential Created Successfully")
                 verificationProg = false
-                if (args.userphone != null)
-                    signInWithExitingUser(credential)
-                else
-                    signInWithCredential(credential)
+                primaryViewModel.credential = credential
+                signWithCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -172,99 +175,86 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
         }
     }
 
-    private fun signInWithCredential(credential: PhoneAuthCredential) {
-        val password = primaryViewModel.read.value?.password!!
-        primaryViewModel.mutableStateFlow.value =
-            UserStore(
-                GetConstStringObj.My_Dialog_Once,
-                "pass",
-                flag = true,
-                ipAddress = "",
-                "phone",
-                "firstName",
-                "lastName"
-            )
-        primaryViewModel.credential = credential
-        primaryViewModel.updatePhoneNumber(credential, password).observe(viewLifecycleOwner) {
-            when (it) {
-                is MySealed.Error -> {
-                    hideLoading()
-                    primaryViewModel.credential = null
-                    timer.cancel()
-                    dir(message = it.exception?.localizedMessage!!)
-                }
-                is MySealed.Loading -> showLoading(it.data as String)
-                is MySealed.Success -> {
-                    hideLoading()
-                    primaryViewModel.credential = null
-                    timer.cancel()
-                    createUserAccount()
-                }
-            }
-        }
-    }
-
-    private fun createUserAccount() {
-        val userData = primaryViewModel.read.value
-        primaryViewModel.mutableStateFlow.value?.firstname = GetConstStringObj.USERS
-        primaryViewModel.createUserAccount(userData!!).observe(viewLifecycleOwner) {
-            when (it) {
-                is MySealed.Error -> {
-                    hideLoading()
-                    primaryViewModel.mutableStateFlow.value?.firstname =
-                        GetConstStringObj.My_Dialog_Once
-                    dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
-                }
-                is MySealed.Loading -> showLoading(it.data as String)
-                is MySealed.Success -> {
-                    hideLoading()
-                    primaryViewModel.mutableStateFlow.value?.firstname =
-                        GetConstStringObj.My_Dialog_Once
-                    primaryViewModel.storeInitUserDetail(
-                        ipAddress = "",
-                        firstname = "",
-                        lastname = "",
-                        phone = "",
-                        password = "",
-                        email = ""
-                    )
-                    dir(2)
-                    activity?.finish()
-                }
-            }
-        }
-    }
 
     private fun checkCode(verificationId: String?, code: String) {
-        verificationId?.let {
-            val pro = PhoneAuthProvider.getCredential(it, code)
-            if (args.userphone != null)
-                signInWithExitingUser(pro)
-            else
-                signInWithCredential(pro)
+        verificationId?.let { Id ->
+            val pro = PhoneAuthProvider.getCredential(Id, code)
+            signWithCredential(pro)
         }
     }
 
-    private fun signInWithExitingUser(pro: PhoneAuthCredential) {
-        primaryViewModel.credential = pro
-        primaryViewModel.checkoutCredential(pro, args.userphone!!).observe(viewLifecycleOwner) {
+    private fun signWithCredential(pro: PhoneAuthCredential) {
+        args.userphone?.let { phone ->
+            Log.i(TAG, "signWithCredential: Sign With Phone Credential")
+            signInCurrentUsers(phone, pro)
+            return
+        }
+        primaryViewModel.read.observe(viewLifecycleOwner) {
+            Log.i(TAG, "signWithCredential: Updating User Detail")
+            updatePhoneNo(pro, it)
+        }
+    }
+
+    private fun signInCurrentUsers(phone: String, pro: PhoneAuthCredential) {
+        primaryViewModel.checkoutCredential(phone = phone, credential = pro)
+            .observe(viewLifecycleOwner) {
+                when (it) {
+                    is MySealed.Error -> {
+                        hideLoading()
+                        dir(message = "${it.exception?.localizedMessage}")
+                    }
+                    is MySealed.Loading -> {
+                        showLoading(it.data as String)
+                    }
+                    is MySealed.Success -> {
+                        hideLoading()
+                        if (it.data == GetConstStringObj.My_Dialog_Once) {
+                            dir(message = "User Not Exits So,\nPlease Create Your Account")
+                            primaryViewModel.getCurrentUser()?.delete()
+                        } else
+                            dir(23)
+                    }
+                }
+            }
+    }
+
+    private fun updatePhoneNo(credential: PhoneAuthCredential, password: UserStore) {
+        primaryViewModel.updatePhoneNumber(credential, password.password)
+            .observe(viewLifecycleOwner) {
+                when (it) {
+                    is MySealed.Error -> {
+                        hideLoading()
+                        Log.i(TAG, "updatePhoneNo: Error While Updating Phone Number And Password")
+                        dir(message = it.exception?.localizedMessage!!)
+                    }
+
+                    is MySealed.Loading -> {
+                        showLoading(it.data as String)
+                    }
+                    is MySealed.Success -> {
+                        hideLoading()
+                        activity?.let {
+                            Toast.makeText(activity, "Password is Updated", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        updateUser(password)
+                    }
+                }
+            }
+    }
+
+    private fun updateUser(userStore: UserStore) {
+        primaryViewModel.createUserAccount(userStore).observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    primaryViewModel.credential = null
-                    dir(message = it.exception?.localizedMessage!!)
                 }
-                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Loading -> {
+                    showLoading(it.data as String)
+                }
                 is MySealed.Success -> {
                     hideLoading()
-                    primaryViewModel.credential = null
-                    if (it.data == GetConstStringObj.My_Dialog_Once) {
-                        flag = true
-                        dir(message = getString(R.string.Miss_request))
-                    } else {
-                        dir(32)
-                        activity?.finish()
-                    }
+                    dir(23)
                 }
             }
         }
@@ -272,16 +262,19 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
 
     override fun onStart() {
         super.onStart()
-        if (verificationProg == true) {
-            Log.i(TAG, "onStart: SingInWithPhoneNumber Activated ${args.userphone}")
-            signInWithPhoneNumber(getPhone()!!)
+        MainActivity.emailAuthLink?.let {
+            if (verificationProg) {
+                primaryViewModel.read.observe(viewLifecycleOwner) {
+                    signInWithPhoneNumber(it.phone)
+                }
+            }
+        }
+        args.userphone?.let { phone ->
+            if (verificationProg)
+                signInWithPhoneNumber(phone = phone)
         }
     }
 
-    private fun getPhone() = if (primaryViewModel.read.value?.phone.isNullOrEmpty())
-        args.userphone
-    else
-        primaryViewModel.read.value?.phone
 
     private fun signInWithPhoneNumber(phone: String) {
         val action = PhoneAuthOptions.newBuilder()
@@ -297,30 +290,6 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
         Log.i(TAG, "signInWithPhoneNumber: WELCOME")
     }
 
-    private fun signInWithLink(email: String, link: String) {
-        flag = true
-        primaryViewModel.createInWithEmail(email, link).observe(viewLifecycleOwner) {
-            when (it) {
-                is MySealed.Error -> {
-                    hideLoading()
-                    flag = false
-                    val e = it.exception?.localizedMessage!!
-                    Log.i(TAG, "createInWithEmail:$e")
-                    if (e != getString(R.string.Exception_one) && e != getString(R.string.Exception_two))
-                        dir(message = e)
-                }
-                is MySealed.Loading -> {
-                    showLoading(it.data as String)
-                }
-                is MySealed.Success -> {
-                    hideLoading()
-                    flag = false
-                    Log.i(TAG, "signInWithLink: Sent Otp for SignInWithLink")
-                    signInWithPhoneNumber(primaryViewModel.read.value?.phone!!)
-                }
-            }
-        }
-    }
 
     override fun onPause() {
         super.onPause()
@@ -333,16 +302,23 @@ class PhoneNumberOtp : Fragment(R.layout.phone_otp_faragment) {
             else -> PhoneNumberOtpDirections.actionPhoneNumberOtpToAdminActivity()
         }
         findNavController().navigate(action)
+        if (choose != 0)
+            activity?.finish()
     }
 
-    private fun showLoading(message: String) =
+    private fun showLoading(message: String) {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         customProgress.showLoading(requireActivity(), string = message)
+    }
 
-    private fun hideLoading() = customProgress.hideLoading()
+    private fun hideLoading() {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        customProgress.hideLoading()
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        flag?.let {
+        verificationProg.let {
             outState.putBoolean(GetConstStringObj.USERS, it)
         }
     }

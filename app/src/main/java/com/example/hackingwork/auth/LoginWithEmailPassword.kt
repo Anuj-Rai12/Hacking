@@ -22,6 +22,7 @@ import javax.inject.Inject
 class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
     private lateinit var binding: LoginWithEmailPasswordBinding
     private val primaryViewModel: PrimaryViewModel by viewModels()
+
     @Inject
     lateinit var customProgress: CustomProgress
     private val onActivityStart = registerForActivityResult(ActivityDataInfo()) { output ->
@@ -39,12 +40,15 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         binding = LoginWithEmailPasswordBinding.bind(view)
         primaryViewModel.read.observe(viewLifecycleOwner) {
             Log.i(TAG, "onViewCreated: for login $it")
-            binding.emailText.setText(it.email)
-            binding.passwordText.setText(it.password)
-            binding.remeberme.isChecked = it.flag
+            if (it.flag) {
+                binding.emailText.setText(it.email)
+                binding.passwordText.setText(it.password)
+                binding.remeberme.isChecked = it.flag
+            }else if (primaryViewModel.mutableStateFlow.value == null && primaryViewModel.getCurrentUser() == null)
+                getEmail()
         }
-        if (primaryViewModel.mutableStateFlow.value == null &&primaryViewModel.getCurrentUser()==null)
-            getEmail()
+        /*if (primaryViewModel.mutableStateFlow.value == null && primaryViewModel.getCurrentUser() == null)
+            getEmail()*/
         if (primaryViewModel.mutableStateFlow.value?.flag == true)
             checkEmail(
                 password = primaryViewModel.mutableStateFlow.value?.password!!,
@@ -67,7 +71,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         binding.nextBtn.setOnClickListener {
             val email = binding.emailText.text.toString()
             val password = binding.passwordText.text.toString()
-            val flag=if (binding.remeberme.isChecked)
+            val flag = if (binding.remeberme.isChecked)
                 getString(R.string.Exception_one)
             else
                 getString(R.string.Exception_two)
@@ -80,11 +84,11 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
                 ).show()
                 return@setOnClickListener
             }
-            checkEmail(email, password,flag)
+            checkEmail(email, password, flag)
         }
     }
 
-    private fun checkEmail(email: String, password: String,string: String) {
+    private fun checkEmail(email: String, password: String, string: String) {
         primaryViewModel.mutableStateFlow.value =
             UserStore(
                 email,
@@ -118,8 +122,8 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
     }
 
     private fun saveData(email: String, password: String) {
-        if (primaryViewModel.mutableStateFlow.value?.phone==getString(R.string.Exception_one)) {
-            primaryViewModel.storeUserInfo(email, password,true)
+        if (primaryViewModel.mutableStateFlow.value?.phone == getString(R.string.Exception_one)) {
+            primaryViewModel.storeUserInfo(email, password, true)
         }
     }
 
@@ -127,6 +131,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         super.onPause()
         hideLoading()
     }
+
     private fun getEmail() {
         try {
             if (MainActivity.emailAuthLink == null)
@@ -150,7 +155,8 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
             return
         }
         FirebaseAuth.getInstance().currentUser?.let {
-            val action=LoginWithEmailPasswordDirections.actionLoginWithEmailPasswordToAdminActivity()
+            val action =
+                LoginWithEmailPasswordDirections.actionLoginWithEmailPasswordToAdminActivity()
             findNavController().navigate(action)
             activity?.finish()
             return
