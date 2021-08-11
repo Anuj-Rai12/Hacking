@@ -41,11 +41,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:fontFamily="@font/montserrat"
                     android:text="Title"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                 />
 
                 <TextView
                     android:id="@+id/kit_content"
@@ -57,21 +57,20 @@
                     android:layout_marginBottom="16dp"
                     android:text="heovopjveskll"
                     android:textColor="@color/textGrey"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/crimson_text_bold"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:fontFamily="@font/montserrat"
                     android:text="Description"
-                    android:textColor="@color/textGrey"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </ScrollView>
 

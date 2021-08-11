@@ -674,7 +674,7 @@ class TodosViewModel(
             jsonObject.put("activityCompleted", updateData.activityId)
             jsonObject.put("scoreDate", updateData.swipeDate)
 
-            AndroidNetworking.put("hts://www.uptodd.com/api/activity/score")
+            AndroidNetworking.put("https://www.uptodd.com/api/activity/score")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)

@@ -44,6 +44,7 @@ class TodoDetailsFragment : Fragment() {
         val arguments = TodoDetailsFragmentArgs.fromBundle(requireArguments())
 
 
+
         binding.btnEditTime.setOnClickListener {
 
             if(AllUtil.isUserPremium(requireContext())) {
@@ -91,6 +92,13 @@ class TodoDetailsFragment : Fragment() {
             }
         })
 
+        viewModel?.title?.observe(viewLifecycleOwner, Observer {
+
+            it.let {
+                binding.todoTaskName.text=it
+            }
+        })
+
 
         return binding.root
     }
@@ -98,6 +106,7 @@ class TodoDetailsFragment : Fragment() {
     private fun initialiseBindingAndViewModel(inflater: LayoutInflater, container: ViewGroup?) {
 
         val arguments = TodoDetailsFragmentArgs.fromBundle(requireArguments())
+
 
         viewModel = ViewModelProvider(
             this
