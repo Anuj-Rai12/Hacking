@@ -14,6 +14,7 @@ import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.LoginWithEmailPasswordBinding
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -117,7 +118,6 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
             }
         }
     }
-
     private fun saveData(email: String, password: String) {
         if (primaryViewModel.mutableStateFlow.value?.phone==getString(R.string.Exception_one)) {
             primaryViewModel.storeUserInfo(email, password,true)
@@ -148,6 +148,14 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         MainActivity.emailAuthLink?.let {
             val action = LoginWithEmailPasswordDirections.actionGlobalPhoneNumberOtp()
             findNavController().navigate(action)
+            return
+        }
+        FirebaseAuth.getInstance().currentUser?.let {
+            val action =
+                LoginWithEmailPasswordDirections.actionLoginWithEmailPasswordToAdminActivity()
+            findNavController().navigate(action)
+            activity?.finish()
+            return
         }
     }
 }

@@ -42,6 +42,8 @@ class PrimaryViewModel @Inject constructor(
         classPersistence.storeInitUserDetail(ipAddress, firstname, lastname, phone, email, password)
     }
 
+    val userInfo =authRepository.getUserProfileInfo().asLiveData()
+
     fun sendEmailLinkWithToVerify(email: String) =
         authRepository.sendEmailLinkWithToVerify(email).asLiveData()
 

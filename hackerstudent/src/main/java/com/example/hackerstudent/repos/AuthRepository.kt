@@ -130,4 +130,20 @@ class AuthRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+    fun getUserProfileInfo() = flow {
+        emit(MySealed.Loading("Profile Info Is Loading..."))
+        val data = try {
+            val userInfo =
+                fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!).get().await()
+            if (userInfo.exists()) {
+                val user = userInfo.toObject(CreateUserAccount::class.java)
+                MySealed.Success(user)
+            } else
+                MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
 }

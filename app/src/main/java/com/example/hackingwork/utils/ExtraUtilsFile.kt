@@ -37,6 +37,11 @@ fun isValidEmail(target: CharSequence?): Boolean {
     }
 }
 
+fun getPathFile(file: String): List<String> {
+    val tagArray = file.split("\\s*,\\s*".toRegex()).toTypedArray()
+    return tagArray.toList()
+}
+
 fun checkFieldValue(string: String) = string.isEmpty() || string.isBlank()
 
 fun isValidPassword(password: String): Boolean {

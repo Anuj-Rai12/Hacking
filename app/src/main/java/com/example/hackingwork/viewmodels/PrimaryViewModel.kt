@@ -30,7 +30,7 @@ class PrimaryViewModel @Inject constructor(
             classPersistence.updateInfo(email, password, flag)
         }
 
-    fun getCurrentUser()=FirebaseAuth.getInstance().currentUser
+    fun getCurrentUser() = FirebaseAuth.getInstance().currentUser
     fun storeInitUserDetail(
         ipAddress: String,
         firstname: String,
@@ -41,6 +41,8 @@ class PrimaryViewModel @Inject constructor(
     ) = viewModelScope.launch {
         classPersistence.storeInitUserDetail(ipAddress, firstname, lastname, phone, email, password)
     }
+
+    val userInfo =authRepository.getUserProfileInfo().asLiveData()
 
     fun sendEmailLinkWithToVerify(email: String) =
         authRepository.sendEmailLinkWithToVerify(email).asLiveData()
@@ -62,5 +64,4 @@ class PrimaryViewModel @Inject constructor(
 
     fun checkoutCredential(credential: PhoneAuthCredential, phone: String) =
         authRepository.checkoutCredential(credential, phone).asLiveData()
-
 }

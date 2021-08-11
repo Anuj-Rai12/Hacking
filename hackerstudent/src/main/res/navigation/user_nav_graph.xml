@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav_graph"
+    app:startDestination="@id/homeScreenFragment">
+
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.example.hackerstudent.ui.HomeScreenFragment"
+        android:label="home_screen_framgment"
+        tools:layout="@layout/home_screen_framgment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.hackerstudent.ui.ProfileFragment"
+        android:label="profile_framgnet"
+        tools:layout="@layout/profile_framgnet" />
+    <dialog
+        android:id="@+id/passwordDialog"
+        android:name="com.example.hackerstudent.utils.PasswordDialog"
+        android:label="PasswordDialog" >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="LogOut!!" />
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue="Are You Sure Want to LogOut?" />
+        <argument
+            android:name="flag"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </dialog>
+    <action android:id="@+id/action_global_passwordDialog2" app:destination="@id/passwordDialog" />
+</navigation>
