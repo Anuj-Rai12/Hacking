@@ -1,5 +1,7 @@
 package com.example.hackingwork
 
+import android.content.Context
+import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         var emailAuthLink: String? = null
+        var wifiManager:WifiManager?=null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Log.i(TAG, "onCreate: Created Auth Activity")
+        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (intent != null && intent.data != null) {
             if (FirebaseAuth.getInstance().isSignInWithEmailLink(intent.data!!.toString())) {
                 emailAuthLink = intent.data!!.toString()

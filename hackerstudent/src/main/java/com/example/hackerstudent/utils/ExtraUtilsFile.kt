@@ -1,10 +1,13 @@
 package com.example.hackerstudent.utils
 
 import android.accounts.AccountManager
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
+import androidx.annotation.RequiresApi
+import com.example.hackerstudent.MainActivity.Companion.wifiManager
 import com.example.hackerstudent.TAG
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
@@ -54,30 +57,20 @@ fun isValidPassword(password: String): Boolean {
     return passwordREGEX.matcher(password).matches()
 }
 
-fun getIntent(): Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-    AccountManager.newChooseAccountIntent(
-        null,
-        null,
-        arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE),
-        null,
-        null,
-        null,
-        null
-    )
-} else {
-    AccountManager.newChooseAccountIntent(
-        null,
-        null,
-        arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE),
-        false,
-        null,
-        null,
-        null,
-        null
-    )
-}
+@RequiresApi(Build.VERSION_CODES.M)
+fun getIntent(): Intent = AccountManager.newChooseAccountIntent(
+    null,
+    null,
+    arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE),
+    null,
+    null,
+    null,
+    null
+)
 
-fun getLocalIpAddress(): String? {
+fun getLocalIpAddress(choose: Int = 0): String? {
+    if (choose == 0)
+        return getMacAddress()
     try {
         val en = NetworkInterface.getNetworkInterfaces()
         while (en.hasMoreElements()) {
@@ -97,6 +90,16 @@ fun getLocalIpAddress(): String? {
     return null
 }
 
+@SuppressLint("HardwareIds")
+private fun getMacAddress(): String? {
+    val wInfo = wifiManager?.connectionInfo
+    return wInfo?.macAddress
+}
+
+fun getPathFile(file: String): List<String> {
+    val tagArray = file.split("\\s*,\\s*".toRegex()).toTypedArray()
+    return tagArray.toList()
+}
 fun getPhoneNumber(credential: Credential): String? {
     val codedPhoneNumber = credential.id
     return if (codedPhoneNumber.contains("+91")) {

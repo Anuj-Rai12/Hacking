@@ -16,6 +16,7 @@ import com.example.hackingwork.viewmodels.PrimaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class AdminActivity : AppCompatActivity() {
     private lateinit var binding: AdminActitvityMainBinding
@@ -23,7 +24,6 @@ class AdminActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var alertDialog: ExtraDialog? = null
-
     @Inject
     lateinit var customProgress: CustomProgress
 
@@ -47,7 +47,7 @@ class AdminActivity : AppCompatActivity() {
                     hideLoading()
                     val action = AdminActivityDirections.actionGlobalPasswordDialog(
                         title = "Error",
-                        message = it.exception?.localizedMessage?:"No Error"
+                        message = it.exception?.localizedMessage ?: "No Error"
                     )
                     navController.navigate(action)
                 }
@@ -59,8 +59,10 @@ class AdminActivity : AppCompatActivity() {
                     it.data?.let { data ->
                         val user = data as CreateUserAccount?
                         Log.i(TAG, "getUserInfo Admin Activity: $user")
+                        val ip = getLocalIpAddress()
+                        Log.i(TAG, "getUserInfo: MAC Address Local is -> $ip")
                         user?.let { createUserAccount ->
-                            if (createUserAccount.ipaddress != getLocalIpAddress())
+                            if (createUserAccount.ipaddress != ip)
                                 openDialog()
                             else
                                 Log.i(TAG, "getUserInfo: Login Accepted")

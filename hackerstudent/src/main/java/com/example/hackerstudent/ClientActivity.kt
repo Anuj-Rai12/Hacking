@@ -58,8 +58,10 @@ class ClientActivity : AppCompatActivity() {
                     it.data?.let { data ->
                         val user = data as CreateUserAccount?
                         Log.i(TAG, "getUserInfo Admin Activity: $user")
+                        val mac= getLocalIpAddress()
+                        Log.i(TAG, "getUserInfo: MAC-ADDRESS -> $mac")
                         user?.let { createUserAccount ->
-                            if (createUserAccount.ipaddress != getLocalIpAddress())
+                            if (createUserAccount.ipaddress != mac)
                                 openDialog()
                             else
                                 Log.i(TAG, "getUserInfo: Login Accepted")
