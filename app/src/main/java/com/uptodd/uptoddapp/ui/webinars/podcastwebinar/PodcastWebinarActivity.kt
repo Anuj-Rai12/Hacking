@@ -64,7 +64,10 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
                 p1: YouTubePlayer?,
                 p2: Boolean, ) {
 
+
+
                 if (p1 != null) {
+
                     p1.loadVideo(VIDEO_SAMPLE)
                     p1.setPlayerStateChangeListener(object :YouTubePlayer.PlayerStateChangeListener
                     {
@@ -81,7 +84,7 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
                         }
 
                         override fun onLoaded(p0: String?) {
-                            p1.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
+                            p1?.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
                             p1.setShowFullscreenButton(true)
                            p1.pause()
                         }
@@ -116,6 +119,7 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
 
             }
         }
+
 
         binding.videoView.initialize(YouTubeConfig().getApiKey(), mOnInitializedListener)
     }

@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import androidx.core.util.rangeTo
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.work.*
@@ -44,7 +45,10 @@ import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.time.Duration
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class TodosViewModel(
     database: UptoddDatabase,
@@ -535,12 +539,25 @@ class TodosViewModel(
     }
 
 
-    fun checkForAppUpdate()
+    fun checkForAppUpdate(context: Context)
     {
         val json= JSONObject().apply {
             put("version", BuildConfig.VERSION_NAME.toDouble())
             put("deviceType","android")
         }
+
+        val lastCheck=UptoddSharedPreferences.getInstance(context).getLastVersionCheck()
+
+        val calendar = Calendar.getInstance()
+        Log.d("minutes","${TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis-lastCheck)}")
+        
+        if(lastCheck!=0L && TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis-lastCheck)<2)
+        {
+            _isOutdatedVersion.value = false
+            return
+        }
+
+
 
         AndroidNetworking.post("https://www.uptodd.com/api/isValidVersion")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -556,7 +573,8 @@ class TodosViewModel(
                     Log.d("data version","$res")
 
                     _isOutdatedVersion.value = res==0
-
+                    Log.d("called version","true")
+                    UptoddSharedPreferences.getInstance(context).saveLastVersionChecked(calendar.timeInMillis)
                 }
 
                 override fun onError(anError: ANError?) {

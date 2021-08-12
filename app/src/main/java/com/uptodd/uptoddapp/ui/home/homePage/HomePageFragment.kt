@@ -100,7 +100,7 @@ class HomePageFragment : Fragment() {
 
         Log.d("div", "${System.currentTimeMillis()}")
 
-        viewModel?.checkForAppUpdate()
+        viewModel?.checkForAppUpdate(requireContext())
         viewModel?.isOutDatedVersion?.observe(viewLifecycleOwner
             , {
 

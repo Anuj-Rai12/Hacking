@@ -72,7 +72,17 @@ class BabyNameFragment : Fragment() {
 
                 preferences?.edit()?.putString(UserInfo::babyName.name, binding.editTextName.text.toString())?.apply()
 
-                if ((address == "null" || address == "" || address == null ) && !AllUtil.isRow(requireContext()))
+                var stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+
+                val kidsDOB = preferences?.getString("kidsDob", "")
+
+                if ((stage == "postnatal" || stage == "post birth") && !AllUtil.isRow(
+                        requireContext()
+                    ) && (kidsDOB == "null" || kidsDOB == null || kidsDOB == "")
+                ) {
+                    findNavController()?.navigate(R.id.action_babyNameFragment_to_dobFragment)
+                }
+                else if ((address == "null" || address == "" || address == null ) && !AllUtil.isRow(requireContext()))
                 {
                     AddressViewModel.isGenderName=true
                     findNavController()?.navigate(R.id.action_babyNameFragment_to_addressFragment)

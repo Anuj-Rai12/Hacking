@@ -20,6 +20,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentNonpremiumDobBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.login.selectaddress.AddressViewModel
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -111,6 +112,7 @@ class DobFragment : Fragment() {
                         "row"
                     if((address=="null" || address==null)&& country=="india")
                     {
+                        AddressViewModel.isGenderName=true
                         findNavController().navigate(R.id.action_dobFragment_to_addressFragment)
                     }
                     else
