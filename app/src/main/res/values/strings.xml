@@ -33,4 +33,13 @@
     <!--- UI App -->
     <string name="storage_Screen_app">Storage Screen.</string>
     <string name="cloud_Screen_app">Cloud Screen.</string>
+    <!-- Storage_Screen_UI-->
+    <string name="module_name">Module</string>
+    <string name="video_name">Video Name</string>
+    <string name="assignment_name">Assignment Name</string>
+    <string name="file_explore_name">Open Video Explore</string>
+    <string name="thumbnail_explore_name">Open Image Explore</string>
+    <string name="upload_File_name">Upload File</string>
+    <string name="delete_File_name">Delete File</string>
+
 </resources>

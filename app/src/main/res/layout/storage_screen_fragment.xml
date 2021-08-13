@@ -1,8 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.hackingwork.ui.StorageScreenFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ModuleNameCollection"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/module_name"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_module_add">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ModuleName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/uploaderVideoNameCollection"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/video_name"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="@id/ModuleNameCollection"
+            app:layout_constraintTop_toBottomOf="@id/ModuleNameCollection"
+            app:startIconDrawable="@drawable/ic_video_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uploaderVideoName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/uploaderAssignmentCollection"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/assignment_name"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="@id/uploaderVideoNameCollection"
+            app:layout_constraintTop_toBottomOf="@id/uploaderVideoNameCollection"
+            app:startIconDrawable="@drawable/ic_assignment_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uploaderAssignment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/openFileExplore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/file_explore_name"
+            android:textAllCaps="false"
+            app:layout_constraintLeft_toLeftOf="@id/uploaderAssignmentCollection"
+            app:layout_constraintRight_toRightOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/uploaderAssignmentCollection"
+            app:layout_constraintWidth_min="100dp" />
+
+        <Button
+            android:id="@+id/ThumbNailExplore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/thumbnail_explore_name"
+            android:textAllCaps="false"
+            app:layout_constraintLeft_toLeftOf="@id/uploaderAssignmentCollection"
+            app:layout_constraintRight_toRightOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/openFileExplore"
+            app:layout_constraintWidth_min="100dp" />
+
+        <ImageView
+            android:id="@+id/fileImage"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#F5F4F4"
+            android:contentDescription="@string/create_file"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toRightOf="@id/barrier2"
+            app:layout_constraintRight_toRightOf="@id/uploaderAssignmentCollection"
+            app:layout_constraintTop_toBottomOf="@id/uploaderAssignmentCollection" />
+
+        <TextView
+            android:id="@+id/uploadSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/color_red"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/openFileExplore"
+            app:layout_constraintRight_toLeftOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/ThumbNailExplore"
+            tools:text="Size: 20MB" />
+
+        <Button
+            android:id="@+id/UploadVideoFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_File_name"
+            android:textAllCaps="false"
+            app:layout_constraintLeft_toLeftOf="@id/openFileExplore"
+            app:layout_constraintRight_toRightOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/fileImage" />
+
+        <Button
+            android:id="@+id/DeleteVideoFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_File_name"
+            android:textAllCaps="false"
+            app:layout_constraintRight_toRightOf="@id/fileImage"
+            app:layout_constraintTop_toBottomOf="@id/fileImage" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/videoFileRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/DeleteVideoFile" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="openFileExplore"
+            tools:layout_editor_absoluteX="402dp"
+            tools:layout_editor_absoluteY="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

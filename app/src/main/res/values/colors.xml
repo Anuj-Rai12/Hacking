@@ -16,5 +16,8 @@
     <color name="link_type_bg">#0000FF</color>
     <color name="light_grey">#f8f8ff</color>
     <color name="forget_text_color">#696969</color>
-
+    <!-- Other Color-->
+    <color name="light_my_color">#F5A59F</color>
+    <color name="light_green">#fb7268</color>
+    <color name="my_color">#fb7268</color>
 </resources>
