@@ -18,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminViewModel @Inject constructor() : ViewModel() {
     var moduleMap: MutableMap<String, Module>? = null
+    var thumbnailNail: String? = null
     private val _taskEvent = Channel<MySealedChannel>()
     val taskEvent = _taskEvent.receiveAsFlow()
     private var _videoMap = MutableLiveData<MutableMap<String, Video>>()

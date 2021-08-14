@@ -32,7 +32,6 @@ import javax.inject.Inject
 class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private val adminViewModel: AdminViewModel by activityViewModels()
     private lateinit var binding: StorageScreenFragmentBinding
-    private var imageUri: String? = null
     private val getUri = registerForActivityResult(GetUriFile()) {
         it.uri?.let { uri ->
             Log.i(TAG, "MY MIME ->: ${getMimeType(uri)}")
@@ -81,10 +80,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = StorageScreenFragmentBinding.bind(view)
-        savedInstanceState?.let {
-            imageUri = it.getString(GetConstStringObj.VERSION)
-        }
-        imageUri?.let {
+        adminViewModel.thumbnailNail?.let {
             binding.fileImage.setImageURI(it.toUri())
         }
         setUpRecycleView()
@@ -115,9 +111,10 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             adminViewModel.videoMap.observe(viewLifecycleOwner) {
                 val map = mutableMapOf<String, Module>()
                 map[module] = Module(module, it)
-                adminViewModel.moduleMap=map
+                adminViewModel.moduleMap = map
             }
             adminViewModel.moduleMap?.let {
+                Log.i(TAG, "onViewCreated: Thumbnail -> ${adminViewModel.thumbnailNail}")
                 Log.i(TAG, "onModule File : $it")
             }
         }
@@ -127,7 +124,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun getGalImage(it: Uri) {
-        imageUri = it.toString()
+        adminViewModel.thumbnailNail = it.toString()
         binding.fileImage.setImageURI(it)
     }
 
@@ -244,10 +241,4 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         findNavController().navigate(action)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        imageUri?.let {
-            outState.putString(GetConstStringObj.VERSION, it)
-        }
-    }
 }
