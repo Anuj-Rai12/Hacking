@@ -92,7 +92,18 @@
             app:layout_constraintRight_toRightOf="@id/barrier2"
             app:layout_constraintTop_toBottomOf="@id/uploaderAssignmentCollection"
             app:layout_constraintWidth_min="100dp" />
-
+        <Button
+            android:id="@+id/openAssignmentExplore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/assignment_explore_name"
+            android:textAllCaps="false"
+            app:layout_constraintLeft_toLeftOf="@id/uploaderAssignmentCollection"
+            app:layout_constraintRight_toRightOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/openFileExplore"
+            app:layout_constraintWidth_min="100dp" />
         <Button
             android:id="@+id/ThumbNailExplore"
             android:layout_width="0dp"
@@ -103,7 +114,7 @@
             android:textAllCaps="false"
             app:layout_constraintLeft_toLeftOf="@id/uploaderAssignmentCollection"
             app:layout_constraintRight_toRightOf="@id/barrier2"
-            app:layout_constraintTop_toBottomOf="@id/openFileExplore"
+            app:layout_constraintTop_toBottomOf="@id/openAssignmentExplore"
             app:layout_constraintWidth_min="100dp" />
 
         <ImageView
@@ -119,27 +130,16 @@
             app:layout_constraintRight_toRightOf="@id/uploaderAssignmentCollection"
             app:layout_constraintTop_toBottomOf="@id/uploaderAssignmentCollection" />
 
-        <TextView
-            android:id="@+id/uploadSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/color_red"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="@id/openFileExplore"
-            app:layout_constraintRight_toLeftOf="@id/barrier2"
-            app:layout_constraintTop_toBottomOf="@id/ThumbNailExplore"
-            tools:text="Size: 20MB" />
-
         <Button
             android:id="@+id/UploadVideoFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
             android:text="@string/upload_File_name"
             android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="@id/openFileExplore"
-            app:layout_constraintRight_toRightOf="@id/barrier2"
+            app:layout_constraintBottom_toBottomOf="@id/ThumbNailExplore"
+            app:layout_constraintLeft_toLeftOf="@id/fileImage"
             app:layout_constraintTop_toBottomOf="@id/fileImage" />
 
         <Button
@@ -148,6 +148,10 @@
             android:layout_height="wrap_content"
             android:text="@string/delete_File_name"
             android:textAllCaps="false"
+            android:layout_marginTop="9dp"
+            android:visibility="gone"
+            android:layout_marginBottom="9dp"
+            app:layout_constraintBottom_toBottomOf="@id/ThumbNailExplore"
             app:layout_constraintRight_toRightOf="@id/fileImage"
             app:layout_constraintTop_toBottomOf="@id/fileImage" />
 
@@ -157,7 +161,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/DeleteVideoFile" />
+            app:layout_constraintTop_toBottomOf="@id/ThumbNailExplore" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier2"

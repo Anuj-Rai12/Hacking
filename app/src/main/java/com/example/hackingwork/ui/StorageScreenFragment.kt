@@ -34,9 +34,10 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private var imageUri: String? = null
     private val getUri = registerForActivityResult(GetUriFile()) {
         it.uri?.let { uri ->
-            if (getMimeType(uri) != "application/pdf")
+            Log.i(TAG, "MY MIME ->: ${getMimeType(uri)}")
+            if (getMimeType(uri)?.contains("video/")==true)
                 makeData(uri)
-            else
+            else if (getMimeType(uri) == "application/pdf")
                 setAssignment(uri)
         }
     }
@@ -88,6 +89,9 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             val videoTile = binding.uploaderVideoName.text.toString()
             if (getCheckout(module, videoTile))
                 return@setOnClickListener
+            getUri.launch(InputData(intent = getIntent("video/*")))
+        }
+        binding.openAssignmentExplore.setOnClickListener {
             getUri.launch(InputData(intent = getIntent("*/*")))
         }
         binding.ThumbNailExplore.setOnClickListener {
@@ -186,16 +190,19 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         }
     }
 
-    private fun getDuration(uri: Uri): String {
-        val mp: MediaPlayer = MediaPlayer.create(activity, uri)
-        val duration = mp.duration
-        mp.release()
+    private fun getDuration(uri: Uri): String? {
+        val mp: MediaPlayer? = MediaPlayer.create(activity, uri)
+        val duration = mp?.duration
+        mp?.release()
         Log.i(TAG, "getDuration: Duration => $duration")
-        return String.format("%d min : %d sec",
-            TimeUnit.MILLISECONDS.toMinutes(duration.toLong()),
-            TimeUnit.MILLISECONDS.toSeconds(duration.toLong()) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong()))
-        )
+        duration?.let {
+            return   String.format("%d min : %d sec",
+                TimeUnit.MILLISECONDS.toMinutes(it.toLong()),
+                TimeUnit.MILLISECONDS.toSeconds(it.toLong()) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(it.toLong()))
+            )
+        }
+        return  null
     }
 
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
