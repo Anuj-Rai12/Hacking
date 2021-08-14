@@ -45,18 +45,21 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun setAssignment(uri: Uri) {
-        val assignmentTitle = binding.uploaderVideoName.text.toString()
-        Assignment(title = binding.uploaderAssignment.text.toString(), uri = uri.toString()).also {
-            Log.i(TAG, "setAssignment: Assignment-> $it")
-            if (checkFieldValue(assignmentTitle)) {
+        val videoTitle = binding.uploaderVideoName.text.toString()
+        Assignment(
+            title = binding.uploaderAssignment.text.toString(),
+            uri = uri.toString()
+        ).also { assignment ->
+            Log.i(TAG, "setAssignment: Assignment-> $assignment")
+            if (checkFieldValue(videoTitle)) {
                 Snackbar.make(requireView(), "Enter the Assignment Title", Snackbar.LENGTH_SHORT)
                     .show()
                 return
             }
-            val videoInstance = adminViewModel.videoMap.value?.get(assignmentTitle)
+            val videoInstance = adminViewModel.videoMap.value?.get(videoTitle)
             Log.i(TAG, "setAssignment My Video Assignment -> : $videoInstance")
             videoInstance?.let { video ->
-                adminViewModel.updateDataWithAssignment(it, video)
+                adminViewModel.updateDataWithAssignment(assignment, video)
             }
         }
     }
@@ -102,6 +105,22 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             }
             getUri.launch(InputData(intent = getIntent("*/*")))
         }
+        binding.UploadVideoFile.setOnClickListener {
+            Log.i(TAG, "onViewCreated: Working Correct")
+            val module = binding.ModuleName.text.toString()
+            if (checkFieldValue(module)) {
+                Snackbar.make(requireView(), "Enter the Module Name", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            adminViewModel.videoMap.observe(viewLifecycleOwner) {
+                val map = mutableMapOf<String, Module>()
+                map[module] = Module(module, it)
+                adminViewModel.moduleMap=map
+            }
+            adminViewModel.moduleMap?.let {
+                Log.i(TAG, "onModule File : $it")
+            }
+        }
         binding.ThumbNailExplore.setOnClickListener {
             getImage.launch(InputData(intent = getIntent("image/*")))
         }
@@ -132,7 +151,6 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
 
     private fun getIntent(string: String): Intent {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        //intent.addCategory(Intent.ACTION_GET_CONTENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = string
         return intent
