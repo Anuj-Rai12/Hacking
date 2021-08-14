@@ -58,9 +58,7 @@ class AdminActivity : AppCompatActivity() {
                     hideLoading()
                     it.data?.let { data ->
                         val user = data as CreateUserAccount?
-                        Log.i(TAG, "getUserInfo Admin Activity: $user")
                         val ip = getLocalIpAddress()
-                        Log.i(TAG, "getUserInfo: MAC Address Local is -> $ip")
                         user?.let { createUserAccount ->
                             if (createUserAccount.ipaddress != ip)
                                 openDialog()

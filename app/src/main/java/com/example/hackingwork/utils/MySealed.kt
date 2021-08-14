@@ -11,7 +11,6 @@ sealed class MySealed<T>(
     class Error<T>(data: T? = null, exception: Exception?) : MySealed<T>(data, exception)
 }
 
-/*
 sealed class MySealedChannel {
     data class DeleteAndChannel<T>(val userdata: T) : MySealedChannel()
-}*/
+}

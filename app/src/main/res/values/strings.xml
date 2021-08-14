@@ -37,7 +37,7 @@
     <string name="module_name">Module</string>
     <string name="video_name">Video Name</string>
     <string name="assignment_name">Assignment Name</string>
-    <string name="file_explore_name">Open Video Explore</string>
+    <string name="file_explore_name">Open Video Or Assignment Explore</string>
     <string name="thumbnail_explore_name">Open Image Explore</string>
     <string name="upload_File_name">Upload File</string>
     <string name="delete_File_name">Delete File</string>

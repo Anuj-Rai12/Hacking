@@ -2,10 +2,16 @@ package com.example.hackingwork.utils
 
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
+import android.webkit.MimeTypeMap
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.RequiresApi
 import com.example.hackingwork.MainActivity.Companion.wifiManager
 import com.example.hackingwork.TAG
@@ -16,6 +22,7 @@ import com.google.android.gms.auth.api.credentials.HintRequest
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
+import java.util.*
 import java.util.regex.Pattern
 
 fun hintRequest(): HintRequest = HintRequest.Builder()
@@ -109,6 +116,40 @@ fun getPhoneNumber(credential: Credential): String? {
     } else
         null
 }
+
+class GetUriFile : ActivityResultContract<InputData, OutPutData>() {
+    override fun createIntent(context: Context, input: InputData?): Intent {
+        return Intent(input?.intent)
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): OutPutData {
+        return  OutPutData(requestCode = resultCode== Activity.RESULT_OK,uri = intent?.data)
+    }
+}
+
+class InputData(
+    val intent: Intent
+)
+
+class OutPutData(
+    val requestCode: Boolean,
+    val uri: Uri?
+)
+
+fun getMimeType(uri: Uri, context: Context): String? {
+    return if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
+        val cr: ContentResolver? = context.contentResolver
+        cr?.getType(uri)
+    } else {
+        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(
+            uri.toString()
+        )
+        MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+            fileExtension.lowercase(Locale.getDefault())
+        )
+    }
+}
+
 
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
