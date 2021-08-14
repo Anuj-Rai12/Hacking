@@ -1,5 +1,6 @@
 package com.example.hackingwork.utils
 
+import android.Manifest
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -19,6 +20,7 @@ import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
+import com.vmadalin.easypermissions.EasyPermissions
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
@@ -68,6 +70,8 @@ fun isValidPassword(password: String): Boolean {
     )
     return passwordREGEX.matcher(password).matches()
 }
+fun checkGalleryPermission(context: Context) =
+    EasyPermissions.hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun getIntent(): Intent = AccountManager.newChooseAccountIntent(

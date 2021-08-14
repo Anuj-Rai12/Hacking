@@ -11,6 +11,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,10 +36,11 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private val getUri = registerForActivityResult(GetUriFile()) {
         it.uri?.let { uri ->
             Log.i(TAG, "MY MIME ->: ${getMimeType(uri)}")
-            if (getMimeType(uri)?.contains("video/")==true)
-                makeData(uri)
-            else if (getMimeType(uri) == "application/pdf")
-                setAssignment(uri)
+            when {
+                getMimeType(uri)?.contains("video/") == true -> makeData(uri)
+                getMimeType(uri) == "application/pdf" -> setAssignment(uri)
+                else -> dir(message = "This File is Neither Pdf Nor Video File")
+            }
         }
     }
 
@@ -92,6 +94,12 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             getUri.launch(InputData(intent = getIntent("video/*")))
         }
         binding.openAssignmentExplore.setOnClickListener {
+            val assignmentTitle = binding.uploaderAssignment.text.toString()
+            if (checkFieldValue(assignmentTitle)) {
+                Snackbar.make(requireView(), "Enter the Assignment Name", Snackbar.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
             getUri.launch(InputData(intent = getIntent("*/*")))
         }
         binding.ThumbNailExplore.setOnClickListener {
@@ -178,7 +186,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun makeData(uri: Uri) {
-        val durationTime=getDuration(uri)
+        val durationTime = getDuration(uri)
         Video(
             title = binding.uploaderVideoName.text.toString(),
             uri = uri.toString(),
@@ -196,13 +204,14 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         mp?.release()
         Log.i(TAG, "getDuration: Duration => $duration")
         duration?.let {
-            return   String.format("%d min : %d sec",
+            return String.format(
+                "%d min : %d sec",
                 TimeUnit.MILLISECONDS.toMinutes(it.toLong()),
                 TimeUnit.MILLISECONDS.toSeconds(it.toLong()) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(it.toLong()))
             )
         }
-        return  null
+        return null
     }
 
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
@@ -210,6 +219,11 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     override fun onPause() {
         super.onPause()
         hideLoading()
+    }
+
+    private fun dir(title: String = "Error", message: String = "") {
+        val action = StorageScreenFragmentDirections.actionGlobalPasswordDialog2(message, title)
+        findNavController().navigate(action)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

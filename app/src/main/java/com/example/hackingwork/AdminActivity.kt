@@ -1,5 +1,6 @@
 package com.example.hackingwork
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -13,17 +14,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.hackingwork.databinding.AdminActitvityMainBinding
 import com.example.hackingwork.utils.*
 import com.example.hackingwork.viewmodels.PrimaryViewModel
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+const val REQUEST_GAL = 102
 
 @AndroidEntryPoint
-class AdminActivity : AppCompatActivity() {
+class AdminActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: AdminActitvityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var alertDialog: ExtraDialog? = null
+
     @Inject
     lateinit var customProgress: CustomProgress
 
@@ -31,6 +36,7 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = AdminActitvityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getPermission()
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.adminContainerView) as NavHostFragment
         navController = navHostFragment.navController
@@ -39,6 +45,22 @@ class AdminActivity : AppCompatActivity() {
         binding.myDrawer.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
+
+    private fun getPermission() {
+        if (!checkGalleryPermission(this))
+            request()
+    }
+
+    private fun request(
+        camera: String = Manifest.permission.READ_EXTERNAL_STORAGE,
+        code: Int=REQUEST_GAL,
+        s: String="Gallery"
+    ) = EasyPermissions.requestPermissions(
+        this,
+        "Kindly Give us $s permission,otherwise application may not work Properly.",
+        code,
+        camera
+    )
 
     private fun getUserInfo() {
         primaryViewModel.userInfo.observe(this) {
@@ -98,5 +120,18 @@ class AdminActivity : AppCompatActivity() {
         Log.i(TAG, "onBackPressed: Admin-Side ${MainActivity.emailAuthLink}")
         if (MainActivity.emailAuthLink == null)
             super.onBackPressed()
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        perms.forEach {
+            if (EasyPermissions.permissionPermanentlyDenied(this, it)) {
+                SettingsDialog.Builder(this).build().show()
+            } else
+                getPermission()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Log.i(TAG, "onPermissionsGranted: Permission Is Granted")
     }
 }
