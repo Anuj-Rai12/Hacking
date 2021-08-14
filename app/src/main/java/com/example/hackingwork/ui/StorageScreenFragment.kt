@@ -2,6 +2,7 @@ package com.example.hackingwork.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -23,13 +24,14 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private val adminViewModel: AdminViewModel by activityViewModels()
     private lateinit var binding: StorageScreenFragmentBinding
-    private var imageUri:String?=null
+    private var imageUri: String? = null
     private val getUri = registerForActivityResult(GetUriFile()) {
         it.uri?.let { uri ->
             if (getMimeType(uri) != "application/pdf")
@@ -40,7 +42,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun setAssignment(uri: Uri) {
-        val assignmentTitle=binding.uploaderVideoName.text.toString()
+        val assignmentTitle = binding.uploaderVideoName.text.toString()
         Assignment(title = binding.uploaderAssignment.text.toString(), uri = uri.toString()).also {
             Log.i(TAG, "setAssignment: Assignment-> $it")
             if (checkFieldValue(assignmentTitle)) {
@@ -50,7 +52,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             }
             val videoInstance = adminViewModel.videoMap.value?.get(assignmentTitle)
             Log.i(TAG, "setAssignment My Video Assignment -> : $videoInstance")
-            videoInstance?.let {video->
+            videoInstance?.let { video ->
                 adminViewModel.updateDataWithAssignment(it, video)
             }
         }
@@ -74,7 +76,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = StorageScreenFragmentBinding.bind(view)
         savedInstanceState?.let {
-            imageUri=it.getString(GetConstStringObj.VERSION)
+            imageUri = it.getString(GetConstStringObj.VERSION)
         }
         imageUri?.let {
             binding.fileImage.setImageURI(it.toUri())
@@ -94,19 +96,20 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun getGalImage(it: Uri) {
-        imageUri=it.toString()
+        imageUri = it.toString()
         binding.fileImage.setImageURI(it)
     }
 
     private fun getMimeType(uri: Uri) = getMimeType(uri, requireContext())
+
     @SuppressLint("NotifyDataSetChanged")
     private fun setUpData() {
         Log.i(TAG, "setUpData: Hello From SetUpData")
         adminViewModel.videoMap.observe(viewLifecycleOwner) {
             Log.i(TAG, "setUpData: $it")
             storageRecycle.notifyDataSetChanged()
-            val list= mutableListOf<Video>()
-            it.filterValues {video->
+            val list = mutableListOf<Video>()
+            it.filterValues { video ->
                 list.add(video)
                 return@filterValues true
             }
@@ -171,14 +174,28 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun makeData(uri: Uri) {
+        val durationTime=getDuration(uri)
         Video(
             title = binding.uploaderVideoName.text.toString(),
             uri = uri.toString(),
+            duration = durationTime,
             assignment = null
         ).also {
             Log.i(TAG, "makeData: Video -> $it")
             adminViewModel.getVideo(it)
         }
+    }
+
+    private fun getDuration(uri: Uri): String {
+        val mp: MediaPlayer = MediaPlayer.create(activity, uri)
+        val duration = mp.duration
+        mp.release()
+        Log.i(TAG, "getDuration: Duration => $duration")
+        return String.format("%d min : %d sec",
+            TimeUnit.MILLISECONDS.toMinutes(duration.toLong()),
+            TimeUnit.MILLISECONDS.toSeconds(duration.toLong()) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong()))
+        )
     }
 
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
@@ -191,7 +208,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         imageUri?.let {
-            outState.putString(GetConstStringObj.VERSION,it)
+            outState.putString(GetConstStringObj.VERSION, it)
         }
     }
 }

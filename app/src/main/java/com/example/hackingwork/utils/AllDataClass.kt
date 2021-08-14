@@ -22,6 +22,7 @@ data class Module(
 data class Video(
     val title: String? = null,
     val uri: String? = null,
+    val duration: String? =null,
     val assignment: Assignment? = null
 )
 

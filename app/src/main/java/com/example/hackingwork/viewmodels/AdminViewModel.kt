@@ -45,7 +45,12 @@ class AdminViewModel @Inject constructor() : ViewModel() {
     fun updateDataWithAssignment(assignment: Assignment, video: Video) {
         val map = mutableMapOf<String, Video>()
         _videoMap.value?.let { value -> map.putAll(value) }
-        Video(title = video.title, uri = video.uri, assignment = assignment).also {
+        Video(
+            title = video.title,
+            uri = video.uri,
+            duration = video.duration,
+            assignment = assignment
+        ).also {
             map[video.title!!] = it
         }
         _videoMap.value = map
