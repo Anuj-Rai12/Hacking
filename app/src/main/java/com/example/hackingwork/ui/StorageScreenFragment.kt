@@ -6,6 +6,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -39,6 +41,15 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                 getMimeType(uri)?.contains("video/") == true -> makeData(uri)
                 getMimeType(uri) == "application/pdf" -> setAssignment(uri)
                 else -> dir(message = "This File is Neither Pdf Nor Video File")
+            }
+        }
+    }
+
+    private val getVideoPreview = registerForActivityResult(GetUriFile()) {
+        it.uri?.let { uri ->
+            adminViewModel.videoPreview = uri.toString()
+            adminViewModel.videoPreview?.let {
+                dir(message = "Preview ViewVideo Is:\n$uri")
             }
         }
     }
@@ -113,14 +124,24 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                 map[module] = Module(module, it)
                 adminViewModel.moduleMap = map
             }
-            adminViewModel.moduleMap?.let {
-                Log.i(TAG, "onViewCreated: Thumbnail -> ${adminViewModel.thumbnailNail}")
-                Log.i(TAG, "onModule File : $it")
+            adminViewModel.moduleMap?.let {moduleContent->
+                GetCourseContent(
+                    thumbnail = adminViewModel.thumbnailNail,
+                    previewvideo = adminViewModel.videoPreview,
+                    module = moduleContent
+                ).also {
+                    uploadFile(it)
+                }
             }
         }
         binding.ThumbNailExplore.setOnClickListener {
             getImage.launch(InputData(intent = getIntent("image/*")))
         }
+        setHasOptionsMenu(true)
+    }
+
+    private fun uploadFile(courseContent: GetCourseContent) {
+
     }
 
     private fun getGalImage(it: Uri) {
@@ -197,6 +218,16 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                     }
                 }
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.viedo_preview_menu, menu)
+        val videoPreview = menu.findItem(R.id.VideoPreview)
+        videoPreview.setOnMenuItemClickListener {
+            getVideoPreview.launch(InputData(intent = getIntent("video/*")))
+            return@setOnMenuItemClickListener true
         }
     }
 

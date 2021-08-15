@@ -1,6 +1,7 @@
 package com.example.hackingwork.utils
 
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.gson.Gson
 
 @IgnoreExtraProperties
 data class CreateUserAccount(
@@ -32,3 +33,20 @@ data class Assignment(
 )
 
 
+object Helper {
+    fun serializeToJson(bmp: GetCourseContent): String? {
+        val gson = Gson()
+        return gson.toJson(bmp)
+    }
+
+    // Deserialize to single object.
+    fun deserializeFromJson(jsonString: String?): GetCourseContent? {
+        val gson = Gson()
+        return gson.fromJson(jsonString, GetCourseContent::class.java)
+    }
+}
+data class GetCourseContent(
+    val thumbnail:String?=null,
+    val previewvideo:String?=null,
+    val module:Map<String,Module>?=null
+)

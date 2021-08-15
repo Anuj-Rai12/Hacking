@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminViewModel @Inject constructor() : ViewModel() {
+    var videoPreview: String? = null
     var moduleMap: MutableMap<String, Module>? = null
     var thumbnailNail: String? = null
     private val _taskEvent = Channel<MySealedChannel>()

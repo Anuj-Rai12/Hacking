@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/drawable/another_leaf_background.xml" value="0.24375" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/drawable/ic_preview_video.xml" value="0.23796296296296296" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/admin_actitvity_main.xml" value="0.2" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/cloud_storage_fragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/create_user_account.xml" value="0.264" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/video_item.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/nav_drawer_graph.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/nav_drawer_menu.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/viedo_preview_menu.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable-v24/ic_email.xml" value="0.2390194075587334" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/font/aladin.xml" value="0.25092592592592594" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/activity_main.xml" value="0.1956521739130435" />

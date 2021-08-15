@@ -27,6 +27,7 @@
     <string name="wrong_password">Password is Weak :( </string>
     <string name="wrong_phone">Please,Enter the Correct Phone Number</string>
     <string name="pleas_wait">Please, Wait</string>
+    <string name="video_preview">Course Video Preview</string>
     <string name="Exception_one">The out of band code is invalid. This can happen if the code is malformed, expired, or has already been used.</string>
     <string name="Exception_two">Given String is empty or null</string>
     <string name="Miss_request">User Request is Denied!!,Try To Create New Account</string>

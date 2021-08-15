@@ -103,4 +103,6 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:$work_two_version")
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
+    //FireBase Storage
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
 }
