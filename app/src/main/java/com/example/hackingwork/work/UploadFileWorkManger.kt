@@ -35,13 +35,12 @@ class UploadFileWorkManger constructor(
     private val channelId = "com.example.work"
     private var thumbnail: String? = null
     private var videoPreview: String? = null
-    private val videoMap = mutableMapOf<String, Video>()
-    private var module = mutableMapOf<String, Module>()
+    private var module: MutableMap<String, Module> = mutableMapOf()
     private val storage: FirebaseStorage by lazy {
         FirebaseStorage.getInstance()
     }
     private val storageReference: StorageReference by lazy {
-        storage.reference
+        storage.getReferenceFromUrl("gs://hacking-e272c.appspot.com/")
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -53,13 +52,14 @@ class UploadFileWorkManger constructor(
             val output = inputData.getString(GetConstStringObj.EMAIL_VERIFICATION_LINK)
             Log.i(TAG, "doWork: $output")
             getValue(output)
+            Log.i(TAG, "doWork Work: $module")
             val data = Data.Builder().putString(
                 GetConstStringObj.EMAIL_VERIFICATION_LINK,
                 Helper.serializeToJson(
                     (GetCourseContent(
                         thumbnail = thumbnail,
                         previewvideo = videoPreview,
-                        module
+                        module = module
                     ))
                 )
             ).build()
@@ -101,10 +101,13 @@ class UploadFileWorkManger constructor(
             when (it) {
                 is MySealed.Error -> {
                     createNotification(
-                    "${video.title}",
-                    "${it.exception?.localizedMessage}"
-                )
-                    Log.i(TAG, "uploadVideoFile  Error: $key of ${video.title} is -> ${it.exception?.localizedMessage}")
+                        "${video.title}",
+                        "${it.exception?.localizedMessage}"
+                    )
+                    Log.i(
+                        TAG,
+                        "uploadVideoFile  Error: $key of ${video.title} is -> ${it.exception?.localizedMessage}"
+                    )
                 }
                 is MySealed.Loading -> createNotification("${value.module}", it.data as String)
                 is MySealed.Success -> {
@@ -121,11 +124,9 @@ class UploadFileWorkManger constructor(
                             uri = assignmentUri
                         )
                     )
-                    videoMap[vid.title!!] = vid
-                    Log.i(TAG, "uploadVideoFile: Local Map ->$videoMap")
-                    val module=Module(module = key,video = videoMap)
+                    val module = Module(module = key, video = mapOf("${vid.title}" to vid))
                     this.module[key] = module
-                    videoMap.remove(vid.title)
+                    Log.i(TAG, "uploadVideoFile: ${this.module}")
                 }
             }
         }
@@ -138,10 +139,10 @@ class UploadFileWorkManger constructor(
             val videoRef = storageReference.child("$key/${video.title}")
             videoRef.putFile(video.uri?.toUri()!!).await()
             downloadUri.add(videoRef.downloadUrl.await())
-            val assignmentRef =
-                storageReference.child("$key/${video.title}/${video.assignment?.title}")
             video.assignment?.uri?.let {
-                assignmentRef.putFile(it.toUri())
+                val assignmentRef =
+                    storageReference.child("$key/${video.title}/${video.assignment.title}")
+                assignmentRef.putFile(it.toUri()).await()
                 downloadUri.add(assignmentRef.downloadUrl.await())
             }
             MySealed.Success(downloadUri)

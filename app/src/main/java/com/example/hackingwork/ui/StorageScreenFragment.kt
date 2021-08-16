@@ -185,8 +185,8 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private fun getMsg(get: GetCourseContent): String {
         var str = str(get.thumbnail, "Thumbnail")
         str += str(get.previewvideo, "PreviewVideo")
+        str +="-----------${get.module}-------------\n\n"
         get.module?.values?.forEach {
-            str + "-----------${it.module}-------------\n\n"
             it.video?.values?.forEach { video ->
                 str += "${video.title}\n\n${str(video.uri, "Video Uri")}"
                 video.assignment?.let { assignment ->
@@ -198,7 +198,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun str(previewVideo: String?, str: String) =
-        if (previewVideo == null) "$str -> Unknown" else "$str -> ${previewVideo}\n\n"
+        if (previewVideo == null) "$str -> Unknown\n\n" else "$str -> ${previewVideo}\n\n"
 
     private fun getGalImage(it: Uri) {
         adminViewModel.thumbnailNail = it.toString()
