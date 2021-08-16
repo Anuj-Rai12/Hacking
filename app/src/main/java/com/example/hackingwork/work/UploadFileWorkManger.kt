@@ -218,11 +218,13 @@ class UploadFileWorkManger constructor(
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setContentTitle(name)
             .setContentText(desc)
-            .setAutoCancel(true)
+            //.setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_upload)
-            .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .build()
-        notificationManager?.notify(notificationId, notification)
+            .setOngoing(true)
+            //.build()
+        if (flag)
+            notification.setContentIntent(pendingIntent)
+        notificationManager?.notify(notificationId, notification.build())
     }
 }

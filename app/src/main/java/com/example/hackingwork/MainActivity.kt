@@ -1,5 +1,6 @@
 package com.example.hackingwork
 
+import android.app.NotificationManager
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Build
@@ -39,9 +40,12 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onCreate: Created Auth Activity")
         intent.extras?.keySet()?.forEach { s ->
             if (s == GetConstStringObj.VERSION)
-                (intent.extras?.getString(s))?.let{
+                (intent.extras?.getString(s))?.let {
                     val getCourse = Helper.deserializeFromJson(it)
                     getCourseContent = getCourse
+                    val notificationManager =
+                        applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.cancel(23)
                     Log.i(TAG, "onCreate: $getCourseContent")
                 }
         }

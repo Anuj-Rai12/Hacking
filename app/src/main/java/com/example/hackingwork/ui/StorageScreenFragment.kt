@@ -185,12 +185,12 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     private fun getMsg(get: GetCourseContent): String {
         var str = str(get.thumbnail, "Thumbnail")
         str += str(get.previewvideo, "PreviewVideo")
-        str +="-----------${get.module}-------------\n\n"
         get.module?.values?.forEach {
+            str +="-----------${it.module}-------------\n\n"
             it.video?.values?.forEach { video ->
                 str += "${video.title}\n\n${str(video.uri, "Video Uri")}"
-                video.assignment?.let { assignment ->
-                    str += "${assignment.title}\n\n${str(assignment.uri, "Assignment Uri")}"
+                video.assignment?.title?.let { assignment ->
+                    str += "${assignment}\n\n${str(video.assignment.uri, "Assignment Uri")}"
                 }
             }
         }
