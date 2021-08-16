@@ -17,12 +17,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.*
+import com.example.hackingwork.MainActivity
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.StorageScreenFragmentBinding
 import com.example.hackingwork.recycle.storagerecyle.StorageRecycle
 import com.example.hackingwork.utils.*
 import com.example.hackingwork.viewmodels.AdminViewModel
+import com.example.hackingwork.work.UploadFileWorkManger
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -49,7 +52,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         it.uri?.let { uri ->
             adminViewModel.videoPreview = uri.toString()
             adminViewModel.videoPreview?.let {
-                dir(message = "Preview ViewVideo Is:\n$uri")
+                dir(title = "Preview Video", message = "Preview ViewVideo Is:\n$uri")
             }
         }
     }
@@ -91,6 +94,13 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = StorageScreenFragmentBinding.bind(view)
+        MainActivity.getCourseContent?.let {
+            if (adminViewModel.getCourseContent.value==null) {
+                dir(title = "File UploadStatus", message = getMsg(it))
+                adminViewModel.getCourseContent.value=it
+                Log.i(TAG, "onViewCreated: ${adminViewModel.getCourseContent.value}")
+            }
+        }
         adminViewModel.thumbnailNail?.let {
             binding.fileImage.setImageURI(it.toUri())
         }
@@ -119,12 +129,11 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                 Snackbar.make(requireView(), "Enter the Module Name", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            adminViewModel.videoMap.observe(viewLifecycleOwner) {
-                val map = mutableMapOf<String, Module>()
-                map[module] = Module(module, it)
-                adminViewModel.moduleMap = map
-            }
-            adminViewModel.moduleMap?.let {moduleContent->
+            adminViewModel.setAllDataModelMap(module)
+        }
+        binding.UploadVideoFile.setOnLongClickListener {
+            Log.i(TAG, "onViewCreated: Hello ji Long Press")
+            adminViewModel.moduleMap?.let { moduleContent ->
                 GetCourseContent(
                     thumbnail = adminViewModel.thumbnailNail,
                     previewvideo = adminViewModel.videoPreview,
@@ -133,6 +142,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                     uploadFile(it)
                 }
             }
+            return@setOnLongClickListener true
         }
         binding.ThumbNailExplore.setOnClickListener {
             getImage.launch(InputData(intent = getIntent("image/*")))
@@ -141,8 +151,54 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
     }
 
     private fun uploadFile(courseContent: GetCourseContent) {
-
+        val str = Helper.serializeToJson(courseContent)
+        str?.let { course ->
+            showLoading()
+            val data =
+                Data.Builder().putString(GetConstStringObj.EMAIL_VERIFICATION_LINK, course).build()
+            val constant =
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            val workerInstance = WorkManager.getInstance(requireActivity())
+            val uploadMyFile =
+                OneTimeWorkRequestBuilder<UploadFileWorkManger>().setConstraints(constant)
+                    .setInputData(data).build()
+            workerInstance.enqueue(uploadMyFile)
+            workerInstance.getWorkInfoByIdLiveData(uploadMyFile.id)
+                .observe(viewLifecycleOwner) { work ->
+                    Log.i(TAG, "uploadFile: ${work.state}")
+                    if (work.state.toString() == "RUNNING")
+                        showLoading()
+                    if (work.state.toString() == "SUCCEEDED" || work.state.toString() == "FAILED")
+                        hideLoading()
+                    work.outputData.getString(GetConstStringObj.EMAIL_VERIFICATION_LINK)?.let {
+                        val courseInstance = Helper.deserializeFromJson(it)
+                        courseInstance?.let { get ->
+                            dir(title = "File UploadStatus", message = getMsg(get))
+                            adminViewModel.getCourseContent.value = get
+                            Log.i(TAG, "uploadFile: ${adminViewModel.getCourseContent.value}")
+                        }
+                    }
+                }
+        }
     }
+
+    private fun getMsg(get: GetCourseContent): String {
+        var str = str(get.thumbnail, "Thumbnail")
+        str += str(get.previewvideo, "PreviewVideo")
+        get.module?.values?.forEach {
+            str + "-----------${it.module}-------------\n\n"
+            it.video?.values?.forEach { video ->
+                str += "${video.title}\n\n${str(video.uri, "Video Uri")}"
+                video.assignment?.let { assignment ->
+                    str += "${assignment.title}\n\n${str(assignment.uri, "Assignment Uri")}"
+                }
+            }
+        }
+        return str
+    }
+
+    private fun str(previewVideo: String?, str: String) =
+        if (previewVideo == null) "$str -> Unknown" else "$str -> ${previewVideo}\n\n"
 
     private fun getGalImage(it: Uri) {
         adminViewModel.thumbnailNail = it.toString()
@@ -260,7 +316,9 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         return null
     }
 
-    private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
+    private fun showLoading(string: String = "File is Uploading...") =
+        customProgress.showLoading(requireActivity(), string)
+
     private fun hideLoading() = customProgress.hideLoading()
     override fun onPause() {
         super.onPause()

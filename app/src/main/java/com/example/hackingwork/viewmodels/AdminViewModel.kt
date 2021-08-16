@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackingwork.TAG
-import com.example.hackingwork.utils.Assignment
-import com.example.hackingwork.utils.Module
-import com.example.hackingwork.utils.MySealedChannel
-import com.example.hackingwork.utils.Video
+import com.example.hackingwork.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +18,7 @@ class AdminViewModel @Inject constructor() : ViewModel() {
     var videoPreview: String? = null
     var moduleMap: MutableMap<String, Module>? = null
     var thumbnailNail: String? = null
+    var getCourseContent = MutableStateFlow<GetCourseContent?>(null)
     private val _taskEvent = Channel<MySealedChannel>()
     val taskEvent = _taskEvent.receiveAsFlow()
     private var _videoMap = MutableLiveData<MutableMap<String, Video>>()
@@ -57,5 +56,15 @@ class AdminViewModel @Inject constructor() : ViewModel() {
         }
         _videoMap.value = map
         Log.i(TAG, "updateDataWithAssignment: ${_videoMap.value}")
+    }
+
+    fun setAllDataModelMap(title: String) {
+        if (!_videoMap.value.isNullOrEmpty()) {
+            val map = mutableMapOf<String, Module>()
+            moduleMap?.let { maps -> map.putAll(maps) }
+            map[title] = Module(title, _videoMap.value)
+            moduleMap = map
+            Log.i(TAG, "My ViewModel From Upload Btn: $moduleMap")
+        }
     }
 }
