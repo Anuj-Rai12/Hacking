@@ -24,6 +24,7 @@ import com.vmadalin.easypermissions.EasyPermissions
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -39,6 +40,13 @@ fun isValidPhone(phone: String): Boolean {
     val phonetic = "^[+]?[0-9]{10,13}\$"
     val pattern = Pattern.compile(phonetic)
     return pattern.matcher(phone).matches()
+}
+
+@SuppressLint("SimpleDateFormat")
+fun getDateTime(): String {
+    val current = Date()
+    val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    return formatter.format(current)
 }
 
 fun isValidEmail(target: CharSequence?): Boolean {
@@ -70,19 +78,20 @@ fun isValidPassword(password: String): Boolean {
     )
     return passwordREGEX.matcher(password).matches()
 }
+
 fun checkGalleryPermission(context: Context) =
     EasyPermissions.hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun getIntent(): Intent = AccountManager.newChooseAccountIntent(
-        null,
-        null,
-        arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE),
-        null,
-        null,
-        null,
-        null
-    )
+    null,
+    null,
+    arrayOf(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE),
+    null,
+    null,
+    null,
+    null
+)
 
 
 fun getLocalIpAddress(choose: Int = 0): String? {
@@ -127,7 +136,7 @@ class GetUriFile : ActivityResultContract<InputData, OutPutData>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): OutPutData {
-        return  OutPutData(requestCode = resultCode== Activity.RESULT_OK,uri = intent?.data)
+        return OutPutData(requestCode = resultCode == Activity.RESULT_OK, uri = intent?.data)
     }
 }
 

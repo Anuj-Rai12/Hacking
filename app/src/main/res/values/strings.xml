@@ -34,6 +34,7 @@
     <!--- UI App -->
     <string name="storage_Screen_app">Storage Screen.</string>
     <string name="cloud_Screen_app">Cloud Screen.</string>
+
     <!-- Storage_Screen_UI-->
     <string name="module_name">Module</string>
     <string name="video_name">Video Name</string>
@@ -43,5 +44,19 @@
     <string name="thumbnail_explore_name">Open Image Explore</string>
     <string name="upload_File_name">Upload File</string>
     <string name="delete_File_name">Delete File</string>
+
+    <!-- Cloud_storage_fragment-->
+    <string name="course_name">Course Name.</string>
+    <string name="course_diff">Course Difficulty</string>
+    <string name="course_requirement">Course Requirement</string>
+    <string name="course_target">Course Target Audience</string>
+    <string name="course_sale">Course Sale Price</string>
+    <string name="course_dis">Course Discount Price</string>
+    <string name="course_create">Course Create Course</string>
+    <string-array name="course_level">
+        <item>Beginner Level</item>
+        <item>InterMediate Level</item>
+        <item>Expert Level</item>
+    </string-array>
 
 </resources>

@@ -23,7 +23,7 @@ data class Module(
 data class Video(
     val title: String? = null,
     val uri: String? = null,
-    val duration: String? =null,
+    val duration: String? = null,
     val assignment: Assignment? = null
 )
 
@@ -45,8 +45,30 @@ object Helper {
         return gson.fromJson(jsonString, GetCourseContent::class.java)
     }
 }
+
 data class GetCourseContent(
-    val thumbnail:String?=null,
-    val previewvideo:String?=null,
-    val module:Map<String,Module>?=null
+    val thumbnail: String? = null,
+    val previewvideo: String? = null,
+    val module: Map<String, Module>? = null
+)
+
+data class UserViewOnCourse(
+    val bywhom: String? = null,
+    val rateing: String? = null,
+    val description: String? = null
+)
+
+@IgnoreExtraProperties
+data class FireBaseCourseTitle(
+    val coursename: String? = null,
+    val totalhrs: String? = null,
+    val category: String? = null,
+    val courselevel: String? = null,  //Snippet
+    val lastdate: String? = null,
+    val courseContent: GetCourseContent? = null,
+    val requirement: List<String>? = null,
+    val targetaudience: List<String>? = null,
+    val totalprice: String? = null,
+    val currentprice: String? = null,
+    val review: UserViewOnCourse? = null
 )
