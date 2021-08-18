@@ -47,6 +47,7 @@
 
     <!-- Cloud_storage_fragment-->
     <string name="course_name">Course Name.</string>
+    <string name="course_category">Course Category</string>
     <string name="course_diff">Course Difficulty</string>
     <string name="course_requirement">Course Requirement</string>
     <string name="course_target">Course Target Audience</string>

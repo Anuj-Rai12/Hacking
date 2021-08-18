@@ -3,8 +3,10 @@ package com.example.hackingwork.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hackingwork.TAG
+import com.example.hackingwork.repos.CourseModfiyRepository
 import com.example.hackingwork.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +16,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminViewModel @Inject constructor() : ViewModel() {
+class AdminViewModel @Inject constructor(
+    private val courseModfiyRepository: CourseModfiyRepository
+) : ViewModel() {
     var videoPreview: String? = null
     var moduleMap: MutableMap<String, Module>? = null
     var thumbnailNail: String? = null
@@ -67,4 +71,7 @@ class AdminViewModel @Inject constructor() : ViewModel() {
             Log.i(TAG, "My ViewModel From Upload Btn: $moduleMap")
         }
     }
+
+    fun uploadingCourse(courseContent: FireBaseCourseTitle) =
+        courseModfiyRepository.uploadingCourse(courseContent).asLiveData()
 }
