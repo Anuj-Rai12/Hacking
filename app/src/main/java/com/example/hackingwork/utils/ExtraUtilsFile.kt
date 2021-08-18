@@ -170,4 +170,6 @@ object GetConstStringObj {
     const val EMAIL = "EMAIL"
     const val VERSION = "version"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
+    const val Create_Course_title="Create Course"
+    const val Create_Course_desc="Are You Sure you Want to Create A New Course?"
 }

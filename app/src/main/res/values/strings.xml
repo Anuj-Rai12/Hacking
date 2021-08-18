@@ -52,7 +52,9 @@
     <string name="course_target">Course Target Audience</string>
     <string name="course_sale">Course Sale Price</string>
     <string name="course_dis">Course Discount Price</string>
-    <string name="course_create">Course Create Course</string>
+    <string name="course_create">Create A New Course</string>
+    <string name="course_update">Add New Video In Module</string>
+    <string name="course_module">Add New Module</string>
     <string-array name="course_level">
         <item>Beginner Level</item>
         <item>InterMediate Level</item>
