@@ -13,8 +13,8 @@ android {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 14
-        versionName "3.0"
+        versionCode 15
+        versionName "3.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -214,6 +214,9 @@ dependencies {
 
     //paypal
     implementation('com.paypal.checkout:android-sdk:0.2.0')
+
+    //youtube
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
 
 }

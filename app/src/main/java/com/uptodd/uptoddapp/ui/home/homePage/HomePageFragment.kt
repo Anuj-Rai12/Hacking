@@ -548,6 +548,8 @@ class HomePageFragment : Fragment() {
             Log.i("h_debug", "Refreshing Todos")
             viewModel.refreshDataByCallingApi(requireContext(), requireActivity())
             UptoddSharedPreferences.getInstance(requireContext()).initSave(false)
+            testInternetConnectionAndRefreshData()
+    //        UptoddSharedPreferences.getInstance(requireContext()).setLastDailyTodoFetchedDate(DateClass().getCurrentDateTimeAsString())
 //            val connection =
 //                testInternetConnectionAndRefreshData() // test internet connection and assign a disposable to connection so that we can dispose it after data is refreshed
 //
@@ -972,7 +974,7 @@ class HomePageFragment : Fragment() {
             val editor = preferences.edit()
 
             val date = DateClass().getCurrentDateStringAsYYYYMMDD()
-            AndroidNetworking.get("http://www.uptodd.com/api/todaytip/$date")
+            AndroidNetworking.get("https://www.uptodd.com/api/todaytip/$date")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .setPriority(Priority.HIGH)
                 .build()

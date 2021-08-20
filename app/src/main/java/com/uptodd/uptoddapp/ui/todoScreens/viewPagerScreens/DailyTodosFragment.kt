@@ -141,7 +141,9 @@ class DailyTodosFragment : Fragment(), TodosRecyclerAdapter.TodosInterface {
 
             viewModel.navigateToAppreciationScreenFlag.observe(viewLifecycleOwner, {
                 if (it) {
+
                     gotoAppreciationFragment()
+
                     viewModel.navigateToAppreciationScreenFlag.removeObservers(viewLifecycleOwner)
                 }
 

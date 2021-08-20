@@ -684,6 +684,7 @@ class TodosViewModel(
                 return@launch
             }
 
+
             val userId = getUserId(activity)
 
             val jsonObject = JSONObject()
@@ -835,7 +836,7 @@ class TodosViewModel(
         var i = 0
         coroutineScope {
             launch {
-                val currentDate = DateClass().getCurrentDateAsString()
+                val currentDate = DateClass().getCurrentDateTimeAsString()
 
                 while (i < todoListData.length()) {
                     val fetchedTodoData = todoListData.get(i) as JSONObject
@@ -1489,7 +1490,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${poem.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updatePath(poem, file.path)
+                    return@downloadPoemFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())
@@ -1598,7 +1602,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${it.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updatePath(it, file.path)
+                    return@downloadMusicFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())
@@ -1705,7 +1712,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${it.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updateMemoryPath(it, file.path)
+                    return@downloadSpeedBoosterFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())
