@@ -51,8 +51,9 @@
     <string name="course_diff">Course Difficulty</string>
     <string name="course_requirement">Course Requirement</string>
     <string name="course_target">Course Target Audience</string>
-    <string name="course_sale">Course Sale Price</string>
-    <string name="course_dis">Course Discount Price</string>
+    <string name="course_sale">Sale Price</string>
+    <string name="course_dis">Discount Price</string>
+    <string name="course_duration">Course Duration</string>
     <string name="course_create">Create A New Course</string>
     <string name="course_update">Add New Video In Module</string>
     <string name="course_module">Add New Module</string>

@@ -1,12 +1,14 @@
 package com.example.hackingwork.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.hackingwork.R
+import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.CloudStorageFragmentBinding
 import com.example.hackingwork.utils.*
 import com.example.hackingwork.viewmodels.AdminViewModel
@@ -34,15 +36,19 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = CloudStorageFragmentBinding.bind(view)
+        setCourseDiff()
+        Log.i(TAG, "onViewCreated: Cloud Storage Activated")
         savedInstanceState?.let {
             dialogFlag = it.getBoolean(GetConstStringObj.Create_Course_title)
             courseDiff = it.getString(GetConstStringObj.Create_course)
         }
         if (dialogFlag == true)
             openDialog()
+
         binding.CourseDifficultLevel.setOnItemClickListener { _, _, position, _ ->
             courseDiff = courseArrayAdapter.getItem(position)
         }
+
         binding.CreateCourse.setOnClickListener {
             val courseName = binding.setFolderName.text.toString()
             val courseCategory = binding.courseCategory.text.toString()
@@ -50,12 +56,14 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             val courseTarget = binding.CourseTargetAudience.text.toString()
             val courseSalePrice = binding.CourseSalePrice.text.toString()
             val courseDisPrice = binding.CourseDiscountPrice.text.toString()
+            val courseDuration = binding.CourseTotalHrs.text.toString()
             if (checkFieldValue(courseCategory) || checkFieldValue(courseDisPrice) || checkFieldValue(
                     courseRequirement
                 )
                 || checkFieldValue(courseName) || checkFieldValue(courseTarget) || checkFieldValue(
                     courseSalePrice
                 )
+                || checkFieldValue(courseDuration) || courseDiff == null
             ) {
                 Snackbar.make(
                     requireView(),
@@ -64,8 +72,25 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 ).show()
                 return@setOnClickListener
             }
-
+            if ((courseDisPrice.toInt() > (courseSalePrice.toInt()))) {
+                Snackbar.make(
+                    requireView(),
+                    "Discount Price Should be Lower than Sale Price",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setCourseDiff()
+    }
+
+    private fun setCourseDiff() {
+        val course = resources.getStringArray(R.array.course_level)
+        val ad = ArrayAdapter(requireContext(), R.layout.dropdaown, course)
+        binding.CourseDifficultLevel.setAdapter(ad)
     }
 
     private fun getValue() {
@@ -93,8 +118,10 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             Msg = GetConstStringObj.Create_Course_desc,
             flag = true
         ) {
-            if (it)
+            if (it) {
                 getValue()
+                dialogFlag = false
+            }
         }
         extraDialog?.isCancelable = true
         extraDialog?.show(childFragmentManager, "create_course")

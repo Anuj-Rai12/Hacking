@@ -37,13 +37,16 @@ class AdminViewModel @Inject constructor(
         Log.i(TAG, "getVideo: ${_videoMap.value}")
     }
 
-    fun delete(video: Video) {
+    fun delete(video: Video, flag: Boolean = false) {
         viewModelScope.launch {
             val map = mutableMapOf<String, Video>()
-            _videoMap.value?.let { map.putAll(it) }
-            map.remove(video.title)
-            _videoMap.value = map
-            _taskEvent.send(MySealedChannel.DeleteAndChannel(video))
+            if (!flag) {
+                _videoMap.value?.let { map.putAll(it) }
+                map.remove(video.title)
+                _videoMap.value = map
+                _taskEvent.send(MySealedChannel.DeleteAndChannel(video))
+            } else
+                _videoMap.value = map
         }
     }
 

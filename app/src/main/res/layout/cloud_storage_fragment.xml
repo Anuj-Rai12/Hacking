@@ -127,51 +127,90 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/CourseSalePriceLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
+            android:id="@+id/CourseMoney"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/course_sale"
-            android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/black"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="clear_text"
-            app:endIconTint="@color/black"
-            app:hintTextColor="@color/black"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="@id/CourseTargetAudienceLayout"
-            app:layout_constraintTop_toBottomOf="@id/CourseTargetAudienceLayout"
-            app:startIconDrawable="@drawable/ic_user">
+            app:layout_constraintTop_toBottomOf="@id/CourseTargetAudienceLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/CourseSalePrice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/CourseTotalHrsLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/course_duration"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:hintTextColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="@id/CourseTargetAudienceLayout"
+                app:layout_constraintTop_toBottomOf="@id/CourseTargetAudienceLayout"
+                app:startIconDrawable="@drawable/ic_user">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/CourseDiscountPriceLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/course_dis"
-            android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/black"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="clear_text"
-            app:endIconTint="@color/black"
-            app:hintTextColor="@color/black"
-            app:layout_constraintLeft_toLeftOf="@id/CourseSalePriceLayout"
-            app:layout_constraintTop_toBottomOf="@id/CourseSalePriceLayout"
-            app:startIconDrawable="@drawable/ic_user">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/CourseTotalHrs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/CourseDiscountPrice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:hint="@string/course_sale"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:hintTextColor="@color/black"
+                app:startIconDrawable="@drawable/ic_user">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/CourseSalePrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:hint="@string/course_dis"
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:hintTextColor="@color/black"
+                app:startIconDrawable="@drawable/ic_user">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/CourseDiscountPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/CreateCourse"
@@ -182,9 +221,9 @@
             android:text="@string/course_create"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:layout_constraintLeft_toLeftOf="@id/CourseDiscountPriceLayout"
-            app:layout_constraintRight_toRightOf="@id/CourseDiscountPriceLayout"
-            app:layout_constraintTop_toBottomOf="@id/CourseDiscountPriceLayout" />
+            app:layout_constraintLeft_toLeftOf="@id/CourseMoney"
+            app:layout_constraintRight_toRightOf="@id/CourseMoney"
+            app:layout_constraintTop_toBottomOf="@id/CourseMoney" />
 
         <Button
             android:id="@+id/UpdateCourse"
@@ -208,8 +247,8 @@
             android:text="@string/course_module"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:layout_constraintRight_toRightOf="@id/UpdateCourse"
             app:layout_constraintLeft_toLeftOf="@id/UpdateCourse"
+            app:layout_constraintRight_toRightOf="@id/UpdateCourse"
             app:layout_constraintTop_toBottomOf="@id/UpdateCourse" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

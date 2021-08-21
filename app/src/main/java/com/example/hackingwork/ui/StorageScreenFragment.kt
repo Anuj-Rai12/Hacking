@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -95,9 +96,9 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = StorageScreenFragmentBinding.bind(view)
         MainActivity.getCourseContent?.let {
-            if (adminViewModel.getCourseContent.value==null) {
+            if (adminViewModel.getCourseContent.value == null) {
                 dir(title = "File UploadStatus", message = getMsg(it))
-                adminViewModel.getCourseContent.value=it
+                adminViewModel.getCourseContent.value = it
                 Log.i(TAG, "onViewCreated: ${adminViewModel.getCourseContent.value}")
             }
         }
@@ -130,6 +131,8 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                 return@setOnClickListener
             }
             adminViewModel.setAllDataModelMap(module)
+            adminViewModel.delete(video = Video(), true)
+            Toast.makeText(activity, "$module is Add Successfully", Toast.LENGTH_SHORT).show()
         }
         binding.UploadVideoFile.setOnLongClickListener {
             Log.i(TAG, "onViewCreated: Hello ji Long Press")
@@ -186,7 +189,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
         var str = str(get.thumbnail, "Thumbnail")
         str += str(get.previewvideo, "PreviewVideo")
         get.module?.values?.forEach {
-            str +="-----------${it.module}-------------\n\n"
+            str += "-----------${it.module}-------------\n\n"
             it.video?.values?.forEach { video ->
                 str += "${video.title}\n\n${str(video.uri, "Video Uri")}"
                 video.assignment?.title?.let { assignment ->
