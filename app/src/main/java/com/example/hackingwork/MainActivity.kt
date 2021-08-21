@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         intent.extras?.keySet()?.forEach { s ->
             if (s == GetConstStringObj.VERSION)
                 (intent.extras?.getString(s))?.let {
-                    val getCourse = Helper.deserializeFromJson(it)
+                    val getCourse = Helper.deserializeFromJson<GetCourseContent>(it)
                     getCourseContent = getCourse
                     val notificationManager =
                         applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

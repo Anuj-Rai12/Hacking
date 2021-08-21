@@ -36,6 +36,7 @@ class UploadFileWorkManger constructor(
     private var thumbnail: String? = null
     private var videoPreview: String? = null
     private var module: MutableMap<String, Module> = mutableMapOf()
+    private var video: MutableMap<String, Video> = mutableMapOf()
     private val storage: FirebaseStorage by lazy {
         FirebaseStorage.getInstance()
     }
@@ -65,7 +66,13 @@ class UploadFileWorkManger constructor(
             ).build()
             Log.i(
                 TAG,
-                "doWork Obj: ${Helper.deserializeFromJson(data.getString(GetConstStringObj.EMAIL_VERIFICATION_LINK))}"
+                "doWork Obj: ${
+                    Helper.deserializeFromJson<GetCourseContent>(
+                        data.getString(
+                            GetConstStringObj.EMAIL_VERIFICATION_LINK
+                        )
+                    )
+                }"
             )
             createNotification("All Task Complete!!", "CLICK ME to Processed Further", true)
             Result.Success(data)
@@ -77,7 +84,7 @@ class UploadFileWorkManger constructor(
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun getValue(output: String?) {
         output?.let { string ->
-            val courseContent = Helper.deserializeFromJson(string)
+            val courseContent = Helper.deserializeFromJson<GetCourseContent>(string)
             courseContent?.let { getCourseContent ->
                 getCourseContent.thumbnail?.let { setDataFile(it, "Thumbnail") }
                 getCourseContent.previewvideo?.let { setDataFile(it, "PreviewVideo") }
@@ -89,6 +96,8 @@ class UploadFileWorkManger constructor(
                     }
                 }
             }
+            Log.i(TAG, "getValue: $module")
+            return
         }
     }
 
@@ -124,7 +133,8 @@ class UploadFileWorkManger constructor(
                             uri = assignmentUri
                         )
                     )
-                    val module = Module(module = key, video = mapOf("${vid.title}" to vid))
+                    this.video[vid.title!!] = vid
+                    val module = Module(module = key, video = this.video)
                     this.module[key] = module
                     Log.i(TAG, "uploadVideoFile: ${this.module}")
                 }
@@ -222,7 +232,7 @@ class UploadFileWorkManger constructor(
             .setSmallIcon(R.drawable.ic_upload)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setOngoing(true)
-            //.build()
+        //.build()
         if (flag)
             notification.setContentIntent(pendingIntent)
         notificationManager?.notify(notificationId, notification.build())

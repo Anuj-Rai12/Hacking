@@ -174,7 +174,7 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
                     if (work.state.toString() == "SUCCEEDED" || work.state.toString() == "FAILED")
                         hideLoading()
                     work.outputData.getString(GetConstStringObj.EMAIL_VERIFICATION_LINK)?.let {
-                        val courseInstance = Helper.deserializeFromJson(it)
+                        val courseInstance = Helper.deserializeFromJson<GetCourseContent>(it)
                         courseInstance?.let { get ->
                             dir(title = "File UploadStatus", message = getMsg(get))
                             adminViewModel.getCourseContent.value = get

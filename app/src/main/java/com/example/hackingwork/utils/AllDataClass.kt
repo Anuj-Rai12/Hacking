@@ -34,15 +34,15 @@ data class Assignment(
 
 
 object Helper {
-    fun serializeToJson(bmp: GetCourseContent): String? {
+    fun <T> serializeToJson(bmp: T): String? {
         val gson = Gson()
         return gson.toJson(bmp)
     }
 
     // Deserialize to single object.
-    fun deserializeFromJson(jsonString: String?): GetCourseContent? {
+    inline fun <reified T>deserializeFromJson(jsonString: String?): T? {
         val gson = Gson()
-        return gson.fromJson(jsonString, GetCourseContent::class.java)
+        return gson.fromJson(jsonString, T::class.java)
     }
 }
 
@@ -58,7 +58,6 @@ data class UserViewOnCourse(
     val description: String? = null
 )
 
-@IgnoreExtraProperties
 data class FireBaseCourseTitle(
     val coursename: String? = null,
     val totalhrs: String? = null,
@@ -71,4 +70,10 @@ data class FireBaseCourseTitle(
     val totalprice: String? = null,
     val currentprice: String? = null,
     val review: UserViewOnCourse? = null
+)
+@IgnoreExtraProperties
+data class UploadFireBaseData(
+    val fireBaseCourseTitle: FireBaseCourseTitle?=null,
+    val previewvideo: String?=null,
+    val thumbnail: String?=null
 )

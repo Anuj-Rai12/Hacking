@@ -75,6 +75,10 @@ class AdminViewModel @Inject constructor(
         }
     }
 
-    fun uploadingCourse(courseContent: FireBaseCourseTitle) =
-        courseModfiyRepository.uploadingCourse(courseContent).asLiveData()
+    fun uploadingCourse(courseContent: FireBaseCourseTitle, getCourseContent: GetCourseContent) =
+        courseModfiyRepository.uploadingCourse(courseContent,getCourseContent).asLiveData()
+
+    fun uploadingVideoCourse(moduleKey: String, moduleValue: Module, courseName: String)=
+        courseModfiyRepository.uploadingVideoCourse(moduleKey,moduleValue,courseName).asLiveData()
+
 }

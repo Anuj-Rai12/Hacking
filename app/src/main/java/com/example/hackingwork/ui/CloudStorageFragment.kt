@@ -1,12 +1,15 @@
 package com.example.hackingwork.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.example.hackingwork.databinding.CloudStorageFragmentBinding
@@ -22,8 +25,8 @@ import javax.inject.Inject
 class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
     private lateinit var binding: CloudStorageFragmentBinding
     private var extraDialog: ExtraDialog? = null
-    private var dialogFlag: Boolean? = null
     private var courseDiff: String? = null
+    private var fireBaseCourseTitle: String? = null
     private val adminViewModel: AdminViewModel by activityViewModels()
 
     @Inject
@@ -33,22 +36,22 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         ArrayAdapter(requireContext(), R.layout.dropdaown, course)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = CloudStorageFragmentBinding.bind(view)
         setCourseDiff()
         Log.i(TAG, "onViewCreated: Cloud Storage Activated")
         savedInstanceState?.let {
-            dialogFlag = it.getBoolean(GetConstStringObj.Create_Course_title)
             courseDiff = it.getString(GetConstStringObj.Create_course)
+            fireBaseCourseTitle = it.getString(GetConstStringObj.EMAIL)
         }
-        if (dialogFlag == true)
+        fireBaseCourseTitle?.let {
             openDialog()
-
+        }
         binding.CourseDifficultLevel.setOnItemClickListener { _, _, position, _ ->
             courseDiff = courseArrayAdapter.getItem(position)
         }
-
         binding.CreateCourse.setOnClickListener {
             val courseName = binding.setFolderName.text.toString()
             val courseCategory = binding.courseCategory.text.toString()
@@ -79,6 +82,20 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+            val firebase = FireBaseCourseTitle(
+                coursename = courseName,
+                currentprice = courseDisPrice,
+                totalhrs = courseDuration,
+                totalprice = courseSalePrice,
+                lastdate = getDateTime(),
+                requirement = getPathFile(courseRequirement),
+                targetaudience = getPathFile(courseTarget),
+                category = courseCategory,
+                review = null,
+                courselevel = courseDiff
+            )
+            fireBaseCourseTitle = Helper.serializeToJson(firebase)
+            openDialog()
         }
     }
 
@@ -93,25 +110,103 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         binding.CourseDifficultLevel.setAdapter(ad)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun getValue() {
         lifecycleScope.launch {
             adminViewModel.getCourseContent.collect {
                 it?.let { getCourseContent ->
+                    val fireBaseCourseTitle =
+                        Helper.deserializeFromJson<FireBaseCourseTitle>(fireBaseCourseTitle)
                     FireBaseCourseTitle(
-                        coursename = null,
-                        courseContent = getCourseContent
+                        coursename = fireBaseCourseTitle?.coursename,
+                        courseContent = null,
+                        courselevel = fireBaseCourseTitle?.courselevel,
+                        category = fireBaseCourseTitle?.category,
+                        currentprice = fireBaseCourseTitle?.currentprice,
+                        targetaudience = fireBaseCourseTitle?.targetaudience,
+                        review = fireBaseCourseTitle?.review,
+                        totalprice = fireBaseCourseTitle?.totalprice,
+                        lastdate = fireBaseCourseTitle?.lastdate,
+                        totalhrs = fireBaseCourseTitle?.totalhrs,
+                        requirement = fireBaseCourseTitle?.requirement
                     ).also { Fire ->
-                        uploadingCourse(Fire)
+                        uploadingCourse(Fire, getCourseContent)
                     }
                 }
             }
         }
     }
 
-    private fun uploadingCourse(courseContent: FireBaseCourseTitle) {
-        adminViewModel.uploadingCourse(courseContent)
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun uploadingCourse(
+        courseContent: FireBaseCourseTitle,
+        getCourseContent: GetCourseContent
+    ) {
+        adminViewModel.uploadingCourse(courseContent, getCourseContent)
+            .observe(viewLifecycleOwner) {
+                when (it) {
+                    is MySealed.Error -> {
+                        hideLoading()
+                        dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
+                    }
+                    is MySealed.Loading -> {
+                        showLoading(it.data as String)
+                    }
+                    is MySealed.Success -> {
+                        hideLoading()
+                        getCourseContent.module?.let { map ->
+                            map.forEach { (moduleKey, moduleValue) ->
+                                hideLoading()
+                                uploadVideoModule(
+                                    moduleKey,
+                                    moduleValue,
+                                    courseContent.coursename!!,
+                                    flag = map.keys.last() == moduleKey
+                                )
+                            }
+                        }
+                    }
+                }
+            }
     }
 
+    private fun uploadVideoModule(
+        moduleKey: String,
+        moduleValue: Module,
+        courseName: String,
+        flag: Boolean
+    ) {
+        adminViewModel.uploadingVideoCourse(moduleKey, moduleValue, courseName)
+            .observe(viewLifecycleOwner) {
+                when (it) {
+                    is MySealed.Error -> {
+                        hideLoading()
+                        dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
+                    }
+                    is MySealed.Loading -> {
+                        showLoading(it.data as String)
+                    }
+                    is MySealed.Success -> {
+                        hideLoading()
+                        adminViewModel.getCourseContent.value = null
+                        if (flag) {
+                            dir(title = "Success", message = "All Module Is Uploaded Successfully")
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun dir(title: String = "Error", message: String = "") {
+        val action =
+            CloudStorageFragmentDirections.actionGlobalPasswordDialog2(
+                message = message,
+                title = title
+            )
+        findNavController().navigate(action)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun openDialog() {
         extraDialog = ExtraDialog(
             title = GetConstStringObj.Create_Course_title,
@@ -120,12 +215,10 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         ) {
             if (it) {
                 getValue()
-                dialogFlag = false
             }
         }
         extraDialog?.isCancelable = true
         extraDialog?.show(childFragmentManager, "create_course")
-        dialogFlag = true
     }
 
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
@@ -138,8 +231,8 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        dialogFlag?.let {
-            outState.putBoolean(GetConstStringObj.Create_Course_title, it)
+        fireBaseCourseTitle?.let {
+            outState.putString(GetConstStringObj.EMAIL, it)
         }
         courseDiff?.let {
             outState.putString(GetConstStringObj.Create_course, it)
