@@ -163,8 +163,11 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                                     courseContent.coursename!!,
                                     flag = map.keys.last() == moduleKey
                                 )
+                                if (map.values.last() == moduleValue)
+                                    hideLoading()
                             }
                         }
+                        fireBaseCourseTitle = null
                     }
                 }
             }

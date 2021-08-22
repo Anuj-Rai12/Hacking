@@ -115,7 +115,7 @@ class UploadFileWorkManger constructor(
                     )
                     Log.i(
                         TAG,
-                        "uploadVideoFile  Error: $key of ${video.title} is -> ${it.exception?.localizedMessage}"
+                        "uploadVideoFile  Error: ${value.module} of ${video.title} is -> ${it.exception?.localizedMessage}"
                     )
                 }
                 is MySealed.Loading -> createNotification("${value.module}", it.data as String)
@@ -133,9 +133,13 @@ class UploadFileWorkManger constructor(
                             uri = assignmentUri
                         )
                     )
+                    if (!this.module.containsKey(value.module)) {
+                        val map= mutableMapOf<String,Video>()
+                        this.video=map
+                    }
                     this.video[vid.title!!] = vid
-                    val module = Module(module = key, video = this.video)
-                    this.module[key] = module
+                    val module = Module(module = value.module, video = this.video)
+                    this.module[value.module!!] = module
                     Log.i(TAG, "uploadVideoFile: ${this.module}")
                 }
             }
