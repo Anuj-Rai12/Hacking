@@ -7,7 +7,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import androidx.core.util.rangeTo
 import androidx.lifecycle.*
+import androidx.navigation.NavController
 import androidx.work.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -16,6 +18,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.DownloadRequest
+import com.uptodd.uptoddapp.BuildConfig
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -41,7 +45,10 @@ import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.time.Duration
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class TodosViewModel(
     database: UptoddDatabase,
@@ -63,6 +70,10 @@ class TodosViewModel(
     private var _isLoading: MutableLiveData<Int> = MutableLiveData()
     val isLoading: LiveData<Int>
         get() = _isLoading
+
+    private var _isOutdatedVersion: MutableLiveData<Boolean> = MutableLiveData()
+    val isOutDatedVersion: LiveData<Boolean>
+        get() = _isOutdatedVersion
 
     private var _isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
     val isRefreshing: LiveData<Boolean>
@@ -527,6 +538,55 @@ class TodosViewModel(
         }
     }
 
+
+    fun checkForAppUpdate(context: Context)
+    {
+        val json= JSONObject().apply {
+            put("version", BuildConfig.VERSION_NAME.toDouble())
+            put("deviceType","android")
+        }
+
+        val lastCheck=UptoddSharedPreferences.getInstance(context).getLastVersionCheck()
+
+        val calendar = Calendar.getInstance()
+        Log.d("minutes","${TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis-lastCheck)}")
+        
+        if(lastCheck!=0L && TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis-lastCheck)<2)
+        {
+            _isOutdatedVersion.value = false
+            return
+        }
+
+
+
+        AndroidNetworking.post("https://www.uptodd.com/api/isValidVersion")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .addJSONObjectBody(json)
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object :JSONObjectRequestListener
+            {
+                override fun onResponse(response: JSONObject?) {
+
+                    val res=response?.get("data") as Int
+
+                    Log.d("data version","$res")
+
+                    _isOutdatedVersion.value = res==0
+                    Log.d("called version","true")
+                    UptoddSharedPreferences.getInstance(context).saveLastVersionChecked(calendar.timeInMillis)
+                }
+
+                override fun onError(anError: ANError?) {
+                    Log.d("data version error","${anError?.errorDetail}")
+                    _isOutdatedVersion.value=false
+                }
+
+            })
+    }
+
+
+
     private suspend fun addToUpdateApiDatabase(todo: Todo) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -624,6 +684,7 @@ class TodosViewModel(
                 return@launch
             }
 
+
             val userId = getUserId(activity)
 
             val jsonObject = JSONObject()
@@ -632,7 +693,7 @@ class TodosViewModel(
             jsonObject.put("activityCompleted", updateData.activityId)
             jsonObject.put("scoreDate", updateData.swipeDate)
 
-            AndroidNetworking.put("hts://www.uptodd.com/api/activity/score")
+            AndroidNetworking.put("https://www.uptodd.com/api/activity/score")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
@@ -775,7 +836,7 @@ class TodosViewModel(
         var i = 0
         coroutineScope {
             launch {
-                val currentDate = DateClass().getCurrentDateAsString()
+                val currentDate = DateClass().getCurrentDateTimeAsString()
 
                 while (i < todoListData.length()) {
                     val fetchedTodoData = todoListData.get(i) as JSONObject
@@ -1429,7 +1490,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${poem.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updatePath(poem, file.path)
+                    return@downloadPoemFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())
@@ -1538,7 +1602,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${it.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updatePath(it, file.path)
+                    return@downloadMusicFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())
@@ -1645,7 +1712,10 @@ class TodosViewModel(
                 _showDownloadingFlag.value = true
                 val file = File(destinationDir.path, "${it.file}.aac")
                 if (file.exists())
-                    file.delete()
+                {
+                    updateMemoryPath(it, file.path)
+                    return@downloadSpeedBoosterFiles
+                }
                 if (!file.exists())
                     destinationDir.mkdirs()
                 if (!destinationDir.canWrite())

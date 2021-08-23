@@ -39,13 +39,16 @@ import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
+import com.uptodd.uptoddapp.ui.other.FragmentUpdateApp
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment
-import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
@@ -66,7 +69,8 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 
-class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener {
+class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener,
+    PaymentResultListener {
 
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -82,10 +86,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     private lateinit var editor: SharedPreferences.Editor
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
+    var rpListener:RazorPayListener?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Checkout.preload(applicationContext);
         ChangeLanguage(this).setLanguage()
 
         var userType: String? = ""
@@ -103,8 +110,66 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
         hasStoragePermission()
 
-        requestFireAllWorkManagers()
 
+
+
+
+
+
+
+        val viewModelFactory = UptoddViewModelFactory.getInstance(application)
+
+        val viewModel = ViewModelProvider(
+            this, viewModelFactory
+        ).get(TodosViewModel::class.java)
+
+
+        viewModel.notificationIntent.value = intent.getIntExtra(
+            "notificationIntent",
+            DEFAULT_HOMEPAGE_INTENT
+        )
+        viewModel.notificationIntentExtras.value = intent.extras
+
+
+
+
+
+
+
+        viewModel?.isOutDatedVersion?.observe(this
+        , {
+
+
+            if(!it)
+            {
+                requestFireAllWorkManagers()
+                val manager: DownloadManager = DownloadManager.Builder().context(this)
+                    .downloader(OkHttpDownloader.create())
+                    .threadPoolSize(3)
+                    .logger { message -> Log.d("TAG", message!!) }
+                    .build()
+
+
+                viewModel.startMusicDownload(
+                    File(
+                        getExternalFilesDir(Environment.DIRECTORY_MUSIC),
+                        "Downloads"
+                    ),
+                    manager,this
+                )
+                initCheck()
+                initNP(viewModel)
+            }
+            })
+
+
+
+    }
+
+
+    private fun initCheck()
+
+    {
 
         if(intent.getIntExtra("showUp",0)==1 ||UptoddSharedPreferences.getInstance(this).getShowUp())
         {
@@ -117,37 +182,37 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
             if(!AllUtil.isUserPremium(this)  && !AllUtil.isSubscriptionOver(end) && preferences.getInt("welcome_shown",0)==0) {
 
-            val upToddDialogs = UpToddDialogs(this)
-            upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
-                object :UpToddDialogs.UpToddDialogListener {
-                    override fun onDialogButtonClicked(dialog: Dialog) {
+                val upToddDialogs = UpToddDialogs(this)
+                upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
+                    object :UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
 
-                        dialog.dismiss()
-                    }
+                            dialog.dismiss()
+                        }
 
-                    override fun onDialogDismiss() {
-                        upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Continue",
-                            object :UpToddDialogs.UpToddDialogListener
-                            {
-                                override fun onDialogButtonClicked(dialog: Dialog) {
+                        override fun onDialogDismiss() {
+                            upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Continue",
+                                object :UpToddDialogs.UpToddDialogListener
+                                {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
 
-                                    try {
-                                        preferences.edit().putInt("welcome_shown",1).apply()
-                                     //   findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
-                                    }catch (e:Exception)
-                                    {
-                                        Log.e("dialog error",e.localizedMessage)
+                                        try {
+                                            preferences.edit().putInt("welcome_shown",1).apply()
+                                            //   findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
+                                        }catch (e:Exception)
+                                        {
+                                            Log.e("dialog error",e.localizedMessage)
+                                        }
+                                        dialog.dismiss()
                                     }
-                                    dialog.dismiss()
+
                                 }
+                            )
+                        }
 
-                            }
-                        )
                     }
-
-                }
-            )
-        }
+                )
+            }
         }
 
         val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
@@ -168,39 +233,11 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             )
 
         }
-        val viewModelFactory = UptoddViewModelFactory.getInstance(application)
 
-        val viewModel = ViewModelProvider(
-            this, viewModelFactory
-        ).get(TodosViewModel::class.java)
+    }
 
-
-        viewModel.notificationIntent.value = intent.getIntExtra(
-            "notificationIntent",
-            DEFAULT_HOMEPAGE_INTENT
-        )
-        viewModel.notificationIntentExtras.value = intent.extras
-
-
-
-
-        val manager: DownloadManager = DownloadManager.Builder().context(this)
-            .downloader(OkHttpDownloader.create())
-            .threadPoolSize(3)
-            .logger { message -> Log.d("TAG", message!!) }
-            .build()
-
-
-        viewModel.startMusicDownload(
-            File(
-                getExternalFilesDir(Environment.DIRECTORY_MUSIC),
-                "Downloads"
-            ),
-            manager,this
-        )
-
-
-
+    private fun initNP(viewModel: TodosViewModel)
+    {
         if(!AllUtil.isUserPremium(this)) {
             viewModel.getNPDetails(this)
             viewModel.isNewUser.observe(this, Observer {
@@ -217,11 +254,9 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                     np.expectedMonthsOfDelivery?.let { Log.d("expectedMonthOfDelivery", it) }
                 }
             })
-
-
-
         }
     }
+
 
 
     private fun inflateNormalMode() {
@@ -397,10 +432,18 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                                     )
                                     values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
                                     values.put(MediaStore.MediaColumns.DATA, imageFile.absolutePath)
-                                    contentResolver?.insert(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                        values
-                                    )
+
+                                    try {
+                                        contentResolver?.insert(
+                                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                            values
+                                        )
+                                    }
+                                    catch (e:Exception)
+                                    {
+
+                                    }
+
                                 }
 
                                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -601,7 +644,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         {
             drawerLayout.closeDrawer(Gravity.LEFT)
         }
-        else if(UpgradeFragment.over)
+        else if(UpgradeFragment.over || FragmentUpdateApp.isOutDated)
         {
             finish()
         }
@@ -609,6 +652,26 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         {
             super.onBackPressed()
         }
+    }
+
+
+
+    interface  RazorPayListener
+    {
+
+        fun onPaymentSuccess(id: String?)
+        fun onPaymentFailure(d: Int, error: String?)
+    }
+
+    override fun onPaymentSuccess(id: String?)
+    {
+
+        rpListener?.onPaymentSuccess(id)
+
+    }
+
+    override fun onPaymentError(id: Int, error: String?) {
+        rpListener?.onPaymentFailure(id,error)
     }
 
 }

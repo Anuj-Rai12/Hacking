@@ -238,6 +238,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
 
     }
 
+
     fun daysLeftP():Long // premium
     {
         val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
@@ -490,6 +491,15 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         musicPreferences.edit().clear().apply()
         poemPreferences.edit().clear().apply()
 
+    }
+
+    fun saveLastVersionChecked(long: Long)
+    {
+        loginSharedPreference.edit()?.putLong("version_checked",long)?.apply()
+    }
+    fun getLastVersionCheck():Long
+    {
+        return loginSharedPreference.getLong("version_checked",0L)
     }
 
 }

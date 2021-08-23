@@ -23,6 +23,9 @@ class TodoDetailsViewModel() : ViewModel() {
     private val _description = MutableLiveData<String>()
     val description: LiveData<String>
         get() = _description
+    private val _title = MutableLiveData<String>()
+    val title: LiveData<String>
+        get() = _title
 
     fun fetchTodoDetailsFromGetApi(todoId: Int) {
         viewModelScope.launch {
@@ -39,6 +42,9 @@ class TodoDetailsViewModel() : ViewModel() {
                             val data = (response.get("data") as JSONObject)
                             _imageUrl.value = data.getString("image")
                             _description.value = data.getString("description")
+
+                         Log.d("data",data.toString())
+                            _title.value=data.getString("name")
                         }
                     }
 

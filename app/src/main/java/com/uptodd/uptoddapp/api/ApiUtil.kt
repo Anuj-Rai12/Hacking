@@ -3,6 +3,9 @@ package com.uptodd.uptoddapp.api
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.ANRequest
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.KidsPeriod
 
 fun getUserId(context: Context): Long? {
@@ -22,3 +25,4 @@ fun getPeriod(context: Context): Int {
 fun getMonth(context: Context): Int {
     return KidsPeriod(context).getKidsAge()
 }
+

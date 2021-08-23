@@ -243,6 +243,8 @@ class LoginViewModel : ViewModel() {
                                         ).parse(kidsDob)!!.time
                                 tokenHeader =
                                     (response.get("data") as JSONObject).getString("token")
+
+                                Log.d("header token","$tokenHeader")
                                 motherStage=
                                     (response.get("data") as JSONObject).getJSONObject("user").getString(
                                 "motherStage"
@@ -279,7 +281,7 @@ class LoginViewModel : ViewModel() {
                                     parentType,
                                     true,
                                     System.currentTimeMillis(),
-                                    token,
+                                    tokenHeader,
                                     true
                                 )
                                 loginResponse.value = info

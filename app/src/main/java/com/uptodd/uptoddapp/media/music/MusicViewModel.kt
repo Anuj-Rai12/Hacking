@@ -229,6 +229,7 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val stage=UptoddSharedPreferences.getInstance(context).getStage()
         val country=AllUtil.getCountry(context)
+
         AndroidNetworking.get("https://www.uptodd.com/api/musics?lang=$language&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)

@@ -673,4 +673,10 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="np_question_baby_toys_special_needs">Any Special needs you have around your baby\'s development?</string>
     <string name="np_question_baby_major_objective">What is the major objective to join this program?</string>
     <string name="p_note_reffer">Note-Offer only applicable if your rfferal joins premium any of programs</string>
+
+    <!--Non premium forms-->
+    <string name="update_app_title">Time To Update!</string>
+    <string name="update_app_sub">We added lots of new features and fix some bugs to make your experience as smooth as possible</string>
+
+
 </resources>

@@ -172,6 +172,9 @@ class UpgradeViewModel: ViewModel(
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
 
+                        if(!AllUtil.isRow(context))
+                        checkIsPaymentDone(context)
+
                         Log.d("payment saved","success")
                     } else {
                     }

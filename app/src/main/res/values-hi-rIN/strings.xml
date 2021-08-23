@@ -662,4 +662,10 @@
     <string name="np_question_baby_minutes">How many minutes a day can you give for your baby\'s development?</string>
     <string name="np_question_baby_toys_special_needs">Any Special needs you have around your baby\'s development?</string>
     <string name="np_question_baby_major_objective">What is the major objective to join this program?</string>
+
+    <!--Non premium forms-->
+    <string name="update_app_title">Time To Update!</string>
+    <string name="update_app_sub">We added lots of new features and fix some bugs to make your experience as smooth as possible</string>
+
+
 </resources>

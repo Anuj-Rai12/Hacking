@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_loginFragment_to_babyNameFragment"
             app:destination="@id/babyNameFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_fragmentUpdateApp"
+            app:destination="@id/fragmentUpdateApp" />
     </fragment>
 
     <!-- Language fragment not used for now -->
@@ -265,4 +268,8 @@
         android:id="@+id/paymentSuccessFragment2"
         android:name="com.uptodd.uptoddapp.ui.upgrade.PaymentSuccessFragment"
         android:label="PaymentSuccessFragment" />
+    <fragment
+        android:id="@+id/fragmentUpdateApp"
+        android:name="com.uptodd.uptoddapp.ui.other.FragmentUpdateApp"
+        android:label="FragmentUpdateApp" />
 </navigation>

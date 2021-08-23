@@ -1,5 +1,8 @@
 package com.uptodd.uptoddapp.utilities
 
+import androidx.navigation.NavController
+
+
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -22,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.uptodd.uptoddapp.BuildConfig
 import com.uptodd.uptoddapp.LoginActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -122,6 +126,46 @@ class AllUtil{
 
         }
 
+        fun checkForAppUpdate(navController: NavController)
+        {
+            val json= JSONObject().apply {
+                put("version", "2.6".toDouble())
+                put("deviceType","android")
+            }
+
+            AndroidNetworking.post("https://www.uptodd.com/api/isValidVersion")
+                .addHeaders("Authorization", "Bearer ${getAuthToken()}")
+                .addJSONObjectBody(json)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(object :JSONObjectRequestListener
+                {
+                    override fun onResponse(response: JSONObject?) {
+
+                       val res=response?.get("data") as Int
+
+                        Log.d("data version","$res")
+
+                        if(res==0)
+                        {
+                            try {
+                                navController?.navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
+                            }
+                            catch (e:Exception)
+                            {
+                                navController?.navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
+                            }
+                        }
+                    }
+
+                    override fun onError(anError: ANError?) {
+                        Log.d("data version error","${anError?.errorDetail}")
+
+                    }
+
+                })
+        }
+
         fun logoutOnly(context: Context)
         {
 
@@ -130,6 +174,9 @@ class AllUtil{
                 editor.putBoolean("loggedIn", false)
                 editor.remove("language")
                 editor.commit()
+
+
+
 
                 AndroidNetworking.get("https://www.uptodd.com/api/userlogout/{userId}")
                     .addHeaders("Authorization", "Bearer ${getAuthToken()}")
@@ -491,7 +538,7 @@ class AllUtil{
         }
 
         fun getAuthToken():String?{
-            return sharedPreferences.getString("token","")
+            return sharedPreferences.getString(com.uptodd.uptoddapp.database.logindetails.UserInfo::tokenHeader.name,"")
         }
 
         fun getPoemImage(song: MusicFiles, dpi: String): String {

@@ -302,6 +302,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_activitySampleFragment"
             app:destination="@id/activitySampleFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_fragmentUpdateApp2"
+            app:destination="@id/fragmentUpdateApp2" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -619,6 +622,10 @@
         android:name="com.uptodd.uptoddapp.ui.login.selectparent.SelectParentFragment"
         android:label="fragment_select_parent"
         tools:layout="@layout/fragment_select_parent" />
+    <fragment
+        android:id="@+id/fragmentUpdateApp2"
+        android:name="com.uptodd.uptoddapp.ui.other.FragmentUpdateApp"
+        android:label="FragmentUpdateApp" />
 
 
     <!--    <fragment-->

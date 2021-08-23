@@ -10,6 +10,12 @@
         android:keepScreenOn="true"
         android:id="@+id/layout">
 
+
+
+
+
+
+
         <com.google.android.youtube.player.YouTubePlayerView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
@@ -17,7 +23,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+        </com.google.android.youtube.player.YouTubePlayerView>
 
         <ScrollView
             android:id="@+id/scrollView3"
@@ -35,17 +43,46 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/videoTime"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="4dp"
+                        android:padding="14dp"
+                        android:textStyle="bold"
+                        android:text="00:00"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        />
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="0"
+                        />
+
+
+
+                </LinearLayout>
+
+
+
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:fontFamily="@font/montserrat"
                     android:text="Title"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                 />
 
                 <TextView
                     android:id="@+id/kit_content"
@@ -57,21 +94,21 @@
                     android:layout_marginBottom="16dp"
                     android:text="heovopjveskll"
                     android:textColor="@color/textGrey"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/crimson_text_bold"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:fontFamily="@font/montserrat"
                     android:text="Description"
-                    android:textColor="@color/textGrey"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
+
             </LinearLayout>
         </ScrollView>
 
