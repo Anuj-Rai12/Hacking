@@ -134,8 +134,8 @@ class UploadFileWorkManger constructor(
                         )
                     )
                     if (!this.module.containsKey(value.module)) {
-                        val map= mutableMapOf<String,Video>()
-                        this.video=map
+                        val map = mutableMapOf<String, Video>()
+                        this.video = map
                     }
                     this.video[vid.title!!] = vid
                     val module = Module(module = value.module, video = this.video)

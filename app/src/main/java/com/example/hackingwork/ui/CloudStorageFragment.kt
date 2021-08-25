@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -52,6 +53,18 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         binding.CourseDifficultLevel.setOnItemClickListener { _, _, position, _ ->
             courseDiff = courseArrayAdapter.getItem(position)
         }
+        binding.AddNewModule.setOnClickListener {
+            val courseName = binding.setFolderName.text.toString()
+            if (checkFieldValue(courseName)) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.wrong_detail),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            updateCourseNameForNewModule(courseName)
+        }
         binding.CreateCourse.setOnClickListener {
             val courseName = binding.setFolderName.text.toString()
             val courseCategory = binding.courseCategory.text.toString()
@@ -96,6 +109,47 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             )
             fireBaseCourseTitle = Helper.serializeToJson(firebase)
             openDialog()
+        }
+    }
+
+    private fun updateCourseNameForNewModule(courseName: String) {
+        adminViewModel.updateCourseData(courseName).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    Log.i(TAG, "updateCourseNameForNewModule: ${it.exception?.localizedMessage!!}")
+                    dir(message = it.exception.localizedMessage!!)
+                }
+                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Success -> {
+                    Log.i(TAG, "updateCourseNameForNewModule: Course Updated")
+                    updatingNewModule(courseName)
+                }
+            }
+        }
+    }
+
+    private fun updatingNewModule(courseName: String) {
+        lifecycleScope.launch {
+            adminViewModel.getCourseContent.collect {
+                it?.let { get ->
+                    get.module?.let { map ->
+                        map.forEach { (moduleKey, moduleValue) ->
+                            uploadVideoModule(
+                                moduleKey,
+                                moduleValue,
+                                courseName,
+                                flag = map.keys.last() == moduleKey
+                            ) {flag->
+                                if (flag)
+                                    return@uploadVideoModule
+                            }
+                            if (map.values.last() == moduleValue)
+                                hideLoading()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -153,21 +207,26 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                         showLoading(it.data as String)
                     }
                     is MySealed.Success -> {
-                        hideLoading()
                         getCourseContent.module?.let { map ->
                             map.forEach { (moduleKey, moduleValue) ->
-                                hideLoading()
+                                val flag = map.keys.last() == moduleKey
                                 uploadVideoModule(
                                     moduleKey,
                                     moduleValue,
                                     courseContent.coursename!!,
-                                    flag = map.keys.last() == moduleKey
-                                )
-                                if (map.values.last() == moduleValue)
+                                    flag = flag
+                                ) {error->
+                                    if (error)
+                                        return@uploadVideoModule
+                                }
+                                if (flag)
                                     hideLoading()
                             }
                         }
                         fireBaseCourseTitle = null
+                        if (getCourseContent.module==null){
+                            Toast.makeText(activity, "No File To Upload", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
@@ -177,22 +236,22 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         moduleKey: String,
         moduleValue: Module,
         courseName: String,
-        flag: Boolean
+        flag: Boolean,
+        error: (Boolean) -> Unit
     ) {
         adminViewModel.uploadingVideoCourse(moduleKey, moduleValue, courseName)
             .observe(viewLifecycleOwner) {
                 when (it) {
                     is MySealed.Error -> {
                         hideLoading()
+                        error(true)
                         dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
                     }
-                    is MySealed.Loading -> {
-                        showLoading(it.data as String)
-                    }
+                    is MySealed.Loading -> Log.i(TAG, "Uploading Course..")
                     is MySealed.Success -> {
-                        hideLoading()
-                        adminViewModel.getCourseContent.value = null
                         if (flag) {
+                            hideLoading()
+                            adminViewModel.getCourseContent.value = null
                             dir(title = "Success", message = "All Module Is Uploaded Successfully")
                         }
                     }

@@ -9,8 +9,11 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class CourseModfiyRepository @Inject constructor(
-    private val fireStore: FirebaseFirestore
 ) {
+    private val fireStore by lazy {
+        FirebaseFirestore.getInstance()
+    }
+
     fun uploadingCourse(courseContent: FireBaseCourseTitle, getCourseContent: GetCourseContent) =
         flow {
             emit(MySealed.Loading("${courseContent.coursename} is Creating.."))
@@ -31,7 +34,7 @@ class CourseModfiyRepository @Inject constructor(
         }.flowOn(IO)
 
     fun uploadingVideoCourse(moduleKey: String, moduleValue: Module, courseName: String) = flow {
-        emit(MySealed.Loading("$moduleKey is Uploading..."))
+        emit(MySealed.Loading(null))
         val data = try {
             fireStore.collection(GetConstStringObj.Create_course).document(courseName)
                 .collection(GetConstStringObj.Create_Module).document(moduleKey).set(moduleValue)
@@ -42,4 +45,17 @@ class CourseModfiyRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+    fun updateNewModule(courseName: String) = flow {
+        emit(MySealed.Loading("Updating $courseName"))
+        val data = try {
+            fireStore.collection(GetConstStringObj.Create_course).document(courseName)
+                .update("fireBaseCourseTitle.lastdate", getDateTime()).await()
+            MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 }
