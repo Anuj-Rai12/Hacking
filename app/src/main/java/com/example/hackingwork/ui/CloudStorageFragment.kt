@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hackingwork.R
@@ -21,6 +22,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val str1 = "str1.0.0.0.0"
+private const val str2 = "str2.0.0.0.0"
+private const val vid1 = "My1VideoFile"
+private const val vid2 = "My2VideoFile"
 
 @AndroidEntryPoint
 class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
@@ -47,11 +53,117 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             courseDiff = it.getString(GetConstStringObj.Create_course)
             fireBaseCourseTitle = it.getString(GetConstStringObj.EMAIL)
         }
+        adminViewModel.getCourseContent.value = GetCourseContent(
+            module = mapOf(
+                str1 to Module(
+                    module = str1,
+                    video = mapOf(
+                        vid1 to Video(
+                            title = vid1,
+                            uri = "Uri For $vid1 is Not Here Bitch",
+                            duration = "0.0.014.04",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid1 Assignment is Here :)"
+                            )
+                        ),
+                        vid2 to Video(
+                            title = vid2,
+                            uri = "Uri For $vid2 is Not Here Bitch",
+                            duration = "0.0.0.0.0.01",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid2 Assignment is Here :)"
+                            )
+                        )
+                    )
+                ),
+                "str2 " to Module(
+                    module = "str2",
+                    video = mapOf(
+                        vid1 to Video(
+                            title = vid1,
+                            uri = "Uri For $vid1 is Not Here Dog",
+                            duration = "1.1.01.14",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid1 Assignment is Here :)"
+                            )
+                        ),
+                        vid2 to Video(
+                            title = vid2,
+                            uri = "Uri For $vid2 is Not Here Dog",
+                            duration = "10.10.20.20.10.14",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid2 Assignment is Here :)"
+                            )
+                        )
+                    )
+                ),
+                str2 to Module(
+                    module = str2,
+                    video = mapOf(
+                        vid1 to Video(
+                            title = vid1,
+                            uri = "Uri For $vid1 is Not Here Dog",
+                            duration = "1.1.01.14",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid1 Assignment is Here :)"
+                            )
+                        ),
+                        vid2 to Video(
+                            title = vid2,
+                            uri = "Uri For $vid2 is Not Here Dog",
+                            duration = "10.10.20.20.10.14",
+                            assignment = Assignment(
+                                title = "Assignment Is Here :)",
+                                uri = "Uri For $vid2 Assignment is Here :)"
+                            )
+                        )
+                    )
+                )
+            )
+        )
         fireBaseCourseTitle?.let {
             openDialog()
         }
         binding.CourseDifficultLevel.setOnItemClickListener { _, _, position, _ ->
             courseDiff = courseArrayAdapter.getItem(position)
+        }
+        binding.UpdateCourse.setOnClickListener {
+            val courseName = binding.setFolderName.text.toString()
+            if (checkFieldValue(courseName)) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.wrong_detail),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            adminViewModel.getCourseContent.asLiveData().observe(viewLifecycleOwner) {
+                it?.let { course ->
+                    if(course.module!=null)
+                        showLoading("Uploading New Video...")
+                    course.module?.forEach { (moduleKey, moduleValue) ->
+                        val flag = course.module.keys.last() == moduleKey
+                        moduleValue.video?.forEach { (videoKey, videoValue) ->
+                            val vidFlag = moduleValue.video.keys.last() == videoKey
+                            updateExitingModuleWithNewVideo(
+                                courseName,
+                                moduleKey,
+                                videoKey,
+                                videoValue,
+                                flag = flag && vidFlag,
+                            ) { bool ->
+                                if (bool)
+                                return@updateExitingModuleWithNewVideo
+                            }
+                        }
+                    }
+                }
+            }
         }
         binding.AddNewModule.setOnClickListener {
             val courseName = binding.setFolderName.text.toString()
@@ -112,6 +224,38 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         }
     }
 
+    private fun updateExitingModuleWithNewVideo(
+        courseName: String,
+        moduleKey: String,
+        videoKey: String,
+        videoValue: Video,
+        flag: Boolean,
+        error: (Boolean) -> Unit
+    ) {
+        adminViewModel.addNewVideoInExistingModule(
+            courseName = courseName,
+            moduleName = moduleKey,
+            videoName = videoKey,
+            video = videoValue
+        ).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    val errorTxt = it.exception?.localizedMessage!!
+                    dir(message = "$errorTxt \n\n Try To Correct And Upload Next Time")
+                     error(true)
+                }
+                is MySealed.Loading -> Log.i(TAG, "updateExitingModuleWithNewVideo: Loading ...")
+                is MySealed.Success -> {
+                    if (flag) {
+                        hideLoading()
+                        dir(message = "Success", title = "All Video Are Uploaded Successfully")
+                    }
+                }
+            }
+        }
+    }
+
     private fun updateCourseNameForNewModule(courseName: String) {
         adminViewModel.updateCourseData(courseName).observe(viewLifecycleOwner) {
             when (it) {
@@ -140,7 +284,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                                 moduleValue,
                                 courseName,
                                 flag = map.keys.last() == moduleKey
-                            ) {flag->
+                            ) { flag ->
                                 if (flag)
                                     return@uploadVideoModule
                             }
@@ -215,7 +359,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                                     moduleValue,
                                     courseContent.coursename!!,
                                     flag = flag
-                                ) {error->
+                                ) { error ->
                                     if (error)
                                         return@uploadVideoModule
                                 }
@@ -224,7 +368,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                             }
                         }
                         fireBaseCourseTitle = null
-                        if (getCourseContent.module==null){
+                        if (getCourseContent.module == null) {
                             Toast.makeText(activity, "No File To Upload", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -244,8 +388,9 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 when (it) {
                     is MySealed.Error -> {
                         hideLoading()
+                        val errorTxt = it.exception?.localizedMessage ?: "UnWanted Error"
+                        dir(message = "$errorTxt \n\n Correct This Error And Try Too Upload Next Time.")
                         error(true)
-                        dir(message = it.exception?.localizedMessage ?: "UnWanted Error")
                     }
                     is MySealed.Loading -> Log.i(TAG, "Uploading Course..")
                     is MySealed.Success -> {

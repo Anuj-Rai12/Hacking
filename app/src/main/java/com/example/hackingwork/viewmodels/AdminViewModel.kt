@@ -84,4 +84,10 @@ class AdminViewModel @Inject constructor(
     fun uploadingVideoCourse(moduleKey: String, moduleValue: Module, courseName: String) =
         courseModfiyRepository.uploadingVideoCourse(moduleKey, moduleValue, courseName).asLiveData()
 
+    fun addNewVideoInExistingModule(
+        courseName: String,
+        moduleName: String,
+        video: Video,
+        videoName: String
+    ) =courseModfiyRepository.addOtherNewVideo(courseName,moduleName, video, videoName).asLiveData()
 }

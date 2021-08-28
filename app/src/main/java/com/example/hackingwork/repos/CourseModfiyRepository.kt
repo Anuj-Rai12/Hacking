@@ -58,4 +58,18 @@ class CourseModfiyRepository @Inject constructor(
         emit(data)
     }.flowOn(IO)
 
+    fun addOtherNewVideo(courseName: String, moduleName: String, video: Video, videoName: String) =
+        flow {
+            emit(MySealed.Loading(null))
+            val data = try {
+                fireStore.collection(GetConstStringObj.Create_course).document(courseName)
+                    .collection(GetConstStringObj.Create_Module).document(moduleName)
+                    .update("video.$videoName", video).await()
+                MySealed.Success(null)
+            } catch (e: Exception) {
+                MySealed.Error(null, e)
+            }
+            emit(data)
+        }.flowOn(IO)
+
 }
