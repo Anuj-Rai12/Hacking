@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/drawable-v24/left_background.xml" value="0.23055555555555557" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/drawable/another_leaf_background.xml" value="0.24375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/drawable/ic_preview_video.xml" value="0.23796296296296296" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -13,11 +14,13 @@
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/custom_progress_bar_layout.xml" value="0.20199275362318841" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/dropdaown.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/forget_fragment.xml" value="0.16799999999999998" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/header_footer_loading.xml" value="0.15715579710144928" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/login_with_email_password.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/mke_framgent.xml" value="0.182518115942029" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/phone_otp_faragment.xml" value="0.16799999999999998" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/storage_screen_fragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/upload_course_layout.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/user_item.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/video_item.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/nav_drawer_graph.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/nav_drawer_menu.xml" value="0.2234375" />

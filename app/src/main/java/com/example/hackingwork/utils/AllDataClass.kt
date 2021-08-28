@@ -11,6 +11,7 @@ data class CreateUserAccount(
     val email: String? = null,
     val ipaddress: String? = null,
     val password: String? = null,
+    val token: String? = null,
     val bookmarks: Map<String, String>? = null,
     val courses: Map<String, String>? = null
 )
@@ -40,7 +41,7 @@ object Helper {
     }
 
     // Deserialize to single object.
-    inline fun <reified T>deserializeFromJson(jsonString: String?): T? {
+    inline fun <reified T> deserializeFromJson(jsonString: String?): T? {
         val gson = Gson()
         return gson.fromJson(jsonString, T::class.java)
     }
@@ -71,9 +72,10 @@ data class FireBaseCourseTitle(
     val currentprice: String? = null,
     val review: UserViewOnCourse? = null
 )
+
 @IgnoreExtraProperties
 data class UploadFireBaseData(
-    val fireBaseCourseTitle: FireBaseCourseTitle?=null,
-    val previewvideo: String?=null,
-    val thumbnail: String?=null
+    val fireBaseCourseTitle: FireBaseCourseTitle? = null,
+    val previewvideo: String? = null,
+    val thumbnail: String? = null
 )

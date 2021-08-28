@@ -1,5 +1,6 @@
 package com.example.hackingwork.ui
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -23,10 +24,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val str1 = "str1.0.0.0.0"
-private const val str2 = "str2.0.0.0.0"
-private const val vid1 = "My1VideoFile"
-private const val vid2 = "My2VideoFile"
 
 @AndroidEntryPoint
 class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
@@ -53,79 +50,6 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             courseDiff = it.getString(GetConstStringObj.Create_course)
             fireBaseCourseTitle = it.getString(GetConstStringObj.EMAIL)
         }
-        adminViewModel.getCourseContent.value = GetCourseContent(
-            module = mapOf(
-                str1 to Module(
-                    module = str1,
-                    video = mapOf(
-                        vid1 to Video(
-                            title = vid1,
-                            uri = "Uri For $vid1 is Not Here Bitch",
-                            duration = "0.0.014.04",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid1 Assignment is Here :)"
-                            )
-                        ),
-                        vid2 to Video(
-                            title = vid2,
-                            uri = "Uri For $vid2 is Not Here Bitch",
-                            duration = "0.0.0.0.0.01",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid2 Assignment is Here :)"
-                            )
-                        )
-                    )
-                ),
-                "str2 " to Module(
-                    module = "str2",
-                    video = mapOf(
-                        vid1 to Video(
-                            title = vid1,
-                            uri = "Uri For $vid1 is Not Here Dog",
-                            duration = "1.1.01.14",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid1 Assignment is Here :)"
-                            )
-                        ),
-                        vid2 to Video(
-                            title = vid2,
-                            uri = "Uri For $vid2 is Not Here Dog",
-                            duration = "10.10.20.20.10.14",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid2 Assignment is Here :)"
-                            )
-                        )
-                    )
-                ),
-                str2 to Module(
-                    module = str2,
-                    video = mapOf(
-                        vid1 to Video(
-                            title = vid1,
-                            uri = "Uri For $vid1 is Not Here Dog",
-                            duration = "1.1.01.14",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid1 Assignment is Here :)"
-                            )
-                        ),
-                        vid2 to Video(
-                            title = vid2,
-                            uri = "Uri For $vid2 is Not Here Dog",
-                            duration = "10.10.20.20.10.14",
-                            assignment = Assignment(
-                                title = "Assignment Is Here :)",
-                                uri = "Uri For $vid2 Assignment is Here :)"
-                            )
-                        )
-                    )
-                )
-            )
-        )
         fireBaseCourseTitle?.let {
             openDialog()
         }
@@ -144,7 +68,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
             }
             adminViewModel.getCourseContent.asLiveData().observe(viewLifecycleOwner) {
                 it?.let { course ->
-                    if(course.module!=null)
+                    if (course.module != null)
                         showLoading("Uploading New Video...")
                     course.module?.forEach { (moduleKey, moduleValue) ->
                         val flag = course.module.keys.last() == moduleKey
@@ -158,7 +82,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                                 flag = flag && vidFlag,
                             ) { bool ->
                                 if (bool)
-                                return@updateExitingModuleWithNewVideo
+                                    return@updateExitingModuleWithNewVideo
                             }
                         }
                     }
@@ -243,7 +167,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                     hideLoading()
                     val errorTxt = it.exception?.localizedMessage!!
                     dir(message = "$errorTxt \n\n Try To Correct And Upload Next Time")
-                     error(true)
+                    error(true)
                 }
                 is MySealed.Loading -> Log.i(TAG, "updateExitingModuleWithNewVideo: Loading ...")
                 is MySealed.Success -> {
@@ -428,8 +352,16 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         extraDialog?.show(childFragmentManager, "create_course")
     }
 
-    private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
-    private fun hideLoading() = customProgress.hideLoading()
+    private fun showLoading(string: String) {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        customProgress.showLoading(requireActivity(), string)
+    }
+
+    private fun hideLoading() {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        customProgress.hideLoading()
+    }
+
     override fun onPause() {
         super.onPause()
         hideLoading()

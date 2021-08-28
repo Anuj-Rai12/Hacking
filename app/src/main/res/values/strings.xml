@@ -57,10 +57,14 @@
     <string name="course_create">Create A New Course</string>
     <string name="course_update">Add New Video In Module</string>
     <string name="course_module">Add New Module</string>
+    <string name="error_text">There is Error</string>
+    <string name="retry_text">retry</string>
     <string-array name="course_level">
         <item>Beginner Level</item>
         <item>InterMediate Level</item>
         <item>Expert Level</item>
     </string-array>
-
+    <string name="user_name"> Name:</string>
+    <string name="user_mobile"> Mobile:</string>
+    <string name="user_email"> Email:</string>
 </resources>
