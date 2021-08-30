@@ -30,7 +30,7 @@
                 app:civ_border_width="4dp"
                 app:civ_shadow="true"
                 app:civ_shadow_color="@color/black"
-                tools:src="@drawable/hacking_main_icon" />
+                android:src="@drawable/hacking_main_icon" />
 
             <LinearLayout
                 android:id="@+id/userNameLayout"

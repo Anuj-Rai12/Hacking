@@ -174,4 +174,5 @@ object GetConstStringObj {
     const val Create_Course_desc = "Are You Sure you Want to Create A New Course?"
     const val Create_course = "Course"
     const val Create_Module = "Module"
+    const val Per_users = 3
 }

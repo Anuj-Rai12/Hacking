@@ -25,11 +25,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun getAuthInstance()=FirebaseAuth.getInstance()
-
+    fun getAuthInstance() = FirebaseAuth.getInstance()
 
     @Singleton
     @Provides
-    fun fireStore()=FirebaseFirestore.getInstance()
+    fun fireStore() = FirebaseFirestore.getInstance()
 
+    @Singleton
+    @Provides
+    fun query(fireStore: FirebaseFirestore) =
+        fireStore.collection(GetConstStringObj.USERS).limit(GetConstStringObj.Per_users.toLong())
 }

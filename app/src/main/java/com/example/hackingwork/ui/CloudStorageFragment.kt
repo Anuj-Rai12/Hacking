@@ -173,7 +173,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 is MySealed.Success -> {
                     if (flag) {
                         hideLoading()
-                        dir(message = "Success", title = "All Video Are Uploaded Successfully")
+                        dir(title = "Success",  message = "All Video Are Uploaded Successfully")
                     }
                 }
             }

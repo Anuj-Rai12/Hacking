@@ -5,9 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
+import androidx.paging.cachedIn
 import com.example.hackingwork.TAG
+import com.example.hackingwork.recycle.paginate.UserPagingSource
 import com.example.hackingwork.repos.CourseModfiyRepository
 import com.example.hackingwork.utils.*
+import com.google.android.play.core.internal.q
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminViewModel @Inject constructor(
-    private val courseModfiyRepository: CourseModfiyRepository
+    private val courseModfiyRepository: CourseModfiyRepository,
+    private val UserQuery:Query
 ) : ViewModel() {
     var videoPreview: String? = null
     var moduleMap: MutableMap<String, Module>? = null
@@ -36,6 +44,14 @@ class AdminViewModel @Inject constructor(
         _videoMap.value = map
         Log.i(TAG, "getVideo: ${_videoMap.value}")
     }
+
+    val userFlow = Pager(
+        PagingConfig(
+            pageSize = GetConstStringObj.Per_users
+        )
+    ) {
+        UserPagingSource(query = UserQuery)
+    }.flow.cachedIn(viewModelScope)
 
     fun delete(video: Video, flag: Boolean = false) {
         viewModelScope.launch {

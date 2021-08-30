@@ -34,6 +34,7 @@
     <!--- UI App -->
     <string name="storage_Screen_app">Storage Screen.</string>
     <string name="cloud_Screen_app">Cloud Screen.</string>
+    <string name="user_Screen_app">Users Screen.</string>
 
     <!-- Storage_Screen_UI-->
     <string name="module_name">Module</string>

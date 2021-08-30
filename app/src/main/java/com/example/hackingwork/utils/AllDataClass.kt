@@ -12,8 +12,15 @@ data class CreateUserAccount(
     val ipaddress: String? = null,
     val password: String? = null,
     val token: String? = null,
-    val bookmarks: Map<String, String>? = null,
-    val courses: Map<String, String>? = null
+    var id: String? = null,
+    val bookmarks: Map<String, CourseDetail>? = null,
+    val courses: Map<String, CourseDetail>? = null
+)
+
+data class CourseDetail(
+    val course: String? = null,
+    val data: String? = null,
+    val purchase: String? = null
 )
 
 data class Module(

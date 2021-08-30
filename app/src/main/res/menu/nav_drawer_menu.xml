@@ -11,6 +11,11 @@
         android:iconTint="@color/white"
         android:title="@string/cloud_Screen_app" />
     <item
+        android:id="@+id/uploadCourseFragment"
+        android:icon="@drawable/ic_person"
+        android:iconTint="@color/white"
+        android:title="@string/user_Screen_app" />
+    <item
         android:id="@+id/passwordDialog"
         android:icon="@drawable/ic_baseline_login_24"
         android:iconTint="@color/white"
