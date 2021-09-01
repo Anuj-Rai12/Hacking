@@ -68,4 +68,9 @@
     <string name="user_name"> Name:</string>
     <string name="user_mobile"> Mobile:</string>
     <string name="user_email"> Email:</string>
+
+    <!-- Custom Dialog-->
+    <string name="user_udi">Udi:</string>
+    <string name="user_token">Token:</string>
+
 </resources>

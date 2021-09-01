@@ -175,4 +175,7 @@ object GetConstStringObj {
     const val Create_course = "Course"
     const val Create_Module = "Module"
     const val Per_users = 3
+    const val UDI = "UDI-VALUE"
+    const val Phone = "PHONE-VALUE"
+    const val TOKEN = "UDI-VALUE"
 }

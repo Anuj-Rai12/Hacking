@@ -21,17 +21,19 @@ class HeaderAndFooterAdaptor(private val error: (String) -> Unit, private val re
                 progressBar.isVisible = loadState is LoadState.Loading
                 retryBtn.isVisible = loadState !is LoadState.Loading
                 errorTxt.isVisible = loadState !is LoadState.Loading
-                val mError = (loadState as LoadState.Error).error.localizedMessage
-                mError?.let {
-                    if (it.equals("List is Empty", true)) {
-                        errorTxt.isVisible = loadState !is LoadState.Loading
-                    } else {
-                        retryBtn.isVisible = false
-                        errorTxt.isVisible = false
-                    }
-                }
                 if (errorTxt.isVisible) {
-                    error(mError!!)
+                    val mError = (loadState as LoadState.Error).error.localizedMessage
+                    mError?.let {
+                        if (it.equals("List is Empty", true)) {
+                            errorTxt.isVisible = loadState !is LoadState.Loading
+                        } else {
+                            retryBtn.isVisible = false
+                            errorTxt.isVisible = false
+                        }
+                    }
+                    if (errorTxt.isVisible) {
+                        error(mError!!)
+                    1}
                 }
             }
         }

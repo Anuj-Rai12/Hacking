@@ -3,8 +3,10 @@ package com.example.hackingwork.utils
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import com.example.hackingwork.R
+import com.example.hackingwork.databinding.CustomDialogForUserBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class PasswordDialog : androidx.fragment.app.DialogFragment() {
@@ -64,4 +66,31 @@ class ExtraDialog(
         return alterDialog.create()
     }
     //8.At End of Password you may use $ symbol or Any Special Symbol
+}
+
+class DialogsForUser(
+    private val phone: String? = null,
+    private val udi: String? = null,
+    private val token: String? = null,
+    private val returnValue: ((String) -> Unit)? = null
+) : DialogFragment() {
+    private lateinit var alertDialogBinding: CustomDialogForUserBinding
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        alertDialogBinding = CustomDialogForUserBinding.inflate(layoutInflater)
+        val alertDialog =
+            AlertDialog.Builder(requireActivity()).setView(alertDialogBinding.root)
+                .setTitle("User Info :)")
+
+        alertDialogBinding.copyPhone.setOnClickListener {
+            returnValue?.invoke(phone!!)
+        }
+
+        alertDialogBinding.copyUdi.setOnClickListener {
+            returnValue?.invoke(udi!!)
+        }
+        alertDialogBinding.copyToken.setOnClickListener {
+            returnValue?.invoke(token!!)
+        }
+        return alertDialog.create()
+    }
 }
