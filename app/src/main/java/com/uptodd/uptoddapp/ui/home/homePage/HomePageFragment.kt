@@ -641,14 +641,8 @@ class HomePageFragment : Fragment() {
                                         MediaStore.Images.Media.DATE_TAKEN,
                                         System.currentTimeMillis()
                                     )
-                                    values.put(
-                                        MediaStore.Images.Media.MIME_TYPE,
-                                        "image/jpeg"
-                                    )
-                                    values.put(
-                                        MediaStore.MediaColumns.DATA,
-                                        imageFile.absolutePath
-                                    )
+                                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                                    values.put(MediaStore.MediaColumns.DATA, imageFile.absolutePath)
                                     activity?.contentResolver?.insert(
                                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                         values

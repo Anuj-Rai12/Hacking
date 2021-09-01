@@ -836,7 +836,7 @@ class TodosViewModel(
         var i = 0
         coroutineScope {
             launch {
-                val currentDate = DateClass().getCurrentDateTimeAsString()
+                val currentDate = DateClass().getCurrentDateAsString()
 
                 while (i < todoListData.length()) {
                     val fetchedTodoData = todoListData.get(i) as JSONObject

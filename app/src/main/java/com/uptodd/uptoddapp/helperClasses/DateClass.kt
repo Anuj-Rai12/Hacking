@@ -3,10 +3,8 @@ package com.uptodd.uptoddapp.helperClasses
 import android.annotation.SuppressLint
 import android.util.Log
 import com.uptodd.uptoddapp.database.todo.TWENTY_FOUR_HOURS_IN_MILLI
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class DateClass {
 
@@ -59,33 +57,33 @@ class DateClass {
     }
 
     fun isTodoFresh(lastTodoFetchDate: String): Boolean {
-
-        try {
-            val lastTodoFetchedOn = convertToDateTimeFromString(lastTodoFetchDate)
-        }
-        catch (
-            e:Exception
-        )
-        {
-            return false
-        }
-        val lastTodoFetchedOn = convertToDateTimeFromString(lastTodoFetchDate)
-        val currentDate = getCurrentDateTimeAsString()
+        val lastTodoFetchedOn = dateFormat.parse(lastTodoFetchDate)
+        val currentDate = dateFormat.parse(getCurrentDateAsString())
 
         if (lastTodoFetchedOn == null || currentDate == null) return true
 
         val lastFetched = Calendar.getInstance().apply {
             time = lastTodoFetchedOn
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
-        val today = Calendar.getInstance()
+        val today = Calendar.getInstance().apply {
+            time = currentDate
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
 
-        Log.i("h_debug", "${TimeUnit.MILLISECONDS.toHours(today.timeInMillis-lastFetched.timeInMillis)}")
-        Log.i("h_debug", "${lastTodoFetchDate} ${lastTodoFetchedOn.time}")
-        Log.i("h_debug", "${currentDate} ${today.time}")
         Log.i("h_debug", "")
+        Log.i("h_debug", "${lastTodoFetchedOn} ${lastFetched.time}")
+        Log.i("h_debug", "${currentDate} ${today.time}")
+        Log.i("h_debug", "${today.timeInMillis} == ${lastFetched.timeInMillis}}")
 
-        return (TimeUnit.MILLISECONDS.toHours(today.timeInMillis-lastFetched.timeInMillis)<24)       // return true if to-do is fresh
+        return (lastFetched.timeInMillis == today.timeInMillis)       // return true if to-do is fresh
     }
 
     fun convertToTimeInMilliFromTimeString(timeString: String): Long? { // this func is used get timeInMilli for today at given time
