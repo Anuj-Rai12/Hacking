@@ -73,4 +73,10 @@
     <string name="user_udi">Udi:</string>
     <string name="user_token">Token:</string>
 
+    <!-- User Add -->
+    <string name="payment_Option_1">UnPaid</string>
+    <string name="payment_Option_2">Paid</string>
+    <string name="add_cou">Add Course</string>
+    <string name="add_del">Removed</string>
+
 </resources>
