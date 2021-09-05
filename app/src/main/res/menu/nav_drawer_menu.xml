@@ -10,6 +10,13 @@
         android:icon="@drawable/ic_upload"
         android:iconTint="@color/white"
         android:title="@string/cloud_Screen_app" />
+
+    <item
+        android:id="@+id/addUserCourse"
+        android:icon="@drawable/ic_person_add"
+        android:iconTint="@color/white"
+        android:title="@string/add_usr" />
+
     <item
         android:id="@+id/uploadCourseFragment"
         android:icon="@drawable/ic_person"

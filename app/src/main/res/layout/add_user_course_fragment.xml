@@ -80,7 +80,7 @@
                 android:id="@+id/course_amount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
@@ -106,6 +106,21 @@
                 android:textSize="18sp" />
         </RadioGroup>
 
+        <RadioGroup
+            android:id="@+id/radio_grp2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/radio_grp"
+            app:layout_constraintTop_toBottomOf="@id/radio_grp">
+
+            <RadioButton
+                android:id="@+id/newUnpaidUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newUser_usr"
+                android:textSize="18sp" />
+
+        </RadioGroup>
 
         <Button
             android:id="@+id/AddCourse"
@@ -116,9 +131,9 @@
             android:text="@string/add_cou"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:layout_constraintLeft_toLeftOf="@id/radio_grp"
-            app:layout_constraintRight_toRightOf="@id/radio_grp"
-            app:layout_constraintTop_toBottomOf="@id/radio_grp" />
+            app:layout_constraintLeft_toLeftOf="@id/radio_grp2"
+            app:layout_constraintRight_toRightOf="@id/radio_grp2"
+            app:layout_constraintTop_toBottomOf="@id/radio_grp2" />
 
         <Button
             android:id="@+id/removed_course"

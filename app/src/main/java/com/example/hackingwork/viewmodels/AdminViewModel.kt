@@ -7,13 +7,11 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import com.example.hackingwork.TAG
 import com.example.hackingwork.recycle.paginate.UserPagingSource
 import com.example.hackingwork.repos.CourseModfiyRepository
 import com.example.hackingwork.utils.*
-import com.google.android.play.core.internal.q
 import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminViewModel @Inject constructor(
     private val courseModfiyRepository: CourseModfiyRepository,
-    private val UserQuery:Query
+    private val UserQuery: Query
 ) : ViewModel() {
     var videoPreview: String? = null
     var moduleMap: MutableMap<String, Module>? = null
@@ -105,5 +103,14 @@ class AdminViewModel @Inject constructor(
         moduleName: String,
         video: Video,
         videoName: String
-    ) =courseModfiyRepository.addOtherNewVideo(courseName,moduleName, video, videoName).asLiveData()
+    ) = courseModfiyRepository.addOtherNewVideo(courseName, moduleName, video, videoName)
+        .asLiveData()
+
+    fun modifyUnpaidUser(
+        courseDetail: UnpaidClass?,
+        udi: String,
+        uploadType: Boolean,
+        firstTimeAccount: Boolean
+    ) =
+        courseModfiyRepository.unpaidModify(courseDetail, udi, uploadType,firstTimeAccount).asLiveData()
 }

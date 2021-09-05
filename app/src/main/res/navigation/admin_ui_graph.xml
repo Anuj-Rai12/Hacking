@@ -38,6 +38,11 @@
     <fragment
         android:id="@+id/uploadCourseFragment"
         android:name="com.example.hackingwork.ui.UserCollectionFragment"
-        android:label="upload_course_layout"
+        android:label="@string/all_usr"
         tools:layout="@layout/users_collection_layout" />
+    <fragment
+        android:id="@+id/addUserCourse"
+        android:name="com.example.hackingwork.auth.AddUserCourse"
+        android:label="@string/add_usr"
+        tools:layout="@layout/add_user_course_fragment" />
 </navigation>

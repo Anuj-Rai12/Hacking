@@ -72,4 +72,33 @@ class CourseModfiyRepository @Inject constructor(
             emit(data)
         }.flowOn(IO)
 
+    fun unpaidModify(
+        courseDetail: UnpaidClass?,
+        udi: String,
+        uploadType: Boolean,
+        firstTimeAccount: Boolean
+    ) = flow {
+        val str = if (uploadType) "Adding Unpaid User" else "Deleting Unpaid User"
+        val successStr =
+            if (uploadType) "User is Added To Unpaid Folder" else "User is Deleted from Unpaid Folder"
+        emit(MySealed.Loading(str))
+        val data = try {
+            val querySet = fireStore.collection(GetConstStringObj.UNPAID).document(udi)
+            if (uploadType && firstTimeAccount)
+                querySet.set(courseDetail!!).await()
+            else if (uploadType && !firstTimeAccount)
+                querySet.update(
+                    "courses.${courseDetail?.courses?.keys?.first()}",
+                    courseDetail?.courses?.values?.first()
+                )
+            else
+                querySet.delete().await()
+
+            MySealed.Success(successStr)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 }

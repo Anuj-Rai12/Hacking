@@ -23,6 +23,11 @@ data class CourseDetail(
     val purchase: String? = null
 )
 
+data class UnpaidClass(
+    var id: String? = null,
+    val courses: Map<String, CourseDetail>? = null
+)
+
 data class Module(
     val module: String? = null,
     val video: Map<String, Video>? = null

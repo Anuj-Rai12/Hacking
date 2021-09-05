@@ -20,6 +20,7 @@ import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
+import com.google.android.material.snackbar.Snackbar
 import com.vmadalin.easypermissions.EasyPermissions
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -149,6 +150,17 @@ class OutPutData(
     val uri: Uri?
 )
 
+fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit)? = null) {
+    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
+    setAction?.let {
+        snackBar.setAction(it) {
+            response?.invoke()
+        }
+    }
+    snackBar.show()
+}
+
+
 fun getMimeType(uri: Uri, context: Context): String? {
     return if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
         val cr: ContentResolver? = context.contentResolver
@@ -168,6 +180,7 @@ object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
     const val EMAIL = "EMAIL"
+    const val UNPAID = "UNPAID"
     const val VERSION = "version"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
     const val Create_Course_title = "Create Course"
