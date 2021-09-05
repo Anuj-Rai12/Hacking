@@ -92,6 +92,9 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                 }
                 is MySealed.Success -> {
                     hideLoading()
+                    binding.paidOption1.isChecked=false
+                    binding.paidOption2.isChecked=false
+                    binding.newUnpaidUser.isChecked=false
                     dir(title = "Success", msg = it.data as String)
                 }
             }
