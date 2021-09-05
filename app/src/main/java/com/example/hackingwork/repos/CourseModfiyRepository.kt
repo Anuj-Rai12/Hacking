@@ -1,6 +1,7 @@
 package com.example.hackingwork.repos
 
 import com.example.hackingwork.utils.*
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
@@ -93,6 +94,25 @@ class CourseModfiyRepository @Inject constructor(
                 )
             else
                 querySet.delete().await()
+
+            MySealed.Success(successStr)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+    fun modifyPaidUser(course: Map<String, CourseDetail>, udi: String, uploadType: Boolean) = flow {
+        val str = if (uploadType) "Adding paid Course to User" else "Deleting paid Course to User"
+        val successStr =
+            if (uploadType) "Paid Course is added to User" else "User is Deleted paid course from User Folder"
+        emit(MySealed.Loading(str))
+        val data = try {
+            val query = fireStore.collection(GetConstStringObj.USERS).document(udi)
+            if (uploadType)
+                query.update("courses.${course.keys.first()}", course.values.first()).await()
+            else
+                query.update("courses.${course.keys.first()}", FieldValue.delete()).await()
 
             MySealed.Success(successStr)
         } catch (e: Exception) {

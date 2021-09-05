@@ -112,5 +112,9 @@ class AdminViewModel @Inject constructor(
         uploadType: Boolean,
         firstTimeAccount: Boolean
     ) =
-        courseModfiyRepository.unpaidModify(courseDetail, udi, uploadType,firstTimeAccount).asLiveData()
+        courseModfiyRepository.unpaidModify(courseDetail, udi, uploadType, firstTimeAccount)
+            .asLiveData()
+
+    fun modifyPaidUser(data: Map<String, CourseDetail>, udi: String, uploadType: Boolean) =
+        courseModfiyRepository.modifyPaidUser(data,udi,uploadType).asLiveData()
 }

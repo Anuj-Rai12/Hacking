@@ -17,7 +17,7 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
     private lateinit var binding: AddUserCourseFragmentBinding
     private var getPaymentOption: String? = null
     private val myViewModel: AdminViewModel by viewModels()
-    private var userUnpaidAccType: String ="Old Unpaid Account"
+    private var userUnpaidAccType: String = "Old Unpaid Account"
 
     @Inject
     lateinit var customProgress: CustomProgress
@@ -54,25 +54,77 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                     data = getDateTime(),
                     purchase = amt
                 ).also {
-                    val data=UnpaidClass(id = null,courses = mapOf(courseName to it))
+                    val data = UnpaidClass(id = null, courses = mapOf(courseName to it))
                     modifyUnpaid(
                         courseDetail = data,
                         udi = udi,
                         firstTimeAccount = userUnpaidAccType == getString(R.string.newUser_usr)
                     )
                 }
-            }/*else{
+            } else {
+                CourseDetail(
+                    course = courseName,
+                    data = getDateTime(),
+                    purchase = amt
+                ).also {
+                    val data = mapOf(courseName to it)
+                    modifyPaid(data, udi)
+                }
 
-           }*/
+            }
         }
         binding.removedCourse.setOnClickListener {
             val udi = binding.userCourseId.text.toString()
-            if (checkFieldValue(udi)) {
-                activity?.msg("Please Enter User Id..")
+            val courseName = binding.CourseId.text.toString()
+            if (checkFieldValue(udi) || getPaymentOption == null || checkFieldValue(courseName)) {
+                activity?.msg("Please Enter Correct Info")
                 return@setOnClickListener
             }
-            modifyUnpaid(courseDetail = null, udi = udi, uploadType = false)
+
+            if (getPaymentOption == getString(R.string.payment_Option_1)) {
+                modifyUnpaid(courseDetail = null, udi = udi, uploadType = false)
+            } else {
+                CourseDetail().also {
+                    val data = mapOf(courseName to it)
+                    modifyPaid(data, udi, false)
+                }
+            }
         }
+    }
+
+    private fun modifyPaid(
+        data: Map<String, CourseDetail>,
+        udi: String,
+        uploadType: Boolean = true
+    ) {
+        myViewModel.modifyPaidUser(data, udi, uploadType).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    dir(
+                        title = "Error",
+                        msg = it.exception?.localizedMessage ?: "Un Wanted Error"
+                    )
+                }
+                is MySealed.Loading -> {
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    isCheckableRadio()
+                    dir(title = "Success", msg = it.data as String)
+                }
+            }
+        }
+    }
+
+    private fun isCheckableRadio(flag: Boolean = false) {
+        binding.paidOption1.isChecked = flag
+        binding.paidOption1.isClickable = true
+        binding.paidOption2.isChecked = flag
+        binding.paidOption2.isClickable = true
+        binding.newUnpaidUser.isChecked = flag
+        binding.newUnpaidUser.isClickable = true
     }
 
     private fun modifyUnpaid(
@@ -81,24 +133,26 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
         uploadType: Boolean = true,
         firstTimeAccount: Boolean = true
     ) {
-        myViewModel.modifyUnpaidUser(courseDetail, udi, uploadType,firstTimeAccount).observe(viewLifecycleOwner) {
-            when (it) {
-                is MySealed.Error -> {
-                    hideLoading()
-                    dir(title = "Error", msg = it.exception?.localizedMessage ?: "Un Wanted Error")
-                }
-                is MySealed.Loading -> {
-                    showLoading(it.data as String)
-                }
-                is MySealed.Success -> {
-                    hideLoading()
-                    binding.paidOption1.isChecked=false
-                    binding.paidOption2.isChecked=false
-                    binding.newUnpaidUser.isChecked=false
-                    dir(title = "Success", msg = it.data as String)
+        myViewModel.modifyUnpaidUser(courseDetail, udi, uploadType, firstTimeAccount)
+            .observe(viewLifecycleOwner) {
+                when (it) {
+                    is MySealed.Error -> {
+                        hideLoading()
+                        dir(
+                            title = "Error",
+                            msg = it.exception?.localizedMessage ?: "Un Wanted Error"
+                        )
+                    }
+                    is MySealed.Loading -> {
+                        showLoading(it.data as String)
+                    }
+                    is MySealed.Success -> {
+                        hideLoading()
+                        isCheckableRadio()
+                        dir(title = "Success", msg = it.data as String)
+                    }
                 }
             }
-        }
     }
 
     private fun hideLoading() = customProgress.hideLoading()
