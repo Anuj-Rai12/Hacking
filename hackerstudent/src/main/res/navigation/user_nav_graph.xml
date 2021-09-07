@@ -8,29 +8,31 @@
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.example.hackerstudent.ui.HomeScreenFragment"
-        android:label="home_screen_framgment"
+        android:label="Home"
         tools:layout="@layout/home_screen_framgment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.hackerstudent.ui.ProfileFragment"
-        android:label="profile_framgnet"
+        android:label="@string/user_profile"
         tools:layout="@layout/profile_framgnet" />
     <dialog
         android:id="@+id/passwordDialog"
         android:name="com.example.hackerstudent.utils.PasswordDialog"
-        android:label="PasswordDialog" >
+        android:label="PasswordDialog">
         <argument
             android:name="title"
-            app:argType="string"
-            android:defaultValue="LogOut!!" />
+            android:defaultValue="LogOut!!"
+            app:argType="string" />
         <argument
             android:name="message"
-            app:argType="string"
-            android:defaultValue="Are You Sure Want to LogOut?" />
+            android:defaultValue="Are You Sure Want to LogOut?"
+            app:argType="string" />
         <argument
             android:name="flag"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </dialog>
-    <action android:id="@+id/action_global_passwordDialog2" app:destination="@id/passwordDialog" />
+    <action
+        android:id="@+id/action_global_passwordDialog2"
+        app:destination="@id/passwordDialog" />
 </navigation>

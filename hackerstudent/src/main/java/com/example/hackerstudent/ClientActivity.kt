@@ -10,7 +10,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.hackerstudent.databinding.ClientActitvityMainBinding
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
@@ -35,10 +34,10 @@ class ClientActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.ClientContainerView) as NavHostFragment
         navController = navHostFragment.navController
         getUserInfo()
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.root)
-        binding.myDrawer.setupWithNavController(navController)
-        setupSmoothBottomMenu()
+        appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.homeScreenFragment, R.id.profileFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
+        setupSmoothBottomMenu()
     }
 
     private fun setupSmoothBottomMenu() {
@@ -101,7 +100,7 @@ class ClientActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun onBackPressed() {
