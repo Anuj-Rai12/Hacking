@@ -98,4 +98,6 @@ dependencies {
     implementation "androidx.multidex:multidex:$multidex_version"
     //Lottie
     implementation 'com.airbnb.android:lottie:3.7.2'
+    //Bottom Nav Bar
+    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'
 }

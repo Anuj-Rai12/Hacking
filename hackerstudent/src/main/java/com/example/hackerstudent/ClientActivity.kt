@@ -2,6 +2,7 @@ package com.example.hackerstudent
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -36,7 +37,15 @@ class ClientActivity : AppCompatActivity() {
         getUserInfo()
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.root)
         binding.myDrawer.setupWithNavController(navController)
+        setupSmoothBottomMenu()
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private fun setupSmoothBottomMenu() {
+        val popupMenu = PopupMenu(this, null)
+        popupMenu.inflate(R.menu.nav_bottom_menu)
+        val menu = popupMenu.menu
+        binding.bottomBar.setupWithNavController(menu, navController)
     }
 
     private fun getUserInfo() {
@@ -58,7 +67,7 @@ class ClientActivity : AppCompatActivity() {
                     it.data?.let { data ->
                         val user = data as CreateUserAccount?
                         Log.i(TAG, "getUserInfo Admin Activity: $user")
-                        val mac= getLocalIpAddress()
+                        val mac = getLocalIpAddress()
                         Log.i(TAG, "getUserInfo: MAC-ADDRESS -> $mac")
                         user?.let { createUserAccount ->
                             if (createUserAccount.ipaddress != mac)
