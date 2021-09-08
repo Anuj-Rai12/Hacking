@@ -2,17 +2,20 @@ package com.example.hackerstudent.utils
 
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import androidx.annotation.RequiresApi
 import com.example.hackerstudent.MainActivity.Companion.wifiManager
+import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
+import com.google.android.material.snackbar.Snackbar
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
@@ -100,6 +103,7 @@ fun getPathFile(file: String): List<String> {
     val tagArray = file.split("\\s*,\\s*".toRegex()).toTypedArray()
     return tagArray.toList()
 }
+
 fun getPhoneNumber(credential: Credential): String? {
     val codedPhoneNumber = credential.id
     return if (codedPhoneNumber.contains("+91")) {
@@ -107,10 +111,26 @@ fun getPhoneNumber(credential: Credential): String? {
     } else
         null
 }
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit)? = null) {
+    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
+    setAction?.let {
+        snackBar.setAction(it) {
+            response?.invoke()
+        }.setActionTextColor(resources.getColor(R.color.color_green, null))
+    }
+    snackBar.setTextColor(resources.getColor(R.color.my_color, null))
+    snackBar.view.setBackgroundColor(resources.getColor(R.color.light_grey, null))
+    snackBar.show()
+}
+
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
     const val EMAIL = "EMAIL"
     const val VERSION = "version"
+    const val BASE_URL = "https://zenquotes.io/"
+    const val Get_End_Point = "api/today"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
 }

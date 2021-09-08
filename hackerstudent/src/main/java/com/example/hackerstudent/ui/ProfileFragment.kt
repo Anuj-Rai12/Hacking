@@ -5,7 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.ProfileFramgnetBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     private lateinit var binding: ProfileFramgnetBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

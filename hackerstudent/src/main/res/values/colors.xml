@@ -16,4 +16,12 @@
     <color name="light_grey">#f8f8ff</color>
     <color name="forget_text_color">#696969</color>
 
+    <!-- App Color -->
+    <color name="color_yellow">#F9D827</color>
+    <color name="color_green">#62E80C</color>
+    <!-- Other Color-->
+    <color name="light_my_color">#F5A59F</color>
+    <color name="light_green">#fb7268</color>
+    <color name="my_color">#fb7268</color>
+
 </resources>
