@@ -33,4 +33,9 @@
 
     <!-- Profile Screen-->
     <string name="user_profile">Profile</string>
+    <string name="feature_title">Featured course,</string>
+    <string name="Teacher_name">TechUnique</string>
+
+    <!-- Course Item-->
+    <string name="course_thumb">Course Thumbnail</string>
 </resources>

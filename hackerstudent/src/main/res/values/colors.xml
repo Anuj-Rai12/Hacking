@@ -15,6 +15,7 @@
     <color name="link_type_bg">#0000FF</color>
     <color name="light_grey">#f8f8ff</color>
     <color name="forget_text_color">#696969</color>
+    <color name="user_desc_color">#827E7E</color>
 
     <!-- App Color -->
     <color name="color_yellow">#F9D827</color>

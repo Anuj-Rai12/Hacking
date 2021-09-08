@@ -29,19 +29,29 @@
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/nav_drawer_menu.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/menu/viedo_preview_menu.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable-v24/ic_email.xml" value="0.2390194075587334" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/custom_rating_bar.xml" value="0.23703703703703705" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/heart_empty.xml" value="0.23703703703703705" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/heart_filled.xml" value="0.23703703703703705" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/ic_heart_empty.xml" value="0.23703703703703705" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/ic_heart_filled.xml" value="0.23703703703703705" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/drawable/ic_quote.xml" value="0.24375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/font/aladin.xml" value="0.25092592592592594" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/activity_main.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/admin_actitvity_main.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/client_actitvity_main.xml" value="0.264" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/course_images.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/create_user_account.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/custom_nav_header.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/custom_progress_bar_layout.xml" value="0.1956521739130435" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/feature_course_layout.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/forget_fragment.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/home_screen_framgment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/layout_image_course.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/login_with_email_password.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/mke_framgent.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/phone_otp_faragment.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/profile_framgnet.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/title_qoute_framgent.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/menu/nav_bottom_menu.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/menu/nav_drawer.xml" value="0.2234375" />
       </map>

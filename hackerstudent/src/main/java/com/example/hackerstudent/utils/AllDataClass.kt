@@ -1,5 +1,7 @@
 package com.example.hackerstudent.utils
 
+import androidx.paging.PagingData
+import com.example.hackerstudent.api.Motivation
 import com.google.firebase.firestore.IgnoreExtraProperties
 
 @IgnoreExtraProperties
@@ -53,6 +55,7 @@ data class GetCourseContent(
     val module: Map<String, Module>? = null
 )
 
+
 data class UserViewOnCourse(
     val bywhom: String? = null,
     val rateing: String? = null,
@@ -72,3 +75,22 @@ data class FireBaseCourseTitle(
     val currentprice: String? = null,
     val review: UserViewOnCourse? = null
 )
+
+
+sealed class CourseSealed {
+
+    data class Image(
+        val Id: String,
+        val raw: Int
+    ) : CourseSealed()
+
+    data class Title(
+        val title: String?,
+        val motivation: Motivation?
+    ) : CourseSealed()
+
+    data class Course(
+        val title: String,
+        val fireBaseCourseTitle: PagingData<FireBaseCourseTitle>
+    ) : CourseSealed()
+}

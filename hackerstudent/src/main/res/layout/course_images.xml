@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/Course_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:contentDescription="@string/course_thumb"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/flag_india" />
+
+    <TextView
+        android:id="@+id/course_title_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:fontFamily="@font/allerta"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/Course_thumbnail"
+        app:layout_constraintRight_toRightOf="@id/Course_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/Course_thumbnail"
+        tools:text="Live Trainer THe Course in The Worked All The Quieten" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/teacher_profile_Name"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_margin="4dp"
+        android:padding="8dp"
+        app:cardBackgroundColor="@color/cheery_red"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="@null"
+        app:layout_constraintLeft_toLeftOf="@id/course_title_file"
+        app:layout_constraintTop_toBottomOf="@id/course_title_file">
+
+        <TextView
+            android:id="@+id/roundedSenderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/patrick_hand"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="S" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/sender_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/allerta"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/teacher_profile_Name"
+        app:layout_constraintLeft_toRightOf="@id/teacher_profile_Name"
+        app:layout_constraintTop_toTopOf="@id/teacher_profile_Name"
+        app:layout_constraintVertical_bias=".3"
+        tools:text="@string/Teacher_name" />
+
+    <RatingBar
+        android:id="@+id/rating_bar_style"
+        style="@style/CustomRatingBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:rating="3.5"
+        app:layout_constraintLeft_toLeftOf="@id/teacher_profile_Name"
+        app:layout_constraintTop_toBottomOf="@id/teacher_profile_Name" />
+
+    <TextView
+        android:id="@+id/current_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/rating_bar_style"
+        app:layout_constraintTop_toBottomOf="@id/rating_bar_style"
+        tools:text="₹ 45.50" />
+
+    <TextView
+        android:id="@+id/MRP_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textColor="@color/user_desc_color"
+        app:layout_constraintBottom_toBottomOf="@id/current_price"
+        app:layout_constraintLeft_toRightOf="@id/current_price"
+        app:layout_constraintTop_toTopOf="@id/current_price"
+        tools:text="₹ 1000" />
+
+    <TextView
+        android:id="@+id/discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:textColor="@color/color_red"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/MRP_price"
+        app:layout_constraintLeft_toRightOf="@id/MRP_price"
+        app:layout_constraintTop_toTopOf="@id/MRP_price"
+        tools:text="10%" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

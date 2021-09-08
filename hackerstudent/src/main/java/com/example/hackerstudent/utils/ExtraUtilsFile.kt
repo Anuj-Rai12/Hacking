@@ -133,4 +133,5 @@ object GetConstStringObj {
     const val BASE_URL = "https://zenquotes.io/"
     const val Get_End_Point = "api/today"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
+    const val Rs = "₹"
 }
