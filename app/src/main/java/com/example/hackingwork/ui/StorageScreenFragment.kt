@@ -169,11 +169,10 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
             workerInstance.getWorkInfoByIdLiveData(uploadMyFile.id)
                 .observe(viewLifecycleOwner) { work ->
                     Log.i(TAG, "uploadFile: ${work.state}")
-                    if (work.state.toString() == "RUNNING")
-                        showLoading()
-                    if (work.state.toString() == "SUCCEEDED" || work.state.toString() == "FAILED")
-                        hideLoading()
+//                    if (work.state.toString() == "SUCCEEDED" || work.state.toString() == "FAILED")
+//                        hideLoading()
                     work.outputData.getString(GetConstStringObj.EMAIL_VERIFICATION_LINK)?.let {
+                        hideLoading()
                         val courseInstance = Helper.deserializeFromJson<GetCourseContent>(it)
                         courseInstance?.let { get ->
                             dir(title = "File UploadStatus", message = getMsg(get))
