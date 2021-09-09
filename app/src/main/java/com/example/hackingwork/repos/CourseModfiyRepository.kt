@@ -74,7 +74,7 @@ class CourseModfiyRepository @Inject constructor(
         }.flowOn(IO)
 
     fun unpaidModify(
-        courseDetail: UnpaidClass?,
+        courseDetail: UnpaidClass,
         udi: String,
         uploadType: Boolean,
         firstTimeAccount: Boolean
@@ -85,22 +85,40 @@ class CourseModfiyRepository @Inject constructor(
         emit(MySealed.Loading(str))
         val data = try {
             val querySet = fireStore.collection(GetConstStringObj.UNPAID).document(udi)
-            if (uploadType && firstTimeAccount)
-                querySet.set(courseDetail!!).await()
-            else if (uploadType && !firstTimeAccount)
+            val queryUser = fireStore.collection(GetConstStringObj.USERS).document(udi)
+            if (uploadType && firstTimeAccount) {
+                queryUser.update(
+                    "courses.${courseDetail.courses?.keys?.first()}",
+                    courseDetail.courses?.values?.first()
+                ).await()
+                querySet.set(courseDetail).await()
+            } else if (uploadType && !firstTimeAccount) {
+                queryUser.update(
+                    "courses.${courseDetail.courses?.keys?.first()}",
+                    courseDetail.courses?.values?.first()
+                ).await()
                 querySet.update(
-                    "courses.${courseDetail?.courses?.keys?.first()}",
-                    courseDetail?.courses?.values?.first()
+                    "courses.${courseDetail.courses?.keys?.first()}",
+                    courseDetail.courses?.values?.first()
                 )
-            else
-                querySet.delete().await()
+            } else {
+                queryUser.update(
+                    "courses.${courseDetail.courses?.keys?.first()}",
+                    FieldValue.delete()
+                ).await()
 
+                querySet.update(
+                    "courses.${courseDetail.courses?.keys?.first()}",
+                    FieldValue.delete()
+                ).await()
+            }
             MySealed.Success(successStr)
         } catch (e: Exception) {
             MySealed.Error(null, e)
         }
         emit(data)
     }.flowOn(IO)
+
 
     fun modifyPaidUser(course: Map<String, CourseDetail>, udi: String, uploadType: Boolean) = flow {
         val str = if (uploadType) "Adding paid Course to User" else "Deleting paid Course to User"

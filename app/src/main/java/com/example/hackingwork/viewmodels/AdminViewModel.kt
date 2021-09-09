@@ -107,7 +107,7 @@ class AdminViewModel @Inject constructor(
         .asLiveData()
 
     fun modifyUnpaidUser(
-        courseDetail: UnpaidClass?,
+        courseDetail: UnpaidClass,
         udi: String,
         uploadType: Boolean,
         firstTimeAccount: Boolean

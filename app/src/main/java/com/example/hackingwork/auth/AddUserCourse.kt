@@ -17,7 +17,7 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
     private lateinit var binding: AddUserCourseFragmentBinding
     private var getPaymentOption: String? = null
     private val myViewModel: AdminViewModel by viewModels()
-    private var userUnpaidAccType: String = "Old Unpaid Account"
+    //private var userUnpaidAccType: String = "Old Unpaid Account"
 
     @Inject
     lateinit var customProgress: CustomProgress
@@ -25,9 +25,9 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
         super.onViewCreated(view, savedInstanceState)
         savedInstanceState?.let {
             getPaymentOption = it.getString(GetConstStringObj.Create_Module)
-            it.getString(GetConstStringObj.UNPAID)?.let { acc ->
+            /*it.getString(GetConstStringObj.UNPAID)?.let { acc ->
                 userUnpaidAccType = acc
-            }
+            }*/
         }
         binding = AddUserCourseFragmentBinding.bind(view)
         binding.radioGrp.setOnCheckedChangeListener { _, checkedId ->
@@ -36,9 +36,6 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                 binding.paidOption2.id -> binding.paidOption2.text.toString()
                 else -> null
             }
-        }
-        binding.radioGrp2.setOnCheckedChangeListener { _, _ ->
-            userUnpaidAccType = binding.newUnpaidUser.text.toString()
         }
         binding.AddCourse.setOnClickListener {
             val udi = binding.userCourseId.text.toString()
@@ -58,7 +55,7 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                     modifyUnpaid(
                         courseDetail = data,
                         udi = udi,
-                        firstTimeAccount = userUnpaidAccType == getString(R.string.newUser_usr)
+                        firstTimeAccount = binding.newUnpaidUser.isChecked
                     )
                 }
             } else {
@@ -80,12 +77,11 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                 activity?.msg("Please Enter Correct Info")
                 return@setOnClickListener
             }
-
-            if (getPaymentOption == getString(R.string.payment_Option_1)) {
-                modifyUnpaid(courseDetail = null, udi = udi, uploadType = false)
-            } else {
-                CourseDetail().also {
-                    val data = mapOf(courseName to it)
+            CourseDetail().also {
+                val data = mapOf(courseName to it)
+                if (getPaymentOption == getString(R.string.payment_Option_1)) {
+                    modifyUnpaid(courseDetail = UnpaidClass(courses = data), udi = udi, uploadType = false)
+                } else {
                     modifyPaid(data, udi, false)
                 }
             }
@@ -128,7 +124,7 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
     }
 
     private fun modifyUnpaid(
-        courseDetail: UnpaidClass?,
+        courseDetail: UnpaidClass,
         udi: String,
         uploadType: Boolean = true,
         firstTimeAccount: Boolean = true
@@ -174,6 +170,6 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
         getPaymentOption?.let {
             outState.putString(GetConstStringObj.Create_Module, it)
         }
-        outState.putString(GetConstStringObj.UNPAID, userUnpaidAccType)
+        //       outState.putString(GetConstStringObj.UNPAID, userUnpaidAccType)
     }
 }

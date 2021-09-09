@@ -1,4 +1,4 @@
-package com.example.hackingwork.recycle.paginate.header
+package com.example.hackerstudent.paginate
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hackingwork.databinding.HeaderFooterLoadingBinding
+import com.example.hackerstudent.databinding.HeaderFooterLoadingBinding
 
 class HeaderAndFooterAdaptor(private val error: (String) -> Unit, private val retry: () -> Unit) :
     LoadStateAdapter<HeaderAndFooterAdaptor.LoadingViewHolder>() {
@@ -33,7 +33,7 @@ class HeaderAndFooterAdaptor(private val error: (String) -> Unit, private val re
                     }
                     if (errorTxt.isVisible) {
                         error(mError!!)
-                    }
+                        1}
                 }
             }
         }

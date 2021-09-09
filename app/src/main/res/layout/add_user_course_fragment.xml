@@ -106,21 +106,14 @@
                 android:textSize="18sp" />
         </RadioGroup>
 
-        <RadioGroup
-            android:id="@+id/radio_grp2"
+        <CheckBox
+            android:id="@+id/newUnpaidUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/newUser_usr"
             app:layout_constraintLeft_toLeftOf="@id/radio_grp"
-            app:layout_constraintTop_toBottomOf="@id/radio_grp">
-
-            <RadioButton
-                android:id="@+id/newUnpaidUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newUser_usr"
-                android:textSize="18sp" />
-
-        </RadioGroup>
+            app:layout_constraintTop_toBottomOf="@id/radio_grp"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/AddCourse"
@@ -131,9 +124,9 @@
             android:text="@string/add_cou"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:layout_constraintLeft_toLeftOf="@id/radio_grp2"
-            app:layout_constraintRight_toRightOf="@id/radio_grp2"
-            app:layout_constraintTop_toBottomOf="@id/radio_grp2" />
+            app:layout_constraintLeft_toLeftOf="@id/newUnpaidUser"
+            app:layout_constraintRight_toRightOf="@id/newUnpaidUser"
+            app:layout_constraintTop_toBottomOf="@id/newUnpaidUser" />
 
         <Button
             android:id="@+id/removed_course"

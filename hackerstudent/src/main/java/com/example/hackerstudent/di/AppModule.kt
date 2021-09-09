@@ -4,7 +4,6 @@ import com.example.hackerstudent.api.RestApi
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.firestore.FirebaseFirestore
-import com.squareup.okhttp.OkHttpClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,5 +38,11 @@ object AppModule {
     @Singleton
     @Provides
     fun fireStore() = FirebaseFirestore.getInstance()
+
+    @Singleton
+    @Provides
+    fun getQuery(fireStore: FirebaseFirestore) =
+        fireStore.collection(GetConstStringObj.Create_course)
+            .limit(GetConstStringObj.Per_page.toLong())
 
 }

@@ -38,4 +38,6 @@
 
     <!-- Course Item-->
     <string name="course_thumb">Course Thumbnail</string>
+    <string name="btn_retry">Retry</string>
+    <string name="error_text">UnAble to Load More.</string>
 </resources>
