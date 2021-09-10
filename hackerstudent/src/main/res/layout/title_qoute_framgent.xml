@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/quote_title"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="@font/patrick_hand"
@@ -15,6 +15,7 @@
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="All Men Must Die The Line In The North" />
 
@@ -22,10 +23,10 @@
         android:id="@+id/writer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:fontFamily="@font/patrick_hand"
         android:textColor="@color/black"
         android:textSize="15sp"
-        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/quote_title"

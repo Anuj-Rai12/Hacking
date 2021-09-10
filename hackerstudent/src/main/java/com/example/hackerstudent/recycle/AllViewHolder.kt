@@ -1,5 +1,6 @@
 package com.example.hackerstudent.recycle
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.hackerstudent.databinding.FeatureCourseLayoutBinding
@@ -20,10 +21,11 @@ sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindi
 
     class CourseQuoteHolder(private val binding: TitleQouteFramgentBinding) :
         AllViewHolder(binding) {
+        @SuppressLint("SetTextI18n")
         fun bindIt(title: CourseSealed.Title) {
             binding.apply {
                 title.motivation?.let {
-                    writerTitle.text = it.first().a
+                    writerTitle.text = "-${it.first().a}"
                     quoteTitle.text = it.first().q
                 }
             }

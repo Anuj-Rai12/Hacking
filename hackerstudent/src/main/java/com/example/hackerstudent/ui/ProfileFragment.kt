@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.ProfileFramgnetBinding
-import com.example.hackerstudent.utils.show
+import com.example.hackerstudent.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -14,7 +14,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     private lateinit var binding: ProfileFramgnetBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity?)!!.show()
+        (activity as AppCompatActivity?)!!.hide()
         binding = ProfileFramgnetBinding.bind(view)
     }
 }
