@@ -3,6 +3,8 @@ package com.example.hackerstudent.paginate
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
+import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.CourseImagesBinding
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.example.hackerstudent.utils.UploadFireBaseData
@@ -18,7 +20,11 @@ class PaginationCourseViewHolder(private val binding: CourseImagesBinding) :
         binding.apply {
             val current = uploadFireBaseData.fireBaseCourseTitle?.currentprice?.toInt() ?: 1001
             val mrp = uploadFireBaseData.fireBaseCourseTitle?.totalprice?.toInt() ?: 10101
-            CourseThumbnail.load(uploadFireBaseData.thumbnail)
+            CourseThumbnail.load(uploadFireBaseData.thumbnail) {
+                crossfade(true)
+                placeholder(R.drawable.book_icon)
+                transformations(CircleCropTransformation())
+            }
             courseTitleFile.text = uploadFireBaseData.fireBaseCourseTitle?.coursename
             roundedSenderTextView.text = "T"
             ratingBarStyle.rating = 4.toFloat()
