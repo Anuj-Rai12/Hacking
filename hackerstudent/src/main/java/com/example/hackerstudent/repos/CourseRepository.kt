@@ -1,8 +1,8 @@
 package com.example.hackerstudent.repos
 
 import com.example.hackerstudent.api.RestApi
-import com.example.hackerstudent.utils.FireBaseCourseTitle
 import com.example.hackerstudent.utils.MySealed
+import com.example.hackerstudent.utils.UploadFireBaseData
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
@@ -30,9 +30,9 @@ class CourseRepository @Inject constructor(private val restApi: RestApi) {
         emit(MySealed.Loading("Loading Featured Course"))
         val data = try {
             val info = query.get().await()
-            val courseData: MutableList<FireBaseCourseTitle> = mutableListOf()
+            val courseData: MutableList<UploadFireBaseData> = mutableListOf()
             info.forEach {
-                courseData.add(it.toObject(FireBaseCourseTitle::class.java))
+                courseData.add(it.toObject(UploadFireBaseData::class.java))
             }
             MySealed.Success(courseData)
         } catch (e: Exception) {

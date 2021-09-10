@@ -24,6 +24,7 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/feature_title"
         app:layout_constraintRight_toRightOf="@id/feature_title"

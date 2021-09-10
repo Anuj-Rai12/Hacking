@@ -1,6 +1,5 @@
 package com.example.hackerstudent.recycle
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,9 +9,10 @@ import com.example.hackerstudent.databinding.FeatureCourseLayoutBinding
 import com.example.hackerstudent.databinding.LayoutImageCourseBinding
 import com.example.hackerstudent.databinding.TitleQouteFramgentBinding
 import com.example.hackerstudent.utils.CourseSealed
+import com.example.hackerstudent.utils.UploadFireBaseData
 
 
-class HomeAdaptorView(private val context: Context) :
+class HomeAdaptorView(private val item:(UploadFireBaseData)->Unit) :
     ListAdapter<CourseSealed, AllViewHolder>(diff) {
     companion object {
         val diff = object : DiffUtil.ItemCallback<CourseSealed>() {
@@ -60,8 +60,7 @@ class HomeAdaptorView(private val context: Context) :
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    ),
-                    context = context
+                    )
                 )
             }
             R.layout.layout_image_course -> {
@@ -81,7 +80,7 @@ class HomeAdaptorView(private val context: Context) :
         val currentItem=getItem(position)
         currentItem?.let {
             when(holder){
-                is AllViewHolder.CourseFeatureLayout ->  holder.bindIt(currentItem as CourseSealed.Course)
+                is AllViewHolder.CourseFeatureLayout ->  holder.bindIt(currentItem as CourseSealed.Course,item)
                 is AllViewHolder.CourseQuoteHolder -> holder.bindIt(currentItem as CourseSealed.Title)
                 is AllViewHolder.ImageViewHolder -> holder.bindIt(currentItem as CourseSealed.Image)
             }

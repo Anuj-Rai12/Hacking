@@ -36,7 +36,6 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //(activity as AppCompatActivity?)!!.hide()
         (activity as AppCompatActivity?)!!.hide()
         binding = HomeScreenFramgmentBinding.bind(view)
         setUpRecycleView()
@@ -65,10 +64,10 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
                 }
                 is MySealed.Success -> {
                     hideLoading()
-                    val course = mutableListOf<FireBaseCourseTitle>()
+                    val course = mutableListOf<UploadFireBaseData>()
                     val data = it.data as MutableList<*>
                     data.forEach { value ->
-                        val fireBaseCourseTitle = value as FireBaseCourseTitle
+                        val fireBaseCourseTitle = value as UploadFireBaseData
                         course.add(fireBaseCourseTitle)
                     }
                     courseData.add(
@@ -89,7 +88,10 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         binding.mainRecycleView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            homeAdaptorView = HomeAdaptorView(requireActivity())
+            homeAdaptorView = HomeAdaptorView{
+                Log.i(TAG, "setUpRecycleView: $it")
+                context.msg("go it")
+            }
             adapter = homeAdaptorView
         }
     }

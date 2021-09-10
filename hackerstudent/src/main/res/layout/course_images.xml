@@ -69,7 +69,7 @@
         app:layout_constraintLeft_toRightOf="@id/teacher_profile_Name"
         app:layout_constraintTop_toTopOf="@id/teacher_profile_Name"
         app:layout_constraintVertical_bias=".3"
-        tools:text="@string/Teacher_name" />
+        android:text="@string/Teacher_name" />
 
     <RatingBar
         android:id="@+id/rating_bar_style"

@@ -1,12 +1,12 @@
 package com.example.hackerstudent.recycle
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.hackerstudent.databinding.FeatureCourseLayoutBinding
 import com.example.hackerstudent.databinding.LayoutImageCourseBinding
 import com.example.hackerstudent.databinding.TitleQouteFramgentBinding
 import com.example.hackerstudent.utils.CourseSealed
+import com.example.hackerstudent.utils.UploadFireBaseData
 
 sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -30,14 +30,19 @@ sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindi
         }
     }
 
-    class CourseFeatureLayout(
-        private val binding: FeatureCourseLayoutBinding,
-        private val context: Context,
-    ) :
+    class CourseFeatureLayout(private val binding: FeatureCourseLayoutBinding) :
         AllViewHolder(binding) {
-        fun bindIt(course: CourseSealed.Course) {
+        private lateinit var recycleAdaptor: CourseRecycleAdaptor
+        fun bindIt(course: CourseSealed.Course, item: (UploadFireBaseData) -> Unit) {
             binding.featureTitle.text = course.title
-            //binding
+            binding.courseRecycle.apply {
+                setHasFixedSize(true)
+                recycleAdaptor = CourseRecycleAdaptor {
+                    item(it)
+                }
+                adapter = recycleAdaptor
+            }
+            recycleAdaptor.submitList(course.fireBaseCourseTitle)
         }
     }
 }

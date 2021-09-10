@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.hackerstudent.databinding.CourseImagesBinding
-import com.example.hackerstudent.utils.FireBaseCourseTitle
+import com.example.hackerstudent.utils.UploadFireBaseData
 
-class PaginationAdaptor(private val itemClicked: (FireBaseCourseTitle) -> Unit) :
-    PagingDataAdapter<FireBaseCourseTitle, PaginationCourseViewHolder>(courseDiff) {
+class PaginationAdaptor(private val itemClicked: (UploadFireBaseData) -> Unit) :
+    PagingDataAdapter<UploadFireBaseData, PaginationCourseViewHolder>(courseDiff) {
     override fun onBindViewHolder(holder: PaginationCourseViewHolder, position: Int) {
         val current = getItem(position)
         current?.let {
@@ -23,21 +23,16 @@ class PaginationAdaptor(private val itemClicked: (FireBaseCourseTitle) -> Unit) 
     }
 
     companion object {
-        val courseDiff = object : DiffUtil.ItemCallback<FireBaseCourseTitle>() {
+        val courseDiff = object : DiffUtil.ItemCallback<UploadFireBaseData>() {
             override fun areItemsTheSame(
-                oldItem: FireBaseCourseTitle,
-                newItem: FireBaseCourseTitle
-            ): Boolean {
-                return oldItem.lastdate == newItem.lastdate
-            }
+                oldItem: UploadFireBaseData,
+                newItem: UploadFireBaseData
+            ) = oldItem.fireBaseCourseTitle?.coursename == newItem.fireBaseCourseTitle?.coursename
 
             override fun areContentsTheSame(
-                oldItem: FireBaseCourseTitle,
-                newItem: FireBaseCourseTitle
-            ): Boolean {
-                return oldItem == newItem
-            }
-
+                oldItem: UploadFireBaseData,
+                newItem: UploadFireBaseData
+            ) = oldItem == newItem
         }
     }
 }

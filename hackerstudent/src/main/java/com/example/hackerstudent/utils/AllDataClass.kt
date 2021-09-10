@@ -91,6 +91,6 @@ sealed class CourseSealed {
 
     data class Course(
         val title: String,
-        val fireBaseCourseTitle: List<FireBaseCourseTitle>
+        val fireBaseCourseTitle: List<UploadFireBaseData>
     ) : CourseSealed()
 }

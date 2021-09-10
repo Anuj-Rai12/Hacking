@@ -3,10 +3,12 @@ package com.example.hackerstudent.utils
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hackerstudent.MainActivity.Companion.wifiManager
@@ -137,6 +139,13 @@ fun AppCompatActivity.hide() {
 
 fun AppCompatActivity.show() {
     this.supportActionBar!!.show()
+}
+
+fun getDiscount(currPrice: Double, mrpPrice: Double) =
+    (((mrpPrice - currPrice) / mrpPrice) * 100).toInt()
+
+fun Context.msg(title: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, title, length).show()
 }
 
 object GetConstStringObj {
