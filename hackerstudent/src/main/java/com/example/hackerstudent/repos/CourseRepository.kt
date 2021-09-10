@@ -1,10 +1,13 @@
 package com.example.hackerstudent.repos
 
 import com.example.hackerstudent.api.RestApi
+import com.example.hackerstudent.utils.FireBaseCourseTitle
 import com.example.hackerstudent.utils.MySealed
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.tasks.await
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -22,4 +25,21 @@ class CourseRepository @Inject constructor(private val restApi: RestApi) {
         }
         emit(data)
     }.flowOn(IO)
+
+    fun getCourseOnlyThree(query: Query) = flow {
+        emit(MySealed.Loading("Loading Featured Course"))
+        val data = try {
+            val info = query.get().await()
+            val courseData: MutableList<FireBaseCourseTitle> = mutableListOf()
+            info.forEach {
+                courseData.add(it.toObject(FireBaseCourseTitle::class.java))
+            }
+            MySealed.Success(courseData)
+        } catch (e: Exception) {
+            MySealed.Error(e, null)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
 }

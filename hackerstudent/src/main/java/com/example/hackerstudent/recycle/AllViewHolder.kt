@@ -1,14 +1,12 @@
 package com.example.hackerstudent.recycle
 
 import android.content.Context
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.hackerstudent.databinding.FeatureCourseLayoutBinding
 import com.example.hackerstudent.databinding.LayoutImageCourseBinding
 import com.example.hackerstudent.databinding.TitleQouteFramgentBinding
 import com.example.hackerstudent.utils.CourseSealed
-import kotlinx.coroutines.launch
 
 sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -20,7 +18,7 @@ sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindi
         }
     }
 
-    class CourseFeatureLayout(private val binding: TitleQouteFramgentBinding) :
+    class CourseQuoteHolder(private val binding: TitleQouteFramgentBinding) :
         AllViewHolder(binding) {
         fun bindIt(title: CourseSealed.Title) {
             binding.apply {
@@ -32,17 +30,14 @@ sealed class AllViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindi
         }
     }
 
-    class CourseQuoteHolder(
+    class CourseFeatureLayout(
         private val binding: FeatureCourseLayoutBinding,
         private val context: Context,
-        private val lifecycleCoroutineScope: LifecycleCoroutineScope
     ) :
         AllViewHolder(binding) {
         fun bindIt(course: CourseSealed.Course) {
             binding.featureTitle.text = course.title
-            lifecycleCoroutineScope.launch {
-
-            }
+            //binding
         }
     }
 }

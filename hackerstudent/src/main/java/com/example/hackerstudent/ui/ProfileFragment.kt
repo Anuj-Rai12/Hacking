@@ -2,9 +2,11 @@ package com.example.hackerstudent.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.ProfileFramgnetBinding
+import com.example.hackerstudent.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,6 +14,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     private lateinit var binding: ProfileFramgnetBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.show()
         binding = ProfileFramgnetBinding.bind(view)
     }
 }

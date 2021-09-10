@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.hackerstudent.MainActivity.Companion.wifiManager
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
@@ -113,8 +114,13 @@ fun getPhoneNumber(credential: Credential): String? {
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit)? = null) {
-    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
+fun Activity.msg(
+    title: String,
+    setAction: String? = null,
+    response: (() -> Unit)? = null,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, length)
     setAction?.let {
         snackBar.setAction(it) {
             response?.invoke()
@@ -123,6 +129,14 @@ fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit
     snackBar.setTextColor(resources.getColor(R.color.my_color, null))
     snackBar.view.setBackgroundColor(resources.getColor(R.color.light_grey, null))
     snackBar.show()
+}
+
+fun AppCompatActivity.hide() {
+    this.supportActionBar!!.hide()
+}
+
+fun AppCompatActivity.show() {
+    this.supportActionBar!!.show()
 }
 
 object GetConstStringObj {
@@ -136,5 +150,5 @@ object GetConstStringObj {
     const val Rs = "₹"
     const val Create_course = "Course"
     const val Create_Module = "Module"
-    const val Per_page=3
+    const val Per_page = 3
 }

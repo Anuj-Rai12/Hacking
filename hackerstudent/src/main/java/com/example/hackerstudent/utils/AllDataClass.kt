@@ -1,6 +1,6 @@
 package com.example.hackerstudent.utils
 
-import androidx.paging.PagingData
+
 import com.example.hackerstudent.api.Motivation
 import com.google.firebase.firestore.IgnoreExtraProperties
 
@@ -91,6 +91,6 @@ sealed class CourseSealed {
 
     data class Course(
         val title: String,
-        val fireBaseCourseTitle: PagingData<FireBaseCourseTitle>
+        val fireBaseCourseTitle: List<FireBaseCourseTitle>
     ) : CourseSealed()
 }

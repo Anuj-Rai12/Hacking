@@ -1,9 +1,11 @@
 package com.example.hackerstudent
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.PopupMenu
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,8 +27,11 @@ class ClientActivity : AppCompatActivity() {
 
     @Inject
     lateinit var customProgress: CustomProgress
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.window?.statusBarColor = resources.getColor(R.color.white, null)
         binding = ClientActitvityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navHostFragment =
