@@ -3,7 +3,6 @@ package com.example.hackerstudent.paginate
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.CircleCropTransformation
 import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.CourseImagesBinding
 import com.example.hackerstudent.utils.GetConstStringObj
@@ -23,7 +22,6 @@ class PaginationCourseViewHolder(private val binding: CourseImagesBinding) :
             CourseThumbnail.load(uploadFireBaseData.thumbnail) {
                 crossfade(true)
                 placeholder(R.drawable.book_icon)
-                transformations(CircleCropTransformation())
             }
             courseTitleFile.text = uploadFireBaseData.fireBaseCourseTitle?.coursename
             roundedSenderTextView.text = "T"
