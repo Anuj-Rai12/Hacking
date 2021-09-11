@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_person_mnu"
+        android:icon="@drawable/ic_baseline_person_34"
         android:iconTint="@color/white"
         android:title="Profile" />
 </menu>
