@@ -94,3 +94,19 @@ sealed class CourseSealed {
         val fireBaseCourseTitle: List<UploadFireBaseData>
     ) : CourseSealed()
 }
+
+sealed class ProfileDataClass {
+    data class ImageHeader(
+        val email: String,
+        val firstname: String,
+        val lastname: String
+    ) : ProfileDataClass()
+
+    data class Title(
+        val title: String
+    ) : ProfileDataClass()
+
+    data class OptionFooter(
+        val data: String
+    ) : ProfileDataClass()
+}

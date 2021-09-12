@@ -4,11 +4,14 @@
     <string name="app_tag">HACK</string>
     <string name="app_login">Login Screen.</string>
     <string name="app_create_acc">Create Account.</string>
+    <string name="app_acc">Account</string>
+    <string name="app_home">Home</string>
     <string name="app_email_hint">Email</string>
     <string name="app_pass_hint">Password</string>
     <string name="app_remember">Remember Me</string>
     <string name="app_login_btn">Login</string>
     <string name="app_sign_btn">Sign Up</string>
+    <string name="app_sign_out_btn">Log Out</string>
     <string name="forgot_password">Forget Password?</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

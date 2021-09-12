@@ -4,11 +4,11 @@
         android:id="@+id/homeScreenFragment"
         android:icon="@drawable/ic_home"
         android:iconTint="@color/white"
-        android:title="Home" />
+        android:title="@string/app_home" />
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_baseline_person_34"
         android:iconTint="@color/white"
-        android:title="Profile" />
+        android:title="@string/app_acc" />
 </menu>

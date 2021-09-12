@@ -8,9 +8,11 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.hackerstudent.MainActivity.Companion.wifiManager
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
@@ -133,6 +135,14 @@ fun Activity.msg(
     snackBar.show()
 }
 
+fun View.hide() {
+    this.isVisible = false
+}
+
+fun View.show() {
+    this.isVisible = true
+}
+
 fun AppCompatActivity.hide() {
     this.supportActionBar!!.hide()
 }
@@ -160,4 +170,7 @@ object GetConstStringObj {
     const val Create_course = "Course"
     const val Create_Module = "Module"
     const val Per_page = 3
+    const val change_profile_name="Change UserName"
+    const val change_email_address="Change Password"
+    const val change_profile_password="Change Email Address"
 }
