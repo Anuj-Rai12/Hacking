@@ -52,11 +52,11 @@ class ForgetFragment : Fragment(R.layout.forget_fragment) {
             if (!isValidPhone(phone)) {
                 giveMsg(getString(R.string.wrong_phone))
                 return@setOnClickListener
-        }
-        if (!isValidEmail(email)) {
-            giveMsg(getString(R.string.wrong_email))
-            return@setOnClickListener
-        }
+            }
+            if (!isValidEmail(email)) {
+                giveMsg(getString(R.string.wrong_email))
+                return@setOnClickListener
+            }
             dir(phone, email)
         }
         binding.createacc.setOnClickListener {

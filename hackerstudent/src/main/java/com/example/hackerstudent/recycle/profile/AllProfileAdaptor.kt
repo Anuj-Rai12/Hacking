@@ -18,6 +18,7 @@ class AllProfileAdaptor(private val item: (String) -> Unit) :
             is ProfileDataClass.ImageHeader -> R.layout.user_profile_section
             is ProfileDataClass.OptionFooter -> R.layout.profile_item_clicked
             is ProfileDataClass.Title -> R.layout.title_qoute_framgent
+            else -> 0
         }
     }
 

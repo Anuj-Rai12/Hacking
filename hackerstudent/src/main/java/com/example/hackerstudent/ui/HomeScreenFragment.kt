@@ -43,6 +43,9 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         if (networkUtils.isConnected()) {
             loadQuote()
         } else {
+            binding.noInternet.show()
+            binding.noInternet.setAnimation(R.raw.no_connection)
+            binding.mainRecycleView.hide()
             activity?.msg("Device is Offline", "RETRY", {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
@@ -88,7 +91,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         binding.mainRecycleView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            homeAdaptorView = HomeAdaptorView{
+            homeAdaptorView = HomeAdaptorView {
                 Log.i(TAG, "setUpRecycleView: $it")
                 context.msg("go it")
             }
@@ -102,6 +105,8 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
     }
 
     private fun loadQuote() {
+        binding.noInternet.hide()
+        binding.mainRecycleView.show()
         courseViewModel.getTodayQuote.observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {

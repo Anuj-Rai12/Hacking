@@ -36,7 +36,7 @@ class MakeSelection : Fragment(R.layout.mke_framgent) {
         binding.emailDetail.text = args.email
         binding.phoneDetail.text = args.phone
         Log.i(TAG, "onViewCreated: String_Flag $stringFlag")
-        if (stringFlag==true) {
+        if (stringFlag == true) {
             sendPasswordRestEmail()
         }
         binding.emailOption.setOnClickListener {
@@ -86,6 +86,7 @@ class MakeSelection : Fragment(R.layout.mke_framgent) {
         super.onPause()
         customProgress.hideLoading()
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         stringFlag?.let {

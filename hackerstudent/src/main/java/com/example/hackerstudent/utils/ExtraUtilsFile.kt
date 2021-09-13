@@ -9,6 +9,8 @@ import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -158,6 +160,25 @@ fun Context.msg(title: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, title, length).show()
 }
 
+@SuppressLint("MissingPermission")
+fun isEmpty(editText: EditText, context: Context, hint: String?): Boolean {
+    return if (editText.text.toString().trim { it <= ' ' }.equals("", ignoreCase = true)) {
+        editText.requestFocus()
+        editText.isCursorVisible = true
+        showKeyboard((context as Activity))
+        Toast.makeText(context, hint, Toast.LENGTH_SHORT).show()
+        true
+    } else {
+        false
+    }
+}
+
+private fun showKeyboard(activity: Activity) {
+    val inputManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT)
+}
+
+
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
@@ -170,7 +191,7 @@ object GetConstStringObj {
     const val Create_course = "Course"
     const val Create_Module = "Module"
     const val Per_page = 3
-    const val change_profile_name="Change UserName"
-    const val change_email_address="Change Password"
-    const val change_profile_password="Change Email Address"
+    const val change_profile_name = "Change UserName"
+    const val change_email_address = "Change Email Address"
+    const val change_profile_password = "Change Password"
 }

@@ -37,7 +37,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activity ->
             val credential: Credential? = activity.data?.getParcelableExtra(Credential.EXTRA_KEY)
             credential?.apply {
-                getPhoneNumber(credential)?.let { number-> binding.phone.setText(number) }
+                getPhoneNumber(credential)?.let { number -> binding.phone.setText(number) }
             }
             getEmailId()
         }

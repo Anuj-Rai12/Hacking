@@ -69,7 +69,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         binding.nextBtn.setOnClickListener {
             val email = binding.emailText.text.toString()
             val password = binding.passwordText.text.toString()
-            val flag=if (binding.remeberme.isChecked)
+            val flag = if (binding.remeberme.isChecked)
                 getString(R.string.Exception_one)
             else
                 getString(R.string.Exception_two)
@@ -82,11 +82,11 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
                 ).show()
                 return@setOnClickListener
             }
-            checkEmail(email, password,flag)
+            checkEmail(email, password, flag)
         }
     }
 
-    private fun checkEmail(email: String, password: String,string: String) {
+    private fun checkEmail(email: String, password: String, string: String) {
         primaryViewModel.mutableStateFlow.value =
             UserStore(
                 email,
@@ -118,9 +118,10 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
             }
         }
     }
+
     private fun saveData(email: String, password: String) {
-        if (primaryViewModel.mutableStateFlow.value?.phone==getString(R.string.Exception_one)) {
-            primaryViewModel.storeUserInfo(email, password,true)
+        if (primaryViewModel.mutableStateFlow.value?.phone == getString(R.string.Exception_one)) {
+            primaryViewModel.storeUserInfo(email, password, true)
         }
     }
 
@@ -128,6 +129,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         super.onPause()
         hideLoading()
     }
+
     private fun getEmail() {
         try {
             if (MainActivity.emailAuthLink == null)

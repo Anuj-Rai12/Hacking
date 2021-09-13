@@ -43,4 +43,8 @@
     <string name="course_thumb">Course Thumbnail</string>
     <string name="btn_retry">Retry</string>
     <string name="error_text">UnAble to Load More.</string>
+    <!-- Submit Layout -->
+    <string name="btn_sbm">Submit</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="new_pass">New Password</string>
 </resources>

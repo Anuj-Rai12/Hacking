@@ -24,6 +24,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     private val authViewModel: PrimaryViewModel by viewModels()
     private lateinit var allProfileAdaptor: AllProfileAdaptor
     private val profileData: MutableList<ProfileDataClass> = mutableListOf()
+    private var updateUserInfoDialog: UpdateUserInfoDialog? = null
 
     @Inject
     lateinit var networkUtils: NetworkUtils
@@ -40,6 +41,9 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         if (networkUtils.isConnected()) {
             getData()
         } else {
+            binding.noInternetProfile.show()
+            binding.noInternetProfile.setAnimation(R.raw.no_connection)
+            binding.profileLayout.hide()
             activity?.msg("Device is Offline", "RETRY", {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
@@ -53,6 +57,8 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     }
 
     private fun getData() {
+        binding.profileLayout.show()
+        binding.noInternetProfile.hide()
         authViewModel.userInfo.observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
@@ -92,10 +98,25 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         binding.profileLayout.apply {
             setHasFixedSize(true)
             allProfileAdaptor = AllProfileAdaptor {
-                context.msg("$it Clicked")
+                if (it == GetConstStringObj.change_profile_name || it == GetConstStringObj.change_profile_password || it == GetConstStringObj.change_email_address)
+                    openDialog(it)
             }
             adapter = allProfileAdaptor
         }
+    }
+
+    private fun openDialog(info: String) {
+        updateUserInfoDialog = UpdateUserInfoDialog(info, { email ->
+            Log.i(TAG, "openDialog: $email")
+            updateUserInfoDialog?.dismiss()
+        }, { password ->
+            Log.i(TAG, "openDialog: $password")
+            updateUserInfoDialog?.dismiss()
+        }, { firstName, lastName ->
+            Log.i(TAG, "openDialog: $firstName and lastName $lastName")
+            updateUserInfoDialog?.dismiss()
+        })
+        updateUserInfoDialog?.show(childFragmentManager, "Update Dialog")
     }
 
     private fun dir(choose: Int = 0, title: String = "Error", msg: String) {
@@ -111,5 +132,6 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     override fun onPause() {
         super.onPause()
         hideLoading()
+        updateUserInfoDialog?.dismiss()
     }
 }
