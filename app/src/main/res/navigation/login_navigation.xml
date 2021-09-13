@@ -158,7 +158,23 @@
         android:id="@+id/nannyLoginFragment"
         android:name="com.uptodd.uptoddapp.ui.nanny.login.NannyLoginFragment"
         android:label="fragment_nanny_login"
-        tools:layout="@layout/fragment_nanny_login"/>
+        tools:layout="@layout/fragment_nanny_login">
+        <action
+            android:id="@+id/action_nannyLoginFragment_to_selectParentFragment"
+            app:destination="@id/selectParentFragment" />
+        <action
+            android:id="@+id/action_nannyLoginFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_nannyLoginFragment_to_babyNameFragment"
+            app:destination="@id/babyNameFragment" />
+        <action
+            android:id="@+id/action_nannyLoginFragment_to_babyGenderFragment"
+            app:destination="@id/babyGenderFragment" />
+        <action
+            android:id="@+id/action_nannyLoginFragment_to_dobFragment"
+            app:destination="@id/dobFragment" />
+    </fragment>
     <fragment
         android:id="@+id/subscriptionOverFragment"
         android:name="com.uptodd.uptoddapp.ui.other.SubscriptionOverFragment"

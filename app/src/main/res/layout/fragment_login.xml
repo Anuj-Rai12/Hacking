@@ -161,7 +161,7 @@
                     android:text="@string/nanny_mode"
                     android:textAllCaps="false"
                     android:textSize="14sp"
-                    android:visibility="gone" />
+                   />
 
             </LinearLayout>
 

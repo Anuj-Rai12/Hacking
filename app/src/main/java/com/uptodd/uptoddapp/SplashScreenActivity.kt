@@ -97,6 +97,7 @@ class SplashScreenActivity : AppCompatActivity() {
             override fun run() {
                 runOnUiThread {
 
+
                 }
             }
         }, 500)
@@ -177,10 +178,10 @@ class SplashScreenActivity : AppCompatActivity() {
                 "Normal"
             ) == "Nanny"
         ) {
-            if (permissionGranted) {
+
                 startActivity(Intent(this, TodosListActivity::class.java))
                 this.finishAffinity()
-            }
+
         } else if (preferences.contains("userType") && preferences.getString(
                 "userType",
                 "Normal"
