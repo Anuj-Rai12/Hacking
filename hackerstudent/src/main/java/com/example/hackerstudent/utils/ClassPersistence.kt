@@ -61,13 +61,19 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
         email: String,
         password: String
     ) {
-        context.dataStore.edit {mutablePreferences ->
-            mutablePreferences[data.Ip_Address]=ipAddress
-            mutablePreferences[data.First_Name]=firstname
-            mutablePreferences[data.Last_Name]=lastname
-            mutablePreferences[data.Phone_Number]=phone
-            mutablePreferences[data.EMAIL_ADDRESS]=email
-            mutablePreferences[data.USER_PASSWORD]=password
+        context.dataStore.edit { mutablePreferences ->
+            mutablePreferences[data.Ip_Address] = ipAddress
+            mutablePreferences[data.First_Name] = firstname
+            mutablePreferences[data.Last_Name] = lastname
+            mutablePreferences[data.Phone_Number] = phone
+            mutablePreferences[data.EMAIL_ADDRESS] = email
+            mutablePreferences[data.USER_PASSWORD] = password
+        }
+    }
+
+    suspend fun updatePassword(password: String) {
+        context.dataStore.edit { mutablePreferences ->
+            mutablePreferences[data.USER_PASSWORD] = password
         }
     }
 

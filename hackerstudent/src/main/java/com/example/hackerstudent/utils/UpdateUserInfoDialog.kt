@@ -8,19 +8,25 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.AlertDialogLayoutBinding
+import com.example.hackerstudent.viewmodels.PrimaryViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class UpdateUserInfoDialog constructor(
     private val title: String? = null,
     private val sendEmail: (String) -> Unit,
-    private val sendPass: (String) -> Unit,
+    private val sendPass: (String, String, String) -> Unit,
     private val sendUser: (String, String) -> Unit
 ) : DialogFragment() {
     private lateinit var binding: AlertDialogLayoutBinding
     private var alertDialog: AlertDialog.Builder? = null
-
+    private val authViewModel: PrimaryViewModel by activityViewModels()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
@@ -39,6 +45,18 @@ class UpdateUserInfoDialog constructor(
             }
             GetConstStringObj.change_profile_password -> {
                 getShowBtn()
+                binding.emailTextPassLayout.show()
+                binding.passwordTextCurrLayout.show()
+                lifecycleScope.launch {
+                    authViewModel.read.asFlow().collectLatest {
+                        if (it.email != "") {
+                            binding.emailTextPass.setText(it.email)
+                        }
+                        if (it.password != "") {
+                            binding.passwordTextCurr.setText(it.password)
+                        }
+                    }
+                }
                 binding.passwordNewLayout.show()
                 binding.confirmPassLayout.show()
                 getPassWord()
@@ -71,15 +89,19 @@ class UpdateUserInfoDialog constructor(
         binding.btnSub.setOnClickListener {
             val newPassword = binding.passwordTextNew.text.toString()
             val confirmPassword = binding.passwordTextConfirm.text.toString()
+            val email = binding.emailTextPass.text.toString()
+            val currentPassword = binding.passwordTextCurr.text.toString()
             if (checkFieldValue(newPassword) || checkFieldValue(confirmPassword) || !isValidPassword(
                     newPassword
                 )
-                || !isValidPassword(confirmPassword) || confirmPassword != newPassword
+                || !isValidPassword(confirmPassword) || confirmPassword != newPassword || !isValidEmail(
+                    email
+                ) || !isValidPassword(currentPassword)
             ) {
                 context?.msg("Please Check Your Password")
                 return@setOnClickListener
             }
-            sendPass(newPassword)
+            sendPass(email, currentPassword, newPassword)
         }
     }
 

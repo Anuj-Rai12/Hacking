@@ -45,6 +45,9 @@
     <string name="error_text">UnAble to Load More.</string>
     <!-- Submit Layout -->
     <string name="btn_sbm">Submit</string>
+    <string name="btn_new_eml">New Email Address</string>
+    <string name="btn_curr_eml">Current Email Address</string>
     <string name="confirm_pass">Confirm Password</string>
+    <string name="current_pass">Current Password</string>
     <string name="new_pass">New Password</string>
 </resources>

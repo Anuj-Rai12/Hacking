@@ -135,7 +135,8 @@ class AuthRepository @Inject constructor(
         emit(MySealed.Loading("Profile Info Is Loading..."))
         val data = try {
             val userInfo =
-                fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!).get().await()
+                fireStore.collection(GetConstStringObj.USERS).document(currentUser?.uid!!).get()
+                    .await()
             if (userInfo.exists()) {
                 val user = userInfo.toObject(CreateUserAccount::class.java)
                 MySealed.Success(user)
@@ -146,4 +147,39 @@ class AuthRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+
+    fun updateUserName(firstname: String, lastname: String) = flow {
+        emit(MySealed.Loading("Updating user name"))
+        val data = try {
+            val query =
+                fireStore.collection(GetConstStringObj.USERS).document("${authInstance.uid}")
+            query.update(
+                GetConstStringObj.FIRSTNAME,
+                firstname,
+                GetConstStringObj.LASTNAME,
+                lastname
+            ).await()
+            MySealed.Success("User Name Updated successfully")
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun passwordRest(email: String, currentPassword: String, newPassword: String) = flow {
+        emit(MySealed.Loading("Updating Users Password"))
+        val data = try {
+            authInstance.signInWithEmailAndPassword(email, currentPassword).await()
+            authInstance.currentUser?.updatePassword(newPassword)?.await()
+            fireStore.collection(GetConstStringObj.USERS)
+                .document("${authInstance.uid}").update("password", newPassword).await()
+            MySealed.Success("Password is Updated successfully")
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 }

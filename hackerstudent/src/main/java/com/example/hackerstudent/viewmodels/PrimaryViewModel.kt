@@ -42,7 +42,13 @@ class PrimaryViewModel @Inject constructor(
         classPersistence.storeInitUserDetail(ipAddress, firstname, lastname, phone, email, password)
     }
 
-    val userInfo =authRepository.getUserProfileInfo().asLiveData()
+    fun updatePassword(password: String) {
+        viewModelScope.launch {
+            classPersistence.updatePassword(password)
+        }
+    }
+
+    val userInfo = authRepository.getUserProfileInfo().asLiveData()
 
     fun sendEmailLinkWithToVerify(email: String) =
         authRepository.sendEmailLinkWithToVerify(email).asLiveData()
@@ -65,4 +71,9 @@ class PrimaryViewModel @Inject constructor(
     fun checkoutCredential(credential: PhoneAuthCredential, phone: String) =
         authRepository.checkoutCredential(credential, phone).asLiveData()
 
+    fun updateUserName(firstname: String, lastname: String) =
+        authRepository.updateUserName(firstname, lastname).asLiveData()
+
+    fun updatePassword(email: String, currentPassword: String, newPassword: String) =
+        authRepository.passwordRest(email, currentPassword, newPassword).asLiveData()
 }

@@ -109,14 +109,46 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         updateUserInfoDialog = UpdateUserInfoDialog(info, { email ->
             Log.i(TAG, "openDialog: $email")
             updateUserInfoDialog?.dismiss()
-        }, { password ->
-            Log.i(TAG, "openDialog: $password")
+        }, { email, currentPassword, NewPassword ->
+            Log.i(TAG, "openDialog: $email , $currentPassword and $NewPassword")
+            updateRestPassword(email, currentPassword, NewPassword)
             updateUserInfoDialog?.dismiss()
         }, { firstName, lastName ->
             Log.i(TAG, "openDialog: $firstName and lastName $lastName")
+            updateUserName(firstName, lastName)
             updateUserInfoDialog?.dismiss()
         })
         updateUserInfoDialog?.show(childFragmentManager, "Update Dialog")
+    }
+
+    private fun updateRestPassword(email: String, currentPassword: String, newPassword: String) {
+        authViewModel.updatePassword(email, currentPassword, newPassword)
+            .observe(viewLifecycleOwner) {
+                updateRepo(it)
+                if (it is MySealed.Success){
+                    authViewModel.updatePassword(password = newPassword)
+                }
+            }
+    }
+
+    private fun updateUserName(firstName: String, lastName: String) {
+        authViewModel.updateUserName(firstName, lastName).observe(viewLifecycleOwner) {
+            updateRepo(it)
+        }
+    }
+
+    private fun updateRepo(it: MySealed<out String>?) {
+        when (it) {
+            is MySealed.Error -> {
+                hideLoading()
+                dir(msg = "${it.exception?.localizedMessage}")
+            }
+            is MySealed.Loading -> showLoading("${it.data}")
+            is MySealed.Success -> {
+                hideLoading()
+                dir(title = "Success", msg = "${it.data}")
+            }
+        }
     }
 
     private fun dir(choose: Int = 0, title: String = "Error", msg: String) {
