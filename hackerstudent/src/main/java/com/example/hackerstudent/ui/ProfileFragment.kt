@@ -106,8 +106,9 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     }
 
     private fun openDialog(info: String) {
-        updateUserInfoDialog = UpdateUserInfoDialog(info, { email ->
-            Log.i(TAG, "openDialog: $email")
+        updateUserInfoDialog = UpdateUserInfoDialog(info, { CurrEmail, CurrentPass, NewEmail ->
+            Log.i(TAG, "openDialog: $CurrEmail and $CurrentPass,and $NewEmail")
+            updateEmail(CurrEmail, CurrentPass, NewEmail)
             updateUserInfoDialog?.dismiss()
         }, { email, currentPassword, NewPassword ->
             Log.i(TAG, "openDialog: $email , $currentPassword and $NewPassword")
@@ -121,12 +122,21 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         updateUserInfoDialog?.show(childFragmentManager, "Update Dialog")
     }
 
+    private fun updateEmail(currEmail: String, currentPass: String, newEmail: String) {
+        authViewModel.updateEmail(currEmail, currentPass, newEmail).observe(viewLifecycleOwner) {
+            updateRepo(it)
+            if (it is MySealed.Success) {
+                authViewModel.updatePassword(password = newEmail, TAG = "EMAIL_ADDRESS")
+            }
+        }
+    }
+
     private fun updateRestPassword(email: String, currentPassword: String, newPassword: String) {
         authViewModel.updatePassword(email, currentPassword, newPassword)
             .observe(viewLifecycleOwner) {
                 updateRepo(it)
-                if (it is MySealed.Success){
-                    authViewModel.updatePassword(password = newPassword)
+                if (it is MySealed.Success) {
+                    authViewModel.updatePassword(password = newPassword, TAG = "PASSWORD")
                 }
             }
     }

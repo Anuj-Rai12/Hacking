@@ -136,8 +136,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/black"
-        app:startIconDrawable="@drawable/ic_lock"
-        tools:visibility="visible">
+        app:startIconDrawable="@drawable/ic_lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_text_new"
@@ -165,8 +164,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/black"
-        app:startIconDrawable="@drawable/ic_lock"
-        tools:visibility="visible">
+        app:startIconDrawable="@drawable/ic_lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_text_confirm"

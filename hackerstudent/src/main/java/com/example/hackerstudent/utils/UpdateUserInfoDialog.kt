@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asFlow
@@ -20,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class UpdateUserInfoDialog constructor(
     private val title: String? = null,
-    private val sendEmail: (String) -> Unit,
+    private val sendEmail: (String,String,String) -> Unit,
     private val sendPass: (String, String, String) -> Unit,
     private val sendUser: (String, String) -> Unit
 ) : DialogFragment() {
@@ -40,23 +42,20 @@ class UpdateUserInfoDialog constructor(
         when (title) {
             GetConstStringObj.change_email_address -> {
                 getShowBtn()
+                binding.emailTextPassLayout.show()
+                binding.passwordTextCurrLayout.show()
                 binding.changeEmailLayout.show()
+                binding.passwordTextCurrLayout.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    bottomToTop = binding.changeEmailLayout.id
+                }
+                updateCurr()
                 getData()
             }
             GetConstStringObj.change_profile_password -> {
                 getShowBtn()
                 binding.emailTextPassLayout.show()
                 binding.passwordTextCurrLayout.show()
-                lifecycleScope.launch {
-                    authViewModel.read.asFlow().collectLatest {
-                        if (it.email != "") {
-                            binding.emailTextPass.setText(it.email)
-                        }
-                        if (it.password != "") {
-                            binding.passwordTextCurr.setText(it.password)
-                        }
-                    }
-                }
+                updateCurr()
                 binding.passwordNewLayout.show()
                 binding.confirmPassLayout.show()
                 getPassWord()
@@ -71,6 +70,19 @@ class UpdateUserInfoDialog constructor(
         }
 
         return alertDialog?.create()!!
+    }
+
+    private fun updateCurr() {
+        lifecycleScope.launch {
+            authViewModel.read.asFlow().collectLatest {
+                if (it.email != "") {
+                    binding.emailTextPass.setText(it.email)
+                }
+                if (it.password != "") {
+                    binding.passwordTextCurr.setText(it.password)
+                }
+            }
+        }
     }
 
     private fun getUserName() {
@@ -96,7 +108,7 @@ class UpdateUserInfoDialog constructor(
                 )
                 || !isValidPassword(confirmPassword) || confirmPassword != newPassword || !isValidEmail(
                     email
-                ) || !isValidPassword(currentPassword)
+                ) || !isValidPassword(currentPassword)|| checkFieldValue(currentPassword)|| checkFieldValue(email)
             ) {
                 context?.msg("Please Check Your Password")
                 return@setOnClickListener
@@ -108,12 +120,17 @@ class UpdateUserInfoDialog constructor(
     private fun getData() {
         binding.btnSub.setOnClickListener {
             val email = binding.emailText.text.toString()
-            if (checkFieldValue(email) || !isValidEmail(email)) {
+            val currEmail = binding.emailTextPass.text.toString()
+            val currentPassword = binding.passwordTextCurr.text.toString()
+            if (checkFieldValue(email) || !isValidEmail(email) || !isValidPassword(currentPassword) || !isValidEmail(
+                    currEmail
+                )|| checkFieldValue(currEmail)|| checkFieldValue(currentPassword)
+            ) {
                 context?.msg("User email is Not Valid")
                 return@setOnClickListener
             }
             Log.i(TAG, "getData: Update Email ->$email")
-            sendEmail(email)
+            sendEmail(currEmail,currentPassword,email)
         }
     }
 

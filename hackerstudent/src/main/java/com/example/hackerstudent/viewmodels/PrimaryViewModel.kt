@@ -42,9 +42,9 @@ class PrimaryViewModel @Inject constructor(
         classPersistence.storeInitUserDetail(ipAddress, firstname, lastname, phone, email, password)
     }
 
-    fun updatePassword(password: String) {
+    fun updatePassword(password: String,TAG:String) {
         viewModelScope.launch {
-            classPersistence.updatePassword(password)
+            classPersistence.updatePassword(password,TAG)
         }
     }
 
@@ -76,4 +76,7 @@ class PrimaryViewModel @Inject constructor(
 
     fun updatePassword(email: String, currentPassword: String, newPassword: String) =
         authRepository.passwordRest(email, currentPassword, newPassword).asLiveData()
+
+    fun updateEmail(email: String, currentPassword: String, newEmail: String) =
+        authRepository.restEmail(email, currentPassword, newEmail).asLiveData()
 }

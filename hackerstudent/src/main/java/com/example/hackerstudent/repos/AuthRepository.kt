@@ -182,4 +182,18 @@ class AuthRepository @Inject constructor(
         emit(data)
     }.flowOn(IO)
 
+    fun restEmail(email: String, currentPassword: String, newEmail: String) = flow {
+        emit(MySealed.Loading("Updating User Email"))
+        val data = try {
+            authInstance.signInWithEmailAndPassword(email, currentPassword).await()
+            authInstance.currentUser?.updateEmail(newEmail)?.await()
+            fireStore.collection(GetConstStringObj.USERS)
+                .document("${authInstance.uid}").update(GetConstStringObj.EMAIL_ADDRESS, newEmail)
+                .await()
+            MySealed.Success("Email is Updated Successfully")
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
 }

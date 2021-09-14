@@ -194,7 +194,6 @@ object GetConstStringObj {
     const val FIRSTNAME = "firstname"
     const val LASTNAME = "lastname"
     const val EMAIL_ADDRESS = "email"
-    const val PHONE_NUMBER = "phone"
     const val change_profile_name = "Change UserName"
     const val change_email_address = "Change Email Address"
     const val change_profile_password = "Change Password"

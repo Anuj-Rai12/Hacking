@@ -71,9 +71,9 @@ class ClassPersistence @Inject constructor(@ApplicationContext val context: Cont
         }
     }
 
-    suspend fun updatePassword(password: String) {
+    suspend fun updatePassword(Info: String, TAG: String) {
         context.dataStore.edit { mutablePreferences ->
-            mutablePreferences[data.USER_PASSWORD] = password
+            mutablePreferences[stringPreferencesKey(TAG)] = Info
         }
     }
 
