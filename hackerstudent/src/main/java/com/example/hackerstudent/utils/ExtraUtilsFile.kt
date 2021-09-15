@@ -192,6 +192,7 @@ object GetConstStringObj {
     const val Create_Module = "Module"
     const val Per_page = 3
     const val FIRSTNAME = "firstname"
+    const val timeToSearch = 1000
     const val LASTNAME = "lastname"
     const val EMAIL_ADDRESS = "email"
     const val change_profile_name = "Change UserName"

@@ -4,22 +4,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.hackerstudent.databinding.CourseImagesBinding
+import com.example.hackerstudent.databinding.CourseItemLayoutBinding
 import com.example.hackerstudent.utils.UploadFireBaseData
 
 class PaginationAdaptor(private val itemClicked: (UploadFireBaseData) -> Unit) :
-    PagingDataAdapter<UploadFireBaseData, PaginationCourseViewHolder>(courseDiff) {
-    override fun onBindViewHolder(holder: PaginationCourseViewHolder, position: Int) {
+    PagingDataAdapter<UploadFireBaseData, ExploreCourseViewHolder>(courseDiff) {
+    override fun onBindViewHolder(holder: ExploreCourseViewHolder, position: Int) {
         val current = getItem(position)
         current?.let {
             holder.bindIt(it, itemClicked)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaginationCourseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExploreCourseViewHolder {
         val binding =
-            CourseImagesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PaginationCourseViewHolder(binding)
+            CourseItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ExploreCourseViewHolder(binding)
     }
 
     companion object {

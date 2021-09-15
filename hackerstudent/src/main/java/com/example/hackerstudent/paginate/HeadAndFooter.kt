@@ -33,7 +33,7 @@ class HeaderAndFooterAdaptor(private val error: (String) -> Unit, private val re
                     }
                     if (errorTxt.isVisible) {
                         error(mError!!)
-                        1}
+                    }
                 }
             }
         }

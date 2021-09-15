@@ -9,11 +9,12 @@
 
     <ImageView
         android:id="@+id/course_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:background="@drawable/alert_dialog_box"
         android:contentDescription="@string/frag_exp"
-        android:padding="4dp"
+        android:padding="10dp"
+        android:scaleType="fitXY"
         android:src="@drawable/hacking_main_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +69,7 @@
 
 
     <TextView
-        android:id="@+id/current_price"
+        android:id="@+id/current_price_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"

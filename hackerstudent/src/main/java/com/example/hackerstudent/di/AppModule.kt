@@ -43,6 +43,6 @@ object AppModule {
     @Provides
     fun getQuery(fireStore: FirebaseFirestore) =
         fireStore.collection(GetConstStringObj.Create_course)
-            .limit(GetConstStringObj.Per_page.toLong())
+
 
 }
