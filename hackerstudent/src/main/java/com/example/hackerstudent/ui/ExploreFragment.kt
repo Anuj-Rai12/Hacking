@@ -61,10 +61,13 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         setUpRecycleView()
         if (stringFlag == null && networkUtils.isConnected()) {
             showLoading()
+            hide()
             getUpData(stringFlag)
         } else if (stringFlag == null && !networkUtils.isConnected()) {
+            showNoConnection()
             activity?.msg("No Internet Connection", "RETRY", {
                 if (networkUtils.isConnected()) {
+                    hide()
                     getUpData(null)
                 }
             })
@@ -92,15 +95,31 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 Log.i(TAG, "onViewCreated: Search Query -> $it")
                 showLoading()
                 getUpData(it)
+                hide()
                 getCount()
             } else if (it.isNotBlank() && it.isNotEmpty() && !it.isNullOrBlank() && !networkUtils.isConnected()) {
+                showNoConnection()
                 activity?.msg("No Internet Connection Found", "RETRY", {
-                    showLoading()
-                    getUpData(it)
-                    getCount()
+                    if (networkUtils.isConnected()){
+                        showLoading()
+                        getUpData(it)
+                        hide()
+                        getCount()
+                    }
                 })
             }
         }
+    }
+
+    private fun hide() {
+        binding.courseLottie.hide()
+        binding.courseLayoutRecycle.show()
+    }
+
+    private fun showNoConnection() {
+        binding.courseLottie.show()
+        binding.courseLottie.setAnimation(R.raw.no_connection)
+        binding.courseLayoutRecycle.hide()
     }
 
     private fun setUpRecycleView() {

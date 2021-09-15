@@ -127,12 +127,16 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/course_item_layout" />
 
-        <!--<com.airbnb.lottie.LottieAnimationView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/course_Lottie"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:scaleType="centerInside"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/hacking_main_icon"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
