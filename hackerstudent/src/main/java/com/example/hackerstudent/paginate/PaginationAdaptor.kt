@@ -1,5 +1,6 @@
 package com.example.hackerstudent.paginate
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -7,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.hackerstudent.databinding.CourseItemLayoutBinding
 import com.example.hackerstudent.utils.UploadFireBaseData
 
-class PaginationAdaptor(private val itemClicked: (UploadFireBaseData) -> Unit) :
+class PaginationAdaptor(private val itemClicked: (UploadFireBaseData) -> Unit,private val context: Context) :
     PagingDataAdapter<UploadFireBaseData, ExploreCourseViewHolder>(courseDiff) {
     override fun onBindViewHolder(holder: ExploreCourseViewHolder, position: Int) {
         val current = getItem(position)
@@ -19,7 +20,7 @@ class PaginationAdaptor(private val itemClicked: (UploadFireBaseData) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExploreCourseViewHolder {
         val binding =
             CourseItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ExploreCourseViewHolder(binding)
+        return ExploreCourseViewHolder(binding,context)
     }
 
     companion object {

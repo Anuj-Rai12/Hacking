@@ -12,7 +12,6 @@ import com.example.hackerstudent.paginate.PaginationCourse
 import com.example.hackerstudent.repos.CourseRepository
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

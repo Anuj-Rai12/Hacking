@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -40,6 +41,9 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
     private val disposables = CompositeDisposable()
     private var stringFlag: String? = null
     private var paginationAdaptor: PaginationAdaptor? = null
+    private val enterAnim by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.ente_anim)
+    }
 
     @Inject
     lateinit var customProgress: CustomProgress
@@ -58,6 +62,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         savedInstanceState?.let {
             stringFlag = it.getString(GetConstStringObj.Create_Module)
         }
+        binding.searchViewEd.startAnimation(enterAnim)
         setUpRecycleView()
         if (stringFlag == null && networkUtils.isConnected()) {
             showLoading()
@@ -125,10 +130,10 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
     private fun setUpRecycleView() {
         binding.courseLayoutRecycle.apply {
             setHasFixedSize(true)
-            paginationAdaptor = PaginationAdaptor {
+            paginationAdaptor = PaginationAdaptor({
                 context.msg("got it")
                 Log.i(TAG, "setUpRecycleView: $it")
-            }
+            }, context)
             adapter = paginationAdaptor?.withLoadStateHeaderAndFooter(
                 header = HeaderAndFooterAdaptor({
                     dir(msg = it)

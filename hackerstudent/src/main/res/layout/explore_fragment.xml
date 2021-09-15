@@ -79,7 +79,7 @@
                 android:backgroundTint="@color/light_grey"
                 android:hint="@string/search_hint"
                 android:textColorHint="@color/forget_text_color"
-                android:textSize="19sp"
+                android:textSize="18sp"
                 app:drawableEndCompat="@drawable/ic_search" />
 
             <LinearLayout

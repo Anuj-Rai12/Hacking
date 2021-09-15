@@ -1,6 +1,8 @@
 package com.example.hackerstudent.paginate
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.hackerstudent.R
@@ -42,11 +44,19 @@ class PaginationCourseViewHolder(private val binding: CourseImagesBinding) :
 }
 
 
-class ExploreCourseViewHolder(private val binding: CourseItemLayoutBinding) :
+class ExploreCourseViewHolder(
+    private val binding: CourseItemLayoutBinding,
+    private val context: Context
+) :
     RecyclerView.ViewHolder(binding.root) {
+    private val popUpAnim by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.pop_up_anim)
+    }
+
     @SuppressLint("SetTextI18n")
     fun bindIt(uploadFireBaseData: UploadFireBaseData, itemClicked: (UploadFireBaseData) -> Unit) {
         binding.apply {
+            root.startAnimation(popUpAnim)
             courseImage.load(uploadFireBaseData.thumbnail) {
                 crossfade(true)
                 placeholder(R.drawable.book_icon)

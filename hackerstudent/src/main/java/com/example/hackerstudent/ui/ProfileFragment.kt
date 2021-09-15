@@ -41,9 +41,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         if (networkUtils.isConnected()) {
             getData()
         } else {
-            binding.noInternetProfile.show()
-            binding.noInternetProfile.setAnimation(R.raw.no_connection)
-            binding.profileLayout.hide()
+            noInternetConnection()
             activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
@@ -57,18 +55,21 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     }
 
     private fun getData() {
-        binding.profileLayout.show()
-        binding.noInternetProfile.hide()
         authViewModel.userInfo.observe(viewLifecycleOwner) {
             when (it) {
                 is MySealed.Error -> {
+                    noInternetConnection()
                     hideLoading()
                     dir(msg = "${it.exception?.localizedMessage}")
                 }
-                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Loading -> {
+                    deviceNetworkConnected()
+                    showLoading(it.data as String)
+                }
 
                 is MySealed.Success -> {
                     hideLoading()
+                    deviceNetworkConnected()
                     val data = it.data as CreateUserAccount?
                     data?.let { acc ->
                         profileData.add(
@@ -171,6 +172,17 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
 
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
     private fun hideLoading() = customProgress.hideLoading()
+    private fun deviceNetworkConnected() {
+        binding.profileLayout.show()
+        binding.noInternetProfile.hide()
+    }
+
+    private fun noInternetConnection() {
+        binding.noInternetProfile.show()
+        binding.noInternetProfile.setAnimation(R.raw.no_connection)
+        binding.profileLayout.hide()
+    }
+
     override fun onPause() {
         super.onPause()
         hideLoading()

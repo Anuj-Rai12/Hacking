@@ -43,9 +43,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         if (networkUtils.isConnected()) {
             loadQuote()
         } else {
-            binding.noInternet.show()
-            binding.noInternet.setAnimation(R.raw.no_connection)
-            binding.mainRecycleView.hide()
+            noInternetConnection()
             activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
@@ -60,13 +58,16 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
+                    noInternetConnection()
                     dir(msg = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
+                    deviceNetworkConnected()
                     showLoading(it.data as String)
                 }
                 is MySealed.Success -> {
                     hideLoading()
+                    deviceNetworkConnected()
                     val course = mutableListOf<UploadFireBaseData>()
                     val data = it.data as MutableList<*>
                     data.forEach { value ->
@@ -104,6 +105,17 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         findNavController().navigate(action)
     }
 
+    private fun deviceNetworkConnected() {
+        binding.noInternet.hide()
+        binding.mainRecycleView.show()
+    }
+
+    private fun noInternetConnection() {
+        binding.noInternet.show()
+        binding.noInternet.setAnimation(R.raw.no_connection)
+        binding.mainRecycleView.hide()
+    }
+
     private fun loadQuote() {
         binding.noInternet.hide()
         binding.mainRecycleView.show()
@@ -111,15 +123,18 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
+                    noInternetConnection()
                     Log.i(TAG, "onViewCreated:")
                     dir(msg = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
                     Log.i(TAG, "onViewCreated:${it.data}")
+                    deviceNetworkConnected()
                     showLoading(it.data as String)
                 }
                 is MySealed.Success -> {
                     hideLoading()
+                    deviceNetworkConnected()
                     val data = it.data as Motivation
                     courseData.add(CourseSealed.Title(title = data.first().h, motivation = data))
                     getCourseThreeOnly()
