@@ -44,7 +44,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
             binding.noInternetProfile.show()
             binding.noInternetProfile.setAnimation(R.raw.no_connection)
             binding.profileLayout.hide()
-            activity?.msg("Device is Offline", "RETRY", {
+            activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
                     getData()

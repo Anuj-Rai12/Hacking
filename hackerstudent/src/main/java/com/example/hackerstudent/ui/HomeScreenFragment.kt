@@ -46,7 +46,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             binding.noInternet.show()
             binding.noInternet.setAnimation(R.raw.no_connection)
             binding.mainRecycleView.hide()
-            activity?.msg("Device is Offline", "RETRY", {
+            activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     Log.i(TAG, "onViewCreated From Retry section : ${networkUtils.isConnected()}")
                     loadQuote()
@@ -60,7 +60,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    dir(msg = it.exception?.localizedMessage ?: "Un Wanted Error Found")
+                    dir(msg = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
                     showLoading(it.data as String)
@@ -112,7 +112,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
                 is MySealed.Error -> {
                     hideLoading()
                     Log.i(TAG, "onViewCreated:")
-                    dir(msg = it.exception?.localizedMessage ?: "Un Wanted Error")
+                    dir(msg = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
                     Log.i(TAG, "onViewCreated:${it.data}")

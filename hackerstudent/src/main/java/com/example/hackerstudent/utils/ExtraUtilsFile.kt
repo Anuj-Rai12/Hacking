@@ -194,6 +194,9 @@ object GetConstStringObj {
     const val FIRSTNAME = "firstname"
     const val timeToSearch = 1000
     const val LASTNAME = "lastname"
+    const val UN_WANTED = "UnWanted Error Found"
+    const val NO_INTERNET = "No Internet Connection Found"
+    const val RETRY = "RETRY"
     const val EMAIL_ADDRESS = "email"
     const val change_profile_name = "Change UserName"
     const val change_email_address = "Change Email Address"

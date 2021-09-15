@@ -65,7 +65,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
             getUpData(stringFlag)
         } else if (stringFlag == null && !networkUtils.isConnected()) {
             showNoConnection()
-            activity?.msg("No Internet Connection", "RETRY", {
+            activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     hide()
                     getUpData(null)
@@ -99,8 +99,8 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 getCount()
             } else if (it.isNotBlank() && it.isNotEmpty() && !it.isNullOrBlank() && !networkUtils.isConnected()) {
                 showNoConnection()
-                activity?.msg("No Internet Connection Found", "RETRY", {
-                    if (networkUtils.isConnected()){
+                activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
+                    if (networkUtils.isConnected()) {
                         showLoading()
                         getUpData(it)
                         hide()
