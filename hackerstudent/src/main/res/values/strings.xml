@@ -54,4 +54,6 @@
     <!-- Explore Fragment-->
     <string name="frag_exp">Explore</string>
     <string name="search_hint">Enter Course Name</string>
+    <string name="we_found_part_1">We found</string>
+    <string name="we_found_part_2">course available for you</string>
 </resources>

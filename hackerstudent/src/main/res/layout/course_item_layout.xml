@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/course_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/alert_dialog_box"
+        android:contentDescription="@string/frag_exp"
+        android:padding="4dp"
+        android:src="@drawable/hacking_main_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/teach_by_whom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:padding="3dp"
+        android:text="@string/Teacher_name"
+        android:textColor="@color/my_color"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/course_image"
+        app:layout_constraintTop_toTopOf="@id/course_image" />
+
+
+    <TextView
+        android:id="@+id/course_title_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:padding="3dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/teach_by_whom"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/teach_by_whom"
+        tools:text="Hello ji I'm King In The North Status ha fjksdl gjks lgkldjsgjkl gdjkldsgsldkjsdgjgjlksgkls gjklf  gkldgljkgjdls" />
+
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        style="@android:style/Widget.Material.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="3dp"
+        android:numStars="5"
+        android:padding="3dp"
+        android:progressBackgroundTint="@color/black"
+        android:progressTint="@color/cheery_red"
+        android:rating="1.3"
+        android:stepSize="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/course_title_txt"
+        app:layout_constraintTop_toBottomOf="@id/course_title_txt" />
+
+
+    <TextView
+        android:id="@+id/current_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:gravity="end"
+        android:padding="3dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/rating_bar"
+        app:layout_constraintRight_toRightOf="@id/course_title_txt"
+        app:layout_constraintTop_toBottomOf="@id/course_title_txt"
+        tools:text="₹ 45.50 000 0 00 0 0 00 0 0 00 0 0 0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
