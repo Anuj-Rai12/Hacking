@@ -39,7 +39,13 @@ class ClientActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         getUserInfo()
         appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.homeScreenFragment, R.id.profileFragment))
+            AppBarConfiguration(
+                setOf(
+                    R.id.homeScreenFragment,
+                    R.id.exploreFragment,
+                    R.id.profileFragment
+                )
+            )
         setupActionBarWithNavController(navController, appBarConfiguration)
         setupSmoothBottomMenu()
     }

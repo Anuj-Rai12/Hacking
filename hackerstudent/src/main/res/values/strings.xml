@@ -50,4 +50,8 @@
     <string name="confirm_pass">Confirm Password</string>
     <string name="current_pass">Current Password</string>
     <string name="new_pass">New Password</string>
+
+    <!-- Explore Fragment-->
+    <string name="frag_exp">Explore</string>
+    <string name="search_hint">Enter Course Name</string>
 </resources>

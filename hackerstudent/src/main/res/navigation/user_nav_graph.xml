@@ -35,4 +35,9 @@
     <action
         android:id="@+id/action_global_passwordDialog2"
         app:destination="@id/passwordDialog" />
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.hackerstudent.ui.ExploreFragment"
+        android:label="explore_fragment"
+        tools:layout="@layout/explore_fragment" />
 </navigation>

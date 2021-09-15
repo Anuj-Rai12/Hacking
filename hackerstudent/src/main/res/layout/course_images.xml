@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:fontFamily="@font/allerta"
+        android:fontFamily="@font/montserrat"
         android:padding="5dp"
         android:textColor="@color/black"
         android:textSize="18sp"

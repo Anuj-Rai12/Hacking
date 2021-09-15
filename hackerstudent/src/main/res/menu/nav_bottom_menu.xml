@@ -2,13 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeScreenFragment"
-        android:icon="@drawable/ic_home"
-        android:iconTint="@color/white"
+        android:icon="@drawable/ic_twotone_home"
         android:title="@string/app_home" />
 
     <item
+        android:id="@+id/exploreFragment"
+        android:icon="@drawable/ic_explore"
+        android:title="@string/frag_exp" />
+
+    <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_baseline_person_34"
-        android:iconTint="@color/white"
+        android:icon="@drawable/ic_twotone_person_24"
         android:title="@string/app_acc" />
 </menu>
