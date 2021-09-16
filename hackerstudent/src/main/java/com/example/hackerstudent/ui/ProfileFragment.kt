@@ -36,6 +36,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.hide()
+        showBottomNavBar()
         binding = ProfileFramgnetBinding.bind(view)
         setUpRecycleView()
         if (networkUtils.isConnected()) {

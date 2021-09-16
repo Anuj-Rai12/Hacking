@@ -37,6 +37,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.hide()
+        showBottomNavBar()
         binding = HomeScreenFramgmentBinding.bind(view)
         setUpRecycleView()
         courseData.add(CourseSealed.Image(Id = "Login Creating Image", raw = R.raw.learning))
@@ -94,13 +95,33 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             layoutManager = LinearLayoutManager(requireContext())
             homeAdaptorView = HomeAdaptorView {
                 Log.i(TAG, "setUpRecycleView: $it")
-                context.msg("go it")
+                dir(data = it, msg = "")
             }
             adapter = homeAdaptorView
         }
     }
 
-    private fun dir(title: String = "Error", msg: String) {
+    private fun dir(title: String = "Error", msg: String, data: UploadFireBaseData? = null) {
+        data?.let { uploadedData ->
+            val sendSelectedCourse = SendSelectedCourse(
+                courselevel = uploadedData.fireBaseCourseTitle?.courselevel,
+                thumbnail = uploadedData.thumbnail,
+                previewvideo = uploadedData.previewvideo,
+                requirement = uploadedData.fireBaseCourseTitle?.requirement,
+                totalhrs = uploadedData.fireBaseCourseTitle?.totalhrs,
+                lastdate = uploadedData.fireBaseCourseTitle?.lastdate,
+                totalprice = uploadedData.fireBaseCourseTitle?.totalprice,
+                review = uploadedData.fireBaseCourseTitle?.review,
+                targetaudience = uploadedData.fireBaseCourseTitle?.targetaudience,
+                currentprice = uploadedData.fireBaseCourseTitle?.currentprice,
+                category = uploadedData.fireBaseCourseTitle?.category,
+                coursename = uploadedData.fireBaseCourseTitle?.coursename
+            )
+            val action =
+                HomeScreenFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse)
+            findNavController().navigate(action)
+            return
+        }
         val action = HomeScreenFragmentDirections.actionGlobalPasswordDialog2(title, msg)
         findNavController().navigate(action)
     }

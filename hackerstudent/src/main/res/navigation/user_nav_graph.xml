@@ -40,4 +40,14 @@
         android:name="com.example.hackerstudent.ui.ExploreFragment"
         android:label="explore_fragment"
         tools:layout="@layout/explore_fragment" />
+    <fragment
+        android:id="@+id/courseViewFragment"
+        android:name="com.example.hackerstudent.ui.CourseViewFragment"
+        android:label="course_view_fragment"
+        tools:layout="@layout/course_view_fragment" >
+        <argument
+            android:name="data"
+            app:argType="com.example.hackerstudent.utils.SendSelectedCourse" />
+    </fragment>
+    <action android:id="@+id/action_global_courseViewFragment" app:destination="@id/courseViewFragment" />
 </navigation>

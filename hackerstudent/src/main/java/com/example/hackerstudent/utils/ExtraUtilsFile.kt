@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.hackerstudent.ClientActivity
 import com.example.hackerstudent.MainActivity.Companion.wifiManager
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
@@ -178,6 +179,13 @@ private fun showKeyboard(activity: Activity) {
     inputManager.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT)
 }
 
+fun hideBottomNavBar() {
+    ClientActivity.bottomNavBar?.hide()
+}
+
+fun showBottomNavBar() {
+    ClientActivity.bottomNavBar?.show()
+}
 
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"

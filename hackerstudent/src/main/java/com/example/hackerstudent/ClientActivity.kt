@@ -15,6 +15,7 @@ import com.example.hackerstudent.databinding.ClientActitvityMainBinding
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import me.ibrahimsn.lib.SmoothBottomBar
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,7 +25,9 @@ class ClientActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var alertDialog: ExtraDialog? = null
-
+companion object{
+    var bottomNavBar:SmoothBottomBar?=null
+}
     @Inject
     lateinit var customProgress: CustomProgress
 
@@ -38,6 +41,7 @@ class ClientActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.ClientContainerView) as NavHostFragment
         navController = navHostFragment.navController
         getUserInfo()
+        bottomNavBar=binding.bottomBar
         appBarConfiguration =
             AppBarConfiguration(
                 setOf(

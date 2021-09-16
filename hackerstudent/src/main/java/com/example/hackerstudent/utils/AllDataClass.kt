@@ -1,8 +1,10 @@
 package com.example.hackerstudent.utils
 
 
+import android.os.Parcelable
 import com.example.hackerstudent.api.Motivation
 import com.google.firebase.firestore.IgnoreExtraProperties
+import kotlinx.parcelize.Parcelize
 
 @IgnoreExtraProperties
 data class CreateUserAccount(
@@ -32,6 +34,22 @@ data class UploadFireBaseData(
     val thumbnail: String? = null
 )
 
+@Parcelize
+data class SendSelectedCourse(
+    val coursename: String? = null,
+    val totalhrs: String? = null,
+    val category: String? = null,
+    val courselevel: String? = null,  //Snippet
+    val lastdate: String? = null,
+    val requirement: List<String>? = null,
+    val targetaudience: List<String>? = null,
+    val totalprice: String? = null,
+    val currentprice: String? = null,
+    val review: UserViewOnCourse? = null,
+    val previewvideo: String? = null,
+    val thumbnail: String? = null
+) : Parcelable
+
 data class Module(
     val module: String? = null,
     val video: Map<String, Video>? = null
@@ -55,12 +73,12 @@ data class GetCourseContent(
     val module: Map<String, Module>? = null
 )
 
-
+@Parcelize
 data class UserViewOnCourse(
     val bywhom: String? = null,
     val rateing: String? = null,
     val description: String? = null
-)
+) : Parcelable
 
 data class FireBaseCourseTitle(
     val coursename: String? = null,
