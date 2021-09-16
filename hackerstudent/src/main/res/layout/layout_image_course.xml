@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,6 +15,41 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true" />
+        app:lottie_loop="true"
+        tools:visibility="gone" />
+
+
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/video_preview"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        app:andexo_aspect_ratio="aspect_16_9"
+        app:andexo_play_when_ready="false"
+        app:andexo_resize_mode="Fit"
+        app:andexo_show_controller="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/title_describe_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="290dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/arbutus_slab"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/video_preview"
+        app:layout_constraintRight_toRightOf="@id/video_preview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hello Ji How Are You Good  I'm Also Good And How About You"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

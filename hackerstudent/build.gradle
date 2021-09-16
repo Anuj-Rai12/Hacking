@@ -110,7 +110,8 @@ dependencies {
     //RxJava
     implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-
+    //Razor Pay
+    implementation 'com.razorpay:checkout:1.6.12'
     //Video Player Class
     implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7'
 }

@@ -12,7 +12,7 @@ import com.example.hackerstudent.utils.CourseSealed
 import com.example.hackerstudent.utils.UploadFireBaseData
 
 
-class HomeAdaptorView(private val item:(UploadFireBaseData)->Unit) :
+class HomeAdaptorView(private val item: (UploadFireBaseData) -> Unit) :
     ListAdapter<CourseSealed, AllViewHolder>(diff) {
     companion object {
         val diff = object : DiffUtil.ItemCallback<CourseSealed>() {
@@ -77,10 +77,13 @@ class HomeAdaptorView(private val item:(UploadFireBaseData)->Unit) :
     }
 
     override fun onBindViewHolder(holder: AllViewHolder, position: Int) {
-        val currentItem=getItem(position)
+        val currentItem = getItem(position)
         currentItem?.let {
-            when(holder){
-                is AllViewHolder.CourseFeatureLayout ->  holder.bindIt(currentItem as CourseSealed.Course,item)
+            when (holder) {
+                is AllViewHolder.CourseFeatureLayout -> holder.bindIt(
+                    currentItem as CourseSealed.Course,
+                    item
+                )
                 is AllViewHolder.CourseQuoteHolder -> holder.bindIt(currentItem as CourseSealed.Title)
                 is AllViewHolder.ImageViewHolder -> holder.bindIt(currentItem as CourseSealed.Image)
             }

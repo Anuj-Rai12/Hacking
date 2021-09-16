@@ -128,3 +128,36 @@ sealed class ProfileDataClass {
         val data: String
     ) : ProfileDataClass()
 }
+
+sealed class CoursePreview {
+
+    data class VideoCourse(
+        val videoPreview: String,
+        val title: String
+    ) : CoursePreview()
+
+    data class CourseRatingAndOther(
+        val rating: String,
+        val totalHrs:String
+    ) : CoursePreview()
+
+    data class ArrayClass(
+        val title: String,
+        val requirement: List<String>? = null,
+        val targetAudience: List<String>? = null,
+    ) : CoursePreview()
+
+    data class CoursePrice(
+        val currAmt: String,
+        val mrp: String,
+        val title: String
+    ) : CoursePreview()
+
+    data class ReviewSection(
+        val data: UserViewOnCourse
+    ) : CoursePreview()
+}
+
+data class RequirementData(
+    val list: String
+)

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/user_name_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/course_add_cart_btn" />
+
+
+    <RatingBar
+        android:id="@+id/rating_review_bar"
+        style="@android:style/Widget.Material.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:numStars="5"
+        android:progressBackgroundTint="@color/black"
+        android:progressTint="@color/cheery_red"
+        android:rating="5"
+        android:secondaryProgressTint="@color/cheery_red"
+        android:stepSize="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/user_name_txt"
+        app:layout_constraintTop_toBottomOf="@id/user_name_txt"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/course_review_desc_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat"
+        app:layout_constraintLeft_toLeftOf="@id/rating_review_bar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rating_review_bar"
+        tools:text="@string/Exception_one" />
+
+
+    <Button
+        android:id="@+id/more_review_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/alert_dialog_box"
+        android:text="@string/course_review_btn"
+        android:textAllCaps="false"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/my_color_dark_Accent"
+        app:backgroundTint="@color/trans_parent_btn_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/course_review_desc_txt"
+        app:layout_constraintRight_toRightOf="@id/course_review_desc_txt"
+        app:layout_constraintTop_toBottomOf="@id/course_review_desc_txt" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

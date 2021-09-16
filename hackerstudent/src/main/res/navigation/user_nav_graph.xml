@@ -49,5 +49,11 @@
             android:name="data"
             app:argType="com.example.hackerstudent.utils.SendSelectedCourse" />
     </fragment>
-    <action android:id="@+id/action_global_courseViewFragment" app:destination="@id/courseViewFragment" />
+    <action
+        android:id="@+id/action_global_courseViewFragment"
+        app:destination="@id/courseViewFragment"
+        app:enterAnim="@anim/ente_anim"
+        app:exitAnim="@anim/exit_anim"
+        app:popEnterAnim="@anim/pop_enter_anim"
+        app:popExitAnim="@anim/pop_exit_anim" />
 </navigation>

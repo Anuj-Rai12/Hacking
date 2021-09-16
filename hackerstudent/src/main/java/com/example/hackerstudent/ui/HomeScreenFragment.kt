@@ -31,7 +31,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
 
     @Inject
     lateinit var customProgress: CustomProgress
-    private lateinit var homeAdaptorView: HomeAdaptorView
+    private var homeAdaptorView: HomeAdaptorView? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +40,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         showBottomNavBar()
         binding = HomeScreenFramgmentBinding.bind(view)
         setUpRecycleView()
+        Log.i(TAG, "onViewCreated: Welcome to Home Fragment")
         courseData.add(CourseSealed.Image(Id = "Login Creating Image", raw = R.raw.learning))
         if (networkUtils.isConnected()) {
             loadQuote()
@@ -81,7 +82,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
                             fireBaseCourseTitle = course
                         )
                     )
-                    homeAdaptorView.submitList(courseData)
+                    homeAdaptorView?.submitList(courseData)
                 }
             }
         }
@@ -94,7 +95,6 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             homeAdaptorView = HomeAdaptorView {
-                Log.i(TAG, "setUpRecycleView: $it")
                 dir(data = it, msg = "")
             }
             adapter = homeAdaptorView
@@ -137,6 +137,11 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         binding.mainRecycleView.hide()
     }
 
+    /*override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy: Got Triggered")
+    }*/
+
     private fun loadQuote() {
         binding.noInternet.hide()
         binding.mainRecycleView.show()
@@ -166,6 +171,9 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
 
     override fun onPause() {
         super.onPause()
+        Log.i(TAG, "onPause: On PURSE Triggered")
+        homeAdaptorView = null
+        courseData.clear()
         hideLoading()
     }
 }
