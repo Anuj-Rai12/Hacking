@@ -45,8 +45,7 @@ class CourseViewModel @Inject constructor(
             ).limit(1.toLong())
         } else
             query.limit(1.toLong())
-        /*val querySearch = fireStore.collection(GetConstStringObj.Create_course)
-            .whereGreaterThanOrEqualTo("fireBaseCourseTitle.coursename", "Ethical Hacker Classes").limit(1.toLong())*/
+
         PaginationCourse(querySearch)
     }.flow.cachedIn(viewModelScope)
 

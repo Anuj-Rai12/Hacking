@@ -21,6 +21,7 @@ import com.example.hackerstudent.paginate.PaginationAdaptor
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.CourseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
@@ -57,7 +58,12 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         (activity as AppCompatActivity?)!!.hide()
         binding = ExploreFragmentBinding.bind(view)
         binding.arrowImg.setOnClickListener {
-            findNavController().popBackStack()
+            if (stringFlag == null)
+                findNavController().popBackStack()
+            else {
+                binding.searchViewEd.setText("")
+                stringFlag = null
+            }
         }
         savedInstanceState?.let {
             stringFlag = it.getString(GetConstStringObj.Create_Module)
@@ -67,7 +73,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         if (stringFlag == null && networkUtils.isConnected()) {
             showLoading()
             hide()
-            getUpData(stringFlag)
+            getUpData(null)
         } else if (stringFlag == null && !networkUtils.isConnected()) {
             showNoConnection()
             activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
@@ -80,19 +86,21 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
 
         val observable = Observable.create<String> { emitter ->
             binding.searchViewEd.doOnTextChanged { text, _, _, _ ->
-                if (text.isNullOrBlank()) {
-                    showLoading()
-                    getUpData(null)
-                    Log.i(TAG, "onViewCreated: DoOnTextChange Text Empty Calls ")
-                } else {
-                    if (!emitter.isDisposed && text.isNotEmpty()) {
-                        Log.i(TAG, "onViewCreated: Query Length -> ${text.length}")
-                        emitter.onNext(text.toString())
-                    }
+                if (!emitter.isDisposed) {
+                    Log.i(TAG, "onViewCreated: $text")
+                    val str = text ?: " "
+                    emitter.onNext(str.toString())
                 }
+                /*if (text.isNullOrBlank() || text.isNullOrEmpty() && !emitter.isDisposed) {
+                     emitter.onNext("")
+                     Log.i(TAG, "onViewCreated: DoOnTextChange Text Empty Calls ")
+                 } else if (!emitter.isDisposed && text.isNotEmpty()) {
+                     Log.i(TAG, "onViewCreated: Query Length -> ${text.length}")
+                     emitter.onNext(text.toString())
+                 }*/
             }
         }.debounce(GetConstStringObj.timeToSearch.toLong(), TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         observed(observable)
 
         courseViewModel.searchQuery.asLiveData().observe(viewLifecycleOwner) {
@@ -101,6 +109,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 showLoading()
                 getUpData(it)
                 hide()
+                stringFlag = it
                 getCount()
             } else if (it.isNotBlank() && it.isNotEmpty() && !it.isNullOrBlank() && !networkUtils.isConnected()) {
                 showNoConnection()
@@ -108,6 +117,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                     if (networkUtils.isConnected()) {
                         showLoading()
                         getUpData(it)
+                        stringFlag = it
                         hide()
                         getCount()
                     }
@@ -178,8 +188,12 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
             }
 
             override fun onNext(s: String) {
-                if (s.isBlank() || s.isEmpty())
+                if (s.isBlank() || s.isEmpty()) {
+                    showLoading()
+                    stringFlag = null
+                    getUpData(null)
                     return
+                }
                 courseViewModel.searchQuery.value = s
             }
 
