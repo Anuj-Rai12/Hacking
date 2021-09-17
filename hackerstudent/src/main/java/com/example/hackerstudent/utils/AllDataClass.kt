@@ -133,12 +133,13 @@ sealed class CoursePreview {
 
     data class VideoCourse(
         val videoPreview: String,
-        val title: String
+        val title: String,
+        val thumbnail: String
     ) : CoursePreview()
 
     data class CourseRatingAndOther(
         val rating: String,
-        val totalHrs:String
+        val totalHrs: String
     ) : CoursePreview()
 
     data class ArrayClass(

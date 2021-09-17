@@ -3,6 +3,8 @@ package com.example.hackerstudent.recycle.preview
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import coil.load
+import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.*
 import com.example.hackerstudent.utils.*
 
@@ -14,11 +16,16 @@ sealed class AllPreviewViewHolder(viewBinding: ViewBinding) :
         fun bindIt(video: CoursePreview.VideoCourse, viewClick: (String) -> Unit) {
             binding.apply {
                 lottiFile.hide()
+
                 videoPreview.show()
                 titleDescribeTitle.show()
+                playTxt.show()
 
-                videoPreview.setSource(video.videoPreview)
-                videoPreview.setOnClickListener {
+                videoPreview.load(video.thumbnail) {
+                    crossfade(true)
+                    placeholder(R.drawable.book_icon)
+                }
+                root.setOnClickListener {
                     viewClick(video.videoPreview)
                 }
                 titleDescribeTitle.text = video.title
@@ -105,8 +112,8 @@ sealed class AllPreviewViewHolder(viewBinding: ViewBinding) :
                 courseBuyBtn.setOnClickListener {
                     itemBuy(amount.title, amount.currAmt)
                 }
-                courseCurrentPriceTxt.text = current.toString()
-                courseMrpCurrentPriceTxt.text = mrp.toString()
+                courseCurrentPriceTxt.text = "${GetConstStringObj.Rs} $current"
+                courseMrpCurrentPriceTxt.text = "${GetConstStringObj.Rs} $mrp"
                 courseMrpCurrentPriceTxt.paint.isStrikeThruText = true
                 courseDiscountPriceTxt.text =
                     "${getDiscount(currPrice = current.toDouble(), mrpPrice = mrp.toDouble())}%"

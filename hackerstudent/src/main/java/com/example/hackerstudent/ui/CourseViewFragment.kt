@@ -1,5 +1,6 @@
 package com.example.hackerstudent.ui
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -25,6 +26,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
     @Inject
     lateinit var networkUtils: NetworkUtils
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,7 +89,8 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             list.add(
                 CoursePreview.VideoCourse(
                     videoPreview = data.previewvideo ?: "",
-                    title = data.coursename ?: "No Name"
+                    title = data.coursename ?: "No Name",
+                    thumbnail = data.thumbnail ?: ""
                 )
             )
             list.add(
