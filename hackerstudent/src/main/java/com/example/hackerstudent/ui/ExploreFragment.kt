@@ -92,13 +92,6 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                     val str = text ?: " "
                     emitter.onNext(str.toString())
                 }
-                /*if (text.isNullOrBlank() || text.isNullOrEmpty() && !emitter.isDisposed) {
-                     emitter.onNext("")
-                     Log.i(TAG, "onViewCreated: DoOnTextChange Text Empty Calls ")
-                 } else if (!emitter.isDisposed && text.isNotEmpty()) {
-                     Log.i(TAG, "onViewCreated: Query Length -> ${text.length}")
-                     emitter.onNext(text.toString())
-                 }*/
             }
         }.debounce(GetConstStringObj.timeToSearch.toLong(), TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -142,8 +135,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         binding.courseLayoutRecycle.apply {
             setHasFixedSize(true)
             paginationAdaptor = PaginationAdaptor({
-                context.msg("got it")
-                Log.i(TAG, "setUpRecycleView: $it")
+                dir(uploadFireBaseData = it)
             }, context)
             adapter = paginationAdaptor?.withLoadStateHeaderAndFooter(
                 header = HeaderAndFooterAdaptor({
@@ -210,7 +202,31 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         })
     }
 
-    private fun dir(title: String = "Error", msg: String = "") {
+    private fun dir(
+        title: String = "Error",
+        msg: String = "",
+        uploadFireBaseData: UploadFireBaseData? = null
+    ) {
+        uploadFireBaseData?.let { uploadedData ->
+            val sendSelectedCourse = SendSelectedCourse(
+                courselevel = uploadedData.fireBaseCourseTitle?.courselevel,
+                thumbnail = uploadedData.thumbnail,
+                previewvideo = uploadedData.previewvideo,
+                requirement = uploadedData.fireBaseCourseTitle?.requirement,
+                totalhrs = uploadedData.fireBaseCourseTitle?.totalhrs,
+                lastdate = uploadedData.fireBaseCourseTitle?.lastdate,
+                totalprice = uploadedData.fireBaseCourseTitle?.totalprice,
+                review = uploadedData.fireBaseCourseTitle?.review,
+                targetaudience = uploadedData.fireBaseCourseTitle?.targetaudience,
+                currentprice = uploadedData.fireBaseCourseTitle?.currentprice,
+                category = uploadedData.fireBaseCourseTitle?.category,
+                coursename = uploadedData.fireBaseCourseTitle?.coursename
+            )
+            val action =
+                ExploreFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse)
+            findNavController().navigate(action)
+            return
+        }
         val action = ExploreFragmentDirections.actionGlobalPasswordDialog2(title, msg)
         findNavController().navigate(action)
     }

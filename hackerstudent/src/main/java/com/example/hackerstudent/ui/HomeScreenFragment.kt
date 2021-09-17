@@ -137,11 +137,6 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         binding.mainRecycleView.hide()
     }
 
-    /*override fun onDestroy() {
-        super.onDestroy()
-        Log.i(TAG, "onDestroy: Got Triggered")
-    }*/
-
     private fun loadQuote() {
         binding.noInternet.hide()
         binding.mainRecycleView.show()

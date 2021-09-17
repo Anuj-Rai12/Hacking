@@ -89,6 +89,10 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
                         profileData.add(ProfileDataClass.OptionFooter(GetConstStringObj.change_profile_name))
                         profileData.add(ProfileDataClass.OptionFooter(GetConstStringObj.change_email_address))
                         profileData.add(ProfileDataClass.OptionFooter(GetConstStringObj.change_profile_password))
+                        profileData.add(ProfileDataClass.Title("Other Features"))
+                        profileData.add(ProfileDataClass.OptionFooter("Rate Us"))
+                        profileData.add(ProfileDataClass.OptionFooter("Share"))
+                        profileData.add(ProfileDataClass.OptionFooter("About Me"))
                         allProfileAdaptor.submitList(profileData)
                     }
                 }

@@ -51,6 +51,9 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                 })
         }
         allPreviewAdaptor?.submitList(list)
+        binding.shareImg.setOnClickListener {
+            activity?.msg("Share Btn")
+        }
     }
 
     private fun setUpRecycle() {
@@ -101,13 +104,13 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             )
             list.add(
                 CoursePreview.ArrayClass(
-                    title = "For whom this course is for",
+                    title = "For whom this course is for,",
                     targetAudience = data.targetaudience
                 )
             )
             list.add(
                 CoursePreview.ArrayClass(
-                    title = "Requirements for this Course",
+                    title = "Requirements for this Course,",
                     requirement = data.requirement
                 )
             )

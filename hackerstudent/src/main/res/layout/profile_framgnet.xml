@@ -36,7 +36,7 @@
                     android:id="@+id/category_title"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="9dp"
                     android:fontFamily="@font/allerta"
                     android:gravity="center_vertical"
                     android:text="@string/app_acc"
