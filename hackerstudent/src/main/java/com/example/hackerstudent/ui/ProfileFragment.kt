@@ -37,6 +37,7 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.hide()
         showBottomNavBar()
+        activity?.changeStatusBarColor()
         binding = ProfileFramgnetBinding.bind(view)
         setUpRecycleView()
         if (networkUtils.isConnected()) {

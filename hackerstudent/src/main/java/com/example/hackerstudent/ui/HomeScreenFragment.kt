@@ -38,6 +38,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.hide()
         showBottomNavBar()
+        activity?.changeStatusBarColor()
         binding = HomeScreenFramgmentBinding.bind(view)
         setUpRecycleView()
         Log.i(TAG, "onViewCreated: Welcome to Home Fragment")

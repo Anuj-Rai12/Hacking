@@ -32,6 +32,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).hide()
         hideBottomNavBar()
+        activity?.changeStatusBarColor()
         binding = CourseViewFragmentBinding.bind(view)
         binding.arrowImg.setOnClickListener {
             findNavController().popBackStack()
@@ -70,7 +71,10 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             }, { goToMoreReview ->
                 context?.msg("More Review Got Clicked $goToMoreReview")
             }, { video ->
-                val action = CourseViewFragmentDirections.actionGlobalVideoFragment(video)
+                val action = CourseViewFragmentDirections.actionGlobalVideoFragment(
+                    video,
+                    "${args.data.coursename} Preview"
+                )
                 findNavController().navigate(action)
             })
             adapter = allPreviewAdaptor
@@ -135,7 +139,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
 
     override fun onPause() {
         super.onPause()
-        allPreviewAdaptor=null
+        allPreviewAdaptor = null
         list.clear()
     }
 

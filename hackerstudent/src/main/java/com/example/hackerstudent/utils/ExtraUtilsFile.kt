@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
@@ -187,6 +188,11 @@ fun showBottomNavBar() {
     ClientActivity.bottomNavBar?.show()
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
+fun Activity.changeStatusBarColor(color: Int = R.color.white) {
+    this.window?.statusBarColor = resources.getColor(color, null)
+}
+
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
@@ -209,4 +215,7 @@ object GetConstStringObj {
     const val change_profile_name = "Change UserName"
     const val change_email_address = "Change Email Address"
     const val change_profile_password = "Change Password"
+    const val LAND_SCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    const val UnSpecified = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    const val Portrait = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 }

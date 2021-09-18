@@ -43,7 +43,6 @@
         android:textColor="@color/black"
         android:textSize="25sp"
         android:visibility="gone"
-        app:drawableTint="@color/forget_text_color"
         app:drawableTopCompat="@drawable/ic_play_arrow"
         app:layout_constraintBottom_toBottomOf="@id/video_preview"
         app:layout_constraintLeft_toLeftOf="@id/video_preview"

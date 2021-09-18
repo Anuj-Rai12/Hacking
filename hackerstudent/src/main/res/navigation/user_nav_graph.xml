@@ -64,6 +64,9 @@
         <argument
             android:name="video"
             app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
     <action
         android:id="@+id/action_global_videoFragment"

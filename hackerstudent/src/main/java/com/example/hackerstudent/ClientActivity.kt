@@ -25,23 +25,26 @@ class ClientActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var alertDialog: ExtraDialog? = null
-companion object{
-    var bottomNavBar:SmoothBottomBar?=null
-}
+
+    companion object {
+        var bottomNavBar: SmoothBottomBar? = null
+    }
+
     @Inject
     lateinit var customProgress: CustomProgress
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.window?.statusBarColor = resources.getColor(R.color.white, null)
+        this.changeStatusBarColor()
+//        this.window?.statusBarColor = resources.getColor(R.color.white, null)
         binding = ClientActitvityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.ClientContainerView) as NavHostFragment
         navController = navHostFragment.navController
         getUserInfo()
-        bottomNavBar=binding.bottomBar
+        bottomNavBar = binding.bottomBar
         appBarConfiguration =
             AppBarConfiguration(
                 setOf(

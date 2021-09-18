@@ -57,6 +57,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.hide()
         showBottomNavBar()
+        activity?.changeStatusBarColor()
         binding = ExploreFragmentBinding.bind(view)
         binding.arrowImg.setOnClickListener {
             if (stringFlag == null)
