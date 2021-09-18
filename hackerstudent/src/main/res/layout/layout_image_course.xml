@@ -23,7 +23,7 @@
         android:id="@+id/video_preview"
         android:layout_width="match_parent"
         android:layout_height="270dp"
-        android:layout_margin="10dp"
+        android:layout_margin="7dp"
         android:contentDescription="@string/COURSE_preview"
         android:scaleType="fitXY"
         android:visibility="gone"

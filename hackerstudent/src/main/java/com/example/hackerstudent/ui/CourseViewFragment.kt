@@ -70,7 +70,8 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             }, { goToMoreReview ->
                 context?.msg("More Review Got Clicked $goToMoreReview")
             }, { video ->
-                context?.msg("video Clicked\n $video")
+                val action = CourseViewFragmentDirections.actionGlobalVideoFragment(video)
+                findNavController().navigate(action)
             })
             adapter = allPreviewAdaptor
         }
@@ -110,7 +111,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             )
             list.add(
                 CoursePreview.ArrayClass(
-                    title = "Requirements for this Course,",
+                    title = "Requirements for this course,",
                     requirement = data.requirement
                 )
             )
@@ -126,9 +127,16 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                 bywhom = data.review?.bywhom ?: "Anuj",
                 rateing = data.review?.rateing ?: "4.5",
                 description = data.review?.description
-                    ?: "Great to Learn And Improve my Knowledge and Assignment are Best i have learn so much by solving them"
+                    ?: "Great to Learn And Improve my Knowledge and Assignment are Best i have learn so much by solving them."
             )
             list.add(CoursePreview.ReviewSection(data = review))
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        allPreviewAdaptor=null
+        list.clear()
+    }
+
 }

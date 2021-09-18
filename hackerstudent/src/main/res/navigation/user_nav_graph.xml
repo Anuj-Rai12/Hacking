@@ -56,4 +56,20 @@
         app:exitAnim="@anim/exit_anim"
         app:popEnterAnim="@anim/pop_enter_anim"
         app:popExitAnim="@anim/pop_exit_anim" />
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.hackerstudent.ui.VideoFragment"
+        android:label="video_fragment_layout"
+        tools:layout="@layout/video_fragment_layout" >
+        <argument
+            android:name="video"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_videoFragment"
+        app:destination="@id/videoFragment"
+        app:enterAnim="@anim/ente_anim"
+        app:exitAnim="@anim/exit_anim"
+        app:popEnterAnim="@anim/pop_enter_anim"
+        app:popExitAnim="@anim/pop_exit_anim" />
 </navigation>
