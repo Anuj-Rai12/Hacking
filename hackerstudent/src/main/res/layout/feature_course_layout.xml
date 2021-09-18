@@ -58,7 +58,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/recycle_title_text"
         app:layout_constraintRight_toRightOf="@id/recycle_title_text"

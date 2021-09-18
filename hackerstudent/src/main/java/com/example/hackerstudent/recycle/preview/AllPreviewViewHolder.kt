@@ -1,6 +1,8 @@
 package com.example.hackerstudent.recycle.preview
 
 import android.annotation.SuppressLint
+import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import coil.load
@@ -60,7 +62,10 @@ sealed class AllPreviewViewHolder(viewBinding: ViewBinding) :
     }
 
 
-    class FeatureClassLikeRequirement(private val binding: FeatureCourseLayoutBinding) :
+    class FeatureClassLikeRequirement(
+        private val binding: FeatureCourseLayoutBinding,
+        private val context: FragmentActivity
+    ) :
         AllPreviewViewHolder(binding) {
         private val list: MutableList<RequirementData> = mutableListOf()
         private val requirementAdaptor by lazy {
@@ -87,6 +92,8 @@ sealed class AllPreviewViewHolder(viewBinding: ViewBinding) :
                 }
                 reqLayoutRecycle.apply {
                     setHasFixedSize(true)
+                    layoutManager =
+                        WrapContentLinearLayoutManager(this@FeatureClassLikeRequirement.context)
                     adapter = requirementAdaptor
                 }
                 requirementAdaptor.submitList(list)

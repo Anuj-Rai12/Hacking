@@ -14,12 +14,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.hackerstudent.databinding.ClientActitvityMainBinding
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
+import com.razorpay.PaymentResultListener
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClientActivity : AppCompatActivity() {
+class ClientActivity : AppCompatActivity(), PaymentResultListener {
     private lateinit var binding: ClientActitvityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -37,7 +38,6 @@ class ClientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.changeStatusBarColor()
-//        this.window?.statusBarColor = resources.getColor(R.color.white, null)
         binding = ClientActitvityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navHostFragment =
@@ -124,5 +124,26 @@ class ClientActivity : AppCompatActivity() {
         Log.i(TAG, "onBackPressed: Admin-Side ${MainActivity.emailAuthLink}")
         if (MainActivity.emailAuthLink == null)
             super.onBackPressed()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onPaymentSuccess(p0: String?) {
+        try {
+            Log.i(TAG, "onPaymentSuccess: $p0")
+            this.msg("Payment is Successfully Done")
+        } catch (e: Exception) {
+            Log.i(TAG, "onPaymentSuccess: $e")
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onPaymentError(p0: Int, p1: String?) {
+        try {
+            Log.i(TAG, "onPaymentError: $p0")
+            Log.i(TAG, "onPaymentError: $p1")
+            this.msg("Payment Failed")
+        } catch (e: Exception) {
+            Log.i(TAG, "onPaymentError: $e")
+        }
     }
 }

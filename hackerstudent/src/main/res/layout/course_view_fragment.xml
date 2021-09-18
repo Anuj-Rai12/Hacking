@@ -68,8 +68,6 @@
             android:id="@+id/course_view_recycle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.airbnb.lottie.LottieAnimationView

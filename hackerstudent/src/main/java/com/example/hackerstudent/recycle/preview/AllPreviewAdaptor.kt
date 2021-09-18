@@ -1,7 +1,9 @@
 package com.example.hackerstudent.recycle.preview
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.hackerstudent.R
@@ -13,7 +15,8 @@ class AllPreviewAdaptor(
     private val itemCart: (String, String) -> Unit,
     private val teacherLike: (String) -> Unit,
     private val itemMoreReview: (String) -> Unit,
-    private val viewClick: (String) -> Unit
+    private val viewClick: (String) -> Unit,
+    private val context: FragmentActivity
 ) :
     ListAdapter<CoursePreview, AllPreviewViewHolder>(diffUtil) {
 
@@ -51,7 +54,8 @@ class AllPreviewAdaptor(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    context = context
                 )
             }
             R.layout.course_purchase_layout -> {

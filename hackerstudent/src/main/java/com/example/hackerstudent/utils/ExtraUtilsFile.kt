@@ -211,6 +211,7 @@ object GetConstStringObj {
     const val UN_WANTED = "UnWanted Error Found"
     const val NO_INTERNET = "No Internet Connection Found"
     const val RETRY = "RETRY"
+    const val RazorPay = "rzp_test_fKS5TlkOK3F1fw"
     const val EMAIL_ADDRESS = "email"
     const val change_profile_name = "Change UserName"
     const val change_email_address = "Change Email Address"

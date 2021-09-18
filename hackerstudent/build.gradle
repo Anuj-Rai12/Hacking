@@ -39,7 +39,12 @@ android {
         jvmTarget = '1.8'
     }
 }
-
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

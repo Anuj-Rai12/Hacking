@@ -3,17 +3,23 @@ package com.example.hackerstudent.ui
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.hackerstudent.R
+import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.CourseViewFragmentBinding
 import com.example.hackerstudent.recycle.preview.AllPreviewAdaptor
 import com.example.hackerstudent.utils.*
+import com.example.hackerstudent.viewmodels.PrimaryViewModel
+import com.razorpay.Checkout
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -22,6 +28,11 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
     private val list: MutableList<CoursePreview> = mutableListOf()
     private var allPreviewAdaptor: AllPreviewAdaptor? = null
     private val args: CourseViewFragmentArgs by navArgs()
+    private val viewModel: PrimaryViewModel by viewModels()
+    private var stringPaymentFlag: String? = null
+
+    @Inject
+    lateinit var customProgress: CustomProgress
 
     @Inject
     lateinit var networkUtils: NetworkUtils
@@ -34,6 +45,10 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
         hideBottomNavBar()
         activity?.changeStatusBarColor()
         binding = CourseViewFragmentBinding.bind(view)
+        savedInstanceState?.let {
+            stringPaymentFlag = it.getString(GetConstStringObj.UN_WANTED)
+        }
+        Checkout.preload(activity?.applicationContext)
         binding.arrowImg.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -52,20 +67,35 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                 })
         }
         allPreviewAdaptor?.submitList(list)
+        //allPreviewAdaptor?.notifyItemRangeInserted(0, list.size)
         binding.shareImg.setOnClickListener {
             activity?.msg("Share Btn")
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpRecycle() {
         binding.courseViewRecycle.apply {
             setHasFixedSize(true)
             allPreviewAdaptor = AllPreviewAdaptor({ courseName, CoursePrice ->
                 //Item Buy
-                context?.msg("CourseName Clicked -> $courseName, CoursePrice is -> $CoursePrice\n Item Purchased")
+                if (networkUtils.isConnected()) {
+                    internetConnected()
+                    stringPaymentFlag = "payment Mill ga-ya"
+                    getUserInfo(courseName, CoursePrice)
+                } else {
+                    hideOffline()
+                    activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
+                        if (networkUtils.isConnected()) {
+                            internetConnected()
+                            stringPaymentFlag = "payment Mill ga-ya"
+                            getUserInfo(courseName, CoursePrice)
+                        }
+                    })
+                }
             }, { courseName, CoursePrice ->
                 //Item Cart
-                context?.msg("CourseName Clicked -> $courseName, CoursePrice is -> $CoursePrice\n Saved To Cart")
+                context?.msg("CourseName Clicked -> $courseName, CoursePrice is -> $CoursePrice\nSaved To Cart")
             }, { teacher ->
                 context?.msg("Teacher -> $teacher")
             }, { goToMoreReview ->
@@ -76,9 +106,75 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                     "${args.data.coursename} Preview"
                 )
                 findNavController().navigate(action)
-            })
+            }, requireActivity())
+            layoutManager = WrapContentLinearLayoutManager(requireActivity())
             adapter = allPreviewAdaptor
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getUserInfo(courseName: String, price: String) {
+        viewModel.userInfo.observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideOffline()
+                    hideLoading()
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                }
+                is MySealed.Loading -> {
+                    showLoading(it.data as String)
+                    internetConnected()
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    internetConnected()
+                    val userInfo = it.data as CreateUserAccount?
+                    if (userInfo != null) {
+                        startPayment(courseName = courseName, CoursePrice = price, userInfo)
+                    } else
+                        activity?.msg("No User info Found")
+                }
+            }
+        }
+    }
+
+    private fun startPayment(courseName: String, CoursePrice: String, userInfo: CreateUserAccount) {
+        Log.i(TAG, "startPayment: Real Amount is $CoursePrice")
+        Log.i(TAG, "startPayment: Real CourseName is $courseName")
+        val amt = 1
+        val co = Checkout()
+        co.setKeyID(GetConstStringObj.RazorPay)
+        try {
+            val options = JSONObject()
+            options.put("name", getString(R.string.app_name))
+            options.put("description", courseName)
+            co.setImage(R.drawable.hacking_main_icon)
+            //You can omit the image option to fetch the image from dashboard
+            options.put("image", "${args.data.thumbnail}")
+            options.put("theme.color", "#3399cc")
+            options.put("currency", "INR")
+            options.put("amount", "${amt * 100}")
+
+            val retryObj = JSONObject()
+            retryObj.put("enabled", true)
+            retryObj.put("max_count", 4)
+            options.put("retry", retryObj)
+
+            val prefill = JSONObject()
+            prefill.put("email", "${userInfo.email}")
+            prefill.put("contact", "${userInfo.phone}")
+
+            options.put("prefill", prefill)
+            co.open(activity, options)
+        } catch (e: Exception) {
+            Log.i(TAG, "startPayment: Error ->  $e")
+            dir(message = e.localizedMessage!!)
+        }
+    }
+
+    private fun dir(title: String = "Error", message: String = "") {
+        val action = CourseViewFragmentDirections.actionGlobalPasswordDialog2(title, message)
+        findNavController().navigate(action)
     }
 
     private fun internetConnected() {
@@ -137,10 +233,38 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
         }
     }
 
+    private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
+    private fun hideLoading() = customProgress.hideLoading()
+
     override fun onPause() {
         super.onPause()
-        allPreviewAdaptor = null
-        list.clear()
+        if (stringPaymentFlag == null) {
+            allPreviewAdaptor = null
+            list.clear()
+        } else
+            stringPaymentFlag = null
+        hideLoading()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        stringPaymentFlag?.let {
+            outState.putString(GetConstStringObj.UN_WANTED, it)
+        }
+    }
+    /*override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        Log.i(TAG, "onPaymentSuccess: $p0")
+        Log.i(TAG, "onPaymentSuccess: $p1")
+        dir(
+            title = "Success",
+            message = "Payment is Successfully Paid \n${p1?.paymentId}\n  form the ${p1?.userEmail} and,\n${p1?.userContact}"
+        )
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        Log.i(TAG, "onPaymentError: $p0")
+        Log.i(TAG, "onPaymentError: $p1")
+        Log.i(TAG, "onPaymentError: $p2")
+        dir(message = "Payment is Failed")
+    }*/
 }
