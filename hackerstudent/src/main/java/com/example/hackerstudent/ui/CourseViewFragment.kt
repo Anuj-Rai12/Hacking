@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.hackerstudent.ClientActivity
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.CourseViewFragmentBinding
@@ -95,8 +96,9 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                 }
             }, { courseName, CoursePrice ->
                 //Item Cart
-                context?.msg("CourseName Clicked -> $courseName, CoursePrice is -> $CoursePrice\nSaved To Cart")
+                addItemCart(courseName, CoursePrice)
             }, { teacher ->
+                //Navigated to teacher Intro fragment
                 context?.msg("Teacher -> $teacher")
             }, { goToMoreReview ->
                 context?.msg("More Review Got Clicked $goToMoreReview")
@@ -109,6 +111,34 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             }, requireActivity())
             layoutManager = WrapContentLinearLayoutManager(requireActivity())
             adapter = allPreviewAdaptor
+        }
+    }
+
+    private fun addItemCart(name: String, price: String) {
+        val coursePurchase =
+            CoursePurchase(
+                name = name,
+                date = getDateTime(),
+                purchase = price,
+                status = "WishList",
+            )
+        viewModel.addItemCart(coursePurchase).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    hideOffline()
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                }
+                is MySealed.Loading -> {
+                    internetConnected()
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    internetConnected()
+                    hideLoading()
+                    dir(title = "Success", message = "Course is Added to Cart")
+                }
+            }
         }
     }
 
@@ -151,13 +181,13 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             co.setImage(R.drawable.hacking_main_icon)
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "${args.data.thumbnail}")
-            options.put("theme.color", "#3399cc")
-            options.put("currency", "INR")
+            options.put("theme.color", GetConstStringObj.Payment_COLOR)
+            options.put("currency", GetConstStringObj.Currency)
             options.put("amount", "${amt * 100}")
 
             val retryObj = JSONObject()
-            retryObj.put("enabled", true)
-            retryObj.put("max_count", 4)
+            retryObj.put("enabled", false)
+//            retryObj.put("max_count", 4)
             options.put("retry", retryObj)
 
             val prefill = JSONObject()
@@ -165,6 +195,8 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             prefill.put("contact", "${userInfo.phone}")
 
             options.put("prefill", prefill)
+            ClientActivity.courseName = courseName
+            ClientActivity.coursePrice = CoursePrice
             co.open(activity, options)
         } catch (e: Exception) {
             Log.i(TAG, "startPayment: Error ->  $e")

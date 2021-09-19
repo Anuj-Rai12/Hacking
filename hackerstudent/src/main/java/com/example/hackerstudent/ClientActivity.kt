@@ -14,21 +14,28 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.hackerstudent.databinding.ClientActitvityMainBinding
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
-import com.razorpay.PaymentResultListener
+import com.google.android.material.snackbar.Snackbar
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClientActivity : AppCompatActivity(), PaymentResultListener {
+class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
     private lateinit var binding: ClientActitvityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private val primaryViewModel: PrimaryViewModel by viewModels()
     private var alertDialog: ExtraDialog? = null
 
+    @Inject
+    lateinit var successOrFailedPayment: SuccessOrFailedPayment
+
     companion object {
+        var coursePrice: String? = null
         var bottomNavBar: SmoothBottomBar? = null
+        var courseName: String? = null
     }
 
     @Inject
@@ -69,11 +76,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultListener {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    val action = ClientActivityDirections.actionGlobalPasswordDialog(
-                        title = "Error",
-                        message = it.exception?.localizedMessage ?: "No Error"
-                    )
-                    navController.navigate(action)
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
                     showLoading(it.data as String)
@@ -95,6 +98,14 @@ class ClientActivity : AppCompatActivity(), PaymentResultListener {
                 }
             }
         }
+    }
+
+    private fun dir(title: String = "Error", message: String = "") {
+        val action = ClientActivityDirections.actionGlobalPasswordDialog(
+            title = title,
+            message = message
+        )
+        navController.navigate(action)
     }
 
     private fun hideLoading() = customProgress.hideLoading()
@@ -127,23 +138,57 @@ class ClientActivity : AppCompatActivity(), PaymentResultListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onPaymentSuccess(p0: String?) {
-        try {
-            Log.i(TAG, "onPaymentSuccess: $p0")
-            this.msg("Payment is Successfully Done")
-        } catch (e: Exception) {
-            Log.i(TAG, "onPaymentSuccess: $e")
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        Log.i(TAG, "onPaymentSuccess: p0-> $p0")
+        Log.i(TAG, "onPaymentSuccess: p1-> $p1")
+        Log.i(TAG, "onPaymentSuccess: Course Name -> $courseName")
+        Log.i(TAG, "onPaymentSuccess: Course Price -> $coursePrice")
+        var p2Txt = ""
+        p0?.let { p2Txt = "Payment Id ->  $it \n\n" }
+        p1?.let { p2Txt = "$p2Txt More Info\n$p1\n\n" }
+        val coursePurchase = CoursePurchase(
+            name = courseName,
+            date = getDateTime(),
+            purchase = coursePrice,
+            status = "Success",
+            purchaseid = p0
+        )
+        addPaidCourse(coursePurchase, p2Txt)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun addPaidCourse(coursePurchase: CoursePurchase, info: String) {
+        primaryViewModel.addPaidCourseToUser(coursePurchase).observe(this) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                }
+                is MySealed.Loading -> showLoading(it.data as String)
+                is MySealed.Success -> {
+                    hideLoading()
+                    successOrFailedPayment.showPaymentDialog(
+                        text = info,
+                        file = R.raw.payment_successful,
+                        this
+                    )
+                    this.msg("Successful Paid ", length = Snackbar.LENGTH_SHORT)
+                }
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onPaymentError(p0: Int, p1: String?) {
-        try {
-            Log.i(TAG, "onPaymentError: $p0")
-            Log.i(TAG, "onPaymentError: $p1")
-            this.msg("Payment Failed")
-        } catch (e: Exception) {
-            Log.i(TAG, "onPaymentError: $e")
-        }
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        Log.i(TAG, "onPaymentError: P0 -> $p0")
+        Log.i(TAG, "onPaymentError: P1 -> $p1")
+        var p2Txt = ""
+        if (p0 != 0)
+            p2Txt = "Error Id ->$p0\n"
+        p1?.let { p2Txt = "$p2Txt$p1\n\n" }
+        p2?.let { p2Txt = "$p2Txt$it\n\n" }
+        successOrFailedPayment.showPaymentDialog(text = p2Txt, context = this)
+        Log.i(TAG, "onPaymentError: P2 -> $p2")
+        this.msg("Payment Failed", length = Snackbar.LENGTH_SHORT)
     }
 }

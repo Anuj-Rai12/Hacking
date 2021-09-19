@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hackerstudent.utils.ClassPersistence
 import com.example.hackerstudent.repos.AuthRepository
+import com.example.hackerstudent.utils.CoursePurchase
 import com.example.hackerstudent.utils.UserStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -42,9 +43,9 @@ class PrimaryViewModel @Inject constructor(
         classPersistence.storeInitUserDetail(ipAddress, firstname, lastname, phone, email, password)
     }
 
-    fun updatePassword(password: String,TAG:String) {
+    fun updatePassword(password: String, TAG: String) {
         viewModelScope.launch {
-            classPersistence.updatePassword(password,TAG)
+            classPersistence.updatePassword(password, TAG)
         }
     }
 
@@ -79,4 +80,10 @@ class PrimaryViewModel @Inject constructor(
 
     fun updateEmail(email: String, currentPassword: String, newEmail: String) =
         authRepository.restEmail(email, currentPassword, newEmail).asLiveData()
+
+    fun addPaidCourseToUser(coursePurchase: CoursePurchase) =
+        authRepository.addPaidCourseToUser(coursePurchase).asLiveData()
+
+    fun addItemCart(coursePurchase: CoursePurchase) =
+        authRepository.addCartItem(coursePurchase).asLiveData()
 }

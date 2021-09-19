@@ -2,13 +2,11 @@ package com.example.hackerstudent.repos
 
 import android.util.Log
 import com.example.hackerstudent.TAG
-import com.example.hackerstudent.utils.CreateUserAccount
-import com.example.hackerstudent.utils.GetConstStringObj
-import com.example.hackerstudent.utils.MySealed
-import com.example.hackerstudent.utils.UserStore
+import com.example.hackerstudent.utils.*
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
@@ -193,6 +191,35 @@ class AuthRepository @Inject constructor(
             MySealed.Success("Email is Updated Successfully")
         } catch (e: Exception) {
             MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun addPaidCourseToUser(coursePurchase: CoursePurchase) = flow {
+        emit(MySealed.Loading("Adding Course to User"))
+        val data = try {
+            val query =
+                fireStore.collection(GetConstStringObj.USERS).document("${authInstance.uid}")
+            query.update("bookmarks.${coursePurchase.name}", FieldValue.delete()).await()
+            query.update("courses.${coursePurchase.name}", coursePurchase).await()
+            MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun addCartItem(coursePurchase: CoursePurchase) = flow {
+        emit(MySealed.Loading("Adding to Cart"))
+        val data = try {
+            val query =
+                fireStore.collection(GetConstStringObj.USERS).document("${authInstance.uid}")
+            query.update("bookmarks.${coursePurchase.name}", coursePurchase).await()
+            MySealed.Success(null)
+        } catch (e: Exception) {
+            MySealed.Error(e, null)
         }
         emit(data)
     }.flowOn(IO)

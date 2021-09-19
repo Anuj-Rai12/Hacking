@@ -16,14 +16,16 @@ data class CreateUserAccount(
     val password: String? = null,
     val token: String? = null,
     var id: String? = null,
-    val bookmarks: Map<String, CourseDetail>? = null,
-    val courses: Map<String, CourseDetail>? = null
+    val bookmarks: Map<String, CoursePurchase>? = null,
+    val courses: Map<String, CoursePurchase>? = null
 )
 
-data class CourseDetail(
-    val course: String? = null,
-    val data: String? = null,
-    val purchase: String? = null
+data class CoursePurchase(
+    val name: String? = null,//Course Name
+    val date: String? = null,
+    val purchase: String? = null,//Amount
+    val status: String? = null,
+    val purchaseid: String? = null// Purchase Id
 )
 
 

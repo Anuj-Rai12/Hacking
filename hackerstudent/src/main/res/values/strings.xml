@@ -33,6 +33,7 @@
     <string name="Exception_one">The out of band code is invalid. This can happen if the code is malformed, expired, or has already been used.</string>
     <string name="Exception_two">Given String is empty or null</string>
     <string name="Miss_request">User Request is Denied!!,Try To Create New Account</string>
+    <string name="please_error">What to do,</string>
 
     <!-- Profile Screen-->
     <string name="user_profile">Profile</string>
@@ -66,4 +67,6 @@
     <string name="course_add_cart_btn">Add To Cart</string>
     <string name="course_review_btn">See More Reviews</string>
 
+    <!-- Payment Error-->
+    <string name="payment_err">Error Text status</string>
 </resources>

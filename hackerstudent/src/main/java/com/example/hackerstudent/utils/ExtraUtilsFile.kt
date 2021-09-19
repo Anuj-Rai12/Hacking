@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -28,6 +29,8 @@ import com.google.android.material.snackbar.Snackbar
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 fun hintRequest(): HintRequest = HintRequest.Builder()
@@ -42,6 +45,13 @@ fun isValidPhone(phone: String): Boolean {
     val phonetic = "^[+]?[0-9]{10,13}\$"
     val pattern = Pattern.compile(phonetic)
     return pattern.matcher(phone).matches()
+}
+
+@SuppressLint("SimpleDateFormat")
+fun getDateTime(): String {
+    val current = Date()
+    val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    return formatter.format(current)
 }
 
 fun isValidEmail(target: CharSequence?): Boolean {
@@ -188,6 +198,13 @@ fun showBottomNavBar() {
     ClientActivity.bottomNavBar?.show()
 }
 
+fun Activity.preventScreenShotOrVideoRecoding() {
+    window.setFlags(
+        WindowManager.LayoutParams.FLAG_SECURE,
+        WindowManager.LayoutParams.FLAG_SECURE
+    )
+}
+
 @RequiresApi(Build.VERSION_CODES.M)
 fun Activity.changeStatusBarColor(color: Int = R.color.white) {
     this.window?.statusBarColor = resources.getColor(color, null)
@@ -219,4 +236,8 @@ object GetConstStringObj {
     const val LAND_SCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     const val UnSpecified = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     const val Portrait = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    const val Payment_COLOR = "#fb7268"
+    const val Currency = "INR"
+    const val Payment_ERROR =
+        "If bank amount Is been dedicated ,during this transaction then take a screen shoot of this message and contact with me.\nOr else Ignore this message"
 }
