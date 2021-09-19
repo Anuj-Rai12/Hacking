@@ -201,8 +201,8 @@ class AuthRepository @Inject constructor(
         val data = try {
             val query =
                 fireStore.collection(GetConstStringObj.USERS).document("${authInstance.uid}")
-            query.update("bookmarks.${coursePurchase.name}", FieldValue.delete()).await()
-            query.update("courses.${coursePurchase.name}", coursePurchase).await()
+            query.update("bookmarks.${coursePurchase.course}", FieldValue.delete()).await()
+            query.update("courses.${coursePurchase.course}", coursePurchase).await()
             MySealed.Success(null)
         } catch (e: Exception) {
             MySealed.Error(null, e)
@@ -216,7 +216,7 @@ class AuthRepository @Inject constructor(
         val data = try {
             val query =
                 fireStore.collection(GetConstStringObj.USERS).document("${authInstance.uid}")
-            query.update("bookmarks.${coursePurchase.name}", coursePurchase).await()
+            query.update("bookmarks.${coursePurchase.course}", coursePurchase).await()
             MySealed.Success(null)
         } catch (e: Exception) {
             MySealed.Error(e, null)

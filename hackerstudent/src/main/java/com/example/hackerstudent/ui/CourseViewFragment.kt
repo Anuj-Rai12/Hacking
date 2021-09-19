@@ -120,8 +120,8 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
     private fun addItemCart(name: String, price: String) {
         val coursePurchase =
             CoursePurchase(
-                name = name,
-                date = getDateTime(),
+                course = name,
+                data = getDateTime(),
                 purchase = price,
                 status = "WishList",
             )

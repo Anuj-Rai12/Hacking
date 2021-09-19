@@ -147,8 +147,8 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
         p0?.let { p2Txt = "Payment Id ->  $it \n\n" }
         p1?.let { p2Txt = "$p2Txt More Info\n$p1\n\n" }
         val coursePurchase = CoursePurchase(
-            name = courseName,
-            date = getDateTime(),
+            course = courseName,
+            data = getDateTime(),
             purchase = coursePrice,
             status = "Success",
             purchaseid = p0

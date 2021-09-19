@@ -21,8 +21,8 @@ data class CreateUserAccount(
 )
 
 data class CoursePurchase(
-    val name: String? = null,//Course Name
-    val date: String? = null,
+    val course: String? = null,//Course Name
+    val data: String? = null,
     val purchase: String? = null,//Amount
     val status: String? = null,
     val purchaseid: String? = null// Purchase Id

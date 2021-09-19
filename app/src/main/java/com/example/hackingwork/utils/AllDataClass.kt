@@ -20,7 +20,9 @@ data class CreateUserAccount(
 data class CourseDetail(
     val course: String? = null,
     val data: String? = null,
-    val purchase: String? = null
+    val purchase: String? = null,
+    val status: String? = null,
+    val purchaseid: String? = null
 )
 
 data class UnpaidClass(

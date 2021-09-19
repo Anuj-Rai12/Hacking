@@ -49,7 +49,8 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                 CourseDetail(
                     course = courseName,
                     data = getDateTime(),
-                    purchase = amt
+                    purchase = amt,
+                    status = getPaymentOption
                 ).also {
                     val data = UnpaidClass(id = null, courses = mapOf(courseName to it))
                     modifyUnpaid(
@@ -62,7 +63,8 @@ class AddUserCourse : Fragment(R.layout.add_user_course_fragment) {
                 CourseDetail(
                     course = courseName,
                     data = getDateTime(),
-                    purchase = amt
+                    purchase = amt,
+                    status = getPaymentOption
                 ).also {
                     val data = mapOf(courseName to it)
                     modifyPaid(data, udi)
