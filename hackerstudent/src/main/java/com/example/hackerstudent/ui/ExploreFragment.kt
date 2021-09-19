@@ -20,6 +20,7 @@ import com.example.hackerstudent.paginate.HeaderAndFooterAdaptor
 import com.example.hackerstudent.paginate.PaginationAdaptor
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.CourseViewModel
+import com.example.hackerstudent.viewmodels.PrimaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.annotations.NonNull
@@ -39,6 +40,8 @@ const val LOADING = "Course is Loading"
 class ExploreFragment : Fragment(R.layout.explore_fragment) {
     private lateinit var binding: ExploreFragmentBinding
     private val courseViewModel: CourseViewModel by viewModels()
+    private val primaryViewModel: PrimaryViewModel by viewModels()
+    private var cartSize: String? = null
     private val disposables = CompositeDisposable()
     private var stringFlag: String? = null
     private var paginationAdaptor: PaginationAdaptor? = null
@@ -59,6 +62,14 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         showBottomNavBar()
         activity?.changeStatusBarColor()
         binding = ExploreFragmentBinding.bind(view)
+        savedInstanceState?.let {
+            cartSize = it.getString(GetConstStringObj.UN_WANTED)
+            stringFlag = it.getString(GetConstStringObj.Create_Module)
+        }
+        if (cartSize == null) {
+            getCartSize()
+        } else
+            setCartValue()
         binding.arrowImg.setOnClickListener {
             if (stringFlag == null)
                 findNavController().popBackStack()
@@ -67,20 +78,17 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 stringFlag = null
             }
         }
-        savedInstanceState?.let {
-            stringFlag = it.getString(GetConstStringObj.Create_Module)
-        }
         binding.searchViewEd.startAnimation(enterAnim)
         setUpRecycleView()
         if (stringFlag == null && networkUtils.isConnected()) {
             showLoading()
-            hide()
+            deviceIsConnected()
             getUpData(null)
         } else if (stringFlag == null && !networkUtils.isConnected()) {
-            showNoConnection()
+            noInterNetConnection()
             activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
-                    hide()
+                    deviceIsConnected()
                     getUpData(null)
                 }
             })
@@ -103,17 +111,17 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 Log.i(TAG, "onViewCreated: Search Query -> $it")
                 showLoading()
                 getUpData(it)
-                hide()
+                deviceIsConnected()
                 stringFlag = it
                 getCount()
             } else if (it.isNotBlank() && it.isNotEmpty() && !it.isNullOrBlank() && !networkUtils.isConnected()) {
-                showNoConnection()
+                noInterNetConnection()
                 activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                     if (networkUtils.isConnected()) {
                         showLoading()
                         getUpData(it)
                         stringFlag = it
-                        hide()
+                        deviceIsConnected()
                         getCount()
                     }
                 })
@@ -121,12 +129,48 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         }
     }
 
-    private fun hide() {
+    private fun setCartValue() {
+        if (cartSize != "null" && cartSize != null) {
+            binding.noOfBookmarkCourse.show()
+            binding.noOfBookmarkCourse.text = cartSize
+        }
+    }
+
+    private fun getCartSize() {
+        primaryViewModel.userInfo.observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    noInterNetConnection()
+                    dir(msg = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                }
+                is MySealed.Loading -> {
+                    deviceIsConnected()
+                }
+                is MySealed.Success -> {
+                    deviceIsConnected()
+                    val dataInfo = it.data as CreateUserAccount?
+                    dataInfo?.let { data ->
+                        val len = data.bookmarks?.size ?: 0
+                        cartSize = if (len != 0) {
+                            if (len > 9)
+                                "9+"
+                            else
+                                len.toString()
+                        } else
+                            "null"
+                    }
+                    setCartValue()
+                }
+            }
+        }
+    }
+
+    private fun deviceIsConnected() {
         binding.courseLottie.hide()
         binding.courseLayoutRecycle.show()
     }
 
-    private fun showNoConnection() {
+    private fun noInterNetConnection() {
         binding.courseLottie.show()
         binding.courseLottie.setAnimation(R.raw.no_connection)
         binding.courseLayoutRecycle.hide()
@@ -246,6 +290,9 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         super.onSaveInstanceState(outState)
         stringFlag?.let {
             outState.putString(GetConstStringObj.Create_Module, it)
+        }
+        cartSize?.let {
+            outState.putString(GetConstStringObj.UN_WANTED, it)
         }
     }
 }

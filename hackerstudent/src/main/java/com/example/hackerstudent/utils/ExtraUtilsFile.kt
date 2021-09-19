@@ -165,6 +165,11 @@ fun AppCompatActivity.show() {
     this.supportActionBar!!.show()
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
+fun View.setColor(color: Int) {
+    this.setBackgroundColor(resources.getColor(color, null))
+}
+
 fun getDiscount(currPrice: Double, mrpPrice: Double) =
     (((mrpPrice - currPrice) / mrpPrice) * 100).toInt()
 

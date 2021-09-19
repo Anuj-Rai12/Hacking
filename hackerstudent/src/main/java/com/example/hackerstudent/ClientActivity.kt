@@ -57,6 +57,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
                 setOf(
                     R.id.homeScreenFragment,
                     R.id.exploreFragment,
+                    R.id.myCourseFragment,
                     R.id.profileFragment
                 )
             )

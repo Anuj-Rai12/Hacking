@@ -30,9 +30,8 @@ class CourseViewModel @Inject constructor(
         courseRepository.getCourseOnlyThree(query.limit(GetConstStringObj.Per_page.toLong()))
             .asLiveData()
 
+    fun courseID(dataItem: String) = courseRepository.getPaidCourse(dataItem).asLiveData()
 
-    /*.whereArrayContains("targetaudience", search)
-    .whereArrayContains("requirement", search)*/
 
     fun getSearchQuery(SearchQuery: String?) = Pager(
         PagingConfig(

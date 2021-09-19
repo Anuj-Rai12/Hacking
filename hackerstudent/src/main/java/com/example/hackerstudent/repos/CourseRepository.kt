@@ -2,8 +2,10 @@ package com.example.hackerstudent.repos
 
 import androidx.fragment.app.FragmentActivity
 import com.example.hackerstudent.api.RestApi
+import com.example.hackerstudent.utils.GetConstStringObj
 import com.example.hackerstudent.utils.MySealed
 import com.example.hackerstudent.utils.UploadFireBaseData
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.razorpay.Checkout
 import kotlinx.coroutines.Dispatchers.IO
@@ -14,7 +16,16 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class CourseRepository @Inject constructor(private val restApi: RestApi) {
+class CourseRepository @Inject constructor(
+    private val restApi: RestApi,
+    private val fireStore: FirebaseFirestore
+) {
+//    private val authInstance by lazy {
+//        FirebaseAuth.getInstance()
+//    }
+//    private val currentUser by lazy {
+//        authInstance.currentUser
+//    }
 
     fun getTodayQuote() = flow {
         emit(MySealed.Loading("Getting Today Quote"))
@@ -55,4 +66,21 @@ class CourseRepository @Inject constructor(private val restApi: RestApi) {
             }
             emit(data)
         }.flowOn(IO)
+
+    fun getPaidCourse(dataItem: String) = flow {
+        emit(MySealed.Loading("Loading Course"))
+        val data = try {
+            val info =
+                fireStore.collection(GetConstStringObj.Create_course).document(dataItem).get()
+                    .await()
+            /*val courseData = if (info.exists())
+                info.toObject(UploadFireBaseData::class.java)
+            else
+                null*/
+            MySealed.Success(info.toObject(UploadFireBaseData::class.java))
+        } catch (e: Exception) {
+            MySealed.Error(e, null)
+        }
+        emit(data)
+    }.flowOn(IO)
 }

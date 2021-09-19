@@ -44,7 +44,7 @@
         android:id="@+id/courseViewFragment"
         android:name="com.example.hackerstudent.ui.CourseViewFragment"
         android:label="course_view_fragment"
-        tools:layout="@layout/course_view_fragment" >
+        tools:layout="@layout/course_view_fragment">
         <argument
             android:name="data"
             app:argType="com.example.hackerstudent.utils.SendSelectedCourse" />
@@ -60,7 +60,7 @@
         android:id="@+id/videoFragment"
         android:name="com.example.hackerstudent.ui.VideoFragment"
         android:label="video_fragment_layout"
-        tools:layout="@layout/video_fragment_layout" >
+        tools:layout="@layout/video_fragment_layout">
         <argument
             android:name="video"
             app:argType="string" />
@@ -75,4 +75,9 @@
         app:exitAnim="@anim/exit_anim"
         app:popEnterAnim="@anim/pop_enter_anim"
         app:popExitAnim="@anim/pop_exit_anim" />
+    <fragment
+        android:id="@+id/myCourseFragment"
+        android:name="com.example.hackerstudent.ui.MyCourseFragment"
+        android:label="my_course_layout"
+        tools:layout="@layout/my_course_layout" />
 </navigation>

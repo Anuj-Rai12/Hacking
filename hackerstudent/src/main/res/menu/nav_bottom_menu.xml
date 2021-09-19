@@ -10,6 +10,12 @@
         android:icon="@drawable/ic_explore"
         android:title="@string/frag_exp" />
 
+
+    <item
+        android:id="@+id/myCourseFragment"
+        android:icon="@drawable/ic_subscription"
+        android:title="@string/frag_sub" />
+
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_twotone_person_24"

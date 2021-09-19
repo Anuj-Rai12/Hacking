@@ -69,4 +69,10 @@
 
     <!-- Payment Error-->
     <string name="payment_err">Error Text status</string>
+
+    <!-- My Course Fragment -->
+    <string name="frag_course_my">My Subscription</string>
+    <string name="frag_sub">Subscription</string>
+    <string name="frag_desc">Great Day! What would you \nlike to learn today?</string>
+
 </resources>

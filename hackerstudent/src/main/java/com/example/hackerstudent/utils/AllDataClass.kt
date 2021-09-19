@@ -97,6 +97,18 @@ data class FireBaseCourseTitle(
 )
 
 
+sealed class PaidCourseSealed {
+    data class CourseList(
+        val title: String,
+        val uploadFireBaseData: List<UploadFireBaseData>?
+    ) : PaidCourseSealed()
+
+    data class User(
+        val name: String,
+        val layout: Int
+    ) : PaidCourseSealed()
+}
+
 sealed class CourseSealed {
 
     data class Image(
