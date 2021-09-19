@@ -8,6 +8,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,6 +18,7 @@ import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.CourseViewFragmentBinding
 import com.example.hackerstudent.recycle.preview.AllPreviewAdaptor
 import com.example.hackerstudent.utils.*
+import com.example.hackerstudent.viewmodels.CourseViewModel
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
 import com.razorpay.Checkout
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +32,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
     private var allPreviewAdaptor: AllPreviewAdaptor? = null
     private val args: CourseViewFragmentArgs by navArgs()
     private val viewModel: PrimaryViewModel by viewModels()
+    private val courseViewModel: CourseViewModel by viewModels()
     private var stringPaymentFlag: String? = null
 
     @Inject
@@ -197,10 +200,33 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             options.put("prefill", prefill)
             ClientActivity.courseName = courseName
             ClientActivity.coursePrice = CoursePrice
-            co.open(activity, options)
+            activity?.let {
+                showPaymentOption(co, it, options)
+            }
         } catch (e: Exception) {
             Log.i(TAG, "startPayment: Error ->  $e")
             dir(message = e.localizedMessage!!)
+        }
+    }
+
+    private fun showPaymentOption(co: Checkout, it: FragmentActivity, options: JSONObject) {
+        courseViewModel.showPaymentOption(co, it, options).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    hideLoading()
+                    hideOffline()
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                }
+                is MySealed.Loading -> {
+                    internetConnected()
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    hideLoading()
+                    internetConnected()
+                    Log.i(TAG, "showPaymentOption: SuccessFull Open Do it")
+                }
+            }
         }
     }
 
@@ -284,19 +310,5 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             outState.putString(GetConstStringObj.UN_WANTED, it)
         }
     }
-    /*override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-        Log.i(TAG, "onPaymentSuccess: $p0")
-        Log.i(TAG, "onPaymentSuccess: $p1")
-        dir(
-            title = "Success",
-            message = "Payment is Successfully Paid \n${p1?.paymentId}\n  form the ${p1?.userEmail} and,\n${p1?.userContact}"
-        )
-    }
 
-    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        Log.i(TAG, "onPaymentError: $p0")
-        Log.i(TAG, "onPaymentError: $p1")
-        Log.i(TAG, "onPaymentError: $p2")
-        dir(message = "Payment is Failed")
-    }*/
 }

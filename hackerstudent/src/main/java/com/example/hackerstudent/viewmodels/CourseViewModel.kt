@@ -1,6 +1,7 @@
 package com.example.hackerstudent.viewmodels
 
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,13 +13,15 @@ import com.example.hackerstudent.paginate.PaginationCourse
 import com.example.hackerstudent.repos.CourseRepository
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.firestore.CollectionReference
+import com.razorpay.Checkout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class CourseViewModel @Inject constructor(
-    courseRepository: CourseRepository,
+    private val courseRepository: CourseRepository,
     private val query: CollectionReference,
 ) :
     ViewModel() {
@@ -48,6 +51,12 @@ class CourseViewModel @Inject constructor(
 
         PaginationCourse(querySearch)
     }.flow.cachedIn(viewModelScope)
+
+    fun showPaymentOption(
+        checkout: Checkout,
+        fragmentActivity: FragmentActivity,
+        jsonObject: JSONObject
+    ) = courseRepository.showPaymentOption(checkout, fragmentActivity, jsonObject).asLiveData()
 
 
     val searchQuery = MutableStateFlow("")
