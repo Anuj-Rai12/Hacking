@@ -10,9 +10,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.paginate.PaginationCourse
+import com.example.hackerstudent.paginate.module.PaginationDataCourse
 import com.example.hackerstudent.repos.CourseRepository
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.razorpay.Checkout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class CourseViewModel @Inject constructor(
     private val courseRepository: CourseRepository,
     private val query: CollectionReference,
+    private val fireStore: FirebaseFirestore
 ) :
     ViewModel() {
     val getTodayQuote = courseRepository.getTodayQuote().asLiveData()
@@ -31,6 +34,16 @@ class CourseViewModel @Inject constructor(
             .asLiveData()
 
     fun courseID(dataItem: String) = courseRepository.getPaidCourse(dataItem).asLiveData()
+
+    fun getModule(string: String)=Pager(
+        PagingConfig(
+            pageSize = GetConstStringObj.Per_page,
+            enablePlaceholders = false
+        )
+    ){
+        PaginationDataCourse(fireStore = fireStore,string)
+    }.flow.cachedIn(viewModelScope)
+
 
 
     fun getSearchQuery(SearchQuery: String?) = Pager(

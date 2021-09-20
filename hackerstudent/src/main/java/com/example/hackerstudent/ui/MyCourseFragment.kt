@@ -80,7 +80,7 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
         binding.courseLayoutRecycle.apply {
             setHasFixedSize(true)
             allPaidAdaptor = AllPaidAdaptor {
-                context?.msg("Getting User Data By Click")
+                dir(23, title = it.fireBaseCourseTitle?.coursename ?: "no")
             }
             adapter = allPaidAdaptor
         }
@@ -164,15 +164,11 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     }
 
     private fun dir(choose: Int = 0, title: String = "Error", message: String = "") {
-        when (choose) {
-            0 -> {
-                val action = MyCourseFragmentDirections.actionGlobalPasswordDialog2(title, message)
-                findNavController().navigate(action)
-            }
-            else -> {
-
-            }
+        val action = when (choose) {
+            0 -> MyCourseFragmentDirections.actionGlobalPasswordDialog2(title, message)
+            else -> MyCourseFragmentDirections.actionMyCourseFragmentToModuleViewFragment(title)
         }
+        findNavController().navigate(action)
     }
 
     private fun internetDevice() {
@@ -190,6 +186,8 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     fun hideLoading() = customProgress.hideLoading()
     override fun onPause() {
         super.onPause()
+        paidCourse.clear()
+        allPaidAdaptor=null
         hideLoading()
     }
 

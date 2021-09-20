@@ -79,5 +79,22 @@
         android:id="@+id/myCourseFragment"
         android:name="com.example.hackerstudent.ui.MyCourseFragment"
         android:label="my_course_layout"
-        tools:layout="@layout/my_course_layout" />
+        tools:layout="@layout/my_course_layout" >
+        <action
+            android:id="@+id/action_myCourseFragment_to_moduleViewFragment"
+            app:destination="@id/moduleViewFragment"
+            app:enterAnim="@anim/ente_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_enter_anim"
+            app:popExitAnim="@anim/pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/moduleViewFragment"
+        android:name="com.example.hackerstudent.ui.ModuleViewFragment"
+        android:label="module_view_fragment"
+        tools:layout="@layout/module_view_fragment" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 </navigation>

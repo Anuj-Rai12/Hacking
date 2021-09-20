@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:id="@+id/vide_title_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/explore_frag_layout"
+        android:backgroundTint="@color/otp_box_bg"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="start|center"
+        android:maxLines="3"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:drawableEndCompat="@drawable/ic_play_arrow"
+        app:drawableTint="@color/my_color_Accent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry"
+        tools:text="Video My File ..." />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ass_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/explore_frag_layout"
+        app:layout_constraintLeft_toLeftOf="@id/vide_title_txt"
+        app:layout_constraintRight_toRightOf="@id/vide_title_txt"
+        app:layout_constraintTop_toBottomOf="@id/vide_title_txt">
+
+
+        <TextView
+            android:id="@+id/assigment_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat"
+            android:maxLines="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/assigment_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/Exception_one" />
+
+
+        <ImageButton
+            android:id="@+id/assigment_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="6dp"
+            android:background="@color/trans_parent_btn_color"
+            android:contentDescription="@string/frag_desc"
+            android:src="@drawable/ic_round_add_24"
+            app:layout_constraintBottom_toBottomOf="@id/assigment_txt"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/assigment_txt" />
+
+
+        <Button
+            android:id="@+id/view_ass_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/alert_dialog_box"
+            android:text="@string/ass_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/my_color_dark_Accent"
+            app:backgroundTint="@color/trans_parent_btn_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assigment_txt" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

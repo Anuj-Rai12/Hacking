@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hackerstudent.ui.ExploreFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.hackerstudent.ui.ModuleViewFragment">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,105 +49,27 @@
 
                 <TextView
                     android:id="@+id/category_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center"
+                    android:gravity="start|center"
+                    android:maxLines="2"
                     android:text="@string/frag_exp"
                     android:textColor="@color/my_color_Accent"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/arrow_img"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/cart_layout_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_margin="4dp"
-                    android:contentDescription="@string/frag_exp"
-                    android:src="@drawable/ic_cart"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
-                <TextView
-                    android:id="@+id/no_of_bookmark_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_circle"
-                    android:backgroundTint="#C02026"
-                    android:minWidth="20dp"
-                    android:minHeight="20dp"
-                    android:paddingStart="2dp"
-                    android:paddingEnd="2dp"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="@id/cart_layout_btn"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="RtlSymmetry"
-                    tools:text="9+"
-                    tools:visibility="visible" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/search_view_ed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/search_view_layout"
-                android:backgroundTint="@color/light_grey"
-                android:fontFamily="@font/montserrat"
-                android:hint="@string/search_hint"
-                android:textColorHint="@color/forget_text_color"
-                android:textSize="18sp"
-                app:drawableEndCompat="@drawable/ic_search" />
-
-            <LinearLayout
-                android:id="@+id/src_result_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:padding="4dp"
-                    android:text="@string/we_found_part_1"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/result_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="@color/my_color_dark_Accent"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="20" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="@string/we_found_part_2"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -155,9 +77,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            tools:listitem="@layout/module_item_layout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/course_item_layout" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/course_Lottie"
