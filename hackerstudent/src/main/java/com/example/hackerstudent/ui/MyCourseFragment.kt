@@ -89,7 +89,7 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     private fun noCourse() {
         binding.courseLottie.show()
         binding.courseLayoutRecycle.hide()
-        binding.courseLottie.setAnimation(R.raw.books_girl)
+        binding.courseLottie.setAnimation(R.raw.reading_explore)
     }
 
     private fun getUserData(courseData: (List<UploadFireBaseData>) -> Unit) {

@@ -210,6 +210,11 @@ fun Activity.preventScreenShotOrVideoRecoding() {
     )
 }
 
+fun Activity.removedScreenShotFlagOrVideoRecoding() {
+    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+}
+
 @RequiresApi(Build.VERSION_CODES.M)
 fun Activity.changeStatusBarColor(color: Int = R.color.white) {
     this.window?.statusBarColor = resources.getColor(color, null)

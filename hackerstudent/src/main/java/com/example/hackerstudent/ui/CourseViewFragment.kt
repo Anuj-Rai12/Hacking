@@ -102,9 +102,10 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                 addItemCart(courseName, CoursePrice)
             }, { teacher ->
                 //Navigated to teacher Intro fragment
-                context?.msg("Teacher -> $teacher")
+                context?.msg(teacher)
             }, { goToMoreReview ->
-                context?.msg("More Review Got Clicked $goToMoreReview")
+                Log.i(TAG, "setUpRecycle: $goToMoreReview")
+                context?.msg("working on Review")
             }, { video ->
                 val action = CourseViewFragmentDirections.actionGlobalVideoFragment(
                     video,

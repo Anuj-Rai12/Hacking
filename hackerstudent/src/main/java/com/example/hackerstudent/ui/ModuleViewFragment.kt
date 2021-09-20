@@ -38,7 +38,7 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
         hideBottomNavBar()
         activity?.changeStatusBarColor()
         binding = ModuleViewFragmentBinding.bind(view)
-        binding.categoryTitle.text=args.title
+        binding.categoryTitle.text = args.title
         showLoading()
         setRecyclerview()
         if (networkUtils.isConnected()) {
@@ -93,7 +93,7 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
                 context?.msg("Assignment \n$title and Link \n $link")
 
             }, { title, link ->//Video
-                context?.msg("$title and Link \n $link")
+                dir(title = title, choose = 23, msg = link)
             })
             adapter = moduleAdaptor?.withLoadStateHeaderAndFooter(
                 header = HeaderAndFooterAdaptor({
@@ -111,14 +111,11 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
     }
 
     private fun dir(choose: Int = 0, msg: String = "", title: String = "Error") {
-        when (choose) {
-            0 -> {
-                val action = ModuleViewFragmentDirections.actionGlobalPasswordDialog2(title, msg)
-                findNavController().navigate(action)
-            }
-            else -> {
-
-            }
+        val action = when (choose) {
+            0 -> ModuleViewFragmentDirections.actionGlobalPasswordDialog2(title, msg)
+            23 -> ModuleViewFragmentDirections.actionGlobalVideoFragment(title = title, video = msg)
+            else -> throw IllegalArgumentException("fuck you")
         }
+        findNavController().navigate(action)
     }
 }

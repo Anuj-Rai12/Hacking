@@ -29,6 +29,10 @@ class VideoFragment : Fragment(R.layout.video_fragment_layout) {
         hideBottomNavBar()
         activity?.changeStatusBarColor(R.color.black)
         binding = VideoFragmentLayoutBinding.bind(view)
+        if (!args.title.contains("Preview")) {
+            context?.msg("No Recoding Allowed")
+            activity?.preventScreenShotOrVideoRecoding()
+        }
         binding.courseTitle.text = args.title
         binding.andExoPlayerView.setSource(args.video)
         onBackPressed()
@@ -48,6 +52,10 @@ class VideoFragment : Fragment(R.layout.video_fragment_layout) {
             if (orientation == GetConstStringObj.LAND_SCAPE) {
                 binding.andExoPlayerView.getActivity()?.requestedOrientation =
                     GetConstStringObj.UnSpecified
+            }
+            if (!args.title.contains("Preview")) {
+                context?.msg("Recoding Allowed")
+                activity?.removedScreenShotFlagOrVideoRecoding()
             }
             findNavController().popBackStack()
         }
