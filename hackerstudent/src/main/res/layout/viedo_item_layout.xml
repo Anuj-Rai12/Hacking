@@ -14,13 +14,12 @@
         android:backgroundTint="@color/otp_box_bg"
         android:drawablePadding="10dp"
         android:ellipsize="end"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/montserrat"
         android:gravity="start|center"
         android:maxLines="3"
         android:paddingStart="10dp"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="14sp"
         app:drawableEndCompat="@drawable/ic_play_arrow"
         app:drawableTint="@color/my_color_Accent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,15 +32,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ass_layout"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="7dp"
         android:layout_marginEnd="5dp"
         android:background="@drawable/explore_frag_layout"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@id/vide_title_txt"
         app:layout_constraintRight_toRightOf="@id/vide_title_txt"
-        app:layout_constraintTop_toBottomOf="@id/vide_title_txt">
+        app:layout_constraintTop_toBottomOf="@id/vide_title_txt"
+        tools:visibility="visible">
 
 
         <TextView

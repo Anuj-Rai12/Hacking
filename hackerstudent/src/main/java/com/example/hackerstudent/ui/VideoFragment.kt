@@ -53,10 +53,9 @@ class VideoFragment : Fragment(R.layout.video_fragment_layout) {
                 binding.andExoPlayerView.getActivity()?.requestedOrientation =
                     GetConstStringObj.UnSpecified
             }
-            if (!args.title.contains("Preview")) {
-                context?.msg("Recoding Allowed")
+            if (!args.title.contains("Preview"))
                 activity?.removedScreenShotFlagOrVideoRecoding()
-            }
+
             findNavController().popBackStack()
         }
     }

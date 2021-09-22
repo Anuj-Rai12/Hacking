@@ -1,5 +1,6 @@
 package com.example.hackerstudent.recycle.module
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hackerstudent.R
 import com.example.hackerstudent.databinding.ModuleItemLayoutBinding
@@ -53,6 +54,7 @@ class ModuleViewHolder(private val binding: ModuleItemLayoutBinding) :
 class PaidViedViewHolder(private val binding: ViedoItemLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private var stringFlag: String? = null
+    @SuppressLint("SetTextI18n")
     fun bindIt(
         video: Video,
         itemAssignment: (String, String) -> Unit,
@@ -64,7 +66,7 @@ class PaidViedViewHolder(private val binding: ViedoItemLayoutBinding) :
                 assLayout.show()
                 assigmentTxt.text = it.title
             }
-            videTitleTxt.text = video.title
+            videTitleTxt.text = "${video.title}\n${video.duration}"
             viewAssBtn.setOnClickListener {
                 itemAssignment(video.assignment?.title ?: "No", video.assignment?.uri ?: "No")
             }
