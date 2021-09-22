@@ -125,6 +125,11 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
                                 }
                             }
                         }
+                        if (acc.courses?.values.isNullOrEmpty() || acc.courses.isNullOrEmpty()) {
+                            hideLoading()
+                            flagNoCourse = "Is Empty"
+                            noCourse()
+                        }
                     }
                 }
             }
@@ -187,7 +192,8 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     override fun onPause() {
         super.onPause()
         paidCourse.clear()
-        allPaidAdaptor=null
+        course.clear()
+        allPaidAdaptor = null
         hideLoading()
     }
 

@@ -50,7 +50,7 @@
                 <TextView
                     android:id="@+id/category_title"
                     android:layout_width="0dp"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
@@ -61,7 +61,7 @@
                     android:maxLines="2"
                     android:text="@string/frag_exp"
                     android:textColor="@color/my_color_Accent"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/arrow_img"
@@ -77,6 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layoutAnimation="@anim/recycle_left_to_right"
             tools:listitem="@layout/module_item_layout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

@@ -75,11 +75,11 @@ class PaidViedViewHolder(private val binding: ViedoItemLayoutBinding) :
                 if (stringFlag == null) {
                     stringFlag = "Hide"
                     assigmentBtn.setImageResource(R.drawable.ic_round_add_24)
-                    viewAssBtn.show()
+                    viewAssBtn.hide()
                 } else {
                     assigmentBtn.setImageResource(R.drawable.ic_round_remove_24)
                     stringFlag = null
-                    viewAssBtn.hide()
+                    viewAssBtn.show()
                 }
             }
         }

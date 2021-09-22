@@ -83,6 +83,7 @@
                     android:background="@drawable/bg_circle"
                     android:backgroundTint="#C02026"
                     android:minWidth="20dp"
+                    android:gravity="center"
                     android:minHeight="20dp"
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
