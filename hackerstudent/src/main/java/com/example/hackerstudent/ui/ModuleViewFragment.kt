@@ -90,8 +90,7 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
         binding.courseLayoutRecycle.apply {
             setHasFixedSize(true)
             moduleAdaptor = ModuleAdaptor({ title, link ->//Assignment
-                context?.msg("Assignment \n$title and Link \n $link")
-
+                dir(title = title, msg = link, choose = 244)
             }, { title, link ->//Video
                 dir(title = title, choose = 23, msg = link)
             })
@@ -114,7 +113,10 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
         val action = when (choose) {
             0 -> ModuleViewFragmentDirections.actionGlobalPasswordDialog2(title, msg)
             23 -> ModuleViewFragmentDirections.actionGlobalVideoFragment(title = title, video = msg)
-            else -> throw IllegalArgumentException("fuck you")
+            else -> ModuleViewFragmentDirections.actionGlobalPdfFileViewFragment(
+                title = title,
+                url = msg
+            )
         }
         findNavController().navigate(action)
     }

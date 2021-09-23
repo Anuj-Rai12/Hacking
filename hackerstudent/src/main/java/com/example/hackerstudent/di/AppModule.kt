@@ -4,6 +4,7 @@ import com.example.hackerstudent.api.RestApi
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,6 +39,11 @@ object AppModule {
     @Singleton
     @Provides
     fun fireStore() = FirebaseFirestore.getInstance()
+
+
+    @Singleton
+    @Provides
+    fun storage() = FirebaseStorage.getInstance()
 
     @Singleton
     @Provides

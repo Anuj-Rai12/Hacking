@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
@@ -165,10 +167,6 @@ fun AppCompatActivity.show() {
     this.supportActionBar!!.show()
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
-fun View.setColor(color: Int) {
-    this.setBackgroundColor(resources.getColor(color, null))
-}
 
 fun getDiscount(currPrice: Double, mrpPrice: Double) =
     (((mrpPrice - currPrice) / mrpPrice) * 100).toInt()
@@ -220,6 +218,17 @@ fun Activity.changeStatusBarColor(color: Int = R.color.white) {
     this.window?.statusBarColor = resources.getColor(color, null)
 }
 
+
+fun Context.getFileDir(fileName: String): File {
+    return File.createTempFile(fileName, GetConstStringObj.FileType, this.cacheDir)
+}
+
+
+fun Activity.getNightMode(): Boolean {
+    val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return mode == Configuration.UI_MODE_NIGHT_YES
+}
+
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
@@ -246,6 +255,7 @@ object GetConstStringObj {
     const val LAND_SCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     const val UnSpecified = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     const val Portrait = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    const val FileType = ".pdf"
     const val Payment_COLOR = "#fb7268"
     const val Currency = "INR"
     const val Payment_ERROR =

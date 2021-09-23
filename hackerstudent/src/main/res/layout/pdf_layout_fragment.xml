@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hackerstudent.ui.MyCourseFragment">
+    tools:context="com.example.hackerstudent.ui.PdfFileViewFragment">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,9 +23,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
+                android:layout_margin="4dp"
                 android:background="@drawable/explore_frag_layout"
                 app:layout_scrollFlags="scroll|enterAlways">
 
@@ -50,47 +48,57 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/course_title_select"
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize"
+                    android:id="@+id/category_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center"
-                    android:text="@string/frag_course_my"
+                    android:gravity="start|center"
+                    android:maxLines="2"
                     android:textColor="@color/my_color_Accent"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/arrow_img"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/Exception_one" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/course_layout_recycle"
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/show_pdf_file"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/course_Lottie"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            tools:src="@drawable/hacking_main_icon"
-            tools:visibility="visible" />
+            tools:src="@drawable/hacking_main_icon" />
 
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/course_layout_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/recycle_left_to_right"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/module_item_layout" />-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

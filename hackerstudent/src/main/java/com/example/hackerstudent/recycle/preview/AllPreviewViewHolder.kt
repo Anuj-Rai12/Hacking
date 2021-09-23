@@ -1,7 +1,6 @@
 package com.example.hackerstudent.recycle.preview
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding

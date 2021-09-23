@@ -1,5 +1,6 @@
 package com.example.hackerstudent.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.hackerstudent.TAG
 import com.example.hackerstudent.paginate.PaginationCourse
 import com.example.hackerstudent.paginate.module.PaginationDataCourse
 import com.example.hackerstudent.repos.CourseRepository
+import com.example.hackerstudent.repos.FileSource
 import com.example.hackerstudent.utils.GetConstStringObj
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,16 +36,17 @@ class CourseViewModel @Inject constructor(
             .asLiveData()
 
     fun courseID(dataItem: String) = courseRepository.getPaidCourse(dataItem).asLiveData()
+    fun getDownloadFile(title: String, downloadUri: String, context: Context) =
+        courseRepository.getDownloadFile(title, downloadUri, context).asLiveData()
 
-    fun getModule(string: String)=Pager(
+    fun getModule(string: String) = Pager(
         PagingConfig(
             pageSize = GetConstStringObj.Per_page,
             enablePlaceholders = false
         )
-    ){
-        PaginationDataCourse(fireStore = fireStore,string)
+    ) {
+        PaginationDataCourse(fireStore = fireStore, string)
     }.flow.cachedIn(viewModelScope)
-
 
 
     fun getSearchQuery(SearchQuery: String?) = Pager(
@@ -72,5 +75,5 @@ class CourseViewModel @Inject constructor(
 
 
     val searchQuery = MutableStateFlow("")
-
+    val fileStore = MutableStateFlow<FileSource?>(null)
 }

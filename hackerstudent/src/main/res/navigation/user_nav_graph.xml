@@ -97,4 +97,23 @@
             android:name="title"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/pdfFileViewFragment"
+        android:name="com.example.hackerstudent.ui.PdfFileViewFragment"
+        android:label="pdf_layout_fragment"
+        tools:layout="@layout/pdf_layout_fragment" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_pdfFileViewFragment"
+        app:destination="@id/pdfFileViewFragment"
+        app:enterAnim="@anim/ente_anim"
+        app:exitAnim="@anim/exit_anim"
+        app:popEnterAnim="@anim/pop_enter_anim"
+        app:popExitAnim="@anim/pop_exit_anim" />
 </navigation>

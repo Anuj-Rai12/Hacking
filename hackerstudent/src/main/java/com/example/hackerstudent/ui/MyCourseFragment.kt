@@ -38,6 +38,7 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.changeStatusBarColor()
+        showBottomNavBar()
         binding = MyCourseLayoutBinding.bind(view)
         savedInstanceState?.let {
             flagNoCourse = it.getString(GetConstStringObj.UN_WANTED)
@@ -70,8 +71,6 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
                 )
             )
             Log.i(TAG, "onViewCreated: Paid Course Data $paidCourse")
-            binding.courseLayoutRecycle.setColor(R.color.otp_box_bg)
-            activity?.changeStatusBarColor(R.color.otp_box_bg)
             allPaidAdaptor?.submitList(paidCourse)
         }
     }
@@ -152,8 +151,8 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
                 }
                 is MySealed.Success -> {
                     internetDevice()
-                    val data = it.data as UploadFireBaseData
-                    data.let { info ->
+                    val data = it.data as UploadFireBaseData?
+                    data?.let { info ->
                         Log.i(TAG, "getCourseData: Id -> $info")
                         this.course.add(info)
                         if (flag && this.course.isNotEmpty()) {
