@@ -608,14 +608,12 @@ class AllUtil{
         fun isSubscriptionOverActive(context: Context):Boolean
         {
 
-            try {
+            return try {
                 val endDate = UptoddSharedPreferences.getInstance(context).getAppExpiryDate()
                 val end = SimpleDateFormat("yyyy-MM-dd").parse(endDate)
-                return isSubscriptionOver(end)
-            }
-            catch (e:Exception)
-            {
-                return isSubscriptionOverActive(context,true)
+                isSubscriptionOver(end)
+            } catch (e:Exception) {
+                isSubscriptionOverActive(context,true)
             }
         }
 

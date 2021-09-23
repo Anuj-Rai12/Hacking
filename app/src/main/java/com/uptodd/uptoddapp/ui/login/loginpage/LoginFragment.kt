@@ -472,7 +472,6 @@ class LoginFragment : Fragment() {
                     ?.navigate(R.id.action_loginFragment_to_addressFragment)
             }
 
-
         }
     }
 
@@ -577,8 +576,24 @@ class LoginFragment : Fragment() {
 
                     }
                     else if (userInfo.isNewUser) {
-                        view?.findNavController()
-                            ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
+                        if(viewModel.motherStage=="prenatal") {
+
+
+                            if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
+
+                                view?.findNavController()
+                                    ?.navigate(R.id.action_loginFragment_to_addressFragment)
+                            } else {
+
+                                startActivity(
+                                    Intent(activity, TodosListActivity::class.java)
+                                )
+                            }
+                        }
+                        else{
+                            view?.findNavController()
+                                ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
+                        }
                     } else {
                         if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
                         {
