@@ -72,7 +72,7 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
 
     private fun setData() {
         lifecycleScope.launchWhenStarted {
-            courseVideModel.getModule(args.title).collectLatest {
+            courseVideModel.getModule(args.id).collectLatest {
                 hideLoading()
                 moduleAdaptor?.submitData(it)
             }

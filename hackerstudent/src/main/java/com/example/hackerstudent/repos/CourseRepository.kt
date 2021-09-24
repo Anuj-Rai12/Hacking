@@ -82,10 +82,11 @@ class CourseRepository @Inject constructor(
                     .await()
 
             val courseData = if (!info.isEmpty) {
-                info.documents.first().toObject(UploadFireBaseData::class.java)
+                val course = info.documents.first().toObject(UploadFireBaseData::class.java)
+                course?.id = info.first().id
+                course
             } else
                 null
-
             MySealed.Success(courseData)
         } catch (e: Exception) {
             MySealed.Error(e, null)
@@ -109,6 +110,7 @@ class CourseRepository @Inject constructor(
     }.flowOn(IO)
 }
 
+//Extra Local Data class
 data class FileSource(
     val file: File,
     val info: FileDownloadTask.TaskSnapshot

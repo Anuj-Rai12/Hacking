@@ -54,6 +54,7 @@ class ModuleViewHolder(private val binding: ModuleItemLayoutBinding) :
 class PaidViedViewHolder(private val binding: ViedoItemLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private var stringFlag: String? = null
+
     @SuppressLint("SetTextI18n")
     fun bindIt(
         video: Video,
@@ -62,11 +63,15 @@ class PaidViedViewHolder(private val binding: ViedoItemLayoutBinding) :
     ) {
         binding.apply {
             assLayout.hide()
-            video.assignment?.let {
+            video.assignment?.title?.let {
                 assLayout.show()
-                assigmentTxt.text = it.title
+                assigmentTxt.text = it
             }
-            videTitleTxt.text = "${video.title}\n${video.duration}"
+            videTitleTxt.text =if (video.duration!=null)
+                "${video.title}\n${video.duration}"
+            else
+                "${video.title}"
+
             viewAssBtn.setOnClickListener {
                 itemAssignment(video.assignment?.title ?: "No", video.assignment?.uri ?: "No")
             }

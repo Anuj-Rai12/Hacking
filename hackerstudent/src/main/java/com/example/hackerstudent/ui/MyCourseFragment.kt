@@ -79,7 +79,7 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
         binding.courseLayoutRecycle.apply {
             setHasFixedSize(true)
             allPaidAdaptor = AllPaidAdaptor {
-                dir(23, title = it.fireBaseCourseTitle?.coursename ?: "no")
+                dir(23, title = "${it.fireBaseCourseTitle?.coursename},${it.id}")
             }
             adapter = allPaidAdaptor
         }
@@ -170,7 +170,13 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     private fun dir(choose: Int = 0, title: String = "Error", message: String = "") {
         val action = when (choose) {
             0 -> MyCourseFragmentDirections.actionGlobalPasswordDialog2(title, message)
-            else -> MyCourseFragmentDirections.actionMyCourseFragmentToModuleViewFragment(title)
+            else -> {
+                val data = getPathFile(title)
+                MyCourseFragmentDirections.actionMyCourseFragmentToModuleViewFragment(
+                    title = data.first(),
+                    id = data.last()
+                )
+            }
         }
         findNavController().navigate(action)
     }

@@ -33,7 +33,8 @@ data class CoursePurchase(
 data class UploadFireBaseData(
     val fireBaseCourseTitle: FireBaseCourseTitle? = null,
     val previewvideo: String? = null,
-    val thumbnail: String? = null
+    val thumbnail: String? = null,
+    var id: String? = null
 )
 
 @Parcelize
