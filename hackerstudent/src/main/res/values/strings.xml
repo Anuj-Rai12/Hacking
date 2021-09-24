@@ -76,4 +76,8 @@
     <string name="ass_btn">View Assignment File</string>
     <string name="frag_desc">Great Day! What would you \nlike to learn today?</string>
 
+    <!-- Add Cart Fragment -->
+    <string name="frag_cart">Wishlist</string>
+
+
 </resources>

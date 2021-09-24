@@ -77,12 +77,15 @@ class CourseRepository @Inject constructor(
         emit(MySealed.Loading("Loading Course"))
         val data = try {
             val info =
-                fireStore.collection(GetConstStringObj.Create_course).document(dataItem).get()
+                fireStore.collection(GetConstStringObj.Create_course)
+                    .whereEqualTo("fireBaseCourseTitle.coursename", dataItem).get()
                     .await()
-            val courseData = if (info.exists())
-                info.toObject(UploadFireBaseData::class.java)
-            else
+
+            val courseData = if (!info.isEmpty) {
+                info.documents.first().toObject(UploadFireBaseData::class.java)
+            } else
                 null
+
             MySealed.Success(courseData)
         } catch (e: Exception) {
             MySealed.Error(e, null)

@@ -17,6 +17,11 @@
         android:title="@string/frag_sub" />
 
     <item
+        android:id="@+id/addCartFragment"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/frag_cart" />
+
+    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_twotone_person_24"
         android:title="@string/app_acc" />

@@ -58,6 +58,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
                     R.id.homeScreenFragment,
                     R.id.exploreFragment,
                     R.id.myCourseFragment,
+                    R.id.addCartFragment,
                     R.id.profileFragment
                 )
             )

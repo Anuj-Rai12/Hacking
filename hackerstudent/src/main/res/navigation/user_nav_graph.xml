@@ -39,7 +39,15 @@
         android:id="@+id/exploreFragment"
         android:name="com.example.hackerstudent.ui.ExploreFragment"
         android:label="explore_fragment"
-        tools:layout="@layout/explore_fragment" />
+        tools:layout="@layout/explore_fragment" >
+        <action
+            android:id="@+id/action_exploreFragment_to_addCartFragment"
+            app:destination="@id/addCartFragment"
+            app:enterAnim="@anim/ente_anim"
+            app:exitAnim="@anim/exit_anim"
+            app:popEnterAnim="@anim/pop_enter_anim"
+            app:popExitAnim="@anim/pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/courseViewFragment"
         android:name="com.example.hackerstudent.ui.CourseViewFragment"
@@ -116,4 +124,9 @@
         app:exitAnim="@anim/exit_anim"
         app:popEnterAnim="@anim/pop_enter_anim"
         app:popExitAnim="@anim/pop_exit_anim" />
+    <fragment
+        android:id="@+id/addCartFragment"
+        android:name="com.example.hackerstudent.ui.AddCartFragment"
+        android:label="add_cart_layout"
+        tools:layout="@layout/add_cart_layout" />
 </navigation>

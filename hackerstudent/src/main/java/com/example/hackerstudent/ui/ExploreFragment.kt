@@ -78,6 +78,12 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 stringFlag = null
             }
         }
+
+        binding.cartLayoutBtn.setOnClickListener {
+            val action=ExploreFragmentDirections.actionExploreFragmentToAddCartFragment()
+            findNavController().navigate(action)
+        }
+
         binding.searchViewEd.startAnimation(enterAnim)
         setUpRecycleView()
         if (stringFlag == null && networkUtils.isConnected()) {
@@ -284,6 +290,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
     override fun onPause() {
         super.onPause()
         hideLoading()
+        disposables.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
