@@ -7,7 +7,10 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hackerstudent.R
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.AddCartLayoutBinding
@@ -64,6 +67,36 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
         binding.arrowImg.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        viewModel.searchQuery.asLiveData().observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty() && !it.isNullOrBlank()) {
+                deleteAddCartFunction(it)
+            }
+        }
+
+    }
+
+    private fun deleteAddCartFunction(s: String) {
+        viewModel.deleteCourse(s).observe(viewLifecycleOwner) {
+            when (it) {
+                is MySealed.Error -> {
+                    noInternet()
+                    hideLoading()
+                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                    viewModel.searchQuery.value=""
+                }
+                is MySealed.Loading -> {
+                    showInternet()
+                    showLoading(it.data as String)
+                }
+                is MySealed.Success -> {
+                    showInternet()
+                    hideLoading()
+                    dir(title = "Success", message = it.data!!)
+                    viewModel.searchQuery.value=""
+                }
+            }
+        }
     }
 
     private fun setUpRecycleView() {
@@ -74,6 +107,23 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
             }
             adapter = addCartAdaptor
         }
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val getSelectedItem =
+                    addCartAdaptor?.currentList?.get(viewHolder.absoluteAdapterPosition)
+                getSelectedItem?.let {
+                    viewModel.searchQuery.value = it.fireBaseCourseTitle?.coursename!!
+                }
+            }
+        }).attachToRecyclerView(binding.courseLayoutRecycle)
+
     }
 
     private fun getData() {

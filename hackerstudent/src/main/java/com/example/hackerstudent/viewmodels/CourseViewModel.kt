@@ -73,7 +73,9 @@ class CourseViewModel @Inject constructor(
         jsonObject: JSONObject
     ) = courseRepository.showPaymentOption(checkout, fragmentActivity, jsonObject).asLiveData()
 
+    fun deleteCourse(string: String) = courseRepository.deleteAddCart(string).asLiveData()
 
     val searchQuery = MutableStateFlow("")
     val fileStore = MutableStateFlow<FileSource?>(null)
+
 }

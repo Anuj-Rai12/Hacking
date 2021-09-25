@@ -7,6 +7,8 @@ import com.example.hackerstudent.utils.GetConstStringObj
 import com.example.hackerstudent.utils.MySealed
 import com.example.hackerstudent.utils.UploadFireBaseData
 import com.example.hackerstudent.utils.getFileDir
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FileDownloadTask
@@ -26,12 +28,12 @@ class CourseRepository @Inject constructor(
     private val fireStore: FirebaseFirestore,
     private val storage: FirebaseStorage
 ) {
-//    private val authInstance by lazy {
-//        FirebaseAuth.getInstance()
-//    }
-//    private val currentUser by lazy {
-//        authInstance.currentUser
-//    }
+    private val authInstance by lazy {
+        FirebaseAuth.getInstance()
+    }
+    private val currentUser by lazy {
+        authInstance.currentUser
+    }
 
     fun getTodayQuote() = flow {
         emit(MySealed.Loading("Getting Today Quote"))
@@ -103,6 +105,18 @@ class CourseRepository @Inject constructor(
             val info = reference.getFile(file).await()
             val fileSource = FileSource(file, info)
             MySealed.Success(fileSource)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+    fun deleteAddCart(item: String) = flow {
+        emit(MySealed.Loading("Removing Course..."))
+        val data = try {
+            fireStore.collection(GetConstStringObj.USERS).document("${currentUser?.uid}")
+                .update("bookmarks.$item", FieldValue.delete()).await()
+            MySealed.Success("Course is Removed...")
         } catch (e: Exception) {
             MySealed.Error(null, e)
         }
