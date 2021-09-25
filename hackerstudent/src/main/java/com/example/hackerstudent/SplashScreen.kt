@@ -2,7 +2,6 @@ package com.example.hackerstudent
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -174,7 +173,7 @@ class SplashScreen : AppCompatActivity() {
                 stringFlag = "$title,$message,$flag"
                 extraDialog = ExtraDialog(title, message, flag) {
                     stringFlag = null
-                    loadUrl()
+                    this.loadUrl(versionControl?.updateurl!!)
                     Log.i(TAG, "dir: Item Clicked")
                     Unit
                 }
@@ -190,10 +189,6 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
-    private fun loadUrl() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(versionControl?.updateurl!!))
-        startActivity(browserIntent)
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

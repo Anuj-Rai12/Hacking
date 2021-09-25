@@ -1,6 +1,9 @@
 package com.example.hackerstudent.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.hackerstudent.ClientActivity
 import com.example.hackerstudent.R
+import com.example.hackerstudent.SplashScreen
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.CourseViewFragmentBinding
 import com.example.hackerstudent.recycle.preview.AllPreviewAdaptor
@@ -73,7 +81,40 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
         allPreviewAdaptor?.submitList(list)
         //allPreviewAdaptor?.notifyItemRangeInserted(0, list.size)
         binding.shareImg.setOnClickListener {
-            activity?.msg("Share Btn")
+            lifecycleScope.launchWhenStarted {
+                getBitmap()?.let { bitmap ->
+                    val url = activity?.bitUrl(bitmap)
+                    url?.let {uri: Uri ->
+                        stringPaymentFlag="payment success"
+                        activity?.shareImage(
+                            title = "Share Course :)",
+                            message = "Hey check this Course ,\n${args.data.coursename}" +
+                                    "\nThis course is for ${args.data.courselevel}" +
+                                    "\nJust only for ${args.data.currentprice}" +
+                                    "\nFor More Detail Check this course preview Video" +
+                                    "\n\n${args.data.previewvideo}" +
+                                    "\nVisit this Course" +
+                                    "\n\n${SplashScreen.versionControl?.updateurl ?: "www.google.com"}",
+                            uri=uri
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun getBitmap(): Bitmap? {
+        val loading = ImageLoader(requireContext())
+        val request = ImageRequest.Builder(requireContext())
+            .data(args.data.thumbnail)
+            .build()
+        return try {
+            val result = (loading.execute(request) as SuccessResult).drawable
+            (result as BitmapDrawable).bitmap
+        } catch (e: Exception) {
+            hideLoading()
+            dir(message = e.localizedMessage!!)
+            null
         }
     }
 

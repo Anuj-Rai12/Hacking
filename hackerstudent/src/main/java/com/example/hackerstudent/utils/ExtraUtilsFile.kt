@@ -7,7 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -27,6 +31,7 @@ import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
 import com.google.android.material.snackbar.Snackbar
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -209,12 +214,12 @@ fun Activity.preventScreenShotOrVideoRecoding() {
 }
 
 
-fun Activity.showFullScreen() {
-    window.setFlags(
-        WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN
-    )
-}
+//fun Activity.showFullScreen() {
+//    window.setFlags(
+//        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//        WindowManager.LayoutParams.FLAG_FULLSCREEN
+//    )
+//}
 
 fun Activity.removedScreenShotFlagOrVideoRecoding() {
     window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -236,6 +241,51 @@ fun Activity.getNightMode(): Boolean {
     val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     return mode == Configuration.UI_MODE_NIGHT_YES
 }
+
+fun Activity.loadUrl(string: String) {
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(string))
+    startActivity(browserIntent)
+}
+
+fun Activity.shareText(title: String, message: String) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plan"
+        putExtra(Intent.EXTRA_TEXT, message)
+    }
+    startActivity(Intent.createChooser(intent, title))
+}
+
+
+fun Activity.bitUrl(bitmap: Bitmap): Uri {
+    val byteArray = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArray)
+    val path = MediaStore.Images.Media.insertImage(
+        contentResolver,
+        bitmap,
+        "IMG_" + System.currentTimeMillis(),
+        null
+    )
+    return Uri.parse(path)
+}
+
+
+fun Activity.shareImage(title: String, message: String, uri: Uri) {
+    try {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
+        startActivity(Intent.createChooser(intent, title))
+    } catch (e: Exception) {
+        Log.i(TAG, "shareImage: ${e.localizedMessage}")
+    }
+}
+
+
+fun Activity.convertImage(it: Int = R.drawable.hacking_main_icon): Bitmap =
+    BitmapFactory.decodeResource(resources, it)
+
 
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
@@ -266,7 +316,8 @@ object GetConstStringObj {
     const val FileType = ".pdf"
     const val Payment_COLOR = "#fb7268"
     const val Currency = "INR"
-    const val VersionNote="Seem like New Version is Available, so if your want to use this app so kindly Update the app"
+    const val VersionNote =
+        "Seem like New Version is Available, so if your want to use this app so kindly Update the app"
     const val Payment_ERROR =
         "If bank amount Is been dedicated ,during this transaction then take a screen shoot of this message and contact with me.\nOr else Ignore this message"
 }

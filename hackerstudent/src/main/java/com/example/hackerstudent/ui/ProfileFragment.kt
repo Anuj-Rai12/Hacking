@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hackerstudent.R
+import com.example.hackerstudent.SplashScreen
 import com.example.hackerstudent.TAG
 import com.example.hackerstudent.databinding.ProfileFramgnetBinding
 import com.example.hackerstudent.recycle.profile.AllProfileAdaptor
@@ -94,6 +95,11 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
                         profileData.add(ProfileDataClass.OptionFooter("Rate Us"))
                         profileData.add(ProfileDataClass.OptionFooter("Share"))
                         profileData.add(ProfileDataClass.OptionFooter("About Me"))
+                        profileData.add(ProfileDataClass.Title("Visit"))
+                        profileData.add(ProfileDataClass.OptionFooter("WhatsApp"))
+                        profileData.add(ProfileDataClass.OptionFooter("Facebook"))
+                        profileData.add(ProfileDataClass.OptionFooter("Twitter"))
+                        profileData.add(ProfileDataClass.OptionFooter("Instagram"))
                         allProfileAdaptor.submitList(profileData)
                     }
                 }
@@ -107,6 +113,23 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
             allProfileAdaptor = AllProfileAdaptor {
                 if (it == GetConstStringObj.change_profile_name || it == GetConstStringObj.change_profile_password || it == GetConstStringObj.change_email_address)
                     openDialog(it)
+                else if (it == "Share") {
+                    activity?.shareImage(
+                        title = "Share your App",
+                        message = "Hey Check this App it hav Excellent Hacking Course ,\nIf you wanted to Excel you Career Or Skill so,Download the App now,\n\n${SplashScreen.versionControl?.updateurl}",
+                        uri = activity?.bitUrl(activity?.convertImage()!!)!!
+                    )
+                } else if (it == "WhatsApp") {
+                    activity?.loadUrl(SplashScreen.versionControl?.whatsapp ?: "www.google.com")
+                } else if (it == "Facebook") {
+                    activity?.loadUrl(SplashScreen.versionControl?.facebook ?: "www.google.com")
+                } else if (it == "Twitter") {
+                    activity?.loadUrl(SplashScreen.versionControl?.twitter ?: "www.google.com")
+                } else if (it == "Instagram") {
+                    activity?.loadUrl(SplashScreen.versionControl?.insta ?: "www.google.com")
+                } else if (it == "Rate Us") {
+                    activity?.loadUrl(SplashScreen.versionControl?.updateurl ?: "www.google.com")
+                }
             }
             adapter = allProfileAdaptor
         }
