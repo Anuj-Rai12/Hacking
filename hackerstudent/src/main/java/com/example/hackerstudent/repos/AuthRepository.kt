@@ -223,4 +223,21 @@ class AuthRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+
+    fun getVersionControl() = flow {
+        emit(MySealed.Loading("checking for update.."))
+        val data = try {
+            kotlinx.coroutines.delay(10000)
+            val query =
+                fireStore.collection(GetConstStringObj.VERSION).document(GetConstStringObj.USERS)
+                    .get().await()
+            val data=query.toObject(VersionControl::class.java)
+            MySealed.Success(data)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 }

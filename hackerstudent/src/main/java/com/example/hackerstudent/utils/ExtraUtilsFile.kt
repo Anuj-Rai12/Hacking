@@ -208,6 +208,14 @@ fun Activity.preventScreenShotOrVideoRecoding() {
     )
 }
 
+
+fun Activity.showFullScreen() {
+    window.setFlags(
+        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN
+    )
+}
+
 fun Activity.removedScreenShotFlagOrVideoRecoding() {
     window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
     window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -258,6 +266,7 @@ object GetConstStringObj {
     const val FileType = ".pdf"
     const val Payment_COLOR = "#fb7268"
     const val Currency = "INR"
+    const val VersionNote="Seem like New Version is Available, so if your want to use this app so kindly Update the app"
     const val Payment_ERROR =
         "If bank amount Is been dedicated ,during this transaction then take a screen shoot of this message and contact with me.\nOr else Ignore this message"
 }

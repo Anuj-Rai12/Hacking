@@ -103,6 +103,19 @@ data class FireBaseCourseTitle(
     val review: UserViewOnCourse? = null
 )
 
+@IgnoreExtraProperties
+data class VersionControl(
+    //Version Code
+    val version: String? = null,
+    //Update Url
+    val updateurl: String? = null,
+    //Contact Detail
+    val whatsapp: String? = null,
+    val insta: String? = null,
+    val facebook: String? = null,
+    val twitter: String? = null,
+)
+
 
 sealed class PaidCourseSealed {
     data class CourseList(

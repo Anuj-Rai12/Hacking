@@ -24,6 +24,8 @@ class PrimaryViewModel @Inject constructor(
     var mutableStateFlow = MutableStateFlow<UserStore?>(null)
     var paymentLayout = MutableStateFlow<LocalCoursePurchase?>(null)
 
+    val update = authRepository.getVersionControl().asLiveData()
+
     // For PhoneOtp
     var credential: PhoneAuthCredential? = null
     val read = classPersistence.read.asLiveData()
