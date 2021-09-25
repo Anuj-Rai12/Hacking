@@ -7,6 +7,7 @@ import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -64,6 +65,13 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
             )
         setupActionBarWithNavController(navController, appBarConfiguration)
         setupSmoothBottomMenu()
+
+        primaryViewModel.paymentLayout.asLiveData().observe(this) {
+            if (it != null) {
+                addPaidCourse(coursePurchase = it.coursePurchase, info = it.messages)
+            }
+        }
+
     }
 
     private fun setupSmoothBottomMenu() {
@@ -155,7 +163,10 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
             status = "Success",
             purchaseid = p0
         )
-        addPaidCourse(coursePurchase, p2Txt)
+        val localCoursePurchase =
+            LocalCoursePurchase(coursePurchase = coursePurchase, messages = p2Txt)
+
+        primaryViewModel.paymentLayout.value = localCoursePurchase
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -165,6 +176,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
                 is MySealed.Error -> {
                     hideLoading()
                     dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                    primaryViewModel.paymentLayout.value = null
                 }
                 is MySealed.Loading -> showLoading(it.data as String)
                 is MySealed.Success -> {
@@ -175,6 +187,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
                         this
                     )
                     this.msg("Successful Paid ", length = Snackbar.LENGTH_SHORT)
+                    primaryViewModel.paymentLayout.value = null
                 }
             }
         }

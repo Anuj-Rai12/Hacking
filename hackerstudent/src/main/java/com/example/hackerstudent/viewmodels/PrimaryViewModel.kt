@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hackerstudent.utils.ClassPersistence
 import com.example.hackerstudent.repos.AuthRepository
 import com.example.hackerstudent.utils.CoursePurchase
+import com.example.hackerstudent.utils.LocalCoursePurchase
 import com.example.hackerstudent.utils.UserStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -21,6 +22,7 @@ class PrimaryViewModel @Inject constructor(
 ) : ViewModel() {
     //For CreateUserAccount.kt
     var mutableStateFlow = MutableStateFlow<UserStore?>(null)
+    var paymentLayout = MutableStateFlow<LocalCoursePurchase?>(null)
 
     // For PhoneOtp
     var credential: PhoneAuthCredential? = null

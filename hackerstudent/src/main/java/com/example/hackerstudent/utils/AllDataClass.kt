@@ -20,6 +20,12 @@ data class CreateUserAccount(
     val courses: Map<String, CoursePurchase>? = null
 )
 
+data class LocalCoursePurchase(
+    val coursePurchase: CoursePurchase,
+    val messages: String
+)
+
+
 data class CoursePurchase(
     val course: String? = null,//Course Name
     val data: String? = null,
