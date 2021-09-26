@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="100dp">
+    android:layout_margin="100dp"
+    android:background="@drawable/cutom_progress_bar_layout">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
@@ -24,9 +25,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:paddingBottom="10dp"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
+        android:paddingBottom="10dp"
         android:text="@string/pleas_wait"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -46,10 +47,10 @@
         android:text="@string/please_error"
         android:textColor="@color/black"
         android:textStyle="bold"
-        tools:visibility="visible"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar" />
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        tools:visibility="visible" />
 
 
     <TextView
@@ -58,11 +59,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="@font/montserrat"
+        android:paddingBottom="10dp"
         android:text="@string/pleas_wait"
         android:textColor="@color/cheery_red"
         android:textSize="13sp"
         android:visibility="gone"
-        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/error_txt_title"

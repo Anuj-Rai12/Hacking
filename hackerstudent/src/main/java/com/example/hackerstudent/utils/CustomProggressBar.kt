@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.widget.ImageView
 import com.example.hackerstudent.R
@@ -25,6 +27,7 @@ class CustomProgressBar @Inject constructor() {
         alertDialog.setView(binding.root)
         alertDialog.setCancelable(flag)
         this.alertDialog = alertDialog.create()
+        this.alertDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         this.alertDialog?.show()
     }
 
@@ -53,6 +56,7 @@ class SuccessOrFailedPayment @Inject constructor() {
                 errorTxt.append(GetConstStringObj.Payment_ERROR)
             }
         }
+        infoDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         infoDialog.show()
     }
 }
