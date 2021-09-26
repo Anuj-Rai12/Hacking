@@ -90,10 +90,10 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
                             title = "Share Course :)",
                             message = "Hey check this Course ,\n${args.data.coursename}" +
                                     "\nThis course is for ${args.data.courselevel}" +
-                                    "\nJust only for ${args.data.currentprice}" +
+                                    "\nJust only for ${GetConstStringObj.Rs}${args.data.currentprice}" +
                                     "\nFor More Detail Check this course preview Video" +
                                     "\n\n${args.data.previewvideo}" +
-                                    "\nVisit this Course" +
+                                    "\n\nVisit this Course" +
                                     "\n\n${SplashScreen.versionControl?.updateurl ?: "www.google.com"}",
                             uri=uri
                         )

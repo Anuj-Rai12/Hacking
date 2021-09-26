@@ -78,6 +78,7 @@
 
     <!-- Add Cart Fragment -->
     <string name="frag_cart">Wishlist</string>
-
+    <!-- Splash Activity-->
+    <string name="Splash_screen">PERMISSION_DENIED: Missing or insufficient permissions.</string>
 
 </resources>

@@ -107,6 +107,10 @@ class SplashScreen : AppCompatActivity() {
             when (it) {
                 is MySealed.Error -> {
                     hideProg()
+                    if (getString(R.string.Splash_screen) == it.exception?.localizedMessage)
+                        dir()
+
+                    Log.i(TAG, "checkUpdate: ${it.exception?.localizedMessage}")
                     dir(1, message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
@@ -165,6 +169,7 @@ class SplashScreen : AppCompatActivity() {
         when (choose) {
             0 -> {
                 //Login Activity
+                Log.i(TAG, "dir: Login Activity Accessed")
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()

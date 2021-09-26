@@ -1,9 +1,11 @@
 package com.example.hackerstudent.auth
 
 import android.content.ActivityNotFoundException
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,6 +38,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
     private fun showLoading(string: String) = customProgress.showLoading(requireActivity(), string)
     private fun hideLoading() = customProgress.hideLoading()
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginWithEmailPasswordBinding.bind(view)
@@ -130,6 +133,7 @@ class LoginWithEmailPassword : Fragment(R.layout.login_with_email_password) {
         hideLoading()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun getEmail() {
         try {
             if (MainActivity.emailAuthLink == null)
