@@ -14,55 +14,85 @@
         android:layout_height="match_parent"
         tools:context=".support.view.ViewTicket">
 
-        <FrameLayout
+        <View
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
             android:background="@color/div"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ticket_view_ticket_number" />
+            app:layout_constraintTop_toBottomOf="@+id/detial_ui" />
 
         <LinearLayout
             android:id="@+id/ticket_view_message_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginBottom="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/ticket_view_new_message"
-                android:layout_width="0dp"
+
+            <View
+                android:id="@+id/edit_border"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/div"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detial_ui" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:inputType="textPersonName"
-                android:visibility="visible" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp"
+                >
+
+                <EditText
+                    android:id="@+id/ticket_view_new_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:cursorVisible="true"
+                    android:hint="Type a message"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/edit_rectangle"
+                    android:visibility="visible" />
+
+                <ImageButton
+                    android:id="@+id/ticket_view_message_send"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_margin="6dp"
+                    android:padding="1dp"
+                    android:background="@android:color/transparent"
+                    android:visibility="visible"
+                    android:src="@drawable/ic_icon_ionic_ios_send" />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/ticket_view_reopen_ticket"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
                 android:background="@drawable/round_button_new_ticket"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textSize="14sp"
                 android:text="@string/reopen_ticket"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:visibility="gone" />
 
-            <ImageButton
-                android:id="@+id/ticket_view_message_send"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:scaleType="fitXY"
-                android:visibility="visible"
-                app:srcCompat="@drawable/material_send" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,28 +106,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-        <TextView
-            android:id="@+id/ticket_view_ticket_number"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/detial_ui"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:text="some id"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout1" />
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
 
-        <FrameLayout
+            <TextView
+                android:id="@+id/ticket_view_ticket_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="some id"
+                android:textSize="12sp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/status_show"
+                android:layout_width="60dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:background="@drawable/round_rectangle"
+                android:text="open"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+
+        <View
             android:id="@+id/frameLayout1"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/div"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </FrameLayout>
+        </View>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

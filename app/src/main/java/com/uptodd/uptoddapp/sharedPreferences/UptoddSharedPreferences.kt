@@ -176,6 +176,11 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         editor.putBoolean(userInfo::loggedIn.name, userInfo.loggedIn)
         editor.apply()
     }
+
+    fun getProfileUrl():String?
+    {
+        return loginSharedPreference.getString("profileImageUrl", "").toString()
+    }
     fun getEmail(): String?
     {
         return loginSharedPreference.getString(UserInfo::email.name,"")

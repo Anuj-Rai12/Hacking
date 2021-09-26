@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -43,12 +44,16 @@ class ViewTicket : Fragment() {
         binding.viewTicketBinding = viewModel
 
         val args = ViewTicketArgs.fromBundle(requireArguments())
-        ticket = args.ticket
+        ticket=args.ticket
+        Log.d("type",args.supportType);
         binding.ticketViewTicketNumber.text = "Ticket Number: " + ticket.ticketNumber
+
         val adapter = TicketMessagesAdapter()
+            adapter.isExpert=args.supportType!="Support"
         binding.ticketViewMessages.adapter = adapter
 
         setHasOptionsMenu(true)
+
 
         viewModel.getAllMessages(ticket)
 
@@ -171,12 +176,18 @@ class ViewTicket : Fragment() {
                 binding.ticketViewNewMessage.visibility=View.VISIBLE
                 binding.ticketViewMessageSend.visibility = View.VISIBLE
                 binding.ticketViewReopenTicket.visibility=View.GONE
+                binding.statusShow.setBackgroundResource(R.drawable.open_status_bg)
+                binding.statusShow.text = "Open"
+                binding.editBorder.visibility=View.VISIBLE
                 menu.findItem(R.id.close_ticket_close).isVisible = true
             }
             0 ->{
                 binding.ticketViewNewMessage.visibility=View.GONE
                 binding.ticketViewMessageSend.visibility = View.GONE
                 binding.ticketViewReopenTicket.visibility=View.VISIBLE
+                binding.editBorder.visibility=View.GONE
+                binding.statusShow.setBackgroundResource(R.drawable.close_status_bg)
+                binding.statusShow.text = "Closed"
                 binding.ticketViewReopenTicket.setOnClickListener {
                     viewModel.reopenTicket("Reopen request on: ${AllUtil.getTimeFromMillis(System.currentTimeMillis())}", ticket)
                 }

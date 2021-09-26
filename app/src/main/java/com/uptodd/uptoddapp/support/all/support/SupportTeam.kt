@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -116,6 +117,7 @@ class SupportTeam : Fragment() {
                         ticketView.findViewById(R.id.ticket_item_ticket_layout)
                     val ticketItemDetailsLayout: ConstraintLayout =
                         ticketView.findViewById(R.id.ticket_item_details_layout)
+                    val statusButton=ticketView.findViewById<AppCompatButton>(R.id.status_show)
                     val ticketItemDetails: TextView =
                         ticketView.findViewById(R.id.ticket_item_details)
                     val ticketItemTitle: TextView = ticketView.findViewById(R.id.ticket_item_title)
@@ -131,12 +133,16 @@ class SupportTeam : Fragment() {
                     ticketItemDate.text = getDateFromTime(ticket.time)
                     when (ticket.status) {
                         1 -> {
+                            statusButton.text="Open"
+                            statusButton.setBackgroundResource(R.drawable.open_status_bg)
                             ticketItemStatus.text = "open"
                             ticketItemStatus.setTextColor(resources.getColor(R.color.ticket_open))
                             ticketItemRate.setTextColor(resources.getColor(R.color.ticket_closed))
                             ticketItemRate.setOnClickListener {}
                         }
                         0 -> {
+                            statusButton.text="Closed"
+                            statusButton.setBackgroundResource(R.drawable.close_status_bg)
                             ticketItemStatus.text = "closed"
                             if (ticket.rating == -1) {
                                 ticketItemRate.setOnClickListener { getRating(ticket, index) }
