@@ -41,7 +41,7 @@ class PdfFileViewFragment : Fragment(R.layout.pdf_layout_fragment) {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.changeStatusBarColor()
+        activity?.changeStatusBarColor(R.color.pdf_color)
         hideBottomNavBar()
         activity?.preventScreenShotOrVideoRecoding()
         binding = PdfLayoutFragmentBinding.bind(view)

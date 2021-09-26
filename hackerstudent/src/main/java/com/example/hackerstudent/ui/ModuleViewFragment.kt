@@ -26,6 +26,13 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
     private val courseVideModel: CourseViewModel by viewModels()
     private var moduleAdaptor: ModuleAdaptor? = null
 
+    companion object {
+        var courseId: String? = null
+    }
+
+    @Inject
+    lateinit var ratingDialogs: RatingDialogs
+
     @Inject
     lateinit var networkUtils: NetworkUtils
 
@@ -39,6 +46,7 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
         activity?.changeStatusBarColor()
         binding = ModuleViewFragmentBinding.bind(view)
         binding.categoryTitle.text = args.title
+        courseId = args.id
         showLoading()
         setRecyclerview()
         if (networkUtils.isConnected()) {
@@ -57,6 +65,17 @@ class ModuleViewFragment : Fragment(R.layout.module_view_fragment) {
         binding.arrowImg.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.reviewBtn.setOnClickListener {
+            reviewSet()
+        }
+    }
+
+    private fun reviewSet() {
+        ratingDialogs.getDialog(
+            requireActivity(),
+            requireParentFragment(),
+            title = "Do you like this ${args.title} ?"
+        )
     }
 
     private fun noInterNet() {

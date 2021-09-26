@@ -13,17 +13,20 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.hackerstudent.databinding.ClientActitvityMainBinding
+import com.example.hackerstudent.ui.ModuleViewFragment
+import com.example.hackerstudent.ui.MyCourseFragment
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.PrimaryViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
+import com.stepstone.apprating.listener.RatingDialogListener
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
+class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, RatingDialogListener {
     private lateinit var binding: ClientActitvityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -86,7 +89,9 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                    val error = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED
+                    Log.i(TAG, "getUserInfo: $error")
+//                    dir(message = )
                 }
                 is MySealed.Loading -> {
                     showLoading(it.data as String)
@@ -110,13 +115,6 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
         }
     }
 
-    private fun dir(title: String = "Error", message: String = "") {
-        val action = ClientActivityDirections.actionGlobalPasswordDialog(
-            title = title,
-            message = message
-        )
-        navController.navigate(action)
-    }
 
     private fun hideLoading() = customProgress.hideLoading()
     private fun showLoading(msg: String) = customProgress.showLoading(this, msg)
@@ -175,7 +173,8 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
             when (it) {
                 is MySealed.Error -> {
                     hideLoading()
-                    dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
+                    val error = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED
+                    applicationContext?.msg(error)
                     primaryViewModel.paymentLayout.value = null
                 }
                 is MySealed.Loading -> showLoading(it.data as String)
@@ -205,5 +204,46 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener {
         successOrFailedPayment.showPaymentDialog(text = p2Txt, context = this)
         Log.i(TAG, "onPaymentError: P2 -> $p2")
         this.msg("Payment Failed", length = Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onNegativeButtonClicked() {
+        Log.i(TAG, "onNegativeButtonClicked: ClientActivity Negative Button")
+    }
+
+    override fun onNeutralButtonClicked() {
+        Log.i(TAG, "onNeutralButtonClicked:  ClientActivity  Neutral Button")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onPositiveButtonClicked(rate: Int, comment: String) {
+        if (comment.isNotBlank() && comment.isNotEmpty()) {
+            val review = UserViewOnCourse(
+                bywhom = MyCourseFragment.userName,
+                rateing = rate.toString(),
+                description = comment
+            )
+            ModuleViewFragment.courseId?.let {
+                primaryViewModel.submitUserReview(it, review).observe(this) { mySealed ->
+                    when (mySealed) {
+                        is MySealed.Error -> {
+                            hideLoading()
+                            Log.i(
+                                TAG,
+                                "onPositiveButtonClicked: ${mySealed.exception?.localizedMessage}"
+                            )
+                            applicationContext?.msg(mySealed.exception?.localizedMessage!!)
+                            //dir(message = "${mySealed.exception?.localizedMessage}")
+                        }
+                        is MySealed.Loading -> {
+                            showLoading(mySealed.data!!)
+                        }
+                        is MySealed.Success -> {
+                            hideLoading()
+                            this.msg("${mySealed.data}")
+                        }
+                    }
+                }
+            }
+        }
     }
 }

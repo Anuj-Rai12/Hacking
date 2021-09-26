@@ -296,6 +296,7 @@ object GetConstStringObj {
     const val Get_End_Point = "api/today"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
     const val Rs = "₹"
+    const val REVIEW="REVIEW"
     const val Create_course = "Course"
     const val Create_Module = "Module"
     const val Per_page = 3

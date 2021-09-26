@@ -28,4 +28,6 @@
     <color name="my_color_Accent">#0E2A3B</color>
     <color name="my_color_dark_Accent">#0E2A3B</color>
 
+    <!-- Pdf Color -->
+    <color name="pdf_color">#636363</color>
 </resources>

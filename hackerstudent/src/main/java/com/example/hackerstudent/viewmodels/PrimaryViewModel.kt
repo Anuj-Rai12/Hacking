@@ -3,11 +3,8 @@ package com.example.hackerstudent.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.hackerstudent.utils.ClassPersistence
 import com.example.hackerstudent.repos.AuthRepository
-import com.example.hackerstudent.utils.CoursePurchase
-import com.example.hackerstudent.utils.LocalCoursePurchase
-import com.example.hackerstudent.utils.UserStore
+import com.example.hackerstudent.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -90,4 +87,7 @@ class PrimaryViewModel @Inject constructor(
 
     fun addItemCart(coursePurchase: CoursePurchase) =
         authRepository.addCartItem(coursePurchase).asLiveData()
+
+    fun submitUserReview(courseId: String, userViewOnCourse: UserViewOnCourse) =
+        authRepository.getReviewAdd(courseId, userViewOnCourse).asLiveData()
 }

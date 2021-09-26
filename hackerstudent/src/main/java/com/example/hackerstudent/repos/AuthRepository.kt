@@ -231,8 +231,26 @@ class AuthRepository @Inject constructor(
             val query =
                 fireStore.collection(GetConstStringObj.VERSION).document(GetConstStringObj.USERS)
                     .get().await()
-            val data=query.toObject(VersionControl::class.java)
+            val data = query.toObject(VersionControl::class.java)
             MySealed.Success(data)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun getReviewAdd(courseId: String, userViewOnCourse: UserViewOnCourse) = flow {
+        emit(MySealed.Loading("Adding the Comment..."))
+        val data = try {
+            val query = fireStore.collection(GetConstStringObj.Create_course).document(courseId)
+
+            query.update("fireBaseCourseTitle.review", userViewOnCourse).await()
+
+            query.collection(GetConstStringObj.REVIEW).document("${currentUser?.uid}")
+                .set(userViewOnCourse).await()
+
+            MySealed.Success("Review is Submitted Successfully")
         } catch (e: Exception) {
             MySealed.Error(null, e)
         }

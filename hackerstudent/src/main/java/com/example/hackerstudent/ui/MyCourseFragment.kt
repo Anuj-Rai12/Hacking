@@ -28,6 +28,10 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
     private var allPaidAdaptor: AllPaidAdaptor? = null
     private var flagNoCourse: String? = null
 
+    companion object {
+        var userName: String? = null
+    }
+
     @Inject
     lateinit var customProgress: CustomProgress
 
@@ -107,6 +111,7 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
                     internetDevice()
                     val data = it.data as CreateUserAccount?
                     data?.let { acc ->
+                        userName = "${acc.firstname} ${acc.lastname}"
                         paidCourse.add(
                             PaidCourseSealed.User(
                                 name = acc.firstname ?: "No Name",
