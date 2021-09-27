@@ -77,8 +77,6 @@
             android:id="@+id/show_pdf_file"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:background="@color/pdf_color"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
