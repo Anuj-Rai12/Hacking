@@ -25,6 +25,16 @@ data class CourseDetail(
     val purchaseid: String? = null
 )
 
+
+@IgnoreExtraProperties
+data class VersionControl(
+    //Version Code
+    val version: String? = null,
+    //Update Url
+    val updateurl: String? = null,
+)
+
+
 data class UnpaidClass(
     var id: String? = null,
     val courses: Map<String, CourseDetail>? = null

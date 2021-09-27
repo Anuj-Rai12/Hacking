@@ -35,7 +35,8 @@ class ExtraDialog(
     private val title: String? = null,
     private val Msg: String? = null,
     private val flag: Boolean? = null,
-    private val function: ((Boolean) -> Unit)? = null
+    private val function: ((Boolean) -> Unit)? = null,
+    private val itemClicked: (() -> Unit?)? = null
 ) :
     androidx.fragment.app.DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -56,9 +57,15 @@ class ExtraDialog(
             }
         } else {
             val cancel = if (flag == true) "Exit" else "Cancel"
-            alterDialog.setPositiveButton("LogOut") { _, _ ->
-                FirebaseAuth.getInstance().signOut()
-                activity?.finish()
+            val btn = if (title == "Update") "Update" else "LogOut"
+            alterDialog.setPositiveButton(btn) { op, _ ->
+                if (btn == "LogOut") {
+                    FirebaseAuth.getInstance().signOut()
+                    activity?.finish()
+                } else {
+                    itemClicked?.invoke()
+                    op.dismiss()
+                }
             }.setNeutralButton(cancel) { _, _ ->
                 activity?.finish()
             }

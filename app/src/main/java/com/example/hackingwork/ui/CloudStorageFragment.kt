@@ -342,12 +342,11 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         extraDialog = ExtraDialog(
             title = GetConstStringObj.Create_Course_title,
             Msg = GetConstStringObj.Create_Course_desc,
-            flag = true
-        ) {
-            if (it) {
-                getValue()
-            }
-        }
+            flag = true,function = {
+                if (it) {
+                    getValue()
+                }
+            })
         extraDialog?.isCancelable = true
         extraDialog?.show(childFragmentManager, "create_course")
     }

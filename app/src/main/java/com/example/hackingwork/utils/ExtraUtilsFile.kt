@@ -11,10 +11,13 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
+import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import com.example.hackingwork.MainActivity.Companion.wifiManager
+import com.example.hackingwork.R
 import com.example.hackingwork.TAG
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
@@ -159,7 +162,17 @@ fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit
     }
     snackBar.show()
 }
+fun View.show(){
+    this.isVisible=true
+}
+fun View.hide(){
+    this.isVisible=false
+}
 
+fun Activity.loadUrl(string: String) {
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(string))
+    startActivity(browserIntent)
+}
 
 fun getMimeType(uri: Uri, context: Context): String? {
     return if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
@@ -174,7 +187,10 @@ fun getMimeType(uri: Uri, context: Context): String? {
         )
     }
 }
-
+@RequiresApi(Build.VERSION_CODES.M)
+fun Activity.changeStatusBarColor(color: Int = R.color.white) {
+    this.window?.statusBarColor = resources.getColor(color, null)
+}
 
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
@@ -182,6 +198,8 @@ object GetConstStringObj {
     const val EMAIL = "EMAIL"
     const val UNPAID = "UNPAID"
     const val VERSION = "version"
+    const val Admin="ADMIN"
+    const val UN_WANTED="Un Wanted Error"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
     const val Create_Course_title = "Create Course"
     const val Create_Course_desc = "Are You Sure you Want to Create A New Course?"
@@ -191,4 +209,6 @@ object GetConstStringObj {
     const val UDI = "UDI-VALUE"
     const val Phone = "PHONE-VALUE"
     const val TOKEN = "UDI-VALUE"
+    const val VersionNote =
+        "Seem like New Version is Available, so if your want to use this app so kindly Update the app"
 }

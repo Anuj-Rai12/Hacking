@@ -6,12 +6,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.navArgs
-import com.example.hackerstudent.ClientActivity
 import com.example.hackerstudent.R
-import com.example.hackerstudent.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.stepstone.apprating.AppRatingDialog
-import java.util.*
 import javax.inject.Inject
 
 class PasswordDialog : androidx.fragment.app.DialogFragment() {

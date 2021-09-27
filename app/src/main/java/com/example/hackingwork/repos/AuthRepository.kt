@@ -135,7 +135,7 @@ class AuthRepository @Inject constructor(
                 fireStore.collection(GetConstStringObj.USERS).document(userUdi?.uid!!).get().await()
             if (userInfo.exists()) {
                 val user = userInfo.toObject(CreateUserAccount::class.java)
-                    MySealed.Success(user)
+                MySealed.Success(user)
             } else
                 MySealed.Success(null)
         } catch (e: Exception) {
@@ -143,4 +143,19 @@ class AuthRepository @Inject constructor(
         }
         emit(data)
     }.flowOn(IO)
+
+    fun getVersionControl() = flow {
+        emit(MySealed.Loading("checking for update.."))
+        val data = try {
+            val query =
+                fireStore.collection(GetConstStringObj.VERSION).document(GetConstStringObj.Admin)
+                    .get().await()
+            val data = query.toObject(VersionControl::class.java)
+            MySealed.Success(data)
+        } catch (e: Exception) {
+            MySealed.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 }
