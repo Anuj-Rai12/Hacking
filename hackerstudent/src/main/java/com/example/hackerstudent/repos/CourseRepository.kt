@@ -54,7 +54,9 @@ class CourseRepository @Inject constructor(
             val info = query.get().await()
             val courseData: MutableList<UploadFireBaseData> = mutableListOf()
             info.forEach {
-                courseData.add(it.toObject(UploadFireBaseData::class.java))
+                val data=it.toObject(UploadFireBaseData::class.java)
+                data.id=it.id
+                courseData.add(data)
             }
             MySealed.Success(courseData)
         } catch (e: Exception) {

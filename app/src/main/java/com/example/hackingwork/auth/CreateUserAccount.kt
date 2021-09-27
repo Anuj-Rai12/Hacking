@@ -33,6 +33,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
 
     @Inject
     lateinit var customProgress: CustomProgress
+    @RequiresApi(Build.VERSION_CODES.M)
     private val requestPhone =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { activity ->
             val credential: Credential? = activity.data?.getParcelableExtra(Credential.EXTRA_KEY)
@@ -179,6 +180,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         findNavController().navigate(action)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun getEmailId() {
         try {
             requestEmail.launch(InputDataBitch(getIntent()))
@@ -187,6 +189,7 @@ class CreateUserAccount : Fragment(R.layout.create_user_account) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
     private fun phoneSelection() {
         dialogPhoneFlag = true

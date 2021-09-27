@@ -61,6 +61,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             stringPaymentFlag = it.getString(GetConstStringObj.UN_WANTED)
         }
         Checkout.preload(activity?.applicationContext)
+        Log.i(TAG, "onViewCreated: Selected Course id -> ${args.id}")
         binding.arrowImg.setOnClickListener {
             findNavController().popBackStack()
         }

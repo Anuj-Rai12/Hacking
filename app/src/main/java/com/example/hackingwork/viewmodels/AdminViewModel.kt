@@ -116,5 +116,5 @@ class AdminViewModel @Inject constructor(
             .asLiveData()
 
     fun modifyPaidUser(data: Map<String, CourseDetail>, udi: String, uploadType: Boolean) =
-        courseModfiyRepository.modifyPaidUser(data,udi,uploadType).asLiveData()
+        courseModfiyRepository.modifyPaidUser(data, udi, uploadType).asLiveData()
 }

@@ -66,6 +66,10 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 ).show()
                 return@setOnClickListener
             }
+            if (adminViewModel.getCourseContent.value == null) {
+                activity?.msg(" No file to Upload", length = Snackbar.LENGTH_SHORT)
+                return@setOnClickListener
+            }
             adminViewModel.getCourseContent.asLiveData().observe(viewLifecycleOwner) {
                 it?.let { course ->
                     if (course.module != null)
@@ -99,6 +103,10 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 ).show()
                 return@setOnClickListener
             }
+            if (adminViewModel.getCourseContent.value == null) {
+                activity?.msg(" No file to Upload", length = Snackbar.LENGTH_SHORT)
+                return@setOnClickListener
+            }
             updateCourseNameForNewModule(courseName)
         }
         binding.CreateCourse.setOnClickListener {
@@ -130,7 +138,14 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                     "Discount Price Should be Lower than Sale Price",
                     Snackbar.LENGTH_SHORT
                 ).show()
+                return@setOnClickListener
             }
+
+            if (adminViewModel.getCourseContent.value == null) {
+                activity?.msg(" No file to Upload", length = Snackbar.LENGTH_SHORT)
+                return@setOnClickListener
+            }
+
             val firebase = FireBaseCourseTitle(
                 coursename = courseName,
                 currentprice = courseDisPrice,
@@ -172,8 +187,9 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
                 is MySealed.Loading -> Log.i(TAG, "updateExitingModuleWithNewVideo: Loading ...")
                 is MySealed.Success -> {
                     if (flag) {
+                        adminViewModel.getCourseContent.value=null
                         hideLoading()
-                        dir(title = "Success",  message = "All Video Are Uploaded Successfully")
+                        dir(title = "Success", message = "All Video Are Uploaded Successfully")
                     }
                 }
             }
@@ -342,7 +358,7 @@ class CloudStorageFragment : Fragment(R.layout.cloud_storage_fragment) {
         extraDialog = ExtraDialog(
             title = GetConstStringObj.Create_Course_title,
             Msg = GetConstStringObj.Create_Course_desc,
-            flag = true,function = {
+            flag = true, function = {
                 if (it) {
                     getValue()
                 }

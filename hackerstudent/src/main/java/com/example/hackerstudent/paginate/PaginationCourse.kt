@@ -23,6 +23,7 @@ class PaginationCourse(private val query: Query) :
             val courseData: MutableList<UploadFireBaseData> = mutableListOf()
             currentPage.forEach {
                 val op = it.toObject(UploadFireBaseData::class.java)
+                op.id = it.id
                 courseData.add(op)
             }
             LoadResult.Page(

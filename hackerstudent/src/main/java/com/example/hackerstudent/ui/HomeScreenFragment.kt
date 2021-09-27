@@ -119,7 +119,7 @@ class HomeScreenFragment : Fragment(R.layout.home_screen_framgment) {
                 coursename = uploadedData.fireBaseCourseTitle?.coursename
             )
             val action =
-                HomeScreenFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse)
+                HomeScreenFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse,uploadedData.id!!)
             findNavController().navigate(action)
             return
         }

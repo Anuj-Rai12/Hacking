@@ -153,8 +153,13 @@ class OutPutData(
     val uri: Uri?
 )
 
-fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit)? = null) {
-    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
+fun Activity.msg(
+    title: String,
+    setAction: String? = null,
+    response: (() -> Unit)? = null,
+    length: Int = Snackbar.LENGTH_LONG
+) {
+    val snackBar = Snackbar.make(findViewById(android.R.id.content), title, length)
     setAction?.let {
         snackBar.setAction(it) {
             response?.invoke()
@@ -162,11 +167,13 @@ fun Activity.msg(title: String, setAction: String? = null, response: (() -> Unit
     }
     snackBar.show()
 }
-fun View.show(){
-    this.isVisible=true
+
+fun View.show() {
+    this.isVisible = true
 }
-fun View.hide(){
-    this.isVisible=false
+
+fun View.hide() {
+    this.isVisible = false
 }
 
 fun Activity.loadUrl(string: String) {
@@ -187,6 +194,7 @@ fun getMimeType(uri: Uri, context: Context): String? {
         )
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.M)
 fun Activity.changeStatusBarColor(color: Int = R.color.white) {
     this.window?.statusBarColor = resources.getColor(color, null)
@@ -198,8 +206,8 @@ object GetConstStringObj {
     const val EMAIL = "EMAIL"
     const val UNPAID = "UNPAID"
     const val VERSION = "version"
-    const val Admin="ADMIN"
-    const val UN_WANTED="Un Wanted Error"
+    const val Admin = "ADMIN"
+    const val UN_WANTED = "Un Wanted Error"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
     const val Create_Course_title = "Create Course"
     const val Create_Course_desc = "Are You Sure you Want to Create A New Course?"

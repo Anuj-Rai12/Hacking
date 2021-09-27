@@ -80,7 +80,7 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
         }
 
         binding.cartLayoutBtn.setOnClickListener {
-            val action=ExploreFragmentDirections.actionExploreFragmentToAddCartFragment()
+            val action = ExploreFragmentDirections.actionExploreFragmentToAddCartFragment()
             findNavController().navigate(action)
         }
 
@@ -274,7 +274,10 @@ class ExploreFragment : Fragment(R.layout.explore_fragment) {
                 coursename = uploadedData.fireBaseCourseTitle?.coursename
             )
             val action =
-                ExploreFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse)
+                ExploreFragmentDirections.actionGlobalCourseViewFragment(
+                    sendSelectedCourse,
+                    uploadFireBaseData.id!!
+                )
             findNavController().navigate(action)
             return
         }

@@ -234,7 +234,7 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
                     category = uploadedData?.fireBaseCourseTitle?.category,
                     coursename = uploadedData?.fireBaseCourseTitle?.coursename
                 )
-                AddCartFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse)
+                AddCartFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse,uploadedData?.id!!)
             }
         }
         findNavController().navigate(action)
