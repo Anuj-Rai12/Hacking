@@ -113,7 +113,8 @@ data class VersionControl(
     val whatsapp: String? = null,
     val insta: String? = null,
     val facebook: String? = null,
-    val twitter: String? = null,
+    val linkedin: String? = null,
+    val youtube: String? = null
 )
 
 

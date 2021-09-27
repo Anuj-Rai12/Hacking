@@ -98,8 +98,9 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
                         profileData.add(ProfileDataClass.Title("Visit"))
                         profileData.add(ProfileDataClass.OptionFooter("WhatsApp"))
                         profileData.add(ProfileDataClass.OptionFooter("Facebook"))
-                        profileData.add(ProfileDataClass.OptionFooter("Twitter"))
+                        profileData.add(ProfileDataClass.OptionFooter("Linkedin"))
                         profileData.add(ProfileDataClass.OptionFooter("Instagram"))
+                        profileData.add(ProfileDataClass.OptionFooter("YouTube"))
                         allProfileAdaptor.submitList(profileData)
                     }
                 }
@@ -123,12 +124,14 @@ class ProfileFragment : Fragment(R.layout.profile_framgnet) {
                     activity?.loadUrl(SplashScreen.versionControl?.whatsapp ?: "www.google.com")
                 } else if (it == "Facebook") {
                     activity?.loadUrl(SplashScreen.versionControl?.facebook ?: "www.google.com")
-                } else if (it == "Twitter") {
-                    activity?.loadUrl(SplashScreen.versionControl?.twitter ?: "www.google.com")
+                } else if (it == "Linkedin") {
+                    activity?.loadUrl(SplashScreen.versionControl?.linkedin ?: "www.google.com")
                 } else if (it == "Instagram") {
                     activity?.loadUrl(SplashScreen.versionControl?.insta ?: "www.google.com")
                 } else if (it == "Rate Us") {
                     activity?.loadUrl(SplashScreen.versionControl?.updateurl ?: "www.google.com")
+                } else if (it == "YouTube") {
+                    activity?.loadUrl(SplashScreen.versionControl?.youtube ?: "www.google.com")
                 }
             }
             adapter = allProfileAdaptor
