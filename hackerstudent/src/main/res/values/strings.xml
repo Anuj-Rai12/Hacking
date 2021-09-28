@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackerStudent</string>
+    <string name="app_name">TheTechUnique</string>
     <!--- String HackerStudent -->
     <string name="app_tag">HACK</string>
     <string name="app_login">Login Screen.</string>

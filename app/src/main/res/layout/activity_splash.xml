@@ -30,7 +30,7 @@
         android:scaleType="centerInside"
         tools:src="@drawable/hacking_main_icon"
         app:lottie_rawRes="@raw/loading"
-        android:visibility="gone"
+        android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
