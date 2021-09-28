@@ -155,11 +155,14 @@ class ExpertTeam : Fragment() {
                         }
                     }
 
+                    ticketItemDetails.text= getDateFromTime(ticket.time)
+
+
                     ticketItemDetails.setOnClickListener {
                         if (ticketItemDetailsLayout.visibility == View.VISIBLE) {
-                            ticketItemDetailsLayout.visibility = View.GONE
+                    //        ticketItemDetailsLayout.visibility = View.GONE
                         } else {
-                            ticketItemDetailsLayout.visibility = View.VISIBLE
+                    //        ticketItemDetailsLayout.visibility = View.VISIBLE
                         }
                     }
 

@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.support.Ticket
 import com.uptodd.uptoddapp.databinding.ViewTicketFragmentBinding
+import com.uptodd.uptoddapp.support.all.AllTicketsViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
@@ -289,6 +290,12 @@ class ViewTicket : Fragment() {
             }
         })
         dialog.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+       var ticketViewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
+        ticketViewModel.getAllTickets()
     }
 
 }
