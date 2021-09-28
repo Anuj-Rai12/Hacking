@@ -83,7 +83,7 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
                     noInternet()
                     hideLoading()
                     dir(message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
-                    viewModel.searchQuery.value=""
+                    viewModel.searchQuery.value = ""
                 }
                 is MySealed.Loading -> {
                     showInternet()
@@ -93,7 +93,7 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
                     showInternet()
                     hideLoading()
                     dir(title = "Success", message = it.data!!)
-                    viewModel.searchQuery.value=""
+                    viewModel.searchQuery.value = ""
                 }
             }
         }
@@ -143,7 +143,7 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
                     val info = it.data as CreateUserAccount?
                     info?.let { createData ->
                         Log.i(TAG, "getData: Create User Fragment $createData")
-                        if (createData.bookmarks?.isEmpty()!!) {
+                        if (createData.bookmarks?.isEmpty() == true || createData.bookmarks == null) {
                             hideLoading()
                             stringFlag = "Wishlist is loading.."
                             addToCart()
@@ -234,7 +234,10 @@ class AddCartFragment : Fragment(R.layout.add_cart_layout) {
                     category = uploadedData?.fireBaseCourseTitle?.category,
                     coursename = uploadedData?.fireBaseCourseTitle?.coursename
                 )
-                AddCartFragmentDirections.actionGlobalCourseViewFragment(sendSelectedCourse,uploadedData?.id!!)
+                AddCartFragmentDirections.actionGlobalCourseViewFragment(
+                    sendSelectedCourse,
+                    uploadedData?.id!!
+                )
             }
         }
         findNavController().navigate(action)

@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.authFragmentView) as NavHostFragment
         navController = navHostFragment.findNavController()
         setupActionBarWithNavController(navController)
+        Log.i(TAG, "onCreate: Testing Boss Logo")
     }
 
     override fun onSupportNavigateUp(): Boolean {
