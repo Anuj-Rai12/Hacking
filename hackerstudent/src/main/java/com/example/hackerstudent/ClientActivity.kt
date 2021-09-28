@@ -1,5 +1,6 @@
 package com.example.hackerstudent
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -21,12 +22,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import com.stepstone.apprating.listener.RatingDialogListener
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, RatingDialogListener {
+class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, RatingDialogListener,
+    EasyPermissions.PermissionCallbacks {
     private lateinit var binding: ClientActitvityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -55,6 +59,7 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, Ratin
             supportFragmentManager.findFragmentById(R.id.ClientContainerView) as NavHostFragment
         navController = navHostFragment.navController
         getUserInfo()
+        getPermission()
         bottomNavBar = binding.bottomBar
         appBarConfiguration =
             AppBarConfiguration(
@@ -245,5 +250,41 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, Ratin
                 }
             }
         }
+    }
+
+    private fun getPermission() {
+        if (!this.checkReadPermission())
+            request()
+        if (!this.checkWritePermission())
+            request(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                code = GetConstStringObj.REQUEST_WRITE,
+                s = "Storage",
+            )
+    }
+
+    private fun request(
+        camera: String = Manifest.permission.READ_EXTERNAL_STORAGE,
+        code: Int = GetConstStringObj.REQUEST_READ,
+        s: String = "Storage"
+    ) = EasyPermissions.requestPermissions(
+        this,
+        "Kindly Give us $s permission,otherwise application may not work Properly.",
+        code,
+        camera
+    )
+
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        perms.forEach {
+            if (EasyPermissions.permissionPermanentlyDenied(this, it)) {
+                SettingsDialog.Builder(this).build().show()
+            } else
+                getPermission()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Log.i(TAG, "onPermissionsGranted: Permission Granted ")
     }
 }

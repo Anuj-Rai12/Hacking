@@ -1,5 +1,6 @@
 package com.example.hackerstudent.ui
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,8 @@ import com.example.hackerstudent.repos.FileSource
 import com.example.hackerstudent.utils.*
 import com.example.hackerstudent.viewmodels.CourseViewModel
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import com.vmadalin.easypermissions.EasyPermissions
+import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,7 +29,8 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PdfFileViewFragment : Fragment(R.layout.pdf_layout_fragment) {
+class PdfFileViewFragment : Fragment(R.layout.pdf_layout_fragment),
+    EasyPermissions.PermissionCallbacks {
     private lateinit var binding: PdfLayoutFragmentBinding
     private val args: PdfFileViewFragmentArgs by navArgs()
     private val viewModel: CourseViewModel by viewModels()
@@ -63,6 +67,11 @@ class PdfFileViewFragment : Fragment(R.layout.pdf_layout_fragment) {
             findNavController().popBackStack()
         }
         onBackPressed()
+        getPermission()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun startPdfProcess() {
         viewModel.fileStore.asLiveData().observe(viewLifecycleOwner) {
             if (it != null) {
                 showPdf(it.file)
@@ -158,6 +167,52 @@ class PdfFileViewFragment : Fragment(R.layout.pdf_layout_fragment) {
         super.onSaveInstanceState(outState)
         getDefaultPage?.let {
             outState.putInt(GetConstStringObj.Create_Module, it)
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getPermission() {
+        if (!requireActivity().checkReadPermission())
+            request()
+        if (!requireActivity().checkWritePermission())
+            request(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                code = GetConstStringObj.REQUEST_WRITE,
+                s = "Storage",
+            )
+        if (requireActivity().checkWritePermission() && requireActivity().checkReadPermission()) {
+            startPdfProcess()
+        }
+    }
+
+    private fun request(
+        camera: String = Manifest.permission.READ_EXTERNAL_STORAGE,
+        code: Int = GetConstStringObj.REQUEST_READ,
+        s: String = "Storage"
+    ) = EasyPermissions.requestPermissions(
+        this,
+        "Kindly Give us $s permission,otherwise application may not work Properly.",
+        code,
+        camera
+    )
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        perms.forEach {
+            if (EasyPermissions.permissionPermanentlyDenied(this, it)) {
+                SettingsDialog.Builder(requireContext()).build().show()
+            } else
+                getPermission()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Log.i(TAG, "onPermissionsGranted: $requestCode and $perms")
+        if (perms.size>=2){
+            startPdfProcess()
         }
     }
 }

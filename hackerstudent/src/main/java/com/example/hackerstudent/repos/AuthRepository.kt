@@ -30,10 +30,10 @@ class AuthRepository @Inject constructor(
         val data = try {
             authInstance.sendSignInLinkToEmail(email, actionCodeSettings).await()
             MySealed.Success(
-                "Verification Email is Been Sent at your Given Email address\n$email\n" +
+                "Verification Email is Been Sent at your Given Email address\n$email\n\n" +
                         "Please Verify It For Further Process.\n" +
-                        "Tips\n" +
-                        "Check Spam Section of Email For Verification."
+                        "Tips:-\n\n" +
+                        "Check SPAM Section of Email For Verification."
             )
         } catch (e: Exception) {
             MySealed.Error(null, e)

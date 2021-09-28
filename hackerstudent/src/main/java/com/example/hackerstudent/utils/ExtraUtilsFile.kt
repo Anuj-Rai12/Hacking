@@ -1,5 +1,6 @@
 package com.example.hackerstudent.utils
 
+import android.Manifest
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -31,6 +32,7 @@ import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialsOptions
 import com.google.android.gms.auth.api.credentials.HintRequest
 import com.google.android.material.snackbar.Snackbar
+import com.vmadalin.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.Inet4Address
@@ -287,6 +289,16 @@ fun Activity.convertImage(it: Int = R.drawable.hacking_main_icon): Bitmap =
     BitmapFactory.decodeResource(resources, it)
 
 
+fun Activity.checkReadPermission() =
+    EasyPermissions.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+fun Activity.checkWritePermission() =
+    EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+
+
+
+
 object GetConstStringObj {
     const val My_Dialog_Once = "my_Dialog_Once"
     const val USERS = "USERS"
@@ -296,7 +308,7 @@ object GetConstStringObj {
     const val Get_End_Point = "api/today"
     const val EMAIL_VERIFICATION_LINK = "https://hackerstudent.verify.com/VerifyEmail"
     const val Rs = "₹"
-    const val REVIEW="REVIEW"
+    const val REVIEW = "REVIEW"
     const val Create_course = "Course"
     const val Create_Module = "Module"
     const val Per_page = 3
@@ -314,6 +326,8 @@ object GetConstStringObj {
     const val UnSpecified = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     const val Portrait = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     const val FileType = ".pdf"
+    const val REQUEST_WRITE = 321
+    const val REQUEST_READ = 123
     const val Payment_COLOR = "#fb7268"
     const val Currency = "INR"
     const val VersionNote =
