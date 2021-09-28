@@ -219,7 +219,11 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
         Log.i(TAG, "startPayment: Real CourseName is $courseName")
         val amt = 1
         val co = Checkout()
-        co.setKeyID(GetConstStringObj.RazorPay)
+        if (SplashScreen.versionControl?.razorpay==null) {
+            context?.msg("Un-Fortunate Error")
+            return
+        }
+        co.setKeyID(SplashScreen.versionControl?.razorpay!!)
         try {
             val options = JSONObject()
             options.put("name", getString(R.string.app_name))

@@ -114,7 +114,9 @@ data class VersionControl(
     val insta: String? = null,
     val facebook: String? = null,
     val linkedin: String? = null,
-    val youtube: String? = null
+    val youtube: String? = null,
+    //Payment GateWay
+    val razorpay:String?=null
 )
 
 
