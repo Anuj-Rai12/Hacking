@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -145,7 +146,7 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun hideProg() {
-        binding.loadingFile.hide()
+        binding.loadingFile.visibility=View.INVISIBLE
     }
 
     private fun showProg() {
