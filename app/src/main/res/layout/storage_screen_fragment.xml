@@ -31,7 +31,8 @@
                 android:id="@+id/ModuleName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -54,7 +55,8 @@
                 android:id="@+id/uploaderVideoName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -77,7 +79,8 @@
                 android:id="@+id/uploaderAssignment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -93,6 +96,7 @@
             app:layout_constraintRight_toRightOf="@id/barrier2"
             app:layout_constraintTop_toBottomOf="@id/uploaderAssignmentCollection"
             app:layout_constraintWidth_min="100dp" />
+
         <Button
             android:id="@+id/openAssignmentExplore"
             android:layout_width="0dp"
@@ -106,6 +110,7 @@
             app:layout_constraintRight_toRightOf="@id/barrier2"
             app:layout_constraintTop_toBottomOf="@id/openFileExplore"
             app:layout_constraintWidth_min="100dp" />
+
         <Button
             android:id="@+id/ThumbNailExplore"
             android:layout_width="0dp"
@@ -137,8 +142,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
-            android:backgroundTint="@color/color_red"
             android:layout_marginBottom="9dp"
+            android:backgroundTint="@color/color_red"
             android:text="@string/upload_File_name"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@id/ThumbNailExplore"
@@ -149,11 +154,11 @@
             android:id="@+id/DeleteVideoFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
             android:text="@string/delete_File_name"
             android:textAllCaps="false"
-            android:layout_marginTop="9dp"
             android:visibility="gone"
-            android:layout_marginBottom="9dp"
             app:layout_constraintBottom_toBottomOf="@id/ThumbNailExplore"
             app:layout_constraintRight_toRightOf="@id/fileImage"
             app:layout_constraintTop_toBottomOf="@id/fileImage" />

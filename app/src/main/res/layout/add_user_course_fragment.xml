@@ -31,6 +31,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/user_Course_Id"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="match_parent"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -56,6 +57,7 @@
                 android:id="@+id/Course_Id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/black"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,6 +82,7 @@
                 android:id="@+id/course_amount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/black"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 

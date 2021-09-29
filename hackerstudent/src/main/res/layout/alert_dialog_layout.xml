@@ -32,6 +32,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_text_pass"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,6 +63,7 @@
             android:id="@+id/password_text_curr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,6 +90,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/firstName"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="match_parent"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -115,6 +118,7 @@
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,6 +146,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_text_new"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="match_parent"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -170,6 +175,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_text_confirm"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="match_parent"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -198,6 +204,7 @@
             android:id="@+id/email_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 

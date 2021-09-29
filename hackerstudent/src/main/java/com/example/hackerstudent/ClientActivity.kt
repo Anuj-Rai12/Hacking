@@ -59,7 +59,6 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, Ratin
             supportFragmentManager.findFragmentById(R.id.ClientContainerView) as NavHostFragment
         navController = navHostFragment.navController
         getUserInfo()
-        getPermission()
         bottomNavBar = binding.bottomBar
         appBarConfiguration =
             AppBarConfiguration(
@@ -79,7 +78,26 @@ class ClientActivity : AppCompatActivity(), PaymentResultWithDataListener, Ratin
                 addPaidCourse(coursePurchase = it.coursePurchase, info = it.messages)
             }
         }
+        getPermission()
+        if (SplashScreen.versionControl == null)
+            dataInfo()
+    }
 
+    private fun dataInfo() {
+        Log.i(TAG, "dataInfo: ${SplashScreen.versionControl} is Null")
+        primaryViewModel.update.observe(this) {
+            when (it) {
+                is MySealed.Error -> {
+                    Log.i(TAG, "dataInfo: ${it.exception?.localizedMessage}")
+                }
+                is MySealed.Loading -> {
+                    Log.i(TAG, "dataInfo: ${it.data}")
+                }
+                is MySealed.Success -> {
+                    SplashScreen.versionControl = it.data as VersionControl?
+                }
+            }
+        }
     }
 
     private fun setupSmoothBottomMenu() {

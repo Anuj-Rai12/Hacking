@@ -67,6 +67,7 @@
                 app:cursorColor="@color/black"
                 app:hideLineWhenFilled="true"
                 app:itemCount="6"
+                android:textColor="@color/black"
                 app:itemHeight="40dp"
                 app:itemRadius="5dp"
                 app:itemWidth="40dp"

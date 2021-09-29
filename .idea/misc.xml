@@ -18,11 +18,11 @@
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/custom_nav_header.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/custom_progress_bar_layout.xml" value="0.20199275362318841" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/dropdaown.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/forget_fragment.xml" value="0.16799999999999998" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/forget_fragment.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/header_footer_loading.xml" value="0.15715579710144928" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/login_with_email_password.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/mke_framgent.xml" value="0.182518115942029" />
-        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/phone_otp_faragment.xml" value="0.16799999999999998" />
+        <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/phone_otp_faragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/storage_screen_fragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/upload_course_layout.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/app/src/main/res/layout/user_item.xml" value="0.4" />
@@ -82,16 +82,16 @@
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/course_purchase_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/course_purchase_layoutl̥.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/course_view_fragment.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/create_user_account.xml" value="0.1956521739130435" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/create_user_account.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/custom_nav_header.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/custom_progress_bar_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/explore_fragment.xml" value="0.4" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/feature_course_layout.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/forget_fragment.xml" value="0.1956521739130435" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/forget_fragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/header_footer_loading.xml" value="0.1875" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/home_screen_framgment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/layout_image_course.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/login_with_email_password.xml" value="0.1956521739130435" />
+        <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/login_with_email_password.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/mke_framgent.xml" value="0.1956521739130435" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/module_item_layout.xml" value="0.264" />
         <entry key="..\:/Androidprojects/HackingWork/hackerstudent/src/main/res/layout/module_view_fragment.xml" value="0.4" />

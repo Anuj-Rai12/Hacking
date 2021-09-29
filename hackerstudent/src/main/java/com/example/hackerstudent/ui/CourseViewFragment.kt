@@ -217,7 +217,6 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
     private fun startPayment(courseName: String, CoursePrice: String, userInfo: CreateUserAccount) {
         Log.i(TAG, "startPayment: Real Amount is $CoursePrice")
         Log.i(TAG, "startPayment: Real CourseName is $courseName")
-        val amt = 1
         val co = Checkout()
         if (SplashScreen.versionControl?.razorpay==null) {
             context?.msg("Un-Fortunate Error")
@@ -233,7 +232,7 @@ class CourseViewFragment : Fragment(R.layout.course_view_fragment) {
             options.put("image", "${args.data.thumbnail}")
             options.put("theme.color", GetConstStringObj.Payment_COLOR)
             options.put("currency", GetConstStringObj.Currency)
-            options.put("amount", "${amt * 100}")
+            options.put("amount", "${CoursePrice.toInt() * 100}")
 
             val retryObj = JSONObject()
             retryObj.put("enabled", false)
