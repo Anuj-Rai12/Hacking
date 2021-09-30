@@ -80,6 +80,8 @@ class StorageScreenFragment : Fragment(R.layout.storage_screen_fragment) {
 
     private val getImage = registerForActivityResult(GetUriFile()) {
         it.uri?.let { uri ->
+            Log.i(TAG, "Getting Thumbnail video")
+            binding.fileImage.setImageURI(uri)
             if (it.requestCode) {
                 getGalImage(uri)
             }
