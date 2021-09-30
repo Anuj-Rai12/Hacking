@@ -227,7 +227,7 @@ class AuthRepository @Inject constructor(
 
 
     fun getVersionControl() = flow {
-        emit(MySealed.Loading("checking for update.."))
+        emit(MySealed.Loading(null))
         val data = try {
             val query =
                 fireStore.collection(GetConstStringObj.VERSION).document(GetConstStringObj.USERS)

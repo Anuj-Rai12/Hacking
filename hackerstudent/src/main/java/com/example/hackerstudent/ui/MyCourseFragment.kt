@@ -50,9 +50,11 @@ class MyCourseFragment : Fragment(R.layout.my_course_layout) {
         if (flagNoCourse != null)
             noCourse()
         setUpRecycleView()
-        if (networkUtils.isConnected() && flagNoCourse == null)
+        if (networkUtils.isConnected() && flagNoCourse == null) {
+            internetDevice()
             setRecycleData()
-        else if (!networkUtils.isConnected() && flagNoCourse == null) {
+        } else if (!networkUtils.isConnected() && flagNoCourse == null) {
+            noInternetDevice()
             activity?.msg(GetConstStringObj.NO_INTERNET, GetConstStringObj.RETRY, {
                 if (networkUtils.isConnected()) {
                     setRecycleData()

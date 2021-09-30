@@ -115,7 +115,7 @@ class SplashScreen : AppCompatActivity() {
                     dir(1, message = it.exception?.localizedMessage ?: GetConstStringObj.UN_WANTED)
                 }
                 is MySealed.Loading -> {
-                    applicationContext.msg("${it.data}")
+//                    applicationContext.msg("${it.data}")
                     showProg()
                 }
                 is MySealed.Success -> {
