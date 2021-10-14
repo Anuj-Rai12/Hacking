@@ -31,7 +31,14 @@ class AllTicketsFragment : Fragment() {
         fun newInstance() = AllTicketsFragment()
     }
 
+    var refreshListener:AllTicketsFragment.RefreshListener?=null
+
+    interface RefreshListener{
+        fun shouldRefresh()
+    }
+
     private lateinit var viewModel: AllTicketsViewModel
+    var binding: AllTicketsFragmentBinding?=null
     private lateinit var uptoddDialogs: UpToddDialogs
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,15 +58,15 @@ class AllTicketsFragment : Fragment() {
 
         uptoddDialogs = UpToddDialogs(requireContext())
 
-        val binding: AllTicketsFragmentBinding = DataBindingUtil.inflate(
+        binding= DataBindingUtil.inflate(
             inflater,
             R.layout.all_tickets_fragment,
             container,
             false
         )
-        binding.lifecycleOwner = this
+        binding?.lifecycleOwner = this
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
-        binding.allTicketsBinding = viewModel
+        binding?.allTicketsBinding = viewModel
 
         val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
         if(!AllUtil.isUserPremium(requireContext()))
@@ -133,18 +140,19 @@ class AllTicketsFragment : Fragment() {
             }
         }
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onResume() {
         super.onResume()
         Log.i("support", "All tickets fragment")
         viewModel.getAllTickets()
+        setupViewPager(binding)
     }
 
-    private fun setupViewPager(binding: AllTicketsFragmentBinding) {
+    private fun setupViewPager(binding: AllTicketsFragmentBinding?) {
         val adapter = AllTicketsViewPagerAdapter(this.requireActivity())
-        binding.allTicketsViewPager.adapter = adapter
+        binding?.allTicketsViewPager?.adapter = adapter
 
         adapter.apply {
             addFragment(SupportTeam())
@@ -156,7 +164,7 @@ class AllTicketsFragment : Fragment() {
             "Expert"
         )
 
-        TabLayoutMediator(binding.tabLayout, binding.allTicketsViewPager) { tab, position ->
+        TabLayoutMediator(binding?.tabLayout!!, binding?.allTicketsViewPager) { tab, position ->
             tab.text = fragmentTitleList[position]
         }.attach()
     }

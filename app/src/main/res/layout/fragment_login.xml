@@ -154,6 +154,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:enabled="@{loginViewModel.enableInput}"
                     android:fontFamily="@font/montserrat"
                     android:paddingHorizontal="16dp"
@@ -161,7 +162,7 @@
                     android:text="@string/nanny_mode"
                     android:textAllCaps="false"
                     android:textSize="14sp"
-                    android:visibility="gone" />
+                   />
 
             </LinearLayout>
 

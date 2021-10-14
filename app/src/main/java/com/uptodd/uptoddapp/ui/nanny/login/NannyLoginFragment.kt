@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +22,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentNannyLoginBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.login.loginpage.LoginFragmentDirections
+import com.uptodd.uptoddapp.ui.login.loginpage.LoginFragmentDirections.actionLoginFragmentToSelectParentFragment
+import com.uptodd.uptoddapp.ui.nanny.logout.NannyLogoutFragmentDirections
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import java.text.SimpleDateFormat
 
 class NannyLoginFragment : Fragment() {
 
@@ -117,15 +123,116 @@ class NannyLoginFragment : Fragment() {
         })
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
-            UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
+            userInfo?.let {
+                UptoddSharedPreferences.getInstance(requireContext()).saveAppExpiryDate(viewModel.appAccessingDate)
+                UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
+                if(viewModel.motherStage=="pre birth")
+                {
+                    viewModel.motherStage="prenatal"
+                }
+                else if(viewModel.motherStage=="post birth")
+                {
+                    viewModel.motherStage="postnatal"
+                }
 
-            if (userInfo.isNewUser) {
-                view?.findNavController()
-                    ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
 
-            } else {
-                startActivity(Intent(activity, TodosListActivity::class.java))
-                activity?.finish()
+                UptoddSharedPreferences.getInstance(requireContext()).savePhone(viewModel.phoneNo)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveStage(viewModel.motherStage)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveSubStartDate(viewModel.subscriptionStartDate)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveSubEndDate(viewModel.subsriptionEndDate)
+
+                val start = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subscriptionStartDate)
+                val end = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subsriptionEndDate)
+
+                val months= AllUtil.getDifferenceMonth(start.time,end.time)
+                UptoddSharedPreferences.getInstance(requireContext()).saveCurrentSubPlan(months)
+
+                val difference = AllUtil.getDifferenceDay(start.time, end.time)
+
+
+                if (difference < 30) {
+                    UptoddSharedPreferences.getInstance(requireContext()).saveUserType("nonPremium")
+
+                    viewModel.getNPDetails(requireContext())
+                    viewModel.iSNPNew.observe(viewLifecycleOwner, Observer {
+
+                        if (it) {
+                            view?.findNavController()?.navigate(NannyLoginFragmentDirections.actionNannyLoginFragmentToSelectParentFragment())
+                        }
+                        else
+                        {
+                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                        }
+                        Log.d("subscription"," not ended")
+
+                        /*
+                         if(!AllUtil.isSubscriptionOver(end))
+                         {
+                             UpgradeViewModel.isFromLogin=true
+                             preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                             view?.findNavController()?.navigate(R.id.action_loginFragment_to_upgradeFragment2)
+                             Log.d("subscription","ended")
+                         }
+                         else
+                         {
+                         }
+                         */
+                    })
+                } else {
+                    UptoddSharedPreferences.getInstance(requireContext()).saveUserType("premium")
+
+                    val country=if(viewModel.phoneNo?.startsWith("+91")!!)
+                        "india"
+                    else
+                        "row"
+
+                    AllUtil.registerToken("normal")
+                    if(AllUtil.isSubscriptionOverActive(requireContext()))
+                    {
+                        AllUtil.logoutOnly(requireContext())
+                        val upToddDialogs = UpToddDialogs(requireContext())
+                        upToddDialogs.showInfoDialog("Your Premium Subscription is ended now","Close",
+                            object :UpToddDialogs.UpToddDialogListener {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                    dialog.dismiss()
+                                }
+                            }
+                        )
+
+                    }
+                    else if (userInfo.isNewUser) {
+                        view?.findNavController()
+                            ?.navigate(R.id.action_nannyLoginFragment_to_babyGenderFragment)
+                    } else {
+                        if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
+                        {
+
+                            view?.findNavController()
+                                ?.navigate(R.id.action_nannyLoginFragment_to_dobFragment)
+                        }
+                        else if((userInfo.address==null ||userInfo.address=="null") && country=="india")
+                        {
+
+                            view?.findNavController()
+                                ?.navigate(R.id.action_nannyLoginFragment_to_addressFragment)
+                        }
+                        else {
+
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+
+                        }
+                    }
+                }
             }
         })
 

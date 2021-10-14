@@ -492,7 +492,7 @@ class AccountFragment : Fragment() {
                 binding.editTextCurrentSubscribedPlan.setText("Premium Program")
 
             binding.editTextSubscriptionStartDate.setText(account.subscriptionStartDate)
-            binding.editTextSubscriptionStartDate2.setText(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+            binding.editTextSubscriptionStartDate2.setText(UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate())
         }
     }
 

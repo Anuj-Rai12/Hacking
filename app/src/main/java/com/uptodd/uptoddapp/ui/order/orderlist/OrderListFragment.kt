@@ -222,6 +222,11 @@ class OrderListFragment : Fragment() {
                 //childView.button_download.setOnClickListener { onClickViewDetails("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",order.orderNo)}
                 binding.linearLayout.addView(childView)
             }
+
+            if(orderList.isEmpty())
+            {
+                binding.textView5.text="Your Order List is Empty"
+            }
         }
 
     }

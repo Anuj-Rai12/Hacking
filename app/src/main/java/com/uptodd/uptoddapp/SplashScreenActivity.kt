@@ -97,6 +97,7 @@ class SplashScreenActivity : AppCompatActivity() {
             override fun run() {
                 runOnUiThread {
 
+
                 }
             }
         }, 500)
@@ -151,18 +152,25 @@ class SplashScreenActivity : AppCompatActivity() {
             }
             else
             {
+                val addr=UptoddSharedPreferences.getInstance(this).getAddress(this)
                 val stage=UptoddSharedPreferences.getInstance(this).getStage()
                 val dob=KidsPeriod(this).getKidsDob()
                 val newLInt = Intent(this, LoginActivity::class.java)
                 if(!AllUtil.isUserPremium(this))
                 {
+
                     newLInt.putExtra(KEY_NEW,0)
                 }
-                else if(stage=="postnatal"  &&dob=="null" || dob==null || dob=="")
+                else if(stage!="prenatal"  && (dob=="null" || dob==null || dob==""))
                 {
                     newLInt.putExtra(KEY_NEW,1)
                 }
-                else
+                else if(stage=="prenatal" && (addr=="" || addr==null || addr=="null"))
+                {
+                    Log.d("premium","empty")
+                    newLInt.putExtra(KEY_NEW,3)
+                }
+                else if (stage=="postnatal")
                 {
                     newLInt.putExtra(KEY_NEW,2)
                 }
@@ -177,10 +185,10 @@ class SplashScreenActivity : AppCompatActivity() {
                 "Normal"
             ) == "Nanny"
         ) {
-            if (permissionGranted) {
+
                 startActivity(Intent(this, TodosListActivity::class.java))
                 this.finishAffinity()
-            }
+
         } else if (preferences.contains("userType") && preferences.getString(
                 "userType",
                 "Normal"

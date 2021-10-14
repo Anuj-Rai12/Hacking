@@ -570,9 +570,10 @@ class AllUtil{
             return cal.time.after(ending)
         }
 
-        /*
-        fun isSubscriptionOverActive(context: Context):Boolean
+
+        fun isSubscriptionOverActive(context: Context,handle:Boolean):Boolean
         {
+
             val pref=UptoddSharedPreferences.getInstance(context)
             val month=pref.getCurrentPlan()
             val date =LocalDate.parse(pref.getSubEnd())
@@ -602,13 +603,18 @@ class AllUtil{
 
         }
 
-         */
+
 
         fun isSubscriptionOverActive(context: Context):Boolean
         {
-            val endDate=UptoddSharedPreferences.getInstance(context).getAppExpiryDate()
-            val end = SimpleDateFormat("yyyy-MM-dd").parse(endDate)
-            return isSubscriptionOver(end)
+
+            return try {
+                val endDate = UptoddSharedPreferences.getInstance(context).getAppExpiryDate()
+                val end = SimpleDateFormat("yyyy-MM-dd").parse(endDate)
+                isSubscriptionOver(end)
+            } catch (e:Exception) {
+                isSubscriptionOverActive(context,true)
+            }
         }
 
 

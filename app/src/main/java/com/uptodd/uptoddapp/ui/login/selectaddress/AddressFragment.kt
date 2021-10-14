@@ -51,7 +51,7 @@ class AddressFragment : Fragment()
         preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
         editor = preferences!!.edit()
 
-        viewModel.babyGender = preferences!!.getString("gender", "girl")
+        viewModel.babyGender = preferences!!.getString("gender", "null")
         viewModel.babyName=preferences!!.getString(UserInfo::babyName.name,"null")
         viewModel.uid = preferences!!.getString("uid", "")
         viewModel.stage= UptoddSharedPreferences.getInstance(requireContext()).getStage()
