@@ -41,7 +41,6 @@ class AllTicketsViewModel : ViewModel() {
         _isLoading.value = 1
         AndroidNetworking.get("https://www.uptodd.com/api/appuser/support/{userId}")
             .addPathParameter("userId", getUserId().toString())
-            .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {

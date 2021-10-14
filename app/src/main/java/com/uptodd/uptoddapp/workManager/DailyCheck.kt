@@ -204,7 +204,6 @@ class DailyCheck(val context: Context, parameters: WorkerParameters) :
             if(AllUtil.isUserPremium(context))
             {
                 checkAppAccess()
-                checkPersonalisedExpiry()
             }
             //setSessionLeftReminder()
 

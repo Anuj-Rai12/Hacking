@@ -146,6 +146,7 @@ class ViewTicket : Fragment() {
             if (arrayList != null) {
                 adapter.submitList(arrayList)
                 adapter.notifyDataSetChanged()
+                binding.ticketViewMessages.scrollToPosition(adapter.itemCount-1)
             }
         })
 

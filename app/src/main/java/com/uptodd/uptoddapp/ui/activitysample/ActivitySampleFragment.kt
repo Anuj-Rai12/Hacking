@@ -179,6 +179,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         activitySampleList.clear()
         for (i in 0 until data.length()) {
             val obj = data.get(i) as JSONObject
+
             val sample = ActivitySample(
                 id = obj.getInt("id"),
                 userId = obj.getInt("userId"),

@@ -47,14 +47,12 @@ class TicketMessagesAdapter : ListAdapter<TicketMessage, TicketMessagesAdapter.V
                 binding.profileImageBorder.visibility=View.GONE
             }
             else {
-                if(item.sender.isNullOrEmpty()) {
+
+                binding.senderName.visibility=View.VISIBLE
                     if (isExpert)
                         binding.senderName.text = "Expert"
                     else
                         binding.senderName.text = "Support"
-                }
-                else
-                    binding.senderName.text=item.sender
 
                 binding.profileImageSend.visibility=View.GONE
                 binding.profileImageBorder.visibility=View.VISIBLE

@@ -15,6 +15,8 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -31,7 +33,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -59,6 +64,8 @@ class SplashScreenActivity : AppCompatActivity() {
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setupHeader()
         binding = DataBindingUtil.setContentView(
             this,
             R.layout.activity_splash_screen
@@ -301,6 +308,28 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
+    }
+
+    private fun setupHeader()
+    {
+        val b = OkHttpClient.Builder()
+        b.addNetworkInterceptor(HttpLoggingInterceptor())
+        b.readTimeout(120, TimeUnit.SECONDS)
+        b.writeTimeout(120, TimeUnit.SECONDS)
+        b.connectTimeout(120, TimeUnit.SECONDS)
+
+        b.addInterceptor { chain: Interceptor.Chain ->
+            val original = chain.request()
+
+            //add auth token in header
+            var token = AllUtil.getAuthToken()
+            val request = original.newBuilder()
+                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .method(original.method(), original.body())
+                .build()
+            chain.proceed(request)
+        }
+        AndroidNetworking.initialize(applicationContext,b.build())
     }
 
 }

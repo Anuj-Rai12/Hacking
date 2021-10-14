@@ -20,6 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.ANRequest
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -62,6 +64,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -109,13 +113,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             inflateNormalMode()
 
         hasStoragePermission()
-
-
-
-
-
-
-
+        setupHeader()
 
         val viewModelFactory = UptoddViewModelFactory.getInstance(application)
 
@@ -163,7 +161,28 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             })
 
 
+    }
 
+    private fun setupHeader()
+    {
+        val b = OkHttpClient.Builder()
+        b.addNetworkInterceptor(HttpLoggingInterceptor())
+        b.readTimeout(120, TimeUnit.SECONDS)
+        b.writeTimeout(120, TimeUnit.SECONDS)
+        b.connectTimeout(120, TimeUnit.SECONDS)
+
+        b.addInterceptor { chain: Interceptor.Chain ->
+            val original = chain.request()
+
+            //add auth token in header
+            var token = AllUtil.getAuthToken()
+            val request = original.newBuilder()
+                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .method(original.method(), original.body())
+                .build()
+            chain.proceed(request)
+        }
+        AndroidNetworking.initialize(applicationContext,b.build())
     }
 
 

@@ -256,6 +256,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -284,7 +286,10 @@ import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 
 
 class LoginFragment : Fragment() {
@@ -493,7 +498,7 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
                 UptoddSharedPreferences.getInstance(requireContext()).saveAppExpiryDate(viewModel.appAccessingDate)
-                UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
+                setupHeader()
                 if(viewModel.motherStage=="pre birth")
                 {
                     viewModel.motherStage="prenatal"
@@ -504,6 +509,7 @@ class LoginFragment : Fragment() {
                 }
 
 
+                setupHeader()
                 UptoddSharedPreferences.getInstance(requireContext()).savePhone(viewModel.phoneNo)
                 UptoddSharedPreferences.getInstance(requireContext())
                     .saveStage(viewModel.motherStage)
@@ -1054,6 +1060,27 @@ class LoginFragment : Fragment() {
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())
 
+    }
+    private fun setupHeader()
+    {
+        val b = OkHttpClient.Builder()
+        b.addNetworkInterceptor(HttpLoggingInterceptor())
+        b.readTimeout(120, TimeUnit.SECONDS)
+        b.writeTimeout(120, TimeUnit.SECONDS)
+        b.connectTimeout(120, TimeUnit.SECONDS)
+
+        b.addInterceptor { chain: Interceptor.Chain ->
+            val original = chain.request()
+
+            //add auth token in header
+            var token = AllUtil.getAuthToken()
+            val request = original.newBuilder()
+                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .method(original.method(), original.body())
+                .build()
+            chain.proceed(request)
+        }
+        AndroidNetworking.initialize(requireContext().applicationContext,b.build())
     }
 }
 

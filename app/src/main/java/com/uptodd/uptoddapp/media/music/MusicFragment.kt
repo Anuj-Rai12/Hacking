@@ -191,6 +191,10 @@ class MusicFragment : Fragment() {
     private fun updateMusic(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext()))
             viewModel.initializeAll(requireContext())
+        else
+        {
+            viewModel.initializeOffline()
+        }
         preferences.edit {
 
             putString(

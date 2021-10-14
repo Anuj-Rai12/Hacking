@@ -68,7 +68,7 @@ class AllTicketsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
         binding?.allTicketsBinding = viewModel
 
-        val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getSubEnd())
+        val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate())
         if(!AllUtil.isUserPremium(requireContext()))
         {
             val upToddDialogs = UpToddDialogs(requireContext())
