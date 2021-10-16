@@ -182,8 +182,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
             val sample = ActivitySample(
                 id = obj.getInt("id"),
-                userId = obj.getInt("userId"),
-                period = obj.getInt("period"),
                 title = obj.getString("title"),
                 video = obj.getString("video")
             )

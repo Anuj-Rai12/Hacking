@@ -11,10 +11,6 @@ data class ActivitySample(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: Int,
-    @ColumnInfo(name = "userId")
-    val userId: Int,
-    @ColumnInfo(name = "period")
-    val period: Int,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "video")
