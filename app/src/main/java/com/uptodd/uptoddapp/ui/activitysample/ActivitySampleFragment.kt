@@ -28,6 +28,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.ShowInfoDialog
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +75,13 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_session),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
+        }
+
         return binding.root
     }
 

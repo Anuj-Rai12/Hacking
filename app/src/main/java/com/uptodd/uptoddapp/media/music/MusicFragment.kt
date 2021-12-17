@@ -183,6 +183,11 @@ class MusicFragment : Fragment() {
         })
 
 
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowMusicTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_music),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownMusicTip(false)
+        }
 
 
         return binding.root

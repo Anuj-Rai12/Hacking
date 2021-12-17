@@ -380,6 +380,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="language_text">Language</string>
     <string name="go_back" translatable="false">go back</string>
     <string name="activity_sample">Session</string>
+    <string name="expert_counselling" translatable="false">Expert Counselling</string>
      <string name="no_data" translatable="false">No Data</string>
 
     <!--Activity Podcast-->
@@ -408,5 +409,11 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="update_app_title">Time To Update!</string>
     <string name="update_app_sub">We added lots of new features and fix some bugs to make your experience as smooth as possible</string>
 
-
+    <!--premium tips-->
+    <string name="screen_routine" translatable="false">This section will keep getting customised, it\'s for parents just to form Right Habits. You already might be doing 60% of it but purpose is to together achieve 100% </string>
+    <string name="screen_session" translatable="false">This section will have NEW sessions added by your expert regularly on important training and awareness for you</string>
+    <string name="screen_podcast" translatable="false">This section will have activities evolved from research works fit for your child’s development, regularly your expert will add new activities for you</string>
+    <string name="screen_music" translatable="false">These are special research based musics for your child, to boost neural connections</string>
+    <string name="screen_booster" translatable="false">This is a section to help child enhance learning, new boosters will keep getting added by your expert after research works for you at regular basis</string>
+    <string name="screen_support" translatable="false">Click on Support for general queries and expert for any question you have for your expert</string>
 </resources>

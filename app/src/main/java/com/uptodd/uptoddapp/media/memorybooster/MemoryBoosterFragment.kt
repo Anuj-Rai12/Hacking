@@ -43,6 +43,7 @@ import com.uptodd.uptoddapp.databinding.PoemFragmentBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
 import com.uptodd.uptoddapp.media.poem.PoemFragmentDirections
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckMemoryBoosterWorkManager
@@ -218,6 +219,12 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
         binding.poemRefresh.setOnRefreshListener {
             updatePoems(today)
+        }
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowBoosterTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_booster),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownBoosterTip(false)
         }
 
         return binding.root

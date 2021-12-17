@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.home.homePage
 
+import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -48,6 +50,7 @@ import com.uptodd.uptoddapp.databinding.FragmentHomePageBinding
 import com.uptodd.uptoddapp.helperClasses.DateClass
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.blogs.fullblog.FullBlogActivity
+import com.uptodd.uptoddapp.ui.expertCounselling.TermsAndConditions
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
@@ -64,6 +67,8 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class HomePageFragment : Fragment() {
@@ -114,6 +119,7 @@ class HomePageFragment : Fragment() {
                     initialiseBabyPhoto()
                     initialiseOtherInformation()
                     loadTodaysTip()
+                    checkForDailog()
                 }
                 else
                 {
@@ -673,6 +679,46 @@ class HomePageFragment : Fragment() {
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
 
+
+    }
+
+    fun checkForDailog()
+    {
+        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent=Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calPrev=Calendar.getInstance().apply {
+            time = Date(sharedPreferences.getDailyDialogTime())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        if(!sharedPreferences.isOnboardingDetailsFilled() &&
+            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
+        {
+            val termsAndConditions=TermsAndConditions("Please Fill Onboarding Form by " +
+                    "clicking button at bottom on order's page,then only kit will go for approval"
+            ,sharedPreferences.getOnboardingLink())
+            sharedPreferences.setDailyDialogTime(calCurrent.timeInMillis)
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+
+        }
+        val dur=Calendar.getInstance().timeInMillis-sharedPreferences.getSessionBookingDate()
+        if(sharedPreferences.isSessionBookingAllowed()
+            && (TimeUnit.MILLISECONDS.toDays(dur)>7 || sharedPreferences.getSessionBookingDate()==0L))
+        {
+            val termsAndConditions=TermsAndConditions("You can book next session now,from " +
+                    "Expert Session page as slots are open for you now,Please ignore if already booked."
+                ,"navigateToSession")
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+
+            sharedPreferences.setShownSessionBookingDate(Calendar.getInstance().timeInMillis)
+        }
 
     }
 

@@ -14,6 +14,7 @@
     <color name="darkBlue">#2A73CC</color>
     <color name="onSwipeGreen">#C6FCC8</color>
     <color name="onSwipeBlue">#E7FFFE</color>
+    <color name="blueButton">#E2FBFF</color>
     <color name="buttonBlue">#4CB8CB</color>
     <color name="btnToggleStateOff">#F1F1F1</color>
     <!--    <color name="themeBlue">#3EA6E4</color>-->
@@ -22,6 +23,7 @@
     <color name="ticket_closed">#838080</color>
     <color name="details_note">#F43D74</color>
     <color name="div">#838080</color>
+    <color name="light_blue">#E7FAFD</color>
 
     //For carousel
     <color name="gradientCarouselIndicatorStartColor">#66DCE3</color>

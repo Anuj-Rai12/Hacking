@@ -17,7 +17,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
     companion object {
 
         private lateinit var uptoddSharedPreferences: UptoddSharedPreferences
-        const val USER_TYPE="user_type_np"
+        const val USER_TYPE = "user_type_np"
 
         fun getInstance(context: Context): UptoddSharedPreferences {
             if (!this::uptoddSharedPreferences.isInitialized) {
@@ -53,7 +53,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         context.getSharedPreferences("ACCOUNT_INFO", Context.MODE_PRIVATE)
     }
 
-    private  val idealSizePreferences: SharedPreferences by lazy {
+    private val idealSizePreferences: SharedPreferences by lazy {
         context.getSharedPreferences("IDEAL_SIZE", Context.MODE_PRIVATE)
     }
 
@@ -67,10 +67,10 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         context.getSharedPreferences("WEBINAR_CAT", Context.MODE_PRIVATE)
     }
 
-    private val musicPreferences : SharedPreferences by lazy {
+    private val musicPreferences: SharedPreferences by lazy {
         context.getSharedPreferences("MUSIC", Context.MODE_PRIVATE)
     }
-    private val poemPreferences : SharedPreferences by lazy {
+    private val poemPreferences: SharedPreferences by lazy {
         context.getSharedPreferences("POEM", Context.MODE_PRIVATE)
     }
 
@@ -84,13 +84,12 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         return workManagerPreference.getBoolean("preferenceWorkManagerFired", false)
     }
 
-    fun initSave(boolean: Boolean)
-    {
-        loginSharedPreference.edit().putBoolean("initSave",boolean).apply()
+    fun initSave(boolean: Boolean) {
+        loginSharedPreference.edit().putBoolean("initSave", boolean).apply()
     }
-    fun getInitSave():Boolean
-    {
-        return loginSharedPreference.getBoolean("initSave",false)
+
+    fun getInitSave(): Boolean {
+        return loginSharedPreference.getBoolean("initSave", false)
     }
 
 
@@ -158,10 +157,10 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         val editor = loginSharedPreference.edit()
 
         editor.putString(userInfo::uid.name, userInfo.uid)
-        editor.putString(userInfo::userName.name,userInfo.userName)
+        editor.putString(userInfo::userName.name, userInfo.userName)
         editor.putBoolean(userInfo::isNewUser.name, userInfo.isNewUser)
         editor.putString(userInfo::userType.name, userInfo.userType)
-        editor.putString(userInfo::address.name,userInfo.address)
+        editor.putString(userInfo::address.name, userInfo.address)
         editor.putString(userInfo::email.name, userInfo.email)
         editor.putString(userInfo::loginMethod.name, userInfo.loginMethod)
         editor.putString(userInfo::kidsDob.name, userInfo.kidsDob)
@@ -177,21 +176,20 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         editor.apply()
     }
 
-    fun getProfileUrl():String?
-    {
+    fun getProfileUrl(): String? {
         return loginSharedPreference.getString("profileImageUrl", "").toString()
     }
-    fun getEmail(): String?
-    {
-        return loginSharedPreference.getString(UserInfo::email.name,"")
+
+    fun getEmail(): String? {
+        return loginSharedPreference.getString(UserInfo::email.name, "")
     }
-    fun getName(): String?
-    {
-        return loginSharedPreference.getString(UserInfo::userName.name,"No Name")
+
+    fun getName(): String? {
+        return loginSharedPreference.getString(UserInfo::userName.name, "No Name")
     }
-    fun getAddress(context: Context):String?
-    {
-        return loginSharedPreference.getString(UserInfo::address.name,"null")
+
+    fun getAddress(context: Context): String? {
+        return loginSharedPreference.getString(UserInfo::address.name, "null")
     }
 
     fun saveStage(stage: String) {
@@ -209,9 +207,9 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         editor.putBoolean("personal_music_status", state).apply()
     }
 
-    fun getMDownStatus():Boolean? {
+    fun getMDownStatus(): Boolean? {
 
-        return loginSharedPreference.getBoolean("personal_music_status",false)
+        return loginSharedPreference.getBoolean("personal_music_status", false)
     }
 
     fun saveAppExpiryDate(date: String) {
@@ -219,7 +217,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         editor.putString("app_expiry_date", date).apply()
     }
 
-    fun getAppExpiryDate():String? {
+    fun getAppExpiryDate(): String? {
 
         return loginSharedPreference.getString("app_expiry_date", "2025-01-01")
     }
@@ -230,13 +228,13 @@ class UptoddSharedPreferences private constructor(var context: Context) {
 
     }
 
-    fun daysLeftNP():Long //non premium
+    fun daysLeftNP(): Long //non premium
     {
-        val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
-        val start =Calendar.getInstance().time
-        val difference=AllUtil.getDifferenceDay(start.time,end.time)
+        val end = SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
+        val start = Calendar.getInstance().time
+        val difference = AllUtil.getDifferenceDay(start.time, end.time)
 
-        return if(difference>=0)
+        return if (difference >= 0)
             difference
         else
             -1
@@ -244,35 +242,36 @@ class UptoddSharedPreferences private constructor(var context: Context) {
     }
 
 
-    fun daysLeftP():Long // premium
+    fun daysLeftP(): Long // premium
     {
-        val end =SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
-        val start =Calendar.getInstance().time
-        val difference=AllUtil.getDifferenceDay(start.time,end.time)
+        val end = SimpleDateFormat("yyyy-MM-dd").parse(getSubEnd())
+        val start = Calendar.getInstance().time
+        val difference = AllUtil.getDifferenceDay(start.time, end.time)
 
-        return if(difference>=0)
+        return if (difference >= 0)
             difference
         else
             0
     }
 
-    fun daysLeftA():Long // app access
+    fun daysLeftA(): Long // app access
     {
 
-        val endDate=getAppExpiryDate()
-            return if(endDate==null) {
+        val endDate = getAppExpiryDate()
+        return if (endDate == null) {
             -1
         } else {
-            val end =SimpleDateFormat("yyyy-MM-dd").parse(endDate)
-            val start =Calendar.getInstance().time
-            val difference=AllUtil.getDifferenceDay(start.time,end.time)
+            val end = SimpleDateFormat("yyyy-MM-dd").parse(endDate)
+            val start = Calendar.getInstance().time
+            val difference = AllUtil.getDifferenceDay(start.time, end.time)
 
-            if(difference>=0)
+            if (difference >= 0)
                 difference
             else
                 0
         }
     }
+
     fun getSubStart(): String? {
 
         return loginSharedPreference.getString(Account::subscriptionStartDate.name, "")
@@ -288,76 +287,72 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         editor.putString("sub_end_date", date).apply()
     }
 
-    fun saveUserType(type:String)
-    {
+    fun saveUserType(type: String) {
         val editor = loginSharedPreference.edit()
-        editor.putString(USER_TYPE,type).apply()
+        editor.putString(USER_TYPE, type).apply()
     }
-    fun getUserType():String?
-    {
-        return loginSharedPreference.getString(USER_TYPE,"")
+
+    fun getUserType(): String? {
+        return loginSharedPreference.getString(USER_TYPE, "")
     }
 
 
-    fun saveNonPAccount(account: NonPremiumAccount)
-    {
+    fun saveNonPAccount(account: NonPremiumAccount) {
         val editor = loginSharedPreference.edit()
-        editor.putLong(account::userId.name,account.userId)
-        editor.putString(account::motherStage.name,account.motherStage)
-        editor.putString(account::name.name,account.name)
-        editor.putString(account::kidsName.name,account.kidsName)
-        editor.putString(account::kidsDob.name,account.kidsDob)
-        editor.putString(account::kidsToy.name,account.kidsToy)
-        editor.putString(account::whichParent.name,account.whichParent)
+        editor.putLong(account::userId.name, account.userId)
+        editor.putString(account::motherStage.name, account.motherStage)
+        editor.putString(account::name.name, account.name)
+        editor.putString(account::kidsName.name, account.kidsName)
+        editor.putString(account::kidsDob.name, account.kidsDob)
+        editor.putString(account::kidsToy.name, account.kidsToy)
+        editor.putString(account::whichParent.name, account.whichParent)
         account.minutesForBaby?.let { editor.putInt(account::minutesForBaby.name, it) }
-        editor.putString(account::anythingSpecial.name,account.anythingSpecial)
-        editor.putString(account::majorObjective.name,account.majorObjective)
-        editor.putString(account::expectedMonthsOfDelivery.name,account.expectedMonthsOfDelivery)
-        editor.putString(account::anythingYouDo.name,account.anythingYouDo)
+        editor.putString(account::anythingSpecial.name, account.anythingSpecial)
+        editor.putString(account::majorObjective.name, account.majorObjective)
+        editor.putString(account::expectedMonthsOfDelivery.name, account.expectedMonthsOfDelivery)
+        editor.putString(account::anythingYouDo.name, account.anythingYouDo)
 
         editor.apply()
     }
 
 
-    fun getNonPAccount():NonPremiumAccount
-    {
-        val pref=loginSharedPreference
+    fun getNonPAccount(): NonPremiumAccount {
+        val pref = loginSharedPreference
 
-        var nonPA=NonPremiumAccount(
-            pref.getLong(NonPremiumAccount::userId.name,-1L),
-            pref.getString(NonPremiumAccount::name.name,""),
-            pref.getString(NonPremiumAccount::kidsDob.name,""),
-            pref.getString(NonPremiumAccount::kidsName.name,""),
-            pref.getString(NonPremiumAccount::kidsToy.name,""),
-            pref.getInt(NonPremiumAccount::minutesForBaby.name,0),
-            pref.getString(NonPremiumAccount::motherStage.name,""),
-            pref.getString(NonPremiumAccount::anythingSpecial.name,""),
-            pref.getString(NonPremiumAccount::majorObjective.name,""),
-            pref.getString(NonPremiumAccount::expectedMonthsOfDelivery.name,""),
-            pref.getString(NonPremiumAccount::anythingYouDo.name,""),
-            pref.getString(NonPremiumAccount::whichParent.name,"")
+        var nonPA = NonPremiumAccount(
+            pref.getLong(NonPremiumAccount::userId.name, -1L),
+            pref.getString(NonPremiumAccount::name.name, ""),
+            pref.getString(NonPremiumAccount::kidsDob.name, ""),
+            pref.getString(NonPremiumAccount::kidsName.name, ""),
+            pref.getString(NonPremiumAccount::kidsToy.name, ""),
+            pref.getInt(NonPremiumAccount::minutesForBaby.name, 0),
+            pref.getString(NonPremiumAccount::motherStage.name, ""),
+            pref.getString(NonPremiumAccount::anythingSpecial.name, ""),
+            pref.getString(NonPremiumAccount::majorObjective.name, ""),
+            pref.getString(NonPremiumAccount::expectedMonthsOfDelivery.name, ""),
+            pref.getString(NonPremiumAccount::anythingYouDo.name, ""),
+            pref.getString(NonPremiumAccount::whichParent.name, "")
         )
 
         return nonPA
     }
-    fun savePhone(phone:String)
-    {
-        val edit=loginSharedPreference.edit()
-        edit.putString(Account::phone.name,phone).apply()
-    }
-    fun getPhone():String?
-    {
-        return loginSharedPreference.getString(Account::phone.name,"")
+
+    fun savePhone(phone: String) {
+        val edit = loginSharedPreference.edit()
+        edit.putString(Account::phone.name, phone).apply()
     }
 
-    fun saveCurrentSubPlan(plan:Long)
-    {
-        val edit=loginSharedPreference.edit()
-        edit.putLong(Account::currentSubscribedPlan.name,plan).apply()
+    fun getPhone(): String? {
+        return loginSharedPreference.getString(Account::phone.name, "")
     }
-    fun getCurrentPlan():Long
-    {
-        return loginSharedPreference.getLong(Account::currentSubscribedPlan.name,0)
+
+    fun saveCurrentSubPlan(plan: Long) {
+        val edit = loginSharedPreference.edit()
+        edit.putLong(Account::currentSubscribedPlan.name, plan).apply()
+    }
+
+    fun getCurrentPlan(): Long {
+        return loginSharedPreference.getLong(Account::currentSubscribedPlan.name, 0)
     }
 
     fun clearLoginInfo() {
@@ -444,42 +439,39 @@ class UptoddSharedPreferences private constructor(var context: Context) {
 
         return account
     }
-    fun showUpgrade(show:Int)
-    {
-        loginSharedPreference.edit().putInt("showUp",show).apply()
+
+    fun showUpgrade(show: Int) {
+        loginSharedPreference.edit().putInt("showUp", show).apply()
     }
 
-    fun getShowUp():Boolean
-    {
-       return loginSharedPreference.getInt("showUp",0)==1
+    fun getShowUp(): Boolean {
+        return loginSharedPreference.getInt("showUp", 0) == 1
     }
 
-    fun saveCountPodcast(count:Int)
-    {
-        loginSharedPreference.edit().putInt("save_podcast_count",count).apply()
-    }
-    fun saveCountSession(count:Int)
-    {
-        loginSharedPreference.edit().putInt("save_session_count",count).apply()
-    }
-    fun saveCountMemoryBooster(count:Int)
-    {
-        loginSharedPreference.edit().putInt("save_memory_count",count).apply()
+    fun saveCountPodcast(count: Int) {
+        loginSharedPreference.edit().putInt("save_podcast_count", count).apply()
     }
 
-    fun getSaveCountPodcast():Int
-    {
-        return loginSharedPreference.getInt("save_podcast_count",0)
+    fun saveCountSession(count: Int) {
+        loginSharedPreference.edit().putInt("save_session_count", count).apply()
+    }
+
+    fun saveCountMemoryBooster(count: Int) {
+        loginSharedPreference.edit().putInt("save_memory_count", count).apply()
+    }
+
+    fun getSaveCountPodcast(): Int {
+        return loginSharedPreference.getInt("save_podcast_count", 0)
 
     }
-    fun getSaveCountSession():Int
-    {
-        return loginSharedPreference.getInt("save_session_count",0)
+
+    fun getSaveCountSession(): Int {
+        return loginSharedPreference.getInt("save_session_count", 0)
 
     }
-    fun getSaveCountMemory():Int
-    {
-        return loginSharedPreference.getInt("save_memory_count",0)
+
+    fun getSaveCountMemory(): Int {
+        return loginSharedPreference.getInt("save_memory_count", 0)
 
     }
 
@@ -498,13 +490,107 @@ class UptoddSharedPreferences private constructor(var context: Context) {
 
     }
 
-    fun saveLastVersionChecked(long: Long)
-    {
-        loginSharedPreference.edit()?.putLong("version_checked",long)?.apply()
-    }
-    fun getLastVersionCheck():Long
-    {
-        return loginSharedPreference.getLong("version_checked",0L)
+    fun saveLastVersionChecked(long: Long) {
+        loginSharedPreference.edit()?.putLong("version_checked", long)?.apply()
     }
 
+    fun getLastVersionCheck(): Long {
+        return loginSharedPreference.getLong("version_checked", 0L)
+    }
+
+    fun setShownRoutineTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_routine", shownTip).apply()
+    }
+
+    fun shouldShowRoutineTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_routine", true)
+    }
+
+    fun setShownSessionTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_session", shownTip).apply()
+    }
+
+    fun shouldShowSessionTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_session", true)
+    }
+
+    fun setShownPodcastTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_podcast", shownTip).apply()
+    }
+
+    fun shouldShowPodcastTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_podcast", true)
+    }
+
+    fun setShownMusicTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_music", shownTip).apply()
+    }
+
+    fun shouldShowMusicTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_music", true)
+    }
+
+    fun setShownBoosterTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_booster", shownTip).apply()
+    }
+
+    fun shouldShowBoosterTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_booster", true)
+    }
+
+    fun setShownSupportTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_support", shownTip).apply()
+    }
+
+    fun shouldShowSupportTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_support", true)
+    }
+
+    fun setShownHomeTip(shownTip: Boolean) {
+        loginSharedPreference.edit().putBoolean("screen_home", shownTip).apply()
+    }
+
+    fun shouldShowHomeTip(): Boolean {
+        return loginSharedPreference.getBoolean("screen_home", true)
+    }
+
+    fun isOnboardingDetailsFilled(): Boolean {
+        return loginSharedPreference.getInt("onBoardingFilled", 1) == 1
+    }
+
+    fun setOnBoardingDetailsFilled(status: Int) {
+        loginSharedPreference.edit().putInt("onBoardingFilled", status).apply();
+    }
+
+    fun setOnboardingLink(link: String) {
+        loginSharedPreference.edit().putString("on_boarding_link", link).apply()
+    }
+
+    fun getOnboardingLink(): String {
+        return loginSharedPreference.getString("on_boarding_link", "").toString()
+    }
+
+
+    fun isSessionBookingAllowed(): Boolean {
+        return loginSharedPreference.getInt("isSessionBookingAllowed", 0) == 1
+    }
+
+    fun setIsSessionBookingAllowed(status: Int) {
+        loginSharedPreference.edit().putInt("isSessionBookingAllowed", status).apply();
+    }
+
+    fun setShownSessionBookingDate(date: Long) {
+        loginSharedPreference.edit().putLong("sessionBookingDetails", date).apply();
+    }
+
+    fun getSessionBookingDate(): Long {
+        return loginSharedPreference.getLong("sessionBookingDetails", 0)
+    }
+
+    fun setDailyDialogTime(date: Long){
+        loginSharedPreference.edit().putLong("dialogTime", date).apply();
+    }
+    fun getDailyDialogTime(): Long {
+        return loginSharedPreference.getLong("dialogTime", 0)
+    }
 }

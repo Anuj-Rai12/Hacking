@@ -43,7 +43,7 @@ import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
-import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.OnboardingActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -51,9 +51,7 @@ import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
 import com.uptodd.uptoddapp.ui.other.FragmentUpdateApp
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.workManager.*
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.DailyAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.MonthlyAndEssentialsAlarmSchedulerWorker
@@ -129,15 +127,8 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         viewModel.notificationIntentExtras.value = intent.extras
 
 
-
-
-
-
-
         viewModel?.isOutDatedVersion?.observe(this
         , {
-
-
             if(!it)
             {
                 requestFireAllWorkManagers()
@@ -161,6 +152,12 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             })
 
 
+        if(UptoddSharedPreferences.getInstance(this).shouldShowHomeTip())
+        {
+            UptoddSharedPreferences.getInstance(this).setShownHomeTip(false)
+            startActivity(Intent(this,OnboardingActivity::class.java))
+        }
+
     }
 
     private fun setupHeader()
@@ -175,7 +172,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             val original = chain.request()
 
             //add auth token in header
-            var token = AllUtil.getAuthToken()
+
             val request = original.newBuilder()
                 .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
                 .method(original.method(), original.body())

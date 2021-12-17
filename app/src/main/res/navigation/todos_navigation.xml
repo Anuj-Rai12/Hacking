@@ -305,6 +305,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_fragmentUpdateApp2"
             app:destination="@id/fragmentUpdateApp2" />
+        <action
+            android:id="@+id/action_homePageFragment_to_homeExpertCounselling"
+            app:destination="@id/homeExpertCounselling" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -626,6 +629,37 @@
         android:id="@+id/fragmentUpdateApp2"
         android:name="com.uptodd.uptoddapp.ui.other.FragmentUpdateApp"
         android:label="FragmentUpdateApp" />
+    <fragment
+        android:id="@+id/expertCounsellingFragment"
+        android:name="com.uptodd.uptoddapp.ui.expertCounselling.ExpertCounsellingFragment"
+        android:label="@string/expert_counselling" >
+        <action
+            android:id="@+id/action_expertCounsellingFragment2_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+        <action
+            android:id="@+id/action_expertCounsellingFragment_to_expertSuggestionsFragment2"
+            app:destination="@id/expertSuggestionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expertSuggestionsFragment"
+        android:name="com.uptodd.uptoddapp.ui.expertCounselling.ExpertSuggestionsFragment"
+        android:label="Expert Suggestions" >
+        <argument
+            android:name="expCounselling"
+            app:argType="com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeExpertCounselling"
+        android:name="com.uptodd.uptoddapp.ui.expertCounselling.HomeExpertCounselling"
+        android:label="Expert Counselling" >
+        <action
+            android:id="@+id/action_homeExpertCounselling_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+        <action
+            android:id="@+id/action_homeExpertCounsellingFragment_to_expertSuggestionsFragment"
+            app:destination="@id/expertSuggestionsFragment" />
+
+    </fragment>
 
 
     <!--    <fragment-->

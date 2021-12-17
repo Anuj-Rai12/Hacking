@@ -24,10 +24,7 @@ import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.KidsPeriod
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -101,6 +98,13 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         binding.activityPodcastRefresh.setOnRefreshListener {
             hideNodata()
             fetchDataFromApi()
+        }
+
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_podcast),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownPodcastTip(false)
         }
     }
 

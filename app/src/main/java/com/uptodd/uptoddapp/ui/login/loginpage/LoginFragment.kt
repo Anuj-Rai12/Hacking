@@ -498,7 +498,7 @@ class LoginFragment : Fragment() {
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
                 UptoddSharedPreferences.getInstance(requireContext()).saveAppExpiryDate(viewModel.appAccessingDate)
-                setupHeader()
+                UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
                 if(viewModel.motherStage=="pre birth")
                 {
                     viewModel.motherStage="prenatal"

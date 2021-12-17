@@ -94,6 +94,10 @@
                         android:icon="@drawable/material_shopping_cart"
                         android:title="@string/orders" />
                     <item
+                        android:id="@+id/homeExpertCounselling"
+                        android:icon="@drawable/ic_baseline_edit_road_24"
+                        android:title="@string/expert_counselling"/>
+                    <item
                         android:id="@+id/referFragment"
                         android:icon="@drawable/ic_baseline_person_add_alt_1_24"
                         android:title="@string/refer" />

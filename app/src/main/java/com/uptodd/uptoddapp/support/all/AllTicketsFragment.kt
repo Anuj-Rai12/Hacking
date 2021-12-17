@@ -22,6 +22,7 @@ import com.uptodd.uptoddapp.support.all.expert.ExpertTeam
 import com.uptodd.uptoddapp.support.all.support.SupportTeam
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.ShowInfoDialog
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import java.text.SimpleDateFormat
 
@@ -40,6 +41,12 @@ class AllTicketsFragment : Fragment() {
     private lateinit var viewModel: AllTicketsViewModel
     var binding: AllTicketsFragmentBinding?=null
     private lateinit var uptoddDialogs: UpToddDialogs
+    private val supportTeam by lazy {
+        SupportTeam()
+    }
+    private val expertTeam by lazy {
+        ExpertTeam()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +120,8 @@ class AllTicketsFragment : Fragment() {
                 when (it) {
                     0 -> {
                         uptoddDialogs.dismissDialog()
+                        supportTeam.updateListener?.onUpdate()
+                        expertTeam.updateListener?.onUpdate()
                     }
                     1 -> {
                         if(AllUtil.isUserPremium(requireContext()))
@@ -140,6 +149,13 @@ class AllTicketsFragment : Fragment() {
             }
         }
 
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowSupportTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_support),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownSupportTip(false)
+        }
+
         return binding?.root
     }
 
@@ -147,7 +163,6 @@ class AllTicketsFragment : Fragment() {
         super.onResume()
         Log.i("support", "All tickets fragment")
         viewModel.getAllTickets()
-        setupViewPager(binding)
     }
 
     private fun setupViewPager(binding: AllTicketsFragmentBinding?) {
@@ -155,8 +170,8 @@ class AllTicketsFragment : Fragment() {
         binding?.allTicketsViewPager?.adapter = adapter
 
         adapter.apply {
-            addFragment(SupportTeam())
-            addFragment(ExpertTeam())
+            addFragment(supportTeam)
+            addFragment(expertTeam)
         }
 
         val fragmentTitleList = arrayListOf(

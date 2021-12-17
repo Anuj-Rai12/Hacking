@@ -25,11 +25,12 @@ import com.uptodd.uptoddapp.databinding.SupportTeamFragmentBinding
 import com.uptodd.uptoddapp.support.all.AllTicketsFragment
 import com.uptodd.uptoddapp.support.all.AllTicketsFragmentDirections
 import com.uptodd.uptoddapp.support.all.AllTicketsViewModel
+import com.uptodd.uptoddapp.support.all.listeners.UpdateListener
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import java.util.*
 
-class SupportTeam (): Fragment() {
+class SupportTeam (): Fragment(), UpdateListener {
 
     companion object {
         fun newInstance() = SupportTeam()
@@ -37,6 +38,9 @@ class SupportTeam (): Fragment() {
 
     private lateinit var viewModel: AllTicketsViewModel
     private lateinit var uptoddDialogs: UpToddDialogs
+    var updateListener: UpdateListener?=this
+
+
 
 
     override fun onCreateView(
@@ -257,6 +261,13 @@ class SupportTeam (): Fragment() {
             }
         })
         dialog.show()
+    }
+
+    override fun onUpdate() {
+        Log.d("visible","expert team")
+        if(this::viewModel.isInitialized) {
+            viewModel.sortArray("Support")
+        }
     }
 
 }

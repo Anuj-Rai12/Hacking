@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        android:elevation="14dp"
+        app:cardCornerRadius="14dp"
+        android:layout_alignParentBottom="true"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="6dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/ic_baseline_info_24"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="6dp"
+                    />
+
+                <TextView
+                    android:id="@+id/textInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_weight="2"
+                    android:layout_marginHorizontal="6dp"
+                    android:fontFamily="@font/crimson_text_bold"
+                    android:text="This section will keep getting customised, it's for parents just to form Right Habits. You already might be doing 60% of it but purpose is to together achieve 100%
+"
+                    />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ok_button"
+              android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Ok , Got it"
+                android:fontFamily="@font/crimson_text_bold"
+                android:background="@drawable/round_button_new_ticket"
+                android:layout_gravity="right"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:layout_margin="6dp"
+                />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
+</layout>

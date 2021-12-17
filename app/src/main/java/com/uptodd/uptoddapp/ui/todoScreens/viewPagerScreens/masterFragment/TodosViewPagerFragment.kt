@@ -19,8 +19,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
 import com.uptodd.uptoddapp.databinding.FragmentTodosViewPagerBinding
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.*
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.ShowInfoDialog
 
 // this fragment will hold the view pager which holds daily, weekly, monthly, essentials fragment
 // layout text fetches data from data binding
@@ -71,6 +73,12 @@ class TodosViewPagerFragment : Fragment() {
         tabToDisplayPosition?.let {
             Log.i("tabPos", tabToDisplayPosition.toString())
             binding.tabLayout.getTabAt(tabToDisplayPosition)?.select()
+        }
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowRoutineTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_routine),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownRoutineTip(false)
         }
 
         return binding.root

@@ -13,8 +13,8 @@ android {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 17
-        versionName "3.3"
+        versionCode 19
+        versionName "3.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -217,6 +217,9 @@ dependencies {
 
     //youtube
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    //onboard screen
+    implementation 'com.cuneytayyildiz:onboarder:1.0.0'
 
 
 }
