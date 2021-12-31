@@ -156,6 +156,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="doctor_referral_guide">Doctor Referral Guide</string>
     <string name="doctor_brochure">Doctor Brochure</string>
     <string name="resources">Resources</string>
+    <string translatable="false" name="tutorial">Tutorial</string>
     <string name="all_activities">All Routines</string>
     <string name="essentialsAlarmDescription">Essentials Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
     <string name="monthlyAlarmDescription">Monthly Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>

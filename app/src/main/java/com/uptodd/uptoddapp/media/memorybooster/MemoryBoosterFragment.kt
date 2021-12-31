@@ -278,6 +278,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         })
     }
 
+
     private fun redrawList(
         list: ArrayList<MusicFiles>,
         binding: PoemFragmentBinding
@@ -333,11 +334,11 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                     true
                 }
 
-
                 val layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
+
 ////            layoutParams.gravity = Gravity.CENTER
                 layoutParams.weight = 1F
                 layoutParams.rightMargin = 8
@@ -346,11 +347,9 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 v.layoutParams = layoutParams
                 v.setPadding(2, 2, 2, 2)
 
-                if (count == 2) {
-                    poemList.addView(row)
-                    row = getNewRow()
-                    count = 0
-                }
+                poemList.addView(row)
+                row = getNewRow()
+                count = 0
                 row.addView(v)
                 count++
             }
@@ -369,7 +368,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         linearLayoutParams.gravity = Gravity.CENTER
         linearLayoutParams.setMargins(8, 8, 8, 8)
         row.layoutParams = linearLayoutParams
-        row.weightSum = 2f
+        row.weightSum = 1f
         row.gravity = Gravity.CENTER
         return row
     }

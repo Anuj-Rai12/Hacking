@@ -77,6 +77,11 @@
                         android:icon="@drawable/ic_baseline_library_books_24"
                         android:iconTint="@color/black"
                         android:title="@string/resources"/>
+                    <item
+                        android:id="@id/tutorialFragment"
+                        android:icon="@drawable/ic_baseline_info_24"
+                        android:iconTint="@color/black"
+                        android:title="@string/tutorial"/>
 
                 </group>
             </menu>
