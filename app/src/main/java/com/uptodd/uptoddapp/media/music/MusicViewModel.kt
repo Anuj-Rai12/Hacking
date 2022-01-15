@@ -41,6 +41,10 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
     val presetTimer: LiveData<Int>
         get() = _presetTimer
 
+    private var _isDownloaded = MutableLiveData<Boolean>()
+    val isDownloaded:LiveData<Boolean>
+    get() = _isDownloaded
+
     var apiError = ""
     var variableError = ""
 
@@ -171,6 +175,11 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
 
         viewModelScope.launch {
             downloadedMusic = database.getAllDownloadedMusic()
+            var allMusic= database.getAllMusic()
+
+            _isDownloaded.postValue(downloadedMusic.size>10)
+
+            Log.d("Music check","${allMusic.size}==${downloadedMusic.size}");
             downloadedMusic.forEach {
                 if (musicFiles.containsKey(it.image)) {
 
@@ -244,11 +253,23 @@ class MusicViewModel(val database: MusicFilesDatabaseDao, application: Applicati
                                 try {
                                     val apiFiles = AllUtil.getAllMusic(response.get("data").toString())
 
+                                    var checkSize=0
+                                    apiFiles.forEachIndexed { index, musicFiles ->
+
+                                        if(getIsMusicDownloaded(apiFiles[index])){
+                                           checkSize++
+                                        }
+                                    }
+                                    _isDownloaded.postValue(checkSize>10)
+
+
                                     musicFiles=HashMap()
                                     apiFiles.forEach {
-                                        if (musicFiles.containsKey(it.image)) {
+                                        if (musicFiles.containsKey(it.image) ) {
                                             Log.i("musicc", it.name!!)
-                                            if(!musicFiles[it.image]?.contains(it)!!)
+                                            if(!musicFiles[it.image]?.contains(it)!! &&
+                                                (getIsMusicDownloaded(it) ||
+                                                        musicFiles[it.image]?.size!!<2))
                                                 musicFiles[it.image]?.add(it)
                                         } else {
                                             Log.i("musicnc", it.name!!)

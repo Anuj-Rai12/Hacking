@@ -77,6 +77,14 @@ class CreateTicketFragment : Fragment() {
 
     private fun setUpTicketLayout(binding: CreateTicketFragmentBinding, supportType: String) {
         binding.ticketNewSubmit.setOnClickListener {
+
+            if(binding.ticketNewTitle.text.toString().isNullOrEmpty()){
+                binding.ticketNewTitle.error="Title cannot be empty"
+                return@setOnClickListener
+            } else if(binding.ticketNewMessage.text.toString().isNullOrEmpty()){
+                binding.ticketNewMessage.error="Message cannot be empty"
+                return@setOnClickListener
+            }
             viewModel.submitNewTicket(binding.ticketNewTitle.text.toString(), binding.ticketNewMessage.text.toString(),supportType)
         }
     }

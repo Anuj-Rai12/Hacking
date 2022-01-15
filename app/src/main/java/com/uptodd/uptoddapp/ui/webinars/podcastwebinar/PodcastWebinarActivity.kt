@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.SeekBar
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
@@ -33,8 +34,8 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
     var handler: Handler?=null
     private lateinit var VIDEO_SAMPLE: String
     private lateinit var title: String
-    private lateinit var description: String
-    private lateinit var kitContent:String
+    private  var description: String? = null
+    private  var kitContent:String? = null
     var player:YouTubePlayer?=null
 
     private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
@@ -61,12 +62,18 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
         VIDEO_SAMPLE = intent.getStringExtra("url")!!
         Log.d("div", "FullWebinarActivity L93 $VIDEO_SAMPLE")
         title = intent.getStringExtra("title")!!
-        description=intent.getStringExtra("description")!!
-        kitContent=intent.getStringExtra("kit_content")!!
+        description=intent.getStringExtra("description")
+        kitContent=intent.getStringExtra("kit_content")
 
         binding.title.text = title
         binding.description.text=description
         binding.kitContent.text="Kit content: $kitContent"
+        if(description.isNullOrEmpty()){
+            binding.description.visibility=View.GONE
+        }
+        if(kitContent.isNullOrEmpty()){
+            binding.kitContent.visibility=View.GONE
+        }
         handler= Handler(Looper.getMainLooper())
 
         binding.seekBar.setOnSeekBarChangeListener(seekBarChangeListener)

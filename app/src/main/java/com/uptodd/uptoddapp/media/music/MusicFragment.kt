@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -42,6 +43,11 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import java.util.*
+
+import com.erkutaras.showcaseview.ShowcaseManager
+
+
+
 
 private const val musicTimerCode = 2402
 
@@ -133,9 +139,13 @@ class MusicFragment : Fragment() {
         if (lastUpdated.isBlank() || UptoddSharedPreferences.getInstance(requireContext()).getMDownStatus()!!) {
             updateMusic(today)
         } else if (lastUpdated.toLong() < today.timeInMillis ) {
-                updateMusic(today)
+            updateMusic(today)
         } else {
-            viewModel.initializeOffline()
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                updateMusic(today)
+            } else{
+                viewModel.initializeOffline()
+            }
         }
 
         setTimer(binding)
@@ -183,15 +193,25 @@ class MusicFragment : Fragment() {
         })
 
 
-        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowMusicTip())
-        {
-            ShowInfoDialog.showInfo(getString(R.string.screen_music),requireFragmentManager())
-            UptoddSharedPreferences.getInstance(requireContext()).setShownMusicTip(false)
-        }
-
-
         return binding.root
     }
+
+    private fun showHint(view:View){
+        val builder =ShowcaseManager.Builder()
+        builder.context(requireContext())
+            .key("${AllUtil.getUserId()}")
+            .view(view)
+            .descriptionImageRes(R.mipmap.ic_launcher_round)
+            .descriptionTitle("Music")
+            .descriptionText(getString(R.string.screen_music))
+            .buttonText("Done")
+            .buttonVisibility(true)
+            .cancelButtonVisibility(false)
+            .add()
+            .build()
+            .show()
+    }
+
 
     private fun updateMusic(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext()))
@@ -318,6 +338,7 @@ class MusicFragment : Fragment() {
                 } else {
                     binding.musicPlay.visibility = View.INVISIBLE
                     binding.musicLoading.visibility = View.VISIBLE
+
                 }
             }
         })
@@ -378,6 +399,14 @@ class MusicFragment : Fragment() {
             if (it != "")
                 binding.musicTitle.text = viewModel.title.value
         })
+        viewModel.isDownloaded.observe(viewLifecycleOwner, Observer {
+            if(it){
+
+            }else{
+                ShowInfoDialog.showInfo("Musics are Downloading will add one by one till it is completed",
+                requireActivity().supportFragmentManager);
+            }
+        })
 
     }
 
@@ -393,7 +422,6 @@ class MusicFragment : Fragment() {
             Log.i("redraw", "redrawing")
             list.forEach {
                 val inflater = LayoutInflater.from(requireContext())
-
 
                 val v = inflater.inflate(R.layout.music_list_item, null)
                 val musicCategoryTitle: TextView = v.findViewById(R.id.music_item_category_name)
@@ -463,6 +491,8 @@ class MusicFragment : Fragment() {
             }
 
             viewModel.doneLoading()
+
+            showHint(musicList)
         }
         else
         {

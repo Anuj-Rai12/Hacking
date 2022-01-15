@@ -663,7 +663,7 @@
     <fragment
         android:id="@+id/tutorialFragment"
         android:name="com.uptodd.uptoddapp.ui.tutorials.TutorialFragment"
-        android:label="Tutorial" />
+        android:label="App tutorials" />
 
 
     <!--    <fragment-->

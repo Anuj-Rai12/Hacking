@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -13,8 +14,8 @@ android {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 19
-        versionName "3.6"
+        versionCode 20
+        versionName "3.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -77,6 +78,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
 
     //Firebase analytics
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
@@ -220,6 +222,9 @@ dependencies {
 
     //onboard screen
     implementation 'com.cuneytayyildiz:onboarder:1.0.0'
+
+    //showcase
+    implementation 'com.github.erkutaras:ShowcaseView:1.5.0'
 
 
 }

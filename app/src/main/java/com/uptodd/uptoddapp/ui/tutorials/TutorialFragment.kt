@@ -26,6 +26,7 @@ import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
+import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ShowInfoDialog
@@ -187,7 +188,7 @@ class TutorialFragment : Fragment(), TutorialInterface {
 
 
     override fun onClick(act_sample: ActivitySample) {
-        val intent = Intent(context, FullWebinarActivity::class.java)
+        val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_sample.video)
         intent.putExtra("title", act_sample.title)
         startActivity(intent)

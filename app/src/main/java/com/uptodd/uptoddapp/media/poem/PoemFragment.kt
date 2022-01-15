@@ -123,7 +123,11 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-            viewModel.initializeOffline()
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                updatePoems(today)
+            } else{
+                viewModel.initializeOffline()
+            }
         }
 
 
@@ -282,6 +286,15 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         viewModel.title.observe(viewLifecycleOwner, Observer {
             if (it != "")
                 binding.musicTitle.text = viewModel.title.value
+        })
+
+        viewModel.isDownloaded.observe(viewLifecycleOwner, Observer {
+            if(it){
+
+            }else{
+                ShowInfoDialog.showInfo("Poems are Downloading will add one by one till it is completed",
+                    requireActivity().supportFragmentManager);
+            }
         })
     }
 
