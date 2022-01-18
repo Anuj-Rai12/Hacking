@@ -1595,11 +1595,6 @@ class TodosViewModel(
         }
     }
 
-//
-//    private fun doInBackground(url: String, uri: Uri, mManager: DownloadManager): Boolean? {
-//
-//    }
-
 
     private fun downloadMusicFiles(
         files: List<MusicFiles>,

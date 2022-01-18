@@ -1,7 +1,9 @@
 package com.uptodd.uptoddapp.ui.todoScreens
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.Dialog
+import android.app.Service
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -19,6 +21,7 @@ import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.JobIntentService.enqueueWork
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -89,6 +92,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     var rpListener:RazorPayListener?=null
+    lateinit var downloadIntent:Intent;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,20 +136,6 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             if(!it)
             {
                 requestFireAllWorkManagers()
-                val manager: DownloadManager = DownloadManager.Builder().context(this)
-                    .downloader(OkHttpDownloader.create())
-                    .threadPoolSize(3)
-                    .logger { message -> Log.d("TAG", message!!) }
-                    .build()
-
-
-                viewModel.startMusicDownload(
-                    File(
-                        getExternalFilesDir(Environment.DIRECTORY_MUSIC),
-                        "Downloads"
-                    ),
-                    manager,this
-                )
                 initCheck()
                 initNP(viewModel)
             }
@@ -157,8 +147,24 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             UptoddSharedPreferences.getInstance(this).setShownHomeTip(false)
             startActivity(Intent(this,OnboardingActivity::class.java))
         }
+        downloadIntent = Intent(this, DownloadService::class.java)
+        startDownloadInBackground()
 
     }
+
+
+    fun startDownloadInBackground() {
+      if(!isDownloadServiceRunning(DownloadService::class.java)) {
+          startService(downloadIntent)
+      }
+    }
+    fun stopDownloadInBackground() {
+        if(isDownloadServiceRunning(DownloadService::class.java)) {
+            stopService(downloadIntent)
+        }
+    }
+
+
 
     private fun setupHeader()
     {
@@ -690,4 +696,20 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         rpListener?.onPaymentFailure(id,error)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        stopDownloadInBackground()
+    }
+
+    private fun  isDownloadServiceRunning(serviceClass:Class<out Service>):Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE)
+                as ActivityManager
+        for(service in activityManager.getRunningServices(Int.MAX_VALUE)){
+            if(serviceClass.name==service.service.className){
+                return true
+            }
+        }
+        return false
+    }
 }

@@ -15,10 +15,12 @@
         android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <uses-sdk tools:overrideLibrary="com.paypal.pyplcheckout,com.cardinalcommerce.cardinalmobilesdk"
 
         />
+
 
     <application
         android:name=".UpToddActivityClass"
@@ -186,6 +188,17 @@
             </intent-filter>
         </service>
 
+        <service android:name=".utilities.DownloadService"
+            android:enabled="true"
+            >
+        </service>
+
+        <receiver android:name=".utilities.RestartDownloadReceiver"
+            android:enabled="true"
+            android:exported="true"
+            >
+
+        </receiver>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="fcm.push_notification" />
