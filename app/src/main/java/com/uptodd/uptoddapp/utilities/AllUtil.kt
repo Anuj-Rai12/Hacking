@@ -31,6 +31,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
 import com.uptodd.uptoddapp.database.expertCounselling.UpComingSessionModel
+import com.uptodd.uptoddapp.database.kitTutorial.KitTutorial
 import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
@@ -336,6 +337,12 @@ class AllUtil{
             val type: Type = object : TypeToken<ArrayList<ResourceFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<ResourceFiles>
         }
+        fun getAllKitTutorials(jsonString: String): ArrayList<KitTutorial> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<KitTutorial?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<KitTutorial>
+        }
+
 
         fun getJsonObject(jsonString: String): JSONObject {
             return JSONObject(jsonString)

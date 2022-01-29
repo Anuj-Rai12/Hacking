@@ -12,18 +12,7 @@
         <item android:title="@string/general">
             <menu>
                 <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/music"
-                        android:icon="@drawable/ic_baseline_surround_sound_24"
-                        android:title="@string/music" />
-                    <item
-                        android:id="@+id/poemFragment"
-                        android:icon="@drawable/ic_baseline_library_music_24"
-                        android:title="@string/poem" />
-                    <item
-                        android:id="@+id/speedBoosterFragment"
-                        android:icon="@drawable/ic_baseline_memory_24"
-                        android:title="@string/memory_booster" />
+
                     <item
                         android:id="@+id/toysFragment"
                         android:icon="@drawable/ic_baseline_toys_24"
@@ -33,55 +22,20 @@
                         android:icon="@drawable/ic_baseline_color_lens_24"
                         android:title="@string/colours" />
                     <item
-                        android:id="@+id/storiesFragment"
-                        android:icon="@drawable/stories_icon"
-                        android:title="@string/stories" />
-                    <item
                         android:id="@+id/allYogaFragment"
                         android:icon="@drawable/ic_baseline_accessibility_new_24"
                         android:title="@string/yoga" />
-                    <item
-                        android:id="@+id/allTodosViewPagerFragment"
-                        android:icon="@drawable/ic_baseline_add_reaction_24"
-                        android:title="@string/all_activities" />
-                    <item
-                        android:id="@+id/editAlarmsViewPagerFragment"
-                        android:icon="@drawable/ic_baseline_pending_actions_24"
-                        android:title="@string/activity_alarms" />
-                    <item
-                        android:id="@+id/expectedOutcomesFragment3"
-                        android:icon="@drawable/ic_baseline_show_chart_24"
-                        android:title="@string/expected_outcomes" />
-                    <item
-                        android:id="@+id/dietFragment"
-                        android:icon="@drawable/ic_baseline_local_dining_24"
-                        android:title="@string/diet" />
+
                     <item
                         android:id="@+id/vaccinationFragment"
                         android:icon="@drawable/vaccine_icon"
                         android:title="@string/vaccination" />
-                    <item
-                        android:id="@+id/blogsFragment"
-                        android:icon="@drawable/ic_baseline_article_24"
-                        android:title="@string/blogs" />
-                    <item
-                        android:id="@+id/activitySampleFragment"
-                        android:icon="@drawable/ic_menu_slideshow"
-                        android:title="@string/activity_sample" />
-                    <item
-                        android:id="@id/activityPodcastFragment"
-                        android:icon="@drawable/ic_menu_slideshow"
-                        android:title="@string/activity_podcast"/>
+
                     <item
                         android:id="@id/resourcesFragment"
                         android:icon="@drawable/ic_baseline_library_books_24"
                         android:iconTint="@color/black"
                         android:title="@string/resources"/>
-                    <item
-                        android:id="@id/tutorialFragment"
-                        android:icon="@drawable/ic_baseline_info_24"
-                        android:iconTint="@color/black"
-                        android:title="@string/tutorial"/>
 
                 </group>
             </menu>
@@ -99,21 +53,10 @@
                         android:icon="@drawable/material_shopping_cart"
                         android:title="@string/orders" />
                     <item
-                        android:id="@+id/homeExpertCounselling"
-                        android:icon="@drawable/ic_baseline_edit_road_24"
-                        android:title="@string/expert_counselling"/>
-                    <item
-                        android:id="@+id/referFragment"
-                        android:icon="@drawable/ic_baseline_person_add_alt_1_24"
-                        android:title="@string/refer" />
-                    <item
                         android:id="@+id/referListFragment"
                         android:icon="@drawable/ic_baseline_person_add_alt_1_24"
                         android:title="@string/my_referrals" />
-                    <item
-                        android:id="@+id/allTicketsFragment"
-                        android:icon="@drawable/ic_baseline_support_agent_24"
-                        android:title="@string/support" />
+
                     <item
                         android:id="@+id/accountFragment2"
                         android:icon="@drawable/material_account_round"

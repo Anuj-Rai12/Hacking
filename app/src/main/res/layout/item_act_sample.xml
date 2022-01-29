@@ -3,9 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="10dp"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/bg_border"
+        android:orientation="vertical">
+
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/videoThumbnail"
@@ -21,4 +27,5 @@
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         tools:text="Sample Title" />
+    </LinearLayout>
 </LinearLayout>

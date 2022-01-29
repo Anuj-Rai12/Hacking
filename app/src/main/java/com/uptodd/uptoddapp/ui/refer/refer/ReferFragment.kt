@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
 import pl.droidsonroids.gif.GifImageView
 import java.util.regex.Pattern
 
@@ -52,6 +54,31 @@ class ReferFragment : Fragment() {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
 
     }
+    private fun downloadGuidelinesPdf(url:String,name:String) {
+        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.let {
+                JishnuDownloadManager(
+                    url,
+                    name,
+                    it, requireContext(),
+                    requireActivity()
+                )
+            }
+        } else {
+            val snackbar = binding?.root?.let {
+                Snackbar.make(
+                    it,
+                    getString(R.string.no_internet_connection),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(getString(R.string.retry)) {
+                        downloadGuidelinesPdf(url,name)
+                    }
+            }
+            snackbar?.show()
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +99,9 @@ class ReferFragment : Fragment() {
         if (preferences!!.contains("token"))
             viewModel.token = preferences!!.getString("token", "")
 
+
+        viewModel.getReferProgramDetails(requireContext())
+
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.title =
             getString(R.string.refer_and_earn)
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -82,6 +112,20 @@ class ReferFragment : Fragment() {
         binding.textViewCode.text = "${viewModel.code.value}"
         binding.buttonShare.setOnClickListener { onClickShareCode() }
         binding.buttonSave.setOnClickListener { onClickCopyCode() }
+
+
+        viewModel.code.observe(viewLifecycleOwner, Observer {
+            binding.textViewCode.text=it
+        })
+        viewModel.privacyLink.observe(viewLifecycleOwner, Observer {
+
+            val link=it
+
+            binding.refferalPolicy?.setOnClickListener {
+                downloadGuidelinesPdf(link,"ReferralPolicy")
+            }
+        })
+
 
         viewModel.isReferralSentSuccess.observe(viewLifecycleOwner, Observer {
             when (it) {

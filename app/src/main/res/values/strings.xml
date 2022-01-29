@@ -179,8 +179,8 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="kids_name">Kids name</string>
     <string name="kids_age">Kids age</string>
     <string name="kids_gender">Kids Gender</string>
-    <string name="subscription_details">Subscription Details</string>
-    <string name="current_subscribed_plan">Current subscribed plan</string>
+    <string name="subscription_details">Product Details</string>
+    <string name="current_subscribed_plan">Product Type</string>
     <string name="set_up_nanny_mode">Set up nanny mode</string>
     <string name="see_update_nanny_details">See/Update nanny mode details</string>
     <string name="nanny_details_are_updated">The nanny mode details are updated</string>
@@ -309,7 +309,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="referral_code_for_uptodd">Referral code for UpTodd</string>
     <string name="thank_you_for_your_referral_we_ll_contact_you_soon">Thank you for your referral. We\'ll contact them soon!</string>
-    <string name="refer_amp_earn_inr_5000"><![CDATA[Refer & Earn USD 10]]></string>
+    <string name="refer_amp_earn_inr_5000"><![CDATA[Refer & Earn upto INR 10,000]]></string>
     <string name="referral_code">Referral Code</string>
     <string name="code">Code</string>
     <string name="referral_details">Referral Details</string>

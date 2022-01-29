@@ -573,12 +573,15 @@ class TodosViewModel(
                         .get("onboardingFormLink") as String
                     val isSessionBookingAllowed=(data.get("sessionDetails") as JSONObject)
                         .get("isSessionBookingAllowed") as Int
+                    val shouldShowKit = (data.get("kitTutorial")) as Int
+
+
 
                     val sharedPreferences=UptoddSharedPreferences.getInstance(context)
                     sharedPreferences.setOnBoardingDetailsFilled(isOnBoardingFilled)
                     sharedPreferences.setIsSessionBookingAllowed(isSessionBookingAllowed)
                     sharedPreferences.setOnboardingLink(onboardingFormLink)
-
+                    sharedPreferences.setShouldShowKitTutorial(shouldShowKit==1)
                     Log.d("data version","$res")
 
                     _isOutdatedVersion.value = res==BuildConfig.VERSION_CODE.toDouble()

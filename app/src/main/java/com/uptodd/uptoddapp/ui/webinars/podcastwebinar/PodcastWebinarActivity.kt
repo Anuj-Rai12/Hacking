@@ -67,7 +67,7 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
 
         binding.title.text = title
         binding.description.text=description
-        binding.kitContent.text="Kit content: $kitContent"
+        binding.kitContent.text="Home material: $kitContent"
         if(description.isNullOrEmpty()){
             binding.description.visibility=View.GONE
         }

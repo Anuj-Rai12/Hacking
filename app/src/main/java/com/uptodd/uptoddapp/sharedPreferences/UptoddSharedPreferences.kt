@@ -570,6 +570,14 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         return loginSharedPreference.getString("on_boarding_link", "").toString()
     }
 
+    fun setShouldShowKitTutorial(shouldShow:Boolean) {
+        loginSharedPreference.edit().putBoolean("should_show_kit", shouldShow).apply()
+    }
+
+    fun getShouldShowKit(): Boolean {
+        return loginSharedPreference.getBoolean("should_show_kit", false)
+    }
+
 
     fun isSessionBookingAllowed(): Boolean {
         return loginSharedPreference.getInt("isSessionBookingAllowed", 0) == 1

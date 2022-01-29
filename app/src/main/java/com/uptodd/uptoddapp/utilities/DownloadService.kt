@@ -28,24 +28,27 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.TimeUnit
+import android.app.job.JobService
+
 
 class DownloadService:Service() {
 
 
-    private lateinit var database:UptoddDatabase
-    private lateinit var musicDatabase : MusicFilesDatabaseDao
-    private lateinit var memoryDatabase : MemoryFilesDao
-    private lateinit var downloadedMusic: List<MusicFiles>
-    private lateinit var downloadedMemoryMusic: List<MemoryBoosterFiles>
+    private  var database:UptoddDatabase?=null
+    private  var musicDatabase : MusicFilesDatabaseDao?=null
+    private  var memoryDatabase : MemoryFilesDao?=null
+    private   var downloadedMusic: List<MusicFiles>?=null
+    private  var downloadedMemoryMusic: List<MemoryBoosterFiles>?=null
 
     override fun onCreate() {
         database = UptoddDatabase.getInstance(applicationContext)
-        musicDatabase=database.musicDatabaseDao
-        memoryDatabase=database.memoryBoosterDao
+        musicDatabase=database?.musicDatabaseDao
+        memoryDatabase=database?.memoryBoosterDao
         super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         val manager: DownloadManager = DownloadManager.Builder().context(applicationContext)
             .downloader(OkHttpDownloader.create())
             .threadPoolSize(3)
@@ -62,9 +65,6 @@ class DownloadService:Service() {
         return START_STICKY
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return  null
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -73,20 +73,25 @@ class DownloadService:Service() {
         sendBroadcast(mIntent)
     }
 
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
+    }
+
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
         val mIntent = Intent(this, RestartDownloadReceiver::class.java)
         sendBroadcast(mIntent)
     }
 
+
     fun startMusicDownload(destinationDir: File, uptoddDownloadManager: DownloadManager, context: Context) {
         GlobalScope.launch(Dispatchers.IO) {
 
 
             val stage= UptoddSharedPreferences.getInstance(context).getStage()
-            downloadedMusic = musicDatabase.getAllFiles()
-            downloadedMemoryMusic=memoryDatabase.getAllFiles()
-            Log.i("downloaded", downloadedMusic.size.toString())
+            downloadedMusic = musicDatabase?.getAllFiles()
+            downloadedMemoryMusic=memoryDatabase?.getAllFiles()
+            Log.i("downloaded", downloadedMusic?.size.toString())
             val language = AllUtil.getLanguage()
             val userType= UptoddSharedPreferences.getInstance(context).getUserType()
             val country=AllUtil.getCountry(context)
@@ -416,7 +421,7 @@ class DownloadService:Service() {
             if (isMusic(music))
                 music.language = "NA"
             Log.i("inserting", "${music.name} -> ${music.filePath}")
-            musicDatabase.insert(music)
+            musicDatabase?.insert(music)
         }
     }
     private fun updateMemoryPath(music: MemoryBoosterFiles, path: String) {
@@ -424,12 +429,12 @@ class DownloadService:Service() {
         GlobalScope.launch(Dispatchers.IO) {
             music.filePath = path
             Log.i("inserting", "${music.name} -> ${music.filePath}")
-            memoryDatabase.insert(music)
+            memoryDatabase?.insert(music)
         }
     }
 
     private fun getIsMusicDownloaded(music: MusicFiles): Boolean {
-        downloadedMusic.forEach {
+        downloadedMusic?.forEach {
             if (it.id == music.id)
                 return@getIsMusicDownloaded true
         }
@@ -439,7 +444,7 @@ class DownloadService:Service() {
 
     private fun getIsMemoryDownloded(m: MemoryBoosterFiles):Boolean
     {
-        downloadedMemoryMusic.forEach {
+        downloadedMemoryMusic?.forEach {
             if (it.id == m.id)
                 return@getIsMemoryDownloded true
         }

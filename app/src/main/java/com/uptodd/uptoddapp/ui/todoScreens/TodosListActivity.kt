@@ -136,6 +136,20 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             if(!it)
             {
                 requestFireAllWorkManagers()
+                val manager: DownloadManager = DownloadManager.Builder().context(this)
+                    .downloader(OkHttpDownloader.create())
+                    .threadPoolSize(3)
+                    .logger { message -> Log.d("TAG", message!!) }
+                    .build()
+
+
+                viewModel.startMusicDownload(
+                    File(
+                        getExternalFilesDir(Environment.DIRECTORY_MUSIC),
+                        "Downloads"
+                    ),
+                    manager,this
+                )
                 initCheck()
                 initNP(viewModel)
             }
@@ -147,8 +161,9 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             UptoddSharedPreferences.getInstance(this).setShownHomeTip(false)
             startActivity(Intent(this,OnboardingActivity::class.java))
         }
-        downloadIntent = Intent(this, DownloadService::class.java)
-        startDownloadInBackground()
+
+     //   downloadIntent = Intent(this, DownloadService::class.java)
+       // startDownloadInBackground()
 
     }
 
@@ -699,7 +714,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     override fun onDestroy() {
         super.onDestroy()
 
-        stopDownloadInBackground()
+        //stopDownloadInBackground()
     }
 
     private fun  isDownloadServiceRunning(serviceClass:Class<out Service>):Boolean {

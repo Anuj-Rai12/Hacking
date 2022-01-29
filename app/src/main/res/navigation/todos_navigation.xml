@@ -308,6 +308,48 @@
         <action
             android:id="@+id/action_homePageFragment_to_homeExpertCounselling"
             app:destination="@id/homeExpertCounselling" />
+        <action
+            android:id="@+id/action_homePageFragment_to_allTodosViewPagerFragment"
+            app:destination="@id/allTodosViewPagerFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_music"
+            app:destination="@id/music" />
+        <action
+            android:id="@+id/action_homePageFragment_to_allTicketsFragment"
+            app:destination="@id/allTicketsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_poemFragment"
+            app:destination="@id/poemFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_referFragment"
+            app:destination="@id/referFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_storiesFragment"
+            app:destination="@id/storiesFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_editAlarmsViewPagerFragment"
+            app:destination="@id/editAlarmsViewPagerFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_coloursFragment"
+            app:destination="@id/coloursFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_expectedOutcomesFragment3"
+            app:destination="@id/expectedOutcomesFragment3" />
+        <action
+            android:id="@+id/action_homePageFragment_to_dietFragment"
+            app:destination="@id/dietFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_toysFragment"
+            app:destination="@id/toysFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_blogsFragment"
+            app:destination="@id/blogsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_kitTutorialFragment"
+            app:destination="@id/kitTutorialFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -664,6 +706,27 @@
         android:id="@+id/tutorialFragment"
         android:name="com.uptodd.uptoddapp.ui.tutorials.TutorialFragment"
         android:label="App tutorials" />
+    <fragment
+        android:id="@+id/kitTutorialFragment"
+        android:name="com.uptodd.uptoddapp.ui.kitTutorial.fragments.KitTutorialFragment"
+        android:label="Kit Tutorials" >
+        <action
+            android:id="@+id/action_kitTutorialFragment_to_kitTutorialDetailsFragment"
+            app:destination="@id/kitTutorialDetailsFragment" />
+        <argument
+            android:name="videoList"
+            app:argType="com.uptodd.uptoddapp.database.kitTutorial.KitTutorial"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/kitTutorialDetailsFragment"
+        android:name="com.uptodd.uptoddapp.ui.kitTutorial.fragments.KitTutorialDetailsFragment"
+        android:label="Kit Tutorial" >
+        <argument
+            android:name="videoList"
+            app:argType="com.uptodd.uptoddapp.database.kitTutorial.KitTutorial"
+            app:nullable="true" />
+    </fragment>
 
 
     <!--    <fragment-->

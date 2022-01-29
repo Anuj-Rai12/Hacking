@@ -24,6 +24,7 @@
     <color name="details_note">#F43D74</color>
     <color name="div">#838080</color>
     <color name="light_blue">#E7FAFD</color>
+    <color name="kit_one_row">#e9f6fe</color>
 
     //For carousel
     <color name="gradientCarouselIndicatorStartColor">#66DCE3</color>

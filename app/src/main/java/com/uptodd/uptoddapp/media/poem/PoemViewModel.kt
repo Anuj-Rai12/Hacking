@@ -195,16 +195,6 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
                                 val poems = AllUtil.getAllMusic(response.get("data").toString())
 
-                                var checkSize=0
-
-                                poems.forEachIndexed { index, musicFiles ->
-                                    if(getIsPoemDownloaded(poems[index])){
-                                        checkSize++;
-                                    }
-                                }
-
-                                if(poems.size>0)
-                                _isDownloaded.postValue(checkSize>10)
 
                                 poems.forEach {
                                     if (getIsPoemDownloaded(it))
