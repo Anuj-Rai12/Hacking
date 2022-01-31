@@ -115,7 +115,6 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
                             displayTime()
                             p1?.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
                             p1.setShowFullscreenButton(true)
-                            p1.pause()
                         }
 
                         override fun onVideoEnded() {

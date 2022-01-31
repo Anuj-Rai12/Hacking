@@ -51,4 +51,5 @@
     <color name="up_item_key_color">#5E5656</color>
     <color name="success_payment">#269B32</color>
     <color name="limited">#4067A2</color>
+    <color name="black_high_opacity">#40000000</color>
 </resources>

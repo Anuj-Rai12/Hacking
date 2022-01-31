@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,12 +14,31 @@
         android:orientation="vertical">
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            >
+
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/videoThumbnail"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
+        android:layout_height="250dp"
         android:src="@drawable/app_icon" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_high_opacity">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/material_play" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
 
     <TextView
         android:id="@+id/videoTitle"
@@ -28,4 +48,5 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         tools:text="Sample Title" />
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>
