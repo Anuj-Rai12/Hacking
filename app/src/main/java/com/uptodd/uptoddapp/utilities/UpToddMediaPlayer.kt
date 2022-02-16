@@ -47,10 +47,11 @@ class UpToddMediaPlayer {
                     mediaPlayer.setDataSource(song.filePath)
                 }
 
-                mediaPlayer.prepare()
                 mediaPlayer.setOnPreparedListener {
                     mediaPlayerListener!!.onReady()
                 }
+                mediaPlayer.prepareAsync()
+
 
             } catch (e: Exception) {
 
@@ -103,6 +104,7 @@ class UpToddMediaPlayer {
                             UptoddNotificationUtilities.dismiss(notificationId = 150)
                             mediaPlayerListener?.onComplete()
                         } else {
+                            mediaPlayerListener?.onError()
                             playNext()
                         }
                     }
@@ -112,7 +114,7 @@ class UpToddMediaPlayer {
             }
             else
             {
-                thread.stop()
+               thread =Thread()
                 playPause()
                 Log.d("false alive","true")
             }

@@ -53,6 +53,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.blogs.fullblog.FullBlogActivity
 import com.uptodd.uptoddapp.ui.expertCounselling.TermsAndConditions
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
+import com.uptodd.uptoddapp.ui.home.homePage.adapter.models.OptionsItem
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
@@ -123,8 +124,8 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                     initialiseOtherInformation()
                     checkForDailog()
 
-                    if(!UptoddSharedPreferences.getInstance(requireContext()).getShouldShowKit()){
-                        personalizedOptionsAdapter?.optionsList?.removeLast()
+                    if(UptoddSharedPreferences.getInstance(requireContext()).getShouldShowKit()){
+                        personalizedOptionsAdapter?.addKitTutorial()
                     }
                 }
                 else
@@ -575,8 +576,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             .subscribeOn(Schedulers.io())
             // anything else what you can do with RxJava
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { connectivity ->
+            .subscribe({ connectivity ->
                     // do something with connectivity
                     // you can call connectivity.state();
                     // connectivity.type(); or connectivity.toString();
@@ -604,7 +604,11 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
                 },
                 {
+                 it.let {
+                 if(isAdded){
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                 }
+                 }
                 }
 
             )
@@ -641,7 +645,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
     }
 
     private fun setupViewPager() {
-        val adapter = TodoViewPagerAdapter(this.requireActivity())
+        val adapter = TodoViewPagerAdapter(childFragmentManager,lifecycle)
         binding.viewPager.adapter = adapter
 
         adapter.apply {
@@ -702,9 +706,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         binding.personalizedRecyclerview.layoutManager=GridLayoutManager(requireContext(),
             3)
         binding.parentRecyclerview.layoutManager=GridLayoutManager(requireContext(),
-            4)
+            3)
         binding.premiumRecyclerview.layoutManager=GridLayoutManager(requireContext(),
-            4)
+            3)
 
         personalizedOptionsAdapter = HomeOptionsAdapter(requireContext(),
             HomeOptionsAdapter.PERSONALIZED,this)

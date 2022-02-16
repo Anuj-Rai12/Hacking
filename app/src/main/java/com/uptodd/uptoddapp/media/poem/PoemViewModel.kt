@@ -162,6 +162,9 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
             override fun onReset(song: MusicFiles) {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
+                if(song.filePath =="NA"){
+                    _isMediaReady.value=false
+                }
                 _image.value = AllUtil.getPoemImage(song, dpi)
                 _title.value = song.name
                 currentPlaying = song.id
@@ -173,6 +176,10 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
             override fun onPause() {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
+            }
+
+            override fun onError() {
+                super.onError()
             }
         })
     }

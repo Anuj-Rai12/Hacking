@@ -89,7 +89,7 @@ class TodosViewPagerFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        val adapter = TodoViewPagerAdapter(this.requireActivity())
+        val adapter = TodoViewPagerAdapter(childFragmentManager,lifecycle)
         binding.viewPager.adapter = adapter
 
         adapter.apply {

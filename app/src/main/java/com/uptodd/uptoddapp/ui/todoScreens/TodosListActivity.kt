@@ -71,6 +71,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -216,7 +217,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         else
         {
             val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
-            val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
+            val end = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(endStr)
             if(!AllUtil.isUserPremium(this)  && !AllUtil.isSubscriptionOver(end) && preferences.getInt("welcome_shown",0)==0) {
 
                 val upToddDialogs = UpToddDialogs(this)

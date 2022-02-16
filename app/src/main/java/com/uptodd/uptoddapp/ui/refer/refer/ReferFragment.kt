@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -45,6 +46,8 @@ class ReferFragment : Fragment() {
     private lateinit var uptoddDialogs: UpToddDialogs
 
     var preferences: SharedPreferences? = null
+
+    var countryCodes= arrayListOf("+91","+1")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +102,9 @@ class ReferFragment : Fragment() {
         if (preferences!!.contains("token"))
             viewModel.token = preferences!!.getString("token", "")
 
+        val  adapter= ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,countryCodes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.loginSpinner?.adapter=adapter
 
         viewModel.getReferProgramDetails(requireContext())
 
@@ -211,13 +217,15 @@ class ReferFragment : Fragment() {
             binding.textViewError.text = getString(R.string.enter_valid_name)
         else if (binding.editTextEmail.text.isEmpty() || !isEmailValid(binding.editTextEmail.text.toString()))
             binding.textViewError.text = getString(R.string.enter_valid_email)
-        else if (binding.editTextPhone.text.length < 10)
+        else if (binding.editTextPhone.text.length != 10 )
             binding.textViewError.text = getString(R.string.enter_valid_phone)
         else {
+            var mNumber="${countryCodes[binding.loginSpinner?.selectedItemPosition!!]}${
+                binding.editTextPhone.text.toString()}"
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 viewModel.sendReferral(
                     binding.editTextToys.text.toString(), binding.editTextEmail.text.toString(),
-                    binding.editTextPhone.text.toString(), System.currentTimeMillis()
+                    mNumber, System.currentTimeMillis()
                 )
             } else {
                 Snackbar.make(

@@ -350,6 +350,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_kitTutorialFragment"
             app:destination="@id/kitTutorialFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_webinarFragment"
+            app:destination="@id/webinarFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -726,6 +729,14 @@
             android:name="videoList"
             app:argType="com.uptodd.uptoddapp.database.kitTutorial.KitTutorial"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/webinarFragment"
+        android:name="com.uptodd.uptoddapp.ui.webinar.WebinarFragment"
+        android:label="Webinar" >
+        <action
+            android:id="@+id/action_webinarFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
     </fragment>
 
 

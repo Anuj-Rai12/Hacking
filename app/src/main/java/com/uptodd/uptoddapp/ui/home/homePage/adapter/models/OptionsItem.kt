@@ -25,12 +25,16 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
                 add(OptionsItem(R.id.action_homePageFragment_to_music,
                     R.drawable.ic_neural_music,"Neural music"))
 
-                add(OptionsItem(R.id.action_homePageFragment_to_kitTutorialFragment,
-                    R.drawable.ic_kit_tutorial,"Kit tutorial"))
 
             }
 
             return optionsItem
+        }
+
+        fun addKitTutorial(optionsItems:ArrayList<OptionsItem>):ArrayList<OptionsItem>{
+            optionsItems.add(OptionsItem(R.id.action_homePageFragment_to_kitTutorialFragment,
+                R.drawable.ic_kit_tutorial,"Kit tutorial"))
+            return optionsItems
         }
 
         fun getPremiumList():ArrayList<OptionsItem>{
@@ -46,8 +50,8 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
                 add(OptionsItem(R.id.action_homePageFragment_to_tutorialFragment,
                     R.drawable.ic_app_tutorial,"App Tutorials"))
 
-              //  add(OptionsItem(R.id.action_homePageFragment_to_activitySampleFragment,
-                //    R.drawable.ic_webinar,"Webinar"))
+               add(OptionsItem(R.id.action_homePageFragment_to_webinarFragment,
+                    R.drawable.ic_webinar,"Webinar"))
 
 
             }

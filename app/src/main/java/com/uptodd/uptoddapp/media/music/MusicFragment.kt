@@ -373,7 +373,7 @@ class MusicFragment : Fragment() {
                 requireContext().sendBroadcast(intent)
             } else {
                 val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-                intent.putExtra("toRun", false)
+                intent.putExtra("toRun", true)
                 intent.putExtra("musicType", "poem")
                 requireContext().sendBroadcast(intent)
                 binding.musicPlay.setImageResource(R.drawable.material_play)

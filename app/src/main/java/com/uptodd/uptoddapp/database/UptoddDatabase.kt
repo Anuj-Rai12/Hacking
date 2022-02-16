@@ -60,7 +60,7 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         ResourceFiles::class,NonPremiumAccount::class,MemoryBoosterFiles::class
         ,ExpertCounselling::class],
     version = 16,
-    exportSchema = false
+    exportSchema = true
 )
 
 abstract class UptoddDatabase : RoomDatabase() {
@@ -78,7 +78,6 @@ abstract class UptoddDatabase : RoomDatabase() {
                         UptoddDatabase::class.java,
                         "Uptodd Database"
                     )
-                        .fallbackToDestructiveMigration()
                         .build()
                 }
                 return uptoddDatabase

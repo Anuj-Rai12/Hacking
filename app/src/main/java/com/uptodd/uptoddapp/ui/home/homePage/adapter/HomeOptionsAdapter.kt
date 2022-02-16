@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.HomeOptionsRecyclerviewItemBinding
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.models.OptionsItem
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.viewholders.HomeOptionsViewHolder
@@ -30,6 +31,19 @@ class HomeOptionsAdapter(var context:Context,var type: Int,var listener: HomeOpt
                 OptionsItem.getPremiumList()
             else
                 OptionsItem.getParentToolList()
+        }
+
+    }
+
+    fun addKitTutorial(){
+        if(optionsList.size==5) {
+            optionsList.add(
+                OptionsItem(
+                    R.id.action_homePageFragment_to_kitTutorialFragment,
+                    R.drawable.ic_kit_tutorial, "Kit tutorial"
+                )
+            )
+            notifyDataSetChanged()
         }
     }
 

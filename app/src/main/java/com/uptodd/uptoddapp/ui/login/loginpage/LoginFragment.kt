@@ -289,6 +289,7 @@ import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -518,8 +519,8 @@ class LoginFragment : Fragment() {
                 UptoddSharedPreferences.getInstance(requireContext())
                     .saveSubEndDate(viewModel.subsriptionEndDate)
 
-                val start = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subscriptionStartDate)
-                val end = SimpleDateFormat("yyyy-MM-dd").parse(viewModel.subsriptionEndDate)
+                val start = SimpleDateFormat("yyyy-MM-dd",Locale.US).parse(viewModel.subscriptionStartDate)
+                val end = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(viewModel.subsriptionEndDate)
 
                 val months=AllUtil.getDifferenceMonth(start.time,end.time)
                 UptoddSharedPreferences.getInstance(requireContext()).saveCurrentSubPlan(months)

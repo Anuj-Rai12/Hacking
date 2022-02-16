@@ -563,8 +563,11 @@ class TodosViewModel(
             {
                 override fun onResponse(response: JSONObject?) {
                     val data=response?.get("data") as JSONObject
-                    val res=(data.get("versionDetails") as JSONObject).get("android_supported")
-                            as Double
+
+                    Log.d("data",data.toString())
+
+                    val res=(data.get("versionDetails") as JSONObject).
+                    getDouble("android_supported")
 
                     val isOnBoardingFilled=(data.get("onboardingFormDetails") as JSONObject)
                         .get("isOnboardingFormFilled") as Int
@@ -582,9 +585,9 @@ class TodosViewModel(
                     sharedPreferences.setIsSessionBookingAllowed(isSessionBookingAllowed)
                     sharedPreferences.setOnboardingLink(onboardingFormLink)
                     sharedPreferences.setShouldShowKitTutorial(shouldShowKit==1)
-                    Log.d("data version","$res")
+                    Log.d("data version","$res ")
 
-                    _isOutdatedVersion.value = res==BuildConfig.VERSION_CODE.toDouble()
+                    _isOutdatedVersion.value = BuildConfig.VERSION_NAME.toDouble() < res
                     Log.d("called version","true")
                     UptoddSharedPreferences.getInstance(context).saveLastVersionChecked(calendar.timeInMillis)
                 }
