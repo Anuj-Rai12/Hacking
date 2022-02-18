@@ -1,8 +1,10 @@
 package com.uptodd.uptoddapp.ui.refer.refer
 
+import android.R.attr.label
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.*
+import android.content.ClipData
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
@@ -18,6 +20,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -114,6 +117,7 @@ class ReferFragment : Fragment() {
         setHasOptionsMenu(true)
 
         binding.buttonSubmit.setOnClickListener { onClickSubmit() }
+        binding.tapToCopyLayoutDash?.setOnClickListener { onTapToCopy() }
         binding.textViewPreviousReferrals.setOnClickListener { onClickPreviousReferrals() }
         binding.textViewCode.text = "${viewModel.code.value}"
         binding.buttonShare.setOnClickListener { onClickShareCode() }
@@ -266,6 +270,16 @@ class ReferFragment : Fragment() {
 
         val mPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.ting)
         mPlayer.start()
+    }
+
+    fun onTapToCopy() {
+        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+        val textView="My baby is doing wonderful with Uptodd under IITs, AIIMS etc team with complete personalisation, I am referring this code to you so you can visit https://uptodd.com and avail 50% discount to get this in budget price and moreover use interest free EMIs for lifelong foundation of the child\n" +
+                "\n" +
+                "${binding.textViewCode.text}"
+        val clip = ClipData.newPlainText("Copied Code",textView)
+        clipboard!!.setPrimaryClip(clip)
+        Toast.makeText(requireContext(),"Refferal Code copied",Toast.LENGTH_LONG).show()
     }
 
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {

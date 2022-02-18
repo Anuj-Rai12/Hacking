@@ -179,7 +179,9 @@ class UptoddNotificationUtilities {
             remoteViews.setTextViewText(R.id.title, notificationTitle)
             remoteViews.setTextViewText(R.id.text, notificationText)
             notificationBuilder.setCustomContentView(remoteViews)
+                .setCustomBigContentView(remoteViews)
                 .setSmallIcon(R.drawable.app_icon)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .priority = priority

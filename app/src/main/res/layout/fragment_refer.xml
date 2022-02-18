@@ -244,17 +244,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:orientation="horizontal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
                     android:weightSum="5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout_form">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="end">
+                        android:orientation="vertical"
+                        >
+
 
                         <TextView
                             android:id="@+id/textView_101"
@@ -269,9 +272,12 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/tapToCopyLayoutDash"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2">
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/refferal_code_bg"
+                        >
 
                         <TextView
                             android:id="@+id/textView_code"
@@ -281,9 +287,23 @@
                             android:layout_marginStart="8dp"
                             android:fontFamily="@font/montserrat"
                             android:gravity="start"
+                            android:layout_weight="1"
                             android:text="@string/code"
                             android:textColor="#025700"
                             android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/tap_to_copy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="end"
+                            android:text="Tap to copy"
+                            android:textColor="@color/textGrey"
+                            android:textSize="18sp" />
+
 
                     </LinearLayout>
 
