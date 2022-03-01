@@ -84,6 +84,9 @@ class AllYogaFragment : Fragment(), AllYogaRecyclerAdapter.YogasListener {
 
             it.findNavController().navigate(R.id.action_allYogaFragment_to_upgradeFragment)
         }
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         yogaDao = UptoddDatabase.getInstance(requireContext()).yogaDao
 

@@ -75,6 +75,13 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
             false
         )
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.poem),"Parenting Tools for You",
+            R.drawable.poem_icon
+        )
+
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))

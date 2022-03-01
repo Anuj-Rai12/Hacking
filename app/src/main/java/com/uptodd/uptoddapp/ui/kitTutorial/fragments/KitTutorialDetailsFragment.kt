@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,10 +30,7 @@ import com.uptodd.uptoddapp.ui.tutorials.TutorialAdapter
 import com.uptodd.uptoddapp.ui.tutorials.TutorialInterface
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ShowInfoDialog
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,6 +64,11 @@ class KitTutorialDetailsFragment : Fragment(), TutorialInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.upgradeButton.visibility=View.GONE
+        ToolbarUtils.initToolbar(requireActivity(),binding.collapseToolbar,findNavController(),"Kit Tutorial"
+            ,"Curated in UpTodd's Lab"
+            ,R.drawable.kit_tutorial_icon)
+        binding.collapseToolbar.appBarLayout.setExpanded(false)
+
         arguments.let {
             val args=KitTutorialDetailsFragmentArgs.fromBundle(requireArguments())
             args.videoList.let {

@@ -13,6 +13,20 @@
             type="com.uptodd.uptoddapp.ui.account.account.AccountViewModel" />
     </data>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:titleTextColor="@color/white"
+        android:background="@color/color_normal"
+
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -869,5 +883,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    </LinearLayout>
 
 </layout>

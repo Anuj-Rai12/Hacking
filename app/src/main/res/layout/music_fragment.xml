@@ -11,187 +11,58 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+
+    <include
+        android:id="@+id/collapseToolbar"
+        layout="@layout/layout_collapase_toolbar"
+        app:shouldShowPlay="@{true}"
+        app:icon="@{@drawable/music_icon}"
+        app:title="@{@string/music}"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".media.music.MusicFragment">
 
-        <RelativeLayout
-            android:id="@+id/music_player_layout"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/music_player_background"
-            android:padding="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/upgradeButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/music_fragment_scroll_view">
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/media_control_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/music_icon"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/app_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/music_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:riv_corner_radius="15dp" />
-
-                <TextView
-                    android:id="@+id/music_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_weight="3"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:text="Dummy Text will always be dumb"
-                    android:textColor="#fff"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/music_prev"
-                    app:layout_constraintStart_toEndOf="@id/music_icon"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/music_prev"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:onClick="@{() -> musicViewModel.prevSong()}"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/material_prev"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/music_play"
-                    app:layout_constraintStart_toEndOf="@id/music_title"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/music_play"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:onClick="@{() -> musicViewModel.playPauseMusic()}"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/material_play"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/music_next"
-                    app:layout_constraintStart_toEndOf="@id/music_prev"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/music_loading"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:onClick="@{() -> musicViewModel.playPauseMusic()}"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/media_loading"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/music_next"
-                    app:layout_constraintStart_toEndOf="@id/music_prev"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/music_next"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:onClick="@{() -> musicViewModel.nextSong()}"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/material_next"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/music_timer"
-                    app:layout_constraintStart_toEndOf="@id/music_play"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/music_timer"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/clock"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/music_next"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </RelativeLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/upgradeButton"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/upgrade"
-            android:background="@color/buttonBlue"
+            android:layout_marginBottom="160dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-            ></com.google.android.material.button.MaterialButton>
-
-        <ScrollView
-            android:id="@+id/music_fragment_scroll_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/music_player_layout"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.48000002">
+
 
             <LinearLayout
                 android:id="@+id/music_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <ImageView
@@ -211,10 +82,185 @@
 
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            >
+
+
+
+            <RelativeLayout
+                android:id="@+id/music_player_layout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/music_player_background"
+                android:padding="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/upgradeButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/media_control_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="5dp">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/music_icon"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/app_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/music_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:riv_corner_radius="15dp" />
+
+                    <TextView
+                        android:id="@+id/music_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Dummy Text will always be dumb"
+                        android:textColor="#fff"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/music_prev"
+                        app:layout_constraintStart_toEndOf="@id/music_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/music_prev"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:onClick="@{() -> musicViewModel.prevSong()}"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/material_prev"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/music_play"
+                        app:layout_constraintStart_toEndOf="@id/music_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/music_play"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:onClick="@{() -> musicViewModel.playPauseMusic()}"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/material_play"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/music_next"
+                        app:layout_constraintStart_toEndOf="@id/music_prev"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/music_loading"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:onClick="@{() -> musicViewModel.playPauseMusic()}"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/media_loading"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/music_next"
+                        app:layout_constraintStart_toEndOf="@id/music_prev"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/music_next"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:onClick="@{() -> musicViewModel.nextSong()}"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/material_next"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/music_timer"
+                        app:layout_constraintStart_toEndOf="@id/music_play"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/music_timer"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/clock"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/music_next"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/upgradeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade"
+                android:background="@color/buttonBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+            </com.google.android.material.button.MaterialButton>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </layout>

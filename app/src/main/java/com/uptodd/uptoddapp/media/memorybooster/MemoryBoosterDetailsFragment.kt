@@ -72,6 +72,9 @@ class MemoryBoosterDetailsFragment: Fragment() {
             false
         )
 
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
+
         preferences = requireActivity().getSharedPreferences("SPEED_BOOSTER", Context.MODE_PRIVATE)
 
         uptoddDialogs = UpToddDialogs(requireContext())
@@ -442,10 +445,6 @@ class MemoryBoosterDetailsFragment: Fragment() {
         requireActivity().requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onResume()
-        val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
-        supportActionBar.title = "Details"
-        supportActionBar.setHomeButtonEnabled(true)
-        supportActionBar.setDisplayHomeAsUpEnabled(true)
         /*
         val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         intent.putExtra("toRun", false)

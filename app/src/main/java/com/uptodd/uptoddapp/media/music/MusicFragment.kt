@@ -26,6 +26,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -45,8 +49,9 @@ import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import java.util.*
 
 import com.erkutaras.showcaseview.ShowcaseManager
-
-
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
+import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
+import org.json.JSONObject
 
 
 private const val musicTimerCode = 2402
@@ -66,6 +71,8 @@ class MusicFragment : Fragment() {
     {
         var  dpi=""
     }
+    private var videosRespons: VideosUrlResponse?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,9 +97,30 @@ class MusicFragment : Fragment() {
             container,
             false
         )
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.music),"Curated in UpTodd's Lab",
+            R.drawable.music_icon
+        )
 
 
+        fetchTutorials(requireContext())
 
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
+
+            fragmentManager?.let { it1 ->
+                val intent = Intent(context, PodcastWebinarActivity::class.java)
+                intent.putExtra("url", videosRespons?.music)
+                intent.putExtra("title", "Music")
+                intent.putExtra("kit_content","")
+                intent.putExtra("description","")
+                startActivity(intent)
+            }
+
+
+        }
+
+        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
 
         if(AllUtil.isUserPremium(requireContext()))
         {
@@ -201,12 +229,14 @@ class MusicFragment : Fragment() {
         builder.context(requireContext())
             .key("${AllUtil.getUserId()}")
             .view(view)
+            .developerMode(true)
             .descriptionImageRes(R.mipmap.ic_launcher_round)
             .descriptionTitle("Music")
             .descriptionText(getString(R.string.screen_music))
             .buttonText("Done")
             .buttonVisibility(true)
             .cancelButtonVisibility(false)
+            .roundedRectangle()
             .add()
             .build()
             .show()
@@ -492,7 +522,7 @@ class MusicFragment : Fragment() {
 
             viewModel.doneLoading()
 
-            showHint(musicList)
+            showHint(binding?.collapseToolbar?.tvLayout)
         }
         else
         {
@@ -550,6 +580,24 @@ class MusicFragment : Fragment() {
         requireContext().sendBroadcast(intent)
 
          */
+    }
+
+    fun fetchTutorials(context: Context) {
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
     }
 
 }

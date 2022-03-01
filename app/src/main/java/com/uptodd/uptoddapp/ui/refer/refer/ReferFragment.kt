@@ -31,10 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentReferBinding
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
 import pl.droidsonroids.gif.GifImageView
 import java.util.regex.Pattern
@@ -96,7 +93,11 @@ class ReferFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_refer, container, false)
         binding.lifecycleOwner = this
-
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar!!,
+            findNavController(),getString(R.string.refer),"Happy Parenting Journey",
+            R.drawable.refer_earn_icon
+        )
         viewModel = ViewModelProvider(this).get(ReferViewModel::class.java)
 
         preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)

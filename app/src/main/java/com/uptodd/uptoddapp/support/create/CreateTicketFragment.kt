@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.CreateTicketFragmentBinding
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
 
@@ -31,6 +32,9 @@ class CreateTicketFragment : Fragment() {
         binding.lifecycleOwner = this
         viewModel = ViewModelProvider(this).get(CreateTicketViewModel::class.java)
         binding.createTicketBinding = viewModel
+
+        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Create Ticket", it,
+            findNavController()) }
 
         val args = CreateTicketFragmentArgs.fromBundle(requireArguments())
         val supportType = args.ticketSupportTeam

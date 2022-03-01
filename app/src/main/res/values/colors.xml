@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4CB8CB</color>
-    <color name="colorPrimaryDark">#4CB8CB</color>
-    <color name="colorAccent">#4CB8CB</color>
+    <color name="colorPrimary">#3372C2</color>
+    <color name="colorPrimaryDark">#3372C2</color>
+    <color name="colorAccent">#0679C3</color>
 
     <color name="grey">#D8CFCF</color>
 
     //todos
     <color name="black">#000000</color>
     <color name="timeDisplayWhite">#FDFDFD</color>
-    <color name="activeBlue">#3EA6E4</color>
+    <color name="activeBlue">#3372C2</color>
     <color name="white">#ffffff</color>
     <color name="darkBlue">#2A73CC</color>
     <color name="onSwipeGreen">#C6FCC8</color>
     <color name="onSwipeBlue">#E7FFFE</color>
     <color name="blueButton">#E2FBFF</color>
-    <color name="buttonBlue">#4CB8CB</color>
+    <color name="buttonBlue">#2A73CC</color>
     <color name="btnToggleStateOff">#F1F1F1</color>
     <!--    <color name="themeBlue">#3EA6E4</color>-->
     <color name="ticket_open">#05a167</color>
@@ -27,14 +27,14 @@
     <color name="kit_one_row">#e9f6fe</color>
 
     //For carousel
-    <color name="gradientCarouselIndicatorStartColor">#66DCE3</color>
-    <color name="gradientCarouselIndicatorEndColor">#3e6ce4</color>
+    <color name="gradientCarouselIndicatorStartColor">#3372C2</color>
+    <color name="gradientCarouselIndicatorEndColor">#5DB4EA</color>
 
 
 
-    <color name="themeBlue">#4CB8CB</color>
-    <color name="gradientStartColor">#66DCE3</color>
-    <color name="gradientEndColor">#3e6ce4</color>
+    <color name="themeBlue">#0679C3</color>
+    <color name="gradientStartColor">#3372C2</color>
+    <color name="gradientEndColor">#5DB4EA</color>
     <color name="textGrey">#222222</color>
     <color name="solidButtonColor">#4CB8CB</color>
     <color name="solidUpColor">#4C86CB</color>
@@ -52,4 +52,6 @@
     <color name="success_payment">#269B32</color>
     <color name="limited">#4067A2</color>
     <color name="black_high_opacity">#40000000</color>
+    <color name="color_normal">#3372C2</color>
+    <color name="color_primary">#0679C3</color>
 </resources>

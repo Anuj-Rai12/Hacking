@@ -351,7 +351,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         navView.menu.findItem(R.id.orderListFragment).title=("Expert prescription")
 
         navController = findNavController(R.id.home_page_fragment)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+      //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
@@ -666,6 +666,10 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     override fun onCapturedAttach() {
         drawerLayout.openDrawer(Gravity.LEFT)
         drawerLayout.closeDrawer(Gravity.LEFT)
+    }
+    fun openDrawer(){
+        if (!drawerLayout.isDrawerOpen(Gravity.LEFT))
+        drawerLayout.openDrawer(Gravity.LEFT)
     }
 
     override fun onNewIntent(intent: Intent?) {

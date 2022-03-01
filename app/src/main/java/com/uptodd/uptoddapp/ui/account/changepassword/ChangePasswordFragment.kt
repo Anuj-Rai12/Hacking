@@ -18,10 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentChangePasswordBinding
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.MyPasswordTransformationMethod
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 
 class ChangePasswordFragment : Fragment() {
 
@@ -67,6 +64,11 @@ class ChangePasswordFragment : Fragment() {
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.title=getString(R.string.change_password)
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
+
+        binding.toolbar?.let {
+            ToolbarUtils.initNCToolbar(requireActivity(),"Change Password", it,
+                findNavController())
+        }
 
         binding.editTextCurrentPassword.transformationMethod = MyPasswordTransformationMethod()
         binding.editTextNewPassword.transformationMethod = MyPasswordTransformationMethod()

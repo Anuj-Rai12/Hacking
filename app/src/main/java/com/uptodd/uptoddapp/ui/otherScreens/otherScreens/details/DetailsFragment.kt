@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentDetailsBinding
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.KidsPeriod
 import com.uptodd.uptoddapp.utilities.ScreenDpi
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
 
 class DetailsFragment : Fragment() {
@@ -58,7 +60,8 @@ class DetailsFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
 
-
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
         (activity as AppCompatActivity).supportActionBar!!.title = actionBarName
 
         inflateDetails()

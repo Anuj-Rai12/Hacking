@@ -19,6 +19,7 @@ class BackgroundPlayer : BroadcastReceiver() {
         if (toRun) {
             val stopIntent = Intent(context, MediaStopReceiver::class.java)
             stopIntent.putExtra("NotificationID", UPTODD_MEDIA_PLAYER_NOTIFICATION)
+            val stopPendingIntent = PendingIntent.getBroadcast(context, 0, stopIntent, 0)
             val notificationIntent = Intent(context, SplashScreenActivity::class.java)
             val extras = Bundle()
             if (intent.extras!!.getString("musicType") == "music") {
@@ -33,10 +34,11 @@ class BackgroundPlayer : BroadcastReceiver() {
                 "UpTodd",
                 "Playing media in background...",
                 notificationIntent,
-                "notification.music_player",UpToddMediaPlayer.isPlaying
+                "notification.music_player"
             )
             notificationBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
             if (UpToddMediaPlayer.isPlaying) {
+                notificationBuilder.addAction(R.drawable.material_pause, "Pause", stopPendingIntent)
 //                UptoddNotificationUtilities.notify(
 //                    context,
 //                    notificationBuilder,
@@ -47,6 +49,7 @@ class BackgroundPlayer : BroadcastReceiver() {
                     UPTODD_MEDIA_PLAYER_NOTIFICATION
                 )
             } else {
+                notificationBuilder.addAction(R.drawable.material_pause, "Play", stopPendingIntent)
 //                UptoddNotificationUtilities.notify(
 //                    context,
 //                    notificationBuilder,

@@ -58,6 +58,9 @@ class ExpertSuggestionsFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.expert_suggestion_fragment, container, false)
         binding.todoTaskName.text=arguments.expCounselling.name
 
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"Expert suggestions",binding.toolbar,
+            findNavController())
         if(!arguments.expCounselling.tips.isNullOrEmpty()) {
             binding.description.text = arguments.expCounselling.tips
         }

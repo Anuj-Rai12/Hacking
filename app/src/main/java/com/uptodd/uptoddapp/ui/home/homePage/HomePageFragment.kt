@@ -58,6 +58,7 @@ import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.WeeklyFragment
+import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
@@ -257,6 +258,13 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             }
         })
 
+        binding.navBar.setOnClickListener {
+            val activity=requireActivity() as TodosListActivity
+            activity.openDrawer()
+        }
+        binding.accountIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_accountFragment2)
+        }
 
 
         return binding.root
@@ -697,8 +705,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
 
-        (requireActivity() as AppCompatActivity).supportActionBar!!.title =
-            getString(R.string.home)
+       // (requireActivity() as AppCompatActivity).supportActionBar!!.title = getString(R.string.home)
 
         binding.todosViewModel = viewModel
         binding.lifecycleOwner = this

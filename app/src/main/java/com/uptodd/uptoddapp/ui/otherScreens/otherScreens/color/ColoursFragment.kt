@@ -74,6 +74,9 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Colours", it,
+            findNavController()) }
+
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         colourDao = UptoddDatabase.getInstance(requireContext()).colourDao
 

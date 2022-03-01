@@ -25,12 +25,9 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ShowInfoDialog
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,17 +55,16 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     private val ioScope = CoroutineScope(Dispatchers.Main)
 
     private val adapter = ActivitySampleAdapter(this)
+    private var videosRespons: VideosUrlResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentActivitySampleBinding.inflate(inflater, container, false)
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -77,17 +73,40 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
 
-        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip())
-        {
-            ShowInfoDialog.showInfo(getString(R.string.screen_session),requireFragmentManager())
+        if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip()) {
+            ShowInfoDialog.showInfo(getString(R.string.screen_session), requireFragmentManager())
             UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
         }
+
+        fetchTutorials(requireContext())
+
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
+
+            fragmentManager?.let { it1 ->
+                val intent = Intent(context, PodcastWebinarActivity::class.java)
+                intent.putExtra("url", videosRespons?.session)
+                intent.putExtra("title", "Sessions")
+                intent.putExtra("kit_content", "")
+                intent.putExtra("description", "")
+                startActivity(intent)
+            }
+
+
+        }
+
+        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(), getString(R.string.activity_sample), "Curated in UpTodd's Lab",
+            R.drawable.session_icon
+        )
 
         val lastFetched = sharedPreferences.getLong("ACTIVITY_SAMPLE", -1)
         val calendar = Calendar.getInstance().apply {
@@ -129,9 +148,9 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     private fun fetchDataFromApi() {
         val period = getPeriod(requireContext())
         val uid = AllUtil.getUserId()
-        val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-        val country=AllUtil.getCountry(requireContext())
+        val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+        val country = AllUtil.getCountry(requireContext())
 
 
         AndroidNetworking.get("https://www.uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country&motherStage=$stage")
@@ -159,7 +178,8 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
                             showNoData()
                             hideRecyclerView()
                         } else {
-                            UptoddSharedPreferences.getInstance(requireContext()).saveCountSession(data.length())
+                            UptoddSharedPreferences.getInstance(requireContext())
+                                .saveCountSession(data.length())
                             parseData(response.get("data") as JSONArray)
 
                             hideNodata()
@@ -217,21 +237,21 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
     private fun showNoData() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+            val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
-                val upToddDialogs = UpToddDialogs(requireContext())
-                upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                    "Close",
-                    object : UpToddDialogs.UpToddDialogListener {
-                        override fun onDialogButtonClicked(dialog: Dialog) {
-                            dialog.dismiss()
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                "Close",
+                object : UpToddDialogs.UpToddDialogListener {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
 
-                        }
+                    }
 
-                        override fun onDialogDismiss() {
-                            findNavController().navigateUp()
-                        }
-                    })
+                    override fun onDialogDismiss() {
+                        findNavController().navigateUp()
+                    }
+                })
 
         }
         binding.noDataContainer.isVisible = true
@@ -246,7 +266,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     }
 
 
-
     override fun onClick(act_sample: ActivitySample) {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_sample.video)
@@ -254,4 +273,21 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         startActivity(intent)
     }
 
+    fun fetchTutorials(context: Context) {
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
+    }
 }

@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.order.Order
 import com.uptodd.uptoddapp.databinding.FragmentOrderDetailsBinding
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
 
 class OrderDetailsFragment : Fragment() {
@@ -45,6 +47,8 @@ class OrderDetailsFragment : Fragment() {
             container,
             false)
 
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
         (activity as AppCompatActivity).supportActionBar!!.title= if(order!=null) getString(R.string.order_no)+" "+order!!.orderNo
         else getString(R.string.order_details)
 

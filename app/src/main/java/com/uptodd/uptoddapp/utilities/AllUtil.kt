@@ -45,6 +45,7 @@ import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
 import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
 import kotlinx.coroutines.CoroutineScope
@@ -330,6 +331,11 @@ class AllUtil{
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<UpgradeItem?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<UpgradeItem>
+        }
+
+        fun getVideosUrlResponse(jsonString: String): VideosUrlResponse {
+            val gson = Gson()
+            return gson.fromJson(jsonString,VideosUrlResponse::class.java)
         }
 
         fun getAllResources(jsonString: String): ArrayList<ResourceFiles> {

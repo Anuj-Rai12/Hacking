@@ -15,11 +15,13 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import org.json.JSONArray
 import org.json.JSONObject
@@ -53,6 +55,12 @@ class WebinarFragment : Fragment(), WebinarInterface {
         binding.upgradeButton.visibility=View.GONE
           fetchDataFromApi()
 
+
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.webinars),"Happy Parenting Journey",
+            R.drawable.webinar_icon
+        )
         binding.activitySampleRefresh.setOnRefreshListener {
             hideNodata()
             fetchDataFromApi()

@@ -10,74 +10,68 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/white"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="14dp"
             android:layout_alignParentBottom="true"
-            >
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_margin="6dp"
-                >
+                android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/cancel_dialog"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/material_cancel_white"
-                    android:layout_weight="1"
                     android:layout_gravity="right"
-                    app:tint="@color/textGrey"
                     android:layout_marginHorizontal="6dp"
-                    />
+                    android:layout_weight="1"
+                    android:src="@drawable/material_cancel_white"
+                    app:tint="@color/textGrey" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/texthead"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
                         android:layout_marginHorizontal="6dp"
+                        android:layout_weight="2"
                         android:fontFamily="@font/crimson_text_bold"
                         android:text="Terms and conditions"
-                        android:textSize="21sp"
-                        />
+                        android:textSize="21sp" />
 
 
                     <TextView
                         android:id="@+id/textInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="2"
                         android:layout_marginHorizontal="6dp"
                         android:layout_marginVertical="6dp"
+                        android:layout_weight="2"
                         android:fontFamily="@font/crimson_text_bold"
                         android:text="This section will keep getting customised, it's for parents just to form Right Habits. You already might be doing 60% of it but purpose is to together achieve 100%
 "
-                        />
+                        android:textStyle="bold" />
 
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/ok_button"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:text="Okay"
-                        android:padding="7dp"
-                        android:fontFamily="@font/crimson_text_bold"
-                        android:background="@drawable/dark__blue_bg"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
+                        android:layout_height="wrap_content"
                         android:layout_margin="6dp"
-                        />
+                        android:background="@drawable/dark__blue_bg"
+                        android:fontFamily="@font/crimson_text_bold"
+                        android:padding="7dp"
+                        android:text="Okay"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 

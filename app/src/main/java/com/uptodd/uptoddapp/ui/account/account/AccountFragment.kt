@@ -100,6 +100,9 @@ class AccountFragment : Fragment() {
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_account, container, false)
         binding.lifecycleOwner = this
 
+        ToolbarUtils.initNCToolbar(requireActivity(),"Account",binding.toolbar,
+            findNavController())
+
 
         if (preferences.contains("uid"))
             uid = preferences.getString("uid", "")

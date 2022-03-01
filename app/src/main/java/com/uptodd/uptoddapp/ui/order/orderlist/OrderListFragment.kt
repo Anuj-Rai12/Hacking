@@ -30,10 +30,7 @@ import com.uptodd.uptoddapp.database.order.Order
 import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.databinding.FragmentOrderListBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.android.synthetic.main.order_item_view.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,6 +61,8 @@ class OrderListFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_order_list, container, false)
         binding.lifecycleOwner = this
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"Orders",binding.toolbar,findNavController())
 
         Log.d("div", "OrderListFragment L44")
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)

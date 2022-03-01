@@ -353,6 +353,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_webinarFragment"
             app:destination="@id/webinarFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_accountFragment2"
+            app:destination="@id/accountFragment2" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"

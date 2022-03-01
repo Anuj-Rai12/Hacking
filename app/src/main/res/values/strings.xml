@@ -11,7 +11,7 @@
     <string name="do_s">Do\'s</string>
     <string name="dont_s">Dont\'s</string>
 
-    <string name="ideal_weight">IDEAL WEIGHT</string>
+    <string name="ideal_weight">Weight:</string>
     <string name="your_weekly_score_board">Your Weekly Score Board</string>
     <string name="your_essential_score_board">Your Essential Score Board</string>
     <string name="your_monthly_score_board">Your Monthly Score Board</string>
@@ -137,7 +137,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <!--Blogs categories-->
     <string name="refer">Refer</string>
     <string name="capture_moment">Capture Moment</string>
-    <string name="expected_outcomes">Expected Outcomes</string>
+    <string name="expected_outcomes">Milestone tracker</string>
     <string name="blogs">Tips &amp; Guidelines</string>
     <string name="webinars">Webinars</string>
     <string name="not_now">Not Now</string>
@@ -157,6 +157,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="doctor_brochure">Doctor Brochure</string>
     <string name="resources">Resources</string>
     <string translatable="false" name="tutorial">App tutorials</string>
+    <string name="kit_tutorial" translatable="false">Kit Tutorial</string>
     <string name="all_activities">All Routines</string>
     <string name="essentialsAlarmDescription">Essentials Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
     <string name="monthlyAlarmDescription">Monthly Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
@@ -351,7 +352,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="alarm_cancelled">Alarm cancelled</string>
     <string name="couldnt_refresh_data">Couldn\'t refresh data.\nCheck your internet connection</string>
     <string name="select_days">Select days</string>
-    <string name="ideal_height">IDEAL HEIGHT</string>
+    <string name="ideal_height">Height:</string>
 
     <string name="happy_birthday_baby">Happy Birthday Baby</string>
     <string name="milestone_name">Milestone name</string>

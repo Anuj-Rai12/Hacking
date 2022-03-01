@@ -19,6 +19,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.uptodd.uptoddapp.BR
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -27,10 +28,7 @@ import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ShowInfoDialog
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,6 +61,11 @@ class TutorialFragment : Fragment(), TutorialInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.tutorial),"Happy Parenting Journey",
+            R.drawable.app_tutorial_icon
+        )
             binding.activitySampleRefresh.isRefreshing = true
         binding.upgradeButton.visibility=View.GONE
           fetchDataFromApi()

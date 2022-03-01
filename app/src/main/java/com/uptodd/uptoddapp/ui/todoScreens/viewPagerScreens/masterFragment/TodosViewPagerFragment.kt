@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
@@ -23,6 +24,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.*
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ShowInfoDialog
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
 // this fragment will hold the view pager which holds daily, weekly, monthly, essentials fragment
 // layout text fetches data from data binding
@@ -57,6 +59,8 @@ class TodosViewPagerFragment : Fragment() {
                 binding.upgradeButton.visibility= View.GONE
             }
         }
+        ToolbarUtils.initNCToolbar(requireActivity(),"Activities",binding.toolbar,
+            findNavController())
         binding.upgradeButton.setOnClickListener {
 
             it.findNavController().navigate(R.id.action_todosViewPagerFragment_to_upgradeFragment)

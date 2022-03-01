@@ -5,15 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.alarmsAndNotifications.receivers.NotificationBroadcastReceiver
-import com.uptodd.uptoddapp.media.player.MediaStopReceiver
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus.Companion.context
 
 class UptoddNotificationUtilities {
 
@@ -124,22 +120,8 @@ class UptoddNotificationUtilities {
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)
-            val remoteViews = RemoteViews(notificationContext.packageName, R.layout.layout_custom_notify_media)
-            remoteViews.setTextViewText(R.id.title, notificationTitle)
-            remoteViews.setTextViewText(R.id.text, notificationText)
-            val stopIntent = Intent(notificationContext, MediaStopReceiver::class.java)
-            stopIntent.putExtra("NotificationID", UPTODD_MEDIA_PLAYER_NOTIFICATION)
-            val stopPendingIntent = PendingIntent.getBroadcast(notificationContext
-                , 0, stopIntent, 0)
-
-            if(isPlaying) {
-                remoteViews.setImageViewResource(R.id.playPauseIcon,R.drawable.ic_baseline_pause_24)
-            } else {
-                remoteViews.setImageViewResource(R.id.playPauseIcon,R.drawable.ic_baseline_play_arrow_24)
-            }
-            remoteViews.setOnClickPendingIntent(R.id.playPauseIcon, stopPendingIntent)
-
-            notificationBuilder.setCustomContentView(remoteViews)
+            notificationBuilder.setContentTitle(notificationTitle)
+                .setContentText(notificationText)
                 .setSmallIcon(R.drawable.exo_icon_play)
                 .priority = NotificationCompat.PRIORITY_DEFAULT
             if(notificationIntent==null)
@@ -174,18 +156,19 @@ class UptoddNotificationUtilities {
             }
 
             val notificationBuilder = NotificationCompat.Builder(notificationContext, channelId)
-            // inflate the layout and set the values to our UI IDs
-            val remoteViews = RemoteViews(notificationContext.packageName, R.layout.layout_custom_notification)
-            remoteViews.setTextViewText(R.id.title, notificationTitle)
-            remoteViews.setTextViewText(R.id.text, notificationText)
-            notificationBuilder.setCustomContentView(remoteViews)
-                .setCustomBigContentView(remoteViews)
-                .setSmallIcon(R.drawable.app_icon)
-                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+            notificationBuilder.setContentTitle(notificationTitle)
+                .setContentText(notificationText)
+                .setSmallIcon(R.drawable.app_icon_image)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .priority = priority
 
+            val notificationStyle = NotificationCompat.BigTextStyle()
+            notificationStyle.setBigContentTitle(notificationTitle)
+            notificationStyle.bigText(notificationText)
+
+
+            notificationBuilder.setStyle(notificationStyle)
 
             return notificationBuilder
         }

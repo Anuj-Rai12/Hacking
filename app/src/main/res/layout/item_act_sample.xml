@@ -32,22 +32,24 @@
                 android:background="@color/black_high_opacity">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/material_play" />
+                    android:src="@drawable/ic_baseline_play_circle_filled_24" />
             </RelativeLayout>
 
 
+            <TextView
+                android:id="@+id/videoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                tools:text="Sample Title" />
         </RelativeLayout>
-
-    <TextView
-        android:id="@+id/videoTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        tools:text="Sample Title" />
     </LinearLayout>
 
 </RelativeLayout>

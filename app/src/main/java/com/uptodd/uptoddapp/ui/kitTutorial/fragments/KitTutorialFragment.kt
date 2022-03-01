@@ -30,12 +30,10 @@ import com.uptodd.uptoddapp.databinding.FragmentKitTutorialBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.kitTutorial.adapters.KitTutorialAdapter
 import com.uptodd.uptoddapp.ui.kitTutorial.adapters.KitTutorialInterface
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ShowInfoDialog
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,6 +51,8 @@ class KitTutorialFragment : Fragment(), KitTutorialInterface {
 
     private var kitTutorialList = mutableListOf<KitTutorial>()
 
+    private var videosRespons: VideosUrlResponse?=null
+
 
     private val adapter = KitTutorialAdapter(this)
 
@@ -68,10 +68,33 @@ class KitTutorialFragment : Fragment(), KitTutorialInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.kit_tutorial),"Curated in UpTodd's Lab",
+            R.drawable.kit_tutorial_icon
+        )
             binding.activitySampleRefresh.isRefreshing = true
         binding.upgradeButton.visibility=View.GONE
         binding.kitTutorialRecyclerView.layoutManager=GridLayoutManager(requireContext(),2)
           fetchDataFromApi()
+
+        fetchTutorials(requireContext())
+
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
+
+            fragmentManager?.let { it1 ->
+                val intent = Intent(context, PodcastWebinarActivity::class.java)
+                intent.putExtra("url", videosRespons?.kitTutorial)
+                intent.putExtra("title", "Kit Tutorial")
+                intent.putExtra("kit_content","")
+                intent.putExtra("description","")
+                startActivity(intent)
+            }
+
+
+        }
+
+        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
 
         binding.activitySampleRefresh.setOnRefreshListener {
             hideNodata()
@@ -182,6 +205,24 @@ class KitTutorialFragment : Fragment(), KitTutorialInterface {
     override fun onClick(kitTutorial: KitTutorial) {
         findNavController().navigate(KitTutorialFragmentDirections.
         actionKitTutorialFragmentToKitTutorialDetailsFragment(kitTutorial))
+    }
+
+    fun fetchTutorials(context: Context) {
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
     }
 
 }

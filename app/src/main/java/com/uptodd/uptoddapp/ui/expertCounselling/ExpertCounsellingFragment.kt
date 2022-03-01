@@ -25,7 +25,9 @@ import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
 import com.uptodd.uptoddapp.databinding.FragmentExpertCounsellingBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
+import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ShowInfoDialog
@@ -43,6 +45,7 @@ class ExpertCounsellingFragment : Fragment(), ExpertCounsellingInterface {
 
 
     private lateinit var binding: FragmentExpertCounsellingBinding
+    private var videosRespons: VideosUrlResponse?=null
 
     private val sharedPreferences: SharedPreferences by lazy {
         requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
@@ -81,6 +84,11 @@ class ExpertCounsellingFragment : Fragment(), ExpertCounsellingInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        fetchTutorials(requireContext())
+
+
 
         val lastFetched = sharedPreferences.getLong("EXPERT_COUNSELLING", -1)
         val calendar = Calendar.getInstance().apply {
@@ -214,6 +222,23 @@ class ExpertCounsellingFragment : Fragment(), ExpertCounsellingInterface {
     override fun onClick(exp_con: ExpertCounselling) {
         findNavController().navigate(HomeExpertCounsellingDirections.
         actionHomeExpertCounsellingFragmentToExpertSuggestionsFragment(exp_con))
+    }
+    fun fetchTutorials(context: Context) {
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
     }
 
 }

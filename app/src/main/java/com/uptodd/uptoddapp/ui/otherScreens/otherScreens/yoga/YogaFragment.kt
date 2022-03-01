@@ -72,6 +72,9 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Yoga", it
+        ,findNavController()) }
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))
