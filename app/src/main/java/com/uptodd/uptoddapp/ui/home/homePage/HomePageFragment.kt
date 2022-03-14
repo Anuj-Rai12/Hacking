@@ -474,7 +474,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                             .apply(
                                 RequestOptions()
                                     .placeholder(R.drawable.loading_animation)
-                                    .error(res)
+                                    .error(R.drawable.samplebaby)
                             )
                             .into(binding.profileImage)
 

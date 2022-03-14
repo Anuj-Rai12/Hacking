@@ -229,7 +229,6 @@ class MusicFragment : Fragment() {
         builder.context(requireContext())
             .key("${AllUtil.getUserId()}")
             .view(view)
-            .developerMode(true)
             .descriptionImageRes(R.mipmap.ic_launcher_round)
             .descriptionTitle("Music")
             .descriptionText(getString(R.string.screen_music))

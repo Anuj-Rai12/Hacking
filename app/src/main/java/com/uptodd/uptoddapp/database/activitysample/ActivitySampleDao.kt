@@ -14,7 +14,7 @@ interface ActivitySampleDao {
     @Update
     suspend fun update(act_sam: ActivitySample)
 
-    @Query("SELECT * FROM activity_sample_table order by id asc")
+    @Query("SELECT * FROM activity_sample_table")
     fun getAll(): LiveData<List<ActivitySample>>
 
 }

@@ -9,9 +9,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +25,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
@@ -35,6 +39,7 @@ import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import kotlin.math.abs
 
 class HomeExpertCounselling : Fragment() {
 
@@ -84,6 +89,21 @@ class HomeExpertCounselling : Fragment() {
             findNavController(),getString(R.string.expert_counselling),"Happy Parenting Journey",
             R.drawable.counselling_icon
         )
+
+        binding?.collapseToolbar?.appBarLayout?.addOnOffsetChangedListener(
+            AppBarLayout.
+        OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if(abs(verticalOffset) - appBarLayout?.totalScrollRange!! ==0){
+                val paramsLayout= binding?.rootLayout?.layoutParams as CoordinatorLayout.LayoutParams
+                paramsLayout.bottomMargin= TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    00f,resources.displayMetrics).toInt()
+            } else {
+
+               val paramsLayout= binding?.rootLayout?.layoutParams as CoordinatorLayout.LayoutParams
+                paramsLayout.bottomMargin= TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                120f,resources.displayMetrics).toInt()
+            }
+        })
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
         binding?.allTicketsBinding = viewModel
 
