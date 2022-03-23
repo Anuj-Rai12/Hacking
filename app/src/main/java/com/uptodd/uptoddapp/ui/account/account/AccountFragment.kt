@@ -273,7 +273,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun onClickRanking() {
-        findNavController().navigate(AccountFragmentDirections.actionAccountFragment2ToRankingFragment())
+       // findNavController().navigate(AccountFragmentDirections.actionAccountFragment2ToRankingFragment())
     }
 
     private fun onClickChangeLanguage() {
