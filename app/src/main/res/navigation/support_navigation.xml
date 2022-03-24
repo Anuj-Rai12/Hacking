@@ -61,6 +61,12 @@
         android:name="com.uptodd.uptoddapp.support.all.allsessions.bookaslot.SlotTiming"
         android:label="Slot Time" >
         <argument
+            android:name="expertName"
+            app:argType="string" />
+        <argument
+            android:name="expertId"
+            app:argType="integer" />
+        <argument
             android:name="slotDate"
             app:argType="string" />
     </fragment>

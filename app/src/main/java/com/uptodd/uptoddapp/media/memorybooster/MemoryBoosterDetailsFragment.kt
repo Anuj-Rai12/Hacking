@@ -291,8 +291,7 @@ class MemoryBoosterDetailsFragment: Fragment() {
                         findNavController().navigate(
                             PoemFragmentDirections.actionPoemFragmentToDetails(
                                 "Poem",
-                                poem.id,
-                                poem
+                                poem.id, poem
                             )
                         )
                     }

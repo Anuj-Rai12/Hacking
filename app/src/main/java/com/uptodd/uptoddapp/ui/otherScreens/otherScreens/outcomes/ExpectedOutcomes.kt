@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "expected_outcome_table")
 data class ExpectedOutcomes(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long = 0,
     @ColumnInfo(name = "name")
-    val name: String = "",
+    var name: String = "",
     @ColumnInfo(name = "url")
-    val url: String = "",
+    var url: String = "",
     @ColumnInfo(name = "image")
-    val image: String = "",
+    var image: String = "",
     @ColumnInfo(name = "period")
-    val period: Int = 0,
+    var period: Int = 0,
     @ColumnInfo(name = "description")
-    val description: String = ""
+    var description: String = ""
 )

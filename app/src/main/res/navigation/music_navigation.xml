@@ -26,5 +26,8 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="file"
+            app:argType="com.uptodd.uptoddapp.database.media.music.MusicFiles" />
     </fragment>
 </navigation>
