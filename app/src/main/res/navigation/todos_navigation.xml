@@ -356,6 +356,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_accountFragment2"
             app:destination="@id/accountFragment2" />
+        <action
+            android:id="@+id/action_homePageFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -741,6 +744,10 @@
             android:id="@+id/action_webinarFragment_to_upgradeFragment"
             app:destination="@id/upgradeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="com.uptodd.uptoddapp.ui.recipe.RecipeFragment"
+        android:label="RecipeFragment" />
 
 
     <!--    <fragment-->

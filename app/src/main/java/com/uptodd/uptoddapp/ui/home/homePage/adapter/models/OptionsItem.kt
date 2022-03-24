@@ -53,6 +53,9 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
                add(OptionsItem(R.id.action_homePageFragment_to_webinarFragment,
                     R.drawable.ic_webinar,"Webinar"))
 
+                add(OptionsItem(R.id.action_homePageFragment_to_recipeFragment,
+                    R.drawable.ic_webinar,"Recipe"))
+
 
             }
 
