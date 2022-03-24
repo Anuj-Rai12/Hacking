@@ -77,6 +77,15 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.toys),"Parenting Tools for You",
+            R.drawable.milestone_icon
+        )
+
+
+
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))

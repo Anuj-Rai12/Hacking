@@ -29,6 +29,9 @@ import com.uptodd.uptoddapp.BuildConfig
 import com.uptodd.uptoddapp.LoginActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
+import com.uptodd.uptoddapp.database.expertCounselling.UpComingSessionModel
+import com.uptodd.uptoddapp.database.kitTutorial.KitTutorial
 import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
@@ -42,6 +45,7 @@ import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
 import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
 import kotlinx.coroutines.CoroutineScope
@@ -54,6 +58,7 @@ import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 
 class AllUtil{
@@ -328,11 +333,22 @@ class AllUtil{
             return gson.fromJson(jsonString, type) as ArrayList<UpgradeItem>
         }
 
+        fun getVideosUrlResponse(jsonString: String): VideosUrlResponse {
+            val gson = Gson()
+            return gson.fromJson(jsonString,VideosUrlResponse::class.java)
+        }
+
         fun getAllResources(jsonString: String): ArrayList<ResourceFiles> {
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<ResourceFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<ResourceFiles>
         }
+        fun getAllKitTutorials(jsonString: String): ArrayList<KitTutorial> {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<KitTutorial?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<KitTutorial>
+        }
+
 
         fun getJsonObject(jsonString: String): JSONObject {
             return JSONObject(jsonString)
@@ -349,6 +365,19 @@ class AllUtil{
             val type: Type = object : TypeToken<ArrayList<ReferredListItemPatient?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<ReferredListItemPatient>
         }
+        fun getUpcomigSessions(jsonString: String):ArrayList<UpComingSessionModel>
+        {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<UpComingSessionModel?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<UpComingSessionModel>
+        }
+        fun getExpertCounselling(jsonString: String):ArrayList<ExpertCounselling>
+        {
+            val gson = Gson()
+            val type: Type = object : TypeToken<ArrayList<ExpertCounselling?>?>() {}.type
+            return gson.fromJson(jsonString, type) as ArrayList<ExpertCounselling>
+        }
+
 
         fun getAllTicketMessages(jsonString: String): ArrayList<TicketMessage> {
             val gson = Gson()
@@ -421,6 +450,7 @@ class AllUtil{
             val pat: Pattern = Pattern.compile(emailRegex)
             return if (email == null) false else pat.matcher(email).matches()
         }
+
 
         fun getUntilNextHour(hourOfDay: Int, calendarInstance: Calendar, inclusive: Boolean = false): Calendar{
             if(hourOfDay<=24) {
@@ -676,8 +706,6 @@ class AllUtil{
 
         while (cal.get(Calendar.DAY_OF_MONTH) != 1)
             cal.add(Calendar.DAY_OF_MONTH, 1)
-
-
     }
 
 }

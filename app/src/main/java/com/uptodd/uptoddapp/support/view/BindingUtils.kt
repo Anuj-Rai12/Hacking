@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.support.view
 
+import android.text.util.Linkify
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -15,6 +16,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 fun TextView.setTicketMessage(item: TicketMessage?) {
     item?.let {
         text = item.message
+        Linkify.addLinks(this,Linkify.WEB_URLS)
         val layoutParams:LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         if(item.isSenderValue){
             layoutParams.gravity = Gravity.END

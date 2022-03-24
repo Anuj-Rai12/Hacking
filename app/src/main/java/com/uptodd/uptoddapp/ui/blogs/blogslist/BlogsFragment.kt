@@ -28,10 +28,7 @@ import com.uptodd.uptoddapp.database.blogs.BlogCategories
 import com.uptodd.uptoddapp.database.blogs.BlogCategoryDao
 import com.uptodd.uptoddapp.databinding.FragmentBlogsBinding
 import com.uptodd.uptoddapp.ui.blogs.blogcategories.Category1
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -64,6 +61,11 @@ class BlogsFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_blogs, container, false)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.blogs),"Parenting Tools for You",
+            R.drawable.blog_icon
+        )
 
         if(AllUtil.isUserPremium(requireContext()))
         {

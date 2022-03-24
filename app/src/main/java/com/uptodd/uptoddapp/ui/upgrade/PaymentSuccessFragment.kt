@@ -61,8 +61,6 @@ class PaymentSuccessFragment :Fragment()
             }
         }
         binding?.chooseYourGrowth?.setOnClickListener {
-            var intent= Intent(Intent.ACTION_VIEW, Uri.parse("http://cheddidost.com"))
-            startActivity(intent)
         }
 
         return binding?.root

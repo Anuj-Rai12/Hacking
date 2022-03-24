@@ -23,6 +23,7 @@ import com.uptodd.uptoddapp.media.poem.PoemAdapter
 import com.uptodd.uptoddapp.media.poem.PoemViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
 import java.io.File
@@ -49,6 +50,10 @@ class ResourceFragment:Fragment(), ResourceAdapterInterface {
         reenterTransition = fadeThrough
 
         binding=DataBindingUtil.inflate(inflater, R.layout.resource_fragment,container,false)
+
+        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Resources", it,
+        findNavController()) }
+
         viewModel=ViewModelProvider(this)[ResourceViewModel::class.java]
         uptoddDialogs = UpToddDialogs(requireContext())
         binding?.resourceListRecyclerView?.adapter=adapter

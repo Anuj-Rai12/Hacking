@@ -43,7 +43,8 @@ class TodoDetailsFragment : Fragment() {
 
         val arguments = TodoDetailsFragmentArgs.fromBundle(requireArguments())
 
-
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
 
         binding.btnEditTime.setOnClickListener {
 

@@ -21,6 +21,7 @@ import com.uptodd.uptoddapp.database.support.Ticket
 import com.uptodd.uptoddapp.databinding.ViewTicketFragmentBinding
 import com.uptodd.uptoddapp.support.all.AllTicketsViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
 @SuppressLint("SetTextI18n")
@@ -44,6 +45,7 @@ class ViewTicket : Fragment() {
         viewModel = ViewModelProvider(this).get(ViewTicketViewModel::class.java)
         binding.viewTicketBinding = viewModel
 
+
         val args = ViewTicketArgs.fromBundle(requireArguments())
         ticket=args.ticket
         Log.d("type",args.supportType);
@@ -53,6 +55,8 @@ class ViewTicket : Fragment() {
             adapter.isExpert=args.supportType!="Support"
         binding.ticketViewMessages.adapter = adapter
 
+        ToolbarUtils.initNCToolbar(requireActivity(),args.supportType,binding.toolbar,
+            findNavController())
         setHasOptionsMenu(true)
 
 
@@ -146,6 +150,7 @@ class ViewTicket : Fragment() {
             if (arrayList != null) {
                 adapter.submitList(arrayList)
                 adapter.notifyDataSetChanged()
+                binding.ticketViewMessages.scrollToPosition(adapter.itemCount-1)
             }
         })
 

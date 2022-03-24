@@ -11,7 +11,7 @@
     <string name="do_s">Do\'s</string>
     <string name="dont_s">Dont\'s</string>
 
-    <string name="ideal_weight">IDEAL WEIGHT</string>
+    <string name="ideal_weight">Weight:</string>
     <string name="your_weekly_score_board">Your Weekly Score Board</string>
     <string name="your_essential_score_board">Your Essential Score Board</string>
     <string name="your_monthly_score_board">Your Monthly Score Board</string>
@@ -137,7 +137,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <!--Blogs categories-->
     <string name="refer">Refer</string>
     <string name="capture_moment">Capture Moment</string>
-    <string name="expected_outcomes">Expected Outcomes</string>
+    <string name="expected_outcomes">Milestone tracker</string>
     <string name="blogs">Tips &amp; Guidelines</string>
     <string name="webinars">Webinars</string>
     <string name="not_now">Not Now</string>
@@ -156,6 +156,8 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="doctor_referral_guide">Doctor Referral Guide</string>
     <string name="doctor_brochure">Doctor Brochure</string>
     <string name="resources">Resources</string>
+    <string translatable="false" name="tutorial">App tutorials</string>
+    <string name="kit_tutorial" translatable="false">Kit Tutorial</string>
     <string name="all_activities">All Routines</string>
     <string name="essentialsAlarmDescription">Essentials Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
     <string name="monthlyAlarmDescription">Monthly Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
@@ -178,8 +180,8 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="kids_name">Kids name</string>
     <string name="kids_age">Kids age</string>
     <string name="kids_gender">Kids Gender</string>
-    <string name="subscription_details">Subscription Details</string>
-    <string name="current_subscribed_plan">Current subscribed plan</string>
+    <string name="subscription_details">Product Details</string>
+    <string name="current_subscribed_plan">Product Type</string>
     <string name="set_up_nanny_mode">Set up nanny mode</string>
     <string name="see_update_nanny_details">See/Update nanny mode details</string>
     <string name="nanny_details_are_updated">The nanny mode details are updated</string>
@@ -308,7 +310,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="referral_code_for_uptodd">Referral code for UpTodd</string>
     <string name="thank_you_for_your_referral_we_ll_contact_you_soon">Thank you for your referral. We\'ll contact them soon!</string>
-    <string name="refer_amp_earn_inr_5000"><![CDATA[Refer & Earn USD 10]]></string>
+    <string name="refer_amp_earn_inr_5000"><![CDATA[Refer & Earn upto INR 10,000]]></string>
     <string name="referral_code">Referral Code</string>
     <string name="code">Code</string>
     <string name="referral_details">Referral Details</string>
@@ -350,7 +352,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="alarm_cancelled">Alarm cancelled</string>
     <string name="couldnt_refresh_data">Couldn\'t refresh data.\nCheck your internet connection</string>
     <string name="select_days">Select days</string>
-    <string name="ideal_height">IDEAL HEIGHT</string>
+    <string name="ideal_height">Height:</string>
 
     <string name="happy_birthday_baby">Happy Birthday Baby</string>
     <string name="milestone_name">Milestone name</string>
@@ -365,7 +367,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="we_ll_play_this_for">We\'ll play this for </string>
     <string name="minutes"> minutes.</string>
     <string name="sending_data">Sending Data…</string>
-    <string name="general">General</string>
+    <string name="general">Miscellaneous Tools</string>
     <string name="user_section">User section</string>
     <string name="my_referrals">My referrals</string>
     <string name="activity_podcast"> Activity Podcast</string>
@@ -380,6 +382,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="language_text">Language</string>
     <string name="go_back" translatable="false">go back</string>
     <string name="activity_sample">Session</string>
+    <string name="expert_counselling" translatable="false">Expert Counselling</string>
      <string name="no_data" translatable="false">No Data</string>
 
     <!--Activity Podcast-->
@@ -408,5 +411,11 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="update_app_title">Time To Update!</string>
     <string name="update_app_sub">We added lots of new features and fix some bugs to make your experience as smooth as possible</string>
 
-
+    <!--premium tips-->
+    <string name="screen_routine" translatable="false">This section will keep getting customised, it\'s for parents just to form Right Habits. You already might be doing 60% of it but purpose is to together achieve 100% </string>
+    <string name="screen_session" translatable="false">This section will have NEW sessions added by your expert regularly on important training and awareness for you</string>
+    <string name="screen_podcast" translatable="false">This section will have activities evolved from research works fit for your child’s development, regularly your expert will add new activities for you</string>
+    <string name="screen_music" translatable="false">1.These are special research based musics for your child, to boost neural connections\n2.Scroll horizontal to explore more </string>
+    <string name="screen_booster" translatable="false">This is a section to help child enhance learning, new boosters will keep getting added by your expert after research works for you at regular basis</string>
+    <string name="screen_support" translatable="false">Click on Support for general queries and expert for any question you have for your expert</string>
 </resources>

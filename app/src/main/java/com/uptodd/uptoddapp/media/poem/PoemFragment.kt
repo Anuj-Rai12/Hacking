@@ -75,6 +75,13 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
             false
         )
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.poem),"Parenting Tools for You",
+            R.drawable.poem_icon
+        )
+
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))
@@ -123,7 +130,11 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-            viewModel.initializeOffline()
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                updatePoems(today)
+            } else{
+                viewModel.initializeOffline()
+            }
         }
 
 
@@ -260,7 +271,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
             } else {
                 binding.musicPlay.setImageResource(R.drawable.material_play)
                 val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-                intent.putExtra("toRun", false)
+                intent.putExtra("toRun", true)
                 intent.putExtra("musicType", "poem")
                 requireContext().sendBroadcast(intent)
             }
@@ -282,6 +293,15 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         viewModel.title.observe(viewLifecycleOwner, Observer {
             if (it != "")
                 binding.musicTitle.text = viewModel.title.value
+        })
+
+        viewModel.isDownloaded.observe(viewLifecycleOwner, Observer {
+            if(it){
+
+            }else{
+                ShowInfoDialog.showInfo("Poems are Downloading will add one by one till it is completed",
+                    requireActivity().supportFragmentManager);
+            }
         })
     }
 

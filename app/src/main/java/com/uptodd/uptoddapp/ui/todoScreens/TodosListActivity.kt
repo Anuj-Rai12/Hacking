@@ -1,7 +1,9 @@
 package com.uptodd.uptoddapp.ui.todoScreens
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.Dialog
+import android.app.Service
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -19,7 +21,9 @@ import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.JobIntentService.enqueueWork
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +36,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.ANRequest
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -41,7 +46,7 @@ import com.coolerfall.download.OkHttpDownloader
 import com.google.android.material.navigation.NavigationView
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
-import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.OnboardingActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -49,9 +54,7 @@ import com.uptodd.uptoddapp.ui.capturemoments.captureimage.CaptureImageFragment
 import com.uptodd.uptoddapp.ui.other.FragmentUpdateApp
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeFragment
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.DEFAULT_HOMEPAGE_INTENT
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.workManager.*
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.DailyAlarmSchedulerWorker
 import com.uptodd.uptoddapp.workManager.alarmSchedulerWorkmanager.MonthlyAndEssentialsAlarmSchedulerWorker
@@ -62,10 +65,13 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -87,6 +93,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     var rpListener:RazorPayListener?=null
+    lateinit var downloadIntent:Intent;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,13 +116,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             inflateNormalMode()
 
         hasStoragePermission()
-
-
-
-
-
-
-
+        setupHeader()
 
         val viewModelFactory = UptoddViewModelFactory.getInstance(application)
 
@@ -131,15 +132,8 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         viewModel.notificationIntentExtras.value = intent.extras
 
 
-
-
-
-
-
         viewModel?.isOutDatedVersion?.observe(this
         , {
-
-
             if(!it)
             {
                 requestFireAllWorkManagers()
@@ -163,7 +157,51 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             })
 
 
+        if(UptoddSharedPreferences.getInstance(this).shouldShowHomeTip())
+        {
+            UptoddSharedPreferences.getInstance(this).setShownHomeTip(false)
+            startActivity(Intent(this,OnboardingActivity::class.java))
+        }
 
+     //   downloadIntent = Intent(this, DownloadService::class.java)
+       // startDownloadInBackground()
+
+    }
+
+
+    fun startDownloadInBackground() {
+      if(!isDownloadServiceRunning(DownloadService::class.java)) {
+          startService(downloadIntent)
+      }
+    }
+    fun stopDownloadInBackground() {
+        if(isDownloadServiceRunning(DownloadService::class.java)) {
+            stopService(downloadIntent)
+        }
+    }
+
+
+
+    private fun setupHeader()
+    {
+        val b = OkHttpClient.Builder()
+        b.addNetworkInterceptor(HttpLoggingInterceptor())
+        b.readTimeout(120, TimeUnit.SECONDS)
+        b.writeTimeout(120, TimeUnit.SECONDS)
+        b.connectTimeout(120, TimeUnit.SECONDS)
+
+        b.addInterceptor { chain: Interceptor.Chain ->
+            val original = chain.request()
+
+            //add auth token in header
+
+            val request = original.newBuilder()
+                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .method(original.method(), original.body())
+                .build()
+            chain.proceed(request)
+        }
+        AndroidNetworking.initialize(applicationContext,b.build())
     }
 
 
@@ -179,7 +217,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         else
         {
             val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
-            val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
+            val end = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(endStr)
             if(!AllUtil.isUserPremium(this)  && !AllUtil.isSubscriptionOver(end) && preferences.getInt("welcome_shown",0)==0) {
 
                 val upToddDialogs = UpToddDialogs(this)
@@ -313,7 +351,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         navView.menu.findItem(R.id.orderListFragment).title=("Expert prescription")
 
         navController = findNavController(R.id.home_page_fragment)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+      //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
@@ -629,6 +667,10 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         drawerLayout.openDrawer(Gravity.LEFT)
         drawerLayout.closeDrawer(Gravity.LEFT)
     }
+    fun openDrawer(){
+        if (!drawerLayout.isDrawerOpen(Gravity.LEFT))
+        drawerLayout.openDrawer(Gravity.LEFT)
+    }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -674,4 +716,20 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         rpListener?.onPaymentFailure(id,error)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //stopDownloadInBackground()
+    }
+
+    private fun  isDownloadServiceRunning(serviceClass:Class<out Service>):Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE)
+                as ActivityManager
+        for(service in activityManager.getRunningServices(Int.MAX_VALUE)){
+            if(serviceClass.name==service.service.className){
+                return true
+            }
+        }
+        return false
+    }
 }

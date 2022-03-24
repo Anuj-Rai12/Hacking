@@ -28,13 +28,15 @@ class OrderViewModel:ViewModel()
     var token:String?=null
 
     var isLoadingDialogVisible=MutableLiveData<Boolean>()
+    var shouldShowBookingButton=MutableLiveData<Boolean>()
+    var bookingLink=MutableLiveData<String>()
 
     var userId:String=""
 
     fun getOrdersFromDatabase() {
         if(_allOrderList.value==null) {
             val userType= UptoddSharedPreferences.getInstance(context!!).getUserType()
-            AndroidNetworking.get("https://www.uptodd.com/api/appusers/products/{userId}?userType=$userType")
+            AndroidNetworking.get("https://www.uptodd.com/api/appusers/v2/products/{userId}?userType=$userType")
                 .addPathParameter("userId", userId)
                 .addHeaders("Authorization", "Bearer $token")
                 .setPriority(Priority.HIGH)
@@ -43,9 +45,14 @@ class OrderViewModel:ViewModel()
                     override fun onResponse(response: JSONObject?) {
                         if (response != null) {
                             Log.d("div",
-                                "OrderViewModel L47 ${response.get("status")} -> ${response.get("data")}")
+                                "OrderViewModel L47 $response -> ${response.get("data")}")
+                            shouldShowBookingButton.
+                            postValue((response.get("data") as JSONObject).getInt("isOnboardingFormFilled")==1)
+                            bookingLink.
+                            postValue((response.get("data") as JSONObject).getString("onboardingFormLink"))
 
-                            var cardsListData = response.get("data") as JSONArray
+
+                            var cardsListData = (response.get("data") as JSONObject).get("allOrders") as JSONArray
                             val list = ArrayList<Order>()
                             var i = 0
                             while (i < cardsListData.length()) {

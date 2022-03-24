@@ -72,6 +72,9 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
 
         initialiseBindingAndViewModel(inflater, container)
 
+        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Vaccination", it,
+            findNavController()) }
+
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         vaccinationDao = UptoddDatabase.getInstance(requireContext()).vaccinationDao
 

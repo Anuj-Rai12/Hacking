@@ -2,11 +2,14 @@ package com.uptodd.uptoddapp.ui.order.orderlist
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,10 +30,7 @@ import com.uptodd.uptoddapp.database.order.Order
 import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.databinding.FragmentOrderListBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.android.synthetic.main.order_item_view.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +40,7 @@ class OrderListFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderListBinding
     private lateinit var viewModel: OrderViewModel
+    private var  shouldShowButton=false;
 
     lateinit var preferences: SharedPreferences
     var row=false
@@ -60,6 +61,8 @@ class OrderListFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_order_list, container, false)
         binding.lifecycleOwner = this
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"Orders",binding.toolbar,findNavController())
 
         Log.d("div", "OrderListFragment L44")
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
@@ -110,6 +113,31 @@ class OrderListFragment : Fragment() {
         return binding.root
     }
 
+    private fun checkForButton(link:String)
+    {
+        if(shouldShowButton)
+        {
+            binding.sessionCount.visibility=View.VISIBLE
+            binding.sessionCount.setOnClickListener {
+
+                if(!TextUtils.isEmpty(link) &&
+                    link.startsWith("http")) {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(link)
+                    )
+                    startActivity(intent)
+                }
+                else
+                    binding.sessionCount.visibility=View.GONE
+            }
+        }
+        else
+            binding.sessionCount.visibility=View.GONE
+
+    }
+
+
     private fun initObservers() {
         //Observing for data
         viewModel.allOrderList.observe(viewLifecycleOwner, Observer {
@@ -145,6 +173,17 @@ class OrderListFragment : Fragment() {
                         })
                 }
             }
+        })
+
+        viewModel.shouldShowBookingButton.observe(viewLifecycleOwner, Observer {
+            if(!it)
+                binding.sessionCount.visibility=View.VISIBLE
+            else
+                binding.sessionCount.visibility=View.GONE
+            shouldShowButton=!it
+        })
+        viewModel.bookingLink.observe(viewLifecycleOwner, Observer {
+            checkForButton(it)
         })
     }
 

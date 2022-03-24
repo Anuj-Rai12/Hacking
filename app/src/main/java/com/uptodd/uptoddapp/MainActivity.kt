@@ -10,13 +10,18 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.score.ScoreDatabaseDao
 import com.uptodd.uptoddapp.utilities.AllUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,17 +60,12 @@ class MainActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("LOGIN_INFO", MODE_PRIVATE)
 
-
-
     }
-
-
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray, ) {
+        grantResults: IntArray,
+    ) {
         Log.d("div", "MainActivity L128 $requestCode $permissions $grantResults")
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

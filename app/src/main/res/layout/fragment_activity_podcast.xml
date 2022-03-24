@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/activityPodcastRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activityPodcastRecycler"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/upgradeButton"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <include
+                android:id="@+id/collapseToolbar"
+                layout="@layout/layout_collapase_toolbar"
+                app:shouldShowPlay="@{true}"
+                app:icon="@{@drawable/activity_podcast_icon}"
+                app:title="@{@string/activity_podcast}"
+                />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/activityPodcastRefresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/activityPodcastRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginVertical="16dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toTopOf="@+id/upgradeButton" />
 
             <TextView
                 android:id="@+id/noDataContainer"
@@ -30,21 +53,26 @@
                 android:layout_height="wrap_content"
                 android:text="@string/no_data"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_centerInParent="true" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/upgradeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/buttonBlue"
-                android:text="@string/upgrade"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"></com.google.android.material.button.MaterialButton>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/upgradeButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/buttonBlue"
+                        android:text="@string/upgrade"
+                        android:layout_alignParentBottom="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </RelativeLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </androidx.core.widget.NestedScrollView>
+
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

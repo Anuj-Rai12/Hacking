@@ -35,7 +35,7 @@ class ActivitySampleAdapter(val clickListener: ActivitySampleInterface) :
 
         fun bind(activitySample: ActivitySample) {
 
-            val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/hqdefault.jpg"
+            val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/mqdefault.jpg"
             Glide.with(view.context)
                 .load(Uri.parse(imageUrl))
                 .placeholder(R.drawable.loading_animation)

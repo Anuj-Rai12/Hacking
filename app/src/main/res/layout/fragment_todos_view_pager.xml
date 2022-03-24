@@ -10,6 +10,20 @@
             type="com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel" />
     </data>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:titleTextColor="@color/white"
+        android:background="@color/color_normal"
+
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activityPagerContainer"
         android:layout_width="match_parent"
@@ -75,4 +89,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

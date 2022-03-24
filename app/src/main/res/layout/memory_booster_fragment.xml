@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,6 +10,29 @@
             name="speedBoosterViewModel"
             type="com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterViewModel" />
     </data>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+
+    <include
+        android:id="@+id/collapseToolbar"
+        layout="@layout/layout_collapase_toolbar"
+        bind:shouldShowPlay="@{true}"
+        bind:icon="@{@drawable/memory_booster_icon}"
+        app:title="@{@string/memory_booster}"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/poemRefresh"
@@ -35,7 +59,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="2"
+                app:spanCount="1"
                 tools:listitem="@layout/memory_booster_item"
                 tools:visibility="visible" />
 
@@ -234,4 +258,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
