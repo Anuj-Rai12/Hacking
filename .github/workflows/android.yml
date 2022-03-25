@@ -23,7 +23,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Accept license
-      run: yes | $ANDROID_HOME/tools/bin/sdkmanager
+      run: yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
     - name: Build with Gradle
       run: ./gradlew build
     - name: Build debug APK
