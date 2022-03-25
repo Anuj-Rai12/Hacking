@@ -21,8 +21,11 @@ jobs:
         distribution: 'adopt'
         cache: gradle
 
-    - name: Grant execute permission for gradlew
+    - name: Accept license
       run: yes | sdkmanager --licenses
+    
+    - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    
