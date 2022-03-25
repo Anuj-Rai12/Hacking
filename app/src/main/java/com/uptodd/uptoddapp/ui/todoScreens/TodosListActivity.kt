@@ -86,6 +86,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     private var storagePermissinGranted: Boolean = false
 
     private val STORAGE_PERMISSION_REQUEST_CODE = 0
+    private val READ_PHONE_STATE =3
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
 
     private lateinit var preferences: SharedPreferences
@@ -116,6 +117,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             inflateNormalMode()
 
         hasStoragePermission()
+        hasPhoneStatePermission()
         setupHeader()
 
         val viewModelFactory = UptoddViewModelFactory.getInstance(application)
@@ -525,6 +527,24 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             }
         } else {
             storagePermissinGranted = true
+        }
+    }
+    private fun hasPhoneStatePermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_PHONE_STATE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_PHONE_STATE),
+                    READ_PHONE_STATE
+                )
+            } else {
+
+            }
+        } else {
+
         }
     }
 
