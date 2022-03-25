@@ -21,6 +21,9 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Accept license
+      run: yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;33.0.0"
     - name: Build with Gradle
       run: ./gradlew build
     - name: Build debug APK
