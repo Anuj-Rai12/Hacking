@@ -1,13 +1,14 @@
 name: Android CI
 
+before_install:
+- yes | sdkmanager "platforms;android-27"
+
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-before_install:
-- yes | sdkmanager "platforms;android-27"
 
 jobs:
   build:
