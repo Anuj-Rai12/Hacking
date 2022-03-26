@@ -43,6 +43,10 @@ android {
         javaMaxHeapSize "4G"
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
