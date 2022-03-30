@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/development_tracker_recycler_view_item.xml" value="0.2453125" />
         <entry key="app/src/main/res/layout/memory_booster_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/poem_list_item.xml" value="0.2453125" />
         <entry key="app/src/main/res/layout/refer_a_doctor_fragment.xml" value="0.1" />
       </map>
     </option>
