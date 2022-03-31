@@ -45,6 +45,7 @@ import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.DevelopmentTracker
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
 import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
@@ -322,6 +323,13 @@ class AllUtil{
             val type: Type = object : TypeToken<ArrayList<MusicFiles?>?>() {}.type
             return gson.fromJson(jsonString, type) as ArrayList<MusicFiles>
         }
+
+        fun getDevelopmentTrackerResponse(jsonString: String):DevelopmentTracker{
+            val gson = Gson()
+            return  gson.fromJson(jsonString,DevelopmentTracker::class.java)
+        }
+
+
         fun getAllMemoryFiles(jsonString: String): ArrayList<MemoryBoosterFiles> {
             val gson = Gson()
             val type: Type = object : TypeToken<ArrayList<MemoryBoosterFiles?>?>() {}.type

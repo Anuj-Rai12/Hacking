@@ -3,10 +3,21 @@ package com.uptodd.uptoddapp.ui.monthlyDevelopment.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.all.All
 import com.uptodd.uptoddapp.databinding.DevelopmentTrackerRecyclerViewItemBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.DevelopmentTrackerViewHolder
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.AllResponse
 
 class DevelopmentTrackerAdapter : RecyclerView.Adapter<DevelopmentTrackerViewHolder>() {
+
+    var trackerList = ArrayList<AllResponse>()
+
+
+    fun add(list: ArrayList<AllResponse>){
+        trackerList.clear()
+        trackerList.addAll(list)
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -17,10 +28,10 @@ class DevelopmentTrackerAdapter : RecyclerView.Adapter<DevelopmentTrackerViewHol
     }
 
     override fun getItemCount(): Int {
-       return 0
+       return trackerList.size
     }
 
     override fun onBindViewHolder(holder: DevelopmentTrackerViewHolder, position: Int) {
-
+        holder.bind(trackerList[position],position)
     }
 }

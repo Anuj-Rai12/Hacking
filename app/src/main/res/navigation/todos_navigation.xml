@@ -359,6 +359,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_developmentTrackerFragment"
+            app:destination="@id/developmentTrackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/appreciationFragment"
@@ -748,6 +751,14 @@
         android:id="@+id/recipeFragment"
         android:name="com.uptodd.uptoddapp.ui.recipe.RecipeFragment"
         android:label="RecipeFragment" />
+    <fragment
+        android:id="@+id/developmentTrackerFragment"
+        android:name="com.uptodd.uptoddapp.ui.monthlyDevelopment.DevelopmentTrackerFragment"
+        android:label="DevelopmentTrackerFragment" >
+        <action
+            android:id="@+id/action_developmentTrackerFragment_to_upgradeFragment"
+            app:destination="@id/upgradeFragment" />
+    </fragment>
 
 
     <!--    <fragment-->
