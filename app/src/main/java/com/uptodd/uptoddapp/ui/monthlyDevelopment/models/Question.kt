@@ -9,6 +9,6 @@ data class Question(
     val id: Int,
     @SerializedName("options")
     val options: List<String>,
-    @SerializedName("questions")
+    @SerializedName("question")
     val question: String
 )

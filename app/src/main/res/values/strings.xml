@@ -15,7 +15,8 @@
     <string name="your_weekly_score_board">Your Weekly Score Board</string>
     <string name="your_essential_score_board">Your Essential Score Board</string>
     <string name="your_monthly_score_board">Your Monthly Score Board</string>
-    <string name="your_daily_score_board">Your Daily Score Board</string>
+    <string  name="your_daily_score_board">Your Daily Score Board</string>
+
 
     <!--Upgrade-->
     <string name="up_program_desc">Premium program to provide personalised support from team from MIT(USA), IITs, AIIMS, Stanford etc. and to empower you with the best prenatal parenting toolkit under expert guidance, where uptodd team as a Family ensures right prenatal parenting for your unborn baby with 24*7 support and complete take care</string>

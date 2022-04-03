@@ -704,7 +704,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeExpertCounselling"
-        android:name="com.uptodd.uptoddapp.ui.expertCounselling.HomeExpertCounselling"
+        android:name="com.uptodd.uptoddapp.ui.monthlyDevelopment.HomeExpertCounselling"
         android:label="Expert Counselling" >
         <action
             android:id="@+id/action_homeExpertCounselling_to_upgradeFragment"
@@ -758,6 +758,22 @@
         <action
             android:id="@+id/action_developmentTrackerFragment_to_upgradeFragment"
             app:destination="@id/upgradeFragment" />
+        <action
+            android:id="@+id/action_developmentTrackerFragment_to_trackerResponseFragment"
+            app:destination="@id/trackerResponseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackerResponseFragment"
+        android:name="com.uptodd.uptoddapp.ui.monthlyDevelopment.TrackerResponseFragment"
+        android:label="TrackerResponseFragment" >
+        <argument
+            android:name="response"
+            app:argType="com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response"
+            app:nullable="true" />
+        <argument
+            android:name="tips"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 

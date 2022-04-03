@@ -1,4 +1,4 @@
-package com.uptodd.uptoddapp.ui.expertCounselling
+package com.uptodd.uptoddapp.ui.monthlyDevelopment
 
 import com.uptodd.uptoddapp.support.all.AllTicketsViewModel
 import com.uptodd.uptoddapp.support.all.AllTicketsViewPagerAdapter
@@ -13,22 +13,20 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
-import com.uptodd.uptoddapp.databinding.AllTicketsFragmentBinding
+import com.uptodd.uptoddapp.databinding.FragmentHomeTrackerBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.expertCounselling.HomeExpertCounselling
+import com.uptodd.uptoddapp.ui.expertCounselling.UpComingSessionFragment
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.childFragments.QuestionsFragment
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.childFragments.TipsFragment
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
@@ -36,7 +34,7 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
-class HomeExpertCounselling : Fragment() {
+class TrackerResponseFragment : Fragment() {
 
     companion object {
         fun newInstance() = HomeExpertCounselling()
@@ -45,14 +43,10 @@ class HomeExpertCounselling : Fragment() {
     private var videosRespons: VideosUrlResponse?=null
 
     private lateinit var viewModel: AllTicketsViewModel
-    var binding: AllTicketsFragmentBinding?=null
+    var binding: FragmentHomeTrackerBinding?=null
     private lateinit var uptoddDialogs: UpToddDialogs
-    private val expertCounselling by lazy {
-        ExpertCounsellingFragment()
-    }
-    private val expertTeam by lazy {
-        UpComingSessionFragment()
-    }
+    private var questionsFragment:QuestionsFragment?=null
+    private var tipsFragment:TipsFragment?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,51 +67,13 @@ class HomeExpertCounselling : Fragment() {
 
         binding= DataBindingUtil.inflate(
             inflater,
-            R.layout.all_tickets_fragment,
+            R.layout.fragment_home_tracker,
             container,
             false
         )
         binding?.lifecycleOwner = this
 
-        ToolbarUtils.initToolbar(
-            requireActivity(), binding?.collapseToolbar!!,
-            findNavController(),getString(R.string.expert_counselling),"Happy Parenting Journey",
-            R.drawable.counselling_icon
-        )
 
-        binding?.collapseToolbar?.appBarLayout?.addOnOffsetChangedListener(
-            AppBarLayout.
-        OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if(abs(verticalOffset) - appBarLayout?.totalScrollRange!! ==0){
-                val paramsLayout= binding?.rootLayout?.layoutParams as CoordinatorLayout.LayoutParams
-                paramsLayout.bottomMargin= TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    00f,resources.displayMetrics).toInt()
-            } else {
-
-               val paramsLayout= binding?.rootLayout?.layoutParams as CoordinatorLayout.LayoutParams
-                paramsLayout.bottomMargin= TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                120f,resources.displayMetrics).toInt()
-            }
-        })
-        viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
-        binding?.allTicketsBinding = viewModel
-
-        fetchTutorials(requireContext())
-        binding?.collapseToolbar?.playTutorialIcon?.setOnClickListener {
-
-            fragmentManager?.let { it1 ->
-                val intent = Intent(context, PodcastWebinarActivity::class.java)
-                intent.putExtra("url", videosRespons?.counselling)
-                intent.putExtra("title", "Couselling Support")
-                intent.putExtra("kit_content","")
-                intent.putExtra("description","")
-                startActivity(intent)
-            }
-
-
-        }
-
-        binding?.collapseToolbar?.playTutorialIcon?.visibility=View.VISIBLE
 
 
         val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate())
@@ -156,6 +112,14 @@ class HomeExpertCounselling : Fragment() {
             )
         }
         else{
+            val args=TrackerResponseFragmentArgs.fromBundle(requireArguments())
+            tipsFragment = TipsFragment.getInstance(args.tips)
+            questionsFragment = QuestionsFragment.getInstance(args.response!!)
+
+            ToolbarUtils.initNCToolbar(
+                requireActivity(),"${args.response?.type}", binding?.toolbar!!,
+                findNavController()
+            )
             setupViewPager(binding)
         }
 
@@ -167,21 +131,21 @@ class HomeExpertCounselling : Fragment() {
         Log.i("support", "All tickets fragment")
     }
 
-    private fun setupViewPager(binding: AllTicketsFragmentBinding?) {
+    private fun setupViewPager(binding: FragmentHomeTrackerBinding?) {
         val adapter = AllTicketsViewPagerAdapter(this.requireActivity())
-        binding?.allTicketsViewPager?.adapter = adapter
+        binding?.homeTrackerViewPager?.adapter = adapter
 
         adapter.apply {
-            addFragment(expertTeam)
-            addFragment(expertCounselling)
+            tipsFragment?.let { addFragment(it) }
+            questionsFragment?.let { addFragment(it) }
         }
 
         val fragmentTitleList = arrayListOf(
-            "Upcoming Sessions",
-            "Previous Sessions"
+            "Tips",
+            "Form Details"
         )
 
-        binding?.allTicketsViewPager?.let {
+        binding?.homeTrackerViewPager?.let {
             TabLayoutMediator(binding?.tabLayout!!, it) { tab, position ->
                 tab.text = fragmentTitleList[position]
             }.attach()
@@ -196,22 +160,5 @@ class HomeExpertCounselling : Fragment() {
         viewModel = ViewModelProvider(this).get(AllTicketsViewModel::class.java)
     }
 
-    fun fetchTutorials(context: Context) {
-        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
-            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-            .setPriority(Priority.HIGH)
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-                    val data = response?.get("data") as JSONObject
-                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
-                }
-
-                override fun onError(anError: ANError?) {
-
-                }
-
-            })
-    }
 
 }

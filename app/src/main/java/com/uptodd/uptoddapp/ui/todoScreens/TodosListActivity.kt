@@ -725,9 +725,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         fun onPaymentFailure(d: Int, error: String?)
     }
 
-    override fun onPaymentSuccess(id: String?)
-    {
-
+    override fun onPaymentSuccess(id: String?) {
         rpListener?.onPaymentSuccess(id)
 
     }

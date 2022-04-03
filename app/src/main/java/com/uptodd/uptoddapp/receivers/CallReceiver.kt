@@ -11,7 +11,7 @@ import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 class CallReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         try {
-            if(UpToddMediaPlayer.isPlaying )
+            if(UpToddMediaPlayer.isPlaying)
             {
                 UpToddMediaPlayer.upToddMediaPlayer.playPause()
                 val intent = Intent(context, BackgroundPlayer::class.java)

@@ -20,17 +20,11 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
-import com.uptodd.uptoddapp.R
-import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
-import com.uptodd.uptoddapp.database.expertCounselling.UpComingSessionModel
-import com.uptodd.uptoddapp.databinding.FragmentExpertCounsellingBinding
 import com.uptodd.uptoddapp.databinding.FragmentUpcomingSessionsBinding
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.HomeExpertCounsellingDirections
 import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ShowInfoDialog
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -252,7 +246,8 @@ class UpComingSessionFragment : Fragment(), UpcomingSessionInterface {
 
 
     override fun onClick(exp_con: ExpertCounselling) {
-        findNavController().navigate(HomeExpertCounsellingDirections.
+        findNavController().navigate(
+            HomeExpertCounsellingDirections.
         actionHomeExpertCounsellingFragmentToExpertSuggestionsFragment(exp_con))
     }
 

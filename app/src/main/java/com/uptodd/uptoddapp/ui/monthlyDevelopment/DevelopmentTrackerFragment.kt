@@ -13,10 +13,11 @@ import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DevelopmentTrackerFragmentBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.adapters.DevelopmentTrackerAdapter
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.AllResponse
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
-class DevelopmentTrackerFragment:Fragment() {
+class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.DevelopmentTrackerListener {
 
     var binding:DevelopmentTrackerFragmentBinding?= null
     var viewModel:DevelopmentTrackerViewModel?=null
@@ -55,6 +56,7 @@ class DevelopmentTrackerFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = DevelopmentTrackerAdapter()
+        adapter?.listener=this
         binding?.trackerListRecyclerView?.adapter = adapter
         viewModel?.fetchTrackerResponse(requireContext())
 
@@ -80,6 +82,12 @@ class DevelopmentTrackerFragment:Fragment() {
         binding?.trackerRefresh?.setOnRefreshListener {
             viewModel?.fetchTrackerResponse(requireContext())
         }
+    }
+
+    override fun onClick(allResponse: AllResponse) {
+        findNavController().navigate(DevelopmentTrackerFragmentDirections.actionDevelopmentTrackerFragmentToTrackerResponseFragment(
+            allResponse.getAllQuestions(),allResponse.tips
+        ))
     }
 
 }

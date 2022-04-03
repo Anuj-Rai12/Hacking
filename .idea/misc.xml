@@ -3,16 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/all_tickets_fragment.xml" value="0.14356884057971014" />
+        <entry key="app/src/main/res/layout/details_fragment.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/development_tracker_fragment.xml" value="0.1598731884057971" />
         <entry key="app/src/main/res/layout/development_tracker_recycler_view_item.xml" value="0.21562957763671875" />
+        <entry key="app/src/main/res/layout/fragment_home_tracker.xml" value="0.14356884057971014" />
+        <entry key="app/src/main/res/layout/fragment_questions.xml" value="0.14356884057971014" />
+        <entry key="app/src/main/res/layout/fragment_tips.xml" value="0.24777449455814085" />
+        <entry key="app/src/main/res/layout/fragment_upcoming_sessions.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/memory_booster_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/poem_fragment.xml" value="0.1598731884057971" />
         <entry key="app/src/main/res/layout/poem_list_item.xml" value="0.2453125" />
+        <entry key="app/src/main/res/layout/question_recycler_view_item.xml" value="0.33323974609375" />
         <entry key="app/src/main/res/layout/refer_a_doctor_fragment.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

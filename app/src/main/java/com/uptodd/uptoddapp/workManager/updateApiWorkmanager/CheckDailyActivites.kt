@@ -59,7 +59,6 @@ class CheckDailyActivites(val context: Context, parameters: WorkerParameters) :
 
     private fun checkPodcastAdded(context: Context)
     {
-
         val uid = AllUtil.getUserId()
         val months= getMonth(context!!)
         val lang= AllUtil.getLanguage()

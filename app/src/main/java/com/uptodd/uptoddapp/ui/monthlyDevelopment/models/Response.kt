@@ -1,10 +1,11 @@
 package com.uptodd.uptoddapp.ui.monthlyDevelopment.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Response(
     @SerializedName("questions")
-    val questions: List<Question>,
+    var questions: List<Question>,
     @SerializedName("type")
-    val type: String
-)
+    var type: String
+):Serializable

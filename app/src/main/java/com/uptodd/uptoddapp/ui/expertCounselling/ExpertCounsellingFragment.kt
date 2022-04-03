@@ -25,6 +25,7 @@ import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
 import com.uptodd.uptoddapp.databinding.FragmentExpertCounsellingBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.HomeExpertCounsellingDirections
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
@@ -220,7 +221,8 @@ class ExpertCounsellingFragment : Fragment(), ExpertCounsellingInterface {
 
 
     override fun onClick(exp_con: ExpertCounselling) {
-        findNavController().navigate(HomeExpertCounsellingDirections.
+        findNavController().navigate(
+            HomeExpertCounsellingDirections.
         actionHomeExpertCounsellingFragmentToExpertSuggestionsFragment(exp_con))
     }
     fun fetchTutorials(context: Context) {
