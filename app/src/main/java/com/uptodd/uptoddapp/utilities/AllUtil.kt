@@ -46,6 +46,8 @@ import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.DevelopmentTracker
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Question
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.upgrade.UpgradeItem
 import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
@@ -275,6 +277,19 @@ class AllUtil{
 
         fun loadPreferences(context: Context, name: String){
             sharedPreferences = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
+        }
+
+        fun getAllQuestions():ArrayList<Response>{
+            val responses= arrayListOf<Response>()
+            responses.apply {
+                add(Response(listOf(Question("",1, listOf("yes","no","partially"),"Hello","New type")
+                ,Question("",2, listOf("yes","no","partially"),"Hello 2","New type"),
+                    Question("",3, listOf("yes","no","partially"),"Comments","Others")
+                ),"New type"))
+                add(Response(listOf(Question("",4, listOf("yes","nope","partially"),"Hello 9","New type")),"New type"))
+            }
+
+            return responses
         }
 
 
@@ -715,5 +730,6 @@ class AllUtil{
         while (cal.get(Calendar.DAY_OF_MONTH) != 1)
             cal.add(Calendar.DAY_OF_MONTH, 1)
     }
+
 
 }

@@ -761,6 +761,9 @@
         <action
             android:id="@+id/action_developmentTrackerFragment_to_trackerResponseFragment"
             app:destination="@id/trackerResponseFragment" />
+        <action
+            android:id="@+id/action_developmentTrackerFragment_to_questionsFormFragment"
+            app:destination="@id/questionsFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/trackerResponseFragment"
@@ -775,6 +778,10 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/questionsFormFragment"
+        android:name="com.uptodd.uptoddapp.ui.monthlyDevelopment.QuestionsFormFragment"
+        android:label="QuestionsFormFragment" />
 
 
     <!--    <fragment-->

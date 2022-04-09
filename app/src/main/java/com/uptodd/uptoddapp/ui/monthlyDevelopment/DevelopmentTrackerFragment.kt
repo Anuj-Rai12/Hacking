@@ -72,8 +72,13 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
             }
             binding?.trackerRefresh?.isRefreshing = false
             if(it.data.isTrackerFormOpen==1){
-                binding?.fillForm?.visibility = View.VISIBLE
+               binding?.fillForm?.visibility = View.VISIBLE
             }
+        }
+        //for testing remove it later
+        binding?.fillForm?.visibility = View.VISIBLE
+        binding?.fillForm?.setOnClickListener {
+            findNavController().navigate(R.id.action_developmentTrackerFragment_to_questionsFormFragment)
         }
         viewModel?.errorResponse?.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context,"Error occur",Toast.LENGTH_LONG).show()

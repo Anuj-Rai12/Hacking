@@ -1,6 +1,7 @@
 package com.uptodd.uptoddapp.ui.monthlyDevelopment.childFragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class TipsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         response = arguments?.getString("tips")
 
-        if(response?.isEmpty() == true){
+        if(response?.isEmpty()  == true || response.isNullOrBlank()){
             showNoData()
         } else {
             hideNodata()
@@ -50,11 +51,11 @@ class TipsFragment : Fragment() {
 
     }
     private fun hideNodata() {
-        binding.noDataContainer.visibility = View.VISIBLE
+        binding.noDataContainer.visibility = View.GONE
     }
 
     private fun showNoData() {
-        binding.noDataContainer.visibility=View.GONE
+        binding.noDataContainer.visibility=View.VISIBLE
     }
 
 
