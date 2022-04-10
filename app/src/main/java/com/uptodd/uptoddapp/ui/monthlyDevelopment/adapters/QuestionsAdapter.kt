@@ -31,7 +31,8 @@ class QuestionsAdapter(val clickListener: UpcomingSessionInterface?=null) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvTitle.text="Q. "+question.question
-            binding.tvAns.text="Ans: "+question.answer
+            val answer = if(question.answer.isNullOrEmpty()) "No answer" else question.answer
+            binding.tvAns.text="Ans: $answer"
         }
 
     }
