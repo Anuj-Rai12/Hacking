@@ -47,7 +47,7 @@ class TermsAndConditions(val info:String,val link:String?=null) :DialogFragment(
             else if(link=="navigateToSession"){
                 binding.okButton.text="Book session"
             } else if(link=="navigateToDevelopment"){
-                binding.texthead.text="Notice"
+                binding.texthead.text="Development form"
                 binding.okButton.text="Fill now"
             }
 

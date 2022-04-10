@@ -51,7 +51,7 @@ class QuestionsFormFragment :Fragment() {
 
         binding?.submitForm?.setOnClickListener {
             if(adapter.checkValidationOfForm()){
-                uptoddDialog.showOnlyLoadingDialog()
+                uptoddDialog.showLoadingDialog(findNavController(),false)
                 viewModel?.submitForm(adapter.list as ArrayList<Response>)
             } else {
                 Toast.makeText(requireContext(),"Please answer all the questions",

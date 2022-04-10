@@ -95,7 +95,7 @@ class DevelopmentTrackerViewModel(applicationContext:Application):AndroidViewMod
        Log.d("answers response",jsonString)
 
         val userId = AllUtil.getUserId()
-        AndroidNetworking.post("https://uptodd.com/api/appusers/trackerResponseV2/$userId")
+        AndroidNetworking.post("https://uptodd.com/api/appusers/trackerResponse/$userId")
             .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .addJSONObjectBody(JSONObject(jsonString))

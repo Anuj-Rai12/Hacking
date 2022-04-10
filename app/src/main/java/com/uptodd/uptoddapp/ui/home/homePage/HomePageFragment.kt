@@ -591,7 +591,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         if(sharedPreferences.isFillDevelopmentForm() &&
             (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
         {
-            val termsAndConditions=TermsAndConditions("Fill your monthly development form to get tips by our expert.")
+            val termsAndConditions=TermsAndConditions("Fill your monthly development form to get tips by our expert.","navigateToDevelopment")
             sharedPreferences.setDailyDialogTimeForDevelopmentForm(calCurrent.timeInMillis)
             termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
 
