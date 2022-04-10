@@ -135,9 +135,8 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
 
         viewModel?.isOutDatedVersion?.observe(this
-        , {
-            if(!it)
-            {
+        ) {
+            if (!it) {
                 requestFireAllWorkManagers()
                 val manager: DownloadManager = DownloadManager.Builder().context(this)
                     .downloader(OkHttpDownloader.create())
@@ -151,12 +150,12 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                         getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                         "Downloads"
                     ),
-                    manager,this
+                    manager, this
                 )
                 initCheck()
                 initNP(viewModel)
             }
-            })
+        }
 
 
         if(UptoddSharedPreferences.getInstance(this).shouldShowHomeTip())

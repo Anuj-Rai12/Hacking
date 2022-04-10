@@ -55,10 +55,10 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
                     R.drawable.ic_webinar,"Webinar"))
 
                 add(OptionsItem(R.id.action_homePageFragment_to_recipeFragment,
-                    R.drawable.ic_webinar,"Recipe"))
+                    R.drawable.recepie_icon,"Recipe"))
 
                 add(OptionsItem(R.id.action_homePageFragment_to_developmentTrackerFragment,
-                    R.drawable.ic_webinar,"Development tracker"))
+                    R.drawable.development_form,"Development tracker"))
 
 
             }

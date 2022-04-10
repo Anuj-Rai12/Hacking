@@ -113,33 +113,28 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         initialiseBindingAndViewModel(inflater, container)
         viewModel?.checkForAppUpdate(requireContext())
         viewModel?.isOutDatedVersion?.observe(viewLifecycleOwner
-            , {
+        ) {
 
-                if(!it)
-                {
-                    initiateDataRefresh()
-                    setupViewPager()
-                    viewModel.loadDailyTodoScore()
-                    initialiseScoreDisplay()
-                    initialiseBabyPhoto()
-                    initialiseOtherInformation()
-                    checkForDailog()
+            if (!it) {
+                initiateDataRefresh()
+                setupViewPager()
+                viewModel.loadDailyTodoScore()
+                initialiseScoreDisplay()
+                initialiseBabyPhoto()
+                initialiseOtherInformation()
+                checkForDailog()
 
-                    if(UptoddSharedPreferences.getInstance(requireContext()).getShouldShowKit()){
-                        personalizedOptionsAdapter?.addKitTutorial()
-                    }
+                if (UptoddSharedPreferences.getInstance(requireContext()).getShouldShowKit()) {
+                    personalizedOptionsAdapter?.addKitTutorial()
                 }
-                else
-                {
-                     try {
-                         findNavController().navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
-                     }
-                     catch (e:Exception)
-                     {
-                         findNavController().navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
-                     }
+            } else {
+                try {
+                    findNavController().navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
+                } catch (e: Exception) {
+                    findNavController().navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
                 }
-            })
+            }
+        }
 
 
 
@@ -561,7 +556,6 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             ,sharedPreferences.getOnboardingLink())
             sharedPreferences.setDailyDialogTime(calCurrent.timeInMillis)
             termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
-
         }
         val dur=Calendar.getInstance().timeInMillis-sharedPreferences.getSessionBookingDate()
         if(sharedPreferences.isSessionBookingAllowed()
@@ -573,8 +567,35 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
 
             sharedPreferences.setShownSessionBookingDate(Calendar.getInstance().timeInMillis)
-        }
 
+        }
+        checkForDevelopmentFormDialog()
+    }
+
+    fun checkForDevelopmentFormDialog(){
+
+        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent=Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calPrev=Calendar.getInstance().apply {
+            time = Date(sharedPreferences.getDailyDialogTimeForDevelopmentForm())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        if(sharedPreferences.isFillDevelopmentForm() &&
+            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
+        {
+            val termsAndConditions=TermsAndConditions("Fill your monthly development form to get tips by our expert.")
+            sharedPreferences.setDailyDialogTimeForDevelopmentForm(calCurrent.timeInMillis)
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+
+        }
     }
 
     private fun testInternetConnectionAndRefreshData(): Disposable? {

@@ -570,6 +570,15 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         return loginSharedPreference.getString("on_boarding_link", "").toString()
     }
 
+    fun setFillDevelopmentForm(status: Int){
+        loginSharedPreference.edit().putInt("onDevelopmentFormFilled", status).apply();
+    }
+
+    fun isFillDevelopmentForm(): Boolean {
+        return loginSharedPreference.getInt("onDevelopmentFormFilled", 0) == 1
+    }
+
+
     fun setShouldShowKitTutorial(shouldShow:Boolean) {
         loginSharedPreference.edit().putBoolean("should_show_kit", shouldShow).apply()
     }
@@ -600,5 +609,11 @@ class UptoddSharedPreferences private constructor(var context: Context) {
     }
     fun getDailyDialogTime(): Long {
         return loginSharedPreference.getLong("dialogTime", 0)
+    }
+    fun setDailyDialogTimeForDevelopmentForm(date: Long){
+        loginSharedPreference.edit().putLong("dialogTimeDevelopment", date).apply();
+    }
+    fun getDailyDialogTimeForDevelopmentForm(): Long {
+        return loginSharedPreference.getLong("dialogTimeDevelopment", 0)
     }
 }

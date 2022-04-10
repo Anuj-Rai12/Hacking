@@ -66,7 +66,7 @@ class RecipeFragment : Fragment(), TutorialInterface {
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
             findNavController(),"Recipe","Happy Parenting Journey",
-            R.drawable.app_tutorial_icon
+            R.drawable.recepie_icon_inner
         )
         binding.activitySampleRefresh.isRefreshing = true
         binding.upgradeButton.visibility=View.GONE

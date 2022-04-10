@@ -41,11 +41,14 @@ class TermsAndConditions(val info:String,val link:String?=null) :DialogFragment(
 
         if (link != null){
             binding.texthead.text="Notice"
-            if(!TextUtils.isEmpty(link) && link.startsWith("http")) {
+            if((!TextUtils.isEmpty(link) && link.startsWith("http") )) {
                 binding.okButton.text="Fill now"
             }
             else if(link=="navigateToSession"){
                 binding.okButton.text="Book session"
+            } else if(link=="navigateToDevelopment"){
+                binding.texthead.text="Notice"
+                binding.okButton.text="Fill now"
             }
 
         }
@@ -64,6 +67,8 @@ class TermsAndConditions(val info:String,val link:String?=null) :DialogFragment(
                 }
                 else if(link=="navigateToSession"){
                     findNavController().navigate(R.id.action_homePageFragment_to_homeExpertCounselling)
+                } else if(link=="navigateToDevelopment"){
+                    findNavController().navigate(R.id.action_homePageFragment_to_developmentTrackerFragment)
                 }
             }
         }
