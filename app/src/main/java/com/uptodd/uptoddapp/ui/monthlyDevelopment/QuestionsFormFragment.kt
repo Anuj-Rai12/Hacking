@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.monthlyDevelopment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.QuestionFormFragmentBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.adapters.QuestionsFormAdapter
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
@@ -30,7 +32,7 @@ class QuestionsFormFragment :Fragment() {
         binding = QuestionFormFragmentBinding.inflate(inflater)
 
         binding?.toolbar?.let {
-            ToolbarUtils.initNCToolbar(requireActivity(),"Monthly Form",
+            ToolbarUtils.initNCToolbar(requireActivity(),"Development Form",
                 it,findNavController())
         }
         viewModel = ViewModelProvider(requireActivity())[DevelopmentTrackerViewModel::class.java]
@@ -65,9 +67,15 @@ class QuestionsFormFragment :Fragment() {
         viewModel?.formSubmitted?.observe(viewLifecycleOwner, Observer {
             uptoddDialog.dismissDialog()
             if(it){
-                Toast.makeText(requireContext(),"Form submitted successfully",
-                    Toast.LENGTH_LONG).show()
-                findNavController().navigateUp()
+                UpToddDialogs(requireContext()).showDialog(
+                    R.drawable.gif_done,
+                    "Thank you for response, R&D team will add the report soon.", getString(R.string.close),
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                            findNavController().navigateUp()
+                        }
+                    })
             } else {
                 Toast.makeText(requireContext(),"Please try again",
                     Toast.LENGTH_LONG).show()

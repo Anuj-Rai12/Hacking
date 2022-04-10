@@ -30,8 +30,8 @@ class QuestionsAdapter(val clickListener: UpcomingSessionInterface?=null) :
     inner class QuestionsViewHolder(val binding: QuestionRecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
-            binding.tvTitle.text="Q."+question.question
-            binding.tvAns.text="Ans:"+question.answer
+            binding.tvTitle.text="Q. "+question.question
+            binding.tvAns.text="Ans: "+question.answer
         }
 
     }
