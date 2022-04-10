@@ -36,7 +36,7 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
         viewModel = ViewModelProvider(requireActivity())[DevelopmentTrackerViewModel::class.java]
         ToolbarUtils.initToolbar(
             requireActivity(), binding?.collapseToolbar!!,
-            findNavController(),"Monthly Development form","",
+            findNavController(),"Development Tracker","Parenting Tools for you",
             R.drawable.development_form_inner
         )
 

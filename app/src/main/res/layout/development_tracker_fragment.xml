@@ -57,7 +57,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:spanCount="2"
                         tools:layout_editor_absoluteX="8dp"
-                        tools:listitem="@layout/poem_list_item"
+                        tools:listitem="@layout/development_tracker_recycler_view_item"
                         tools:visibility="visible" />
 
 

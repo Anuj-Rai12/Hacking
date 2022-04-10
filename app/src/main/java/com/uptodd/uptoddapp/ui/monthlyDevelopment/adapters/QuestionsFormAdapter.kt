@@ -34,9 +34,11 @@ class QuestionsFormAdapter(val clickListener: UpcomingSessionInterface?=null) :
     fun checkValidationOfForm():Boolean{
         list.forEach { it1 ->
 
-            it1.questions.forEach { 
-                if(it.answer.isNullOrEmpty() || it.answer.isNullOrBlank())
-                    return false
+            if(it1.type!="Others") {
+                it1.questions.forEach {
+                    if (it.answer.isNullOrEmpty() || it.answer.isNullOrBlank())
+                        return false
+                }
             }
         }
         

@@ -20,7 +20,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:textColor="@color/black"
         android:text="Q.One Question"
         android:textStyle="bold"
         />
@@ -29,6 +29,8 @@
         android:id="@+id/tvAns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:text="Ans:"/>
 
 

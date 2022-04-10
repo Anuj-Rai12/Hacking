@@ -29,11 +29,29 @@
             >
 
 
+
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#fff"
                 >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/black"
+                        android:text="Fill your monthly developmental form for Tips &amp; Suggestions"
+                        />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/questionFormRecyclerview"
@@ -42,6 +60,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/question_form_recyclerview_item"
                     />
+                </LinearLayout>
 
 
 
