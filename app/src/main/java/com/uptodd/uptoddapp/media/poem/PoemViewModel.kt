@@ -53,6 +53,11 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
     val isPlaying: LiveData<Boolean>
         get() = _isPlaying
 
+
+    private var _isDownloaded = MutableLiveData<Boolean>()
+    val isDownloaded:LiveData<Boolean>
+        get() = _isDownloaded
+
     private var currentPlaying = 0
 
     var notActive=false
@@ -95,6 +100,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
         viewModelScope.launch {
             downloadedPoems = database.getAllDownloadedPoem()
+            _isDownloaded.postValue(downloadedPoems.size>10)
             downloadedPoems.forEach{
                 Log.i("DP", "${it.id} -> ${it.name}")
             }
@@ -156,6 +162,9 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
             override fun onReset(song: MusicFiles) {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
+                if(song.filePath =="NA"){
+                    _isMediaReady.value=false
+                }
                 _image.value = AllUtil.getPoemImage(song, dpi)
                 _title.value = song.name
                 currentPlaying = song.id
@@ -167,6 +176,10 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
             override fun onPause() {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
+            }
+
+            override fun onError() {
+                super.onError()
             }
         })
     }
@@ -183,15 +196,20 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
                         if(response.get("data").toString()!="null") {
+
                             viewModelScope.launch {
+
+
                                 val poems = AllUtil.getAllMusic(response.get("data").toString())
+
+
                                 poems.forEach {
                                     if (getIsPoemDownloaded(it))
                                         it.filePath = database.getFilePath(it.id)
                                     else
                                         it.filePath = "NA"
                                 }
-                                _poems.value = poems
+                                _poems.value =poems
                                 notActive = poems.isEmpty()
                                 _isLoading.value = 0
                             }

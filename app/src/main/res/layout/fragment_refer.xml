@@ -3,6 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+
+    <include
+        android:id="@+id/collapseToolbar"
+        layout="@layout/layout_collapase_toolbar"
+        app:shouldShowPlay="@{false}"
+        app:icon="@{@drawable/refer_earn_icon}"
+        app:title="@{@string/refer}"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
@@ -21,12 +45,14 @@
                 android:background="#fff">
 
 
+
                 <ImageView
                     android:id="@+id/imageView12"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:contentDescription="@string/ellipse"
                     android:scaleType="fitXY"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -77,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="32dp"
                     android:background="@drawable/doctor_refer_details_bg"
@@ -85,7 +111,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/gif">
+                    app:layout_constraintTop_toBottomOf="@+id/gif"
+                    app:layout_constraintVertical_bias="0.120000005">
 
                     <TextView
                         android:id="@+id/text_inr_usd"
@@ -98,6 +125,7 @@
                         android:textColor="#188816"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,23 +195,43 @@
                         android:textColor="@color/formFieldHeading"
                         android:textSize="14sp" />
 
-
-                    <EditText
-                        android:id="@+id/editText_phone"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:fitsSystemWindows="true"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="32dp"
                         android:background="@drawable/round_edittext"
-                        android:fontFamily="@font/montserrat"
-                        android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/textGrey"
-                        android:textSize="14sp" />
+                        android:layout_height="wrap_content">
+
+                        <Spinner
+                            android:id="@+id/loginSpinner"
+                            android:spinnerMode="dropdown"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:background="@drawable/round_edittext"
+                            android:layout_height="match_parent"
+                            />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:background="#f1f1f1"
+                            android:id="@+id/editText_phone"
+                            android:textSize="15sp"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:layout_margin="6dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:hint="Enter Mobile Number"/>
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/textView_error"
@@ -222,18 +270,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
                     android:weightSum="5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout_form">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="end">
+                        android:orientation="vertical"
+                        >
+
 
                         <TextView
                             android:id="@+id/textView_101"
@@ -248,9 +298,12 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/tapToCopyLayoutDash"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2">
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/refferal_code_bg"
+                        >
 
                         <TextView
                             android:id="@+id/textView_code"
@@ -260,9 +313,23 @@
                             android:layout_marginStart="8dp"
                             android:fontFamily="@font/montserrat"
                             android:gravity="start"
+                            android:layout_weight="1"
                             android:text="@string/code"
-                            android:textColor="#188816"
+                            android:textColor="#025700"
                             android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/tap_to_copy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="end"
+                            android:text="Tap to copy"
+                            android:textColor="@color/textGrey"
+                            android:textSize="18sp" />
+
 
                     </LinearLayout>
 
@@ -324,16 +391,38 @@
                     android:id="@+id/textView35"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:padding="6dp"
+                    android:text="Special discount to all your referrals"
                     android:textStyle="bold"
-                    android:text="@string/p_note_reffer"
+                    android:textSize="16sp"
+                    android:textColor="#188816"
                     app:layout_anchorGravity="bottom|center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_form" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_referralCode" />
+
+                <Button
+                    android:id="@+id/refferalPolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/blue_button"
+                    android:padding="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Referral policy"
+                    android:textColor="@color/timeDisplayWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

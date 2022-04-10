@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.home.homePage
 
+import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -27,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -48,10 +51,14 @@ import com.uptodd.uptoddapp.databinding.FragmentHomePageBinding
 import com.uptodd.uptoddapp.helperClasses.DateClass
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.blogs.fullblog.FullBlogActivity
+import com.uptodd.uptoddapp.ui.expertCounselling.TermsAndConditions
+import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
+import com.uptodd.uptoddapp.ui.home.homePage.adapter.models.OptionsItem
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.WeeklyFragment
+import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
@@ -64,13 +71,16 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
-class HomePageFragment : Fragment() {
+class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener {
 
     private lateinit var uptoddDialogs: UpToddDialogs
     private lateinit var binding: FragmentHomePageBinding
     private val viewModel: TodosViewModel by activityViewModels()
+    private var personalizedOptionsAdapter:HomeOptionsAdapter?=null
 
     companion object
     {
@@ -100,34 +110,33 @@ class HomePageFragment : Fragment() {
 
         Log.d("div", "${System.currentTimeMillis()}")
 
+        initialiseBindingAndViewModel(inflater, container)
         viewModel?.checkForAppUpdate(requireContext())
         viewModel?.isOutDatedVersion?.observe(viewLifecycleOwner
-            , {
+        ) {
 
-                if(!it)
-                {
+            if (!it) {
+                initiateDataRefresh()
+                setupViewPager()
+                viewModel.loadDailyTodoScore()
+                initialiseScoreDisplay()
+                initialiseBabyPhoto()
+                initialiseOtherInformation()
+                checkForDailog()
 
-                    initiateDataRefresh()
-                    setupViewPager()
-                    viewModel.loadDailyTodoScore()
-                    initialiseScoreDisplay()
-                    initialiseBabyPhoto()
-                    initialiseOtherInformation()
-                    loadTodaysTip()
+                if (UptoddSharedPreferences.getInstance(requireContext()).getShouldShowKit()) {
+                    personalizedOptionsAdapter?.addKitTutorial()
                 }
-                else
-                {
-                     try {
-                         findNavController().navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
-                     }
-                     catch (e:Exception)
-                     {
-                         findNavController().navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
-                     }
+            } else {
+                try {
+                    findNavController().navigate(R.id.action_homePageFragment_to_fragmentUpdateApp2)
+                } catch (e: Exception) {
+                    findNavController().navigate(R.id.action_loginFragment_to_fragmentUpdateApp)
                 }
-            })
+            }
+        }
 
-        initialiseBindingAndViewModel(inflater, container)
+
 
 
 
@@ -180,7 +189,7 @@ class HomePageFragment : Fragment() {
 //            }
 //        })
 
-        viewModel?.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
+        viewModel.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
 
             if(it)
             {
@@ -235,9 +244,6 @@ class HomePageFragment : Fragment() {
 //            }
         }
 
-        binding.appGuidelinesBtn.setOnClickListener {
-            downloadGuidelinesPdf()
-        }
 
         viewModel.navigateToAppreciationScreenFlag.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -247,7 +253,14 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        binding.imageButtonReload.setOnClickListener { onClickReloadWebinars() }
+        binding.navBar.setOnClickListener {
+            val activity=requireActivity() as TodosListActivity
+            activity.openDrawer()
+        }
+        binding.accountIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_accountFragment2)
+        }
+
 
         return binding.root
     }
@@ -369,167 +382,10 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        setUpBlogs()
 
     }
 
 
-    private fun setUpBlogs() {
-        viewModel.webinars.observe(viewLifecycleOwner, Observer { blogsList ->
-            Log.d("div", "HomePageFragment L296 $blogsList ${blogsList.size}")
-            when (blogsList.size) {
-                0 -> {
-                    binding.doctorDashboardWebinar1.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar2.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar3.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar4.visibility = View.INVISIBLE
-
-                }
-                1 -> {
-
-                    binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
-                        .load(blogsList[0].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar1Image)
-
-                    binding.doctorDashboardWatchNow1.setOnClickListener {
-                        openBlog(blogsList[0])
-                    }
-
-
-                    binding.doctorDashboardWebinar2.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar3.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar4.visibility = View.INVISIBLE
-                }
-                2 -> {
-
-                    binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
-                        .load(blogsList[0].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar1Image)
-
-                    binding.doctorDashboardWatchNow1.setOnClickListener {
-                        openBlog(blogsList[0])
-                    }
-
-
-                    binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
-                        .load(blogsList[1].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar2Image)
-
-                    binding.doctorDashboardWatchNow2.setOnClickListener {
-                        openBlog(blogsList[1])
-                    }
-
-                    binding.doctorDashboardWebinar3.visibility = View.INVISIBLE
-                    binding.doctorDashboardWebinar4.visibility = View.INVISIBLE
-                }
-                3 -> {
-
-                    binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
-                        .load(blogsList[0].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar1Image)
-
-                    binding.doctorDashboardWatchNow1.setOnClickListener {
-                        openBlog(blogsList[0])
-                    }
-
-
-                    binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
-                        .load(blogsList[1].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar2Image)
-
-                    binding.doctorDashboardWatchNow2.setOnClickListener {
-                        openBlog(blogsList[1])
-                    }
-
-
-                    binding.doctorDashboardWebinar3Text.text = blogsList[2].title
-
-                    Picasso.get()
-                        .load(blogsList[2].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar3Image)
-
-                    binding.doctorDashboardWatchNow3.setOnClickListener {
-                        openBlog(blogsList[2])
-                    }
-
-                    binding.doctorDashboardWebinar4.visibility = View.INVISIBLE
-                }
-                else -> {
-
-                    binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
-                        .load(blogsList[0].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar1Image)
-
-                    binding.doctorDashboardWatchNow1.setOnClickListener {
-                        openBlog(blogsList[0])
-                    }
-
-                    binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
-                        .load(blogsList[1].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar2Image)
-
-                    binding.doctorDashboardWatchNow2.setOnClickListener {
-                        openBlog(blogsList[1])
-                    }
-
-                    binding.doctorDashboardWebinar3Text.text = blogsList[2].title
-
-                    Picasso.get()
-                        .load(blogsList[2].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar3Image)
-
-                    binding.doctorDashboardWatchNow3.setOnClickListener {
-                        openBlog(blogsList[2])
-                    }
-
-                    binding.doctorDashboardWebinar4Text.text = blogsList[3].title
-
-                    Picasso.get()
-                        .load(blogsList[3].imageURL)
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.default_set_default_blog)
-                        .into(binding.doctorDashboardWebinar4Image)
-
-                    binding.doctorDashboardWatchNow4.setOnClickListener {
-                        openBlog(blogsList[3])
-                    }
-                }
-            }
-        })
-
-    }
 
     private fun openBlog(webinar: Webinars) {
         val intent = Intent(context, FullBlogActivity::class.java)
@@ -613,7 +469,7 @@ class HomePageFragment : Fragment() {
                             .apply(
                                 RequestOptions()
                                     .placeholder(R.drawable.loading_animation)
-                                    .error(res)
+                                    .error(R.drawable.samplebaby)
                             )
                             .into(binding.profileImage)
 
@@ -676,6 +532,72 @@ class HomePageFragment : Fragment() {
 
     }
 
+    fun checkForDailog()
+    {
+        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent=Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calPrev=Calendar.getInstance().apply {
+            time = Date(sharedPreferences.getDailyDialogTime())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        if(!sharedPreferences.isOnboardingDetailsFilled() &&
+            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
+        {
+            val termsAndConditions=TermsAndConditions("Please Fill Onboarding Form by " +
+                    "clicking button at bottom on order's page,then only kit will go for approval"
+            ,sharedPreferences.getOnboardingLink())
+            sharedPreferences.setDailyDialogTime(calCurrent.timeInMillis)
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+        }
+        val dur=Calendar.getInstance().timeInMillis-sharedPreferences.getSessionBookingDate()
+        if(sharedPreferences.isSessionBookingAllowed()
+            && (TimeUnit.MILLISECONDS.toDays(dur)>7 || sharedPreferences.getSessionBookingDate()==0L))
+        {
+            val termsAndConditions=TermsAndConditions("You can book next session now,from " +
+                    "Expert Session page as slots are open for you now,Please ignore if already booked."
+                ,"navigateToSession")
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+
+            sharedPreferences.setShownSessionBookingDate(Calendar.getInstance().timeInMillis)
+
+        }
+        checkForDevelopmentFormDialog()
+    }
+
+    fun checkForDevelopmentFormDialog(){
+
+        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent=Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val calPrev=Calendar.getInstance().apply {
+            time = Date(sharedPreferences.getDailyDialogTimeForDevelopmentForm())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        if(sharedPreferences.isFillDevelopmentForm() &&
+            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
+        {
+            val termsAndConditions=TermsAndConditions("Fill your monthly development form to get tips by our expert.","navigateToDevelopment")
+            sharedPreferences.setDailyDialogTimeForDevelopmentForm(calCurrent.timeInMillis)
+            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+
+        }
+    }
+
     private fun testInternetConnectionAndRefreshData(): Disposable? {
 
         return ReactiveNetwork
@@ -683,8 +605,7 @@ class HomePageFragment : Fragment() {
             .subscribeOn(Schedulers.io())
             // anything else what you can do with RxJava
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { connectivity ->
+            .subscribe({ connectivity ->
                     // do something with connectivity
                     // you can call connectivity.state();
                     // connectivity.type(); or connectivity.toString();
@@ -712,7 +633,11 @@ class HomePageFragment : Fragment() {
 
                 },
                 {
+                 it.let {
+                 if(isAdded){
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                 }
+                 }
                 }
 
             )
@@ -749,7 +674,7 @@ class HomePageFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        val adapter = TodoViewPagerAdapter(this.requireActivity())
+        val adapter = TodoViewPagerAdapter(childFragmentManager,lifecycle)
         binding.viewPager.adapter = adapter
 
         adapter.apply {
@@ -801,12 +726,25 @@ class HomePageFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
 
-        (requireActivity() as AppCompatActivity).supportActionBar!!.title =
-            getString(R.string.home)
+       // (requireActivity() as AppCompatActivity).supportActionBar!!.title = getString(R.string.home)
 
         binding.todosViewModel = viewModel
         binding.lifecycleOwner = this
 
+        binding.personalizedRecyclerview.layoutManager=GridLayoutManager(requireContext(),
+            3)
+        binding.parentRecyclerview.layoutManager=GridLayoutManager(requireContext(),
+            3)
+        binding.premiumRecyclerview.layoutManager=GridLayoutManager(requireContext(),
+            3)
+
+        personalizedOptionsAdapter = HomeOptionsAdapter(requireContext(),
+            HomeOptionsAdapter.PERSONALIZED,this)
+        binding.personalizedRecyclerview.adapter = personalizedOptionsAdapter
+        binding.parentRecyclerview.adapter = HomeOptionsAdapter(requireContext(),
+            HomeOptionsAdapter.PARENT,this)
+        binding.premiumRecyclerview.adapter = HomeOptionsAdapter(requireContext(),
+            HomeOptionsAdapter.PREMIUM,this)
     }
 
 
@@ -840,10 +778,9 @@ class HomePageFragment : Fragment() {
         binding.apply {
 
 
-            if(!viewModel?.isRefreshing.value!!)
+            if(!viewModel.isRefreshing.value!!)
             {
                 btnSeeAllActivites.visibility = View.INVISIBLE
-                superParentTextView.visibility = View.INVISIBLE
                 scoreView.visibility = View.INVISIBLE
                 superManImageView.visibility = View.VISIBLE
                 youAreASuperParentTextView.visibility = View.VISIBLE
@@ -861,7 +798,6 @@ class HomePageFragment : Fragment() {
     private fun changeToNormalLayout() {
         binding.apply {
             btnSeeAllActivites.visibility = View.VISIBLE
-            superParentTextView.visibility = View.VISIBLE
             scoreView.visibility = View.VISIBLE
 
             superManImageView.visibility = View.INVISIBLE
@@ -877,7 +813,6 @@ class HomePageFragment : Fragment() {
     {
         binding.apply {
             btnSeeAllActivites.visibility = View.INVISIBLE
-            superParentTextView.visibility = View.INVISIBLE
             scoreView.visibility = View.INVISIBLE
 
             superManImageView.visibility = View.VISIBLE
@@ -961,71 +896,10 @@ class HomePageFragment : Fragment() {
 
     }
 
-    private fun loadTodaysTip() {
-        GlobalScope.launch {
-            val preferences: SharedPreferences =
-                requireContext().getSharedPreferences("TODAYS_TIP", Context.MODE_PRIVATE)
-            val editor = preferences.edit()
 
-            val date = DateClass().getCurrentDateStringAsYYYYMMDD()
-            AndroidNetworking.get("https://www.uptodd.com/api/todaytip/$date")
-                .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener {
-                    override fun onResponse(response: JSONObject?) {
-                        response?.let { it ->
-                            if (it.getString("data") != "null") {
-                                val data = it.get("data") as JSONObject
-                                val heading = data.getString("tipHeading")
-                                val tip = data.getString("description")
 
-                                editor.putString("tipHeading", heading)
-                                editor.putString("description", tip)
-                                editor.apply()
-                                loadTip()
-                            } else {
-                                hideTip()
-                            }
-                        }
 
-                    }
 
-                    override fun onError(error: ANError) {
-                        Log.d("tip", error.message.toString())
-
-                        hideTip()
-                    }
-                })
-        }
-    }
-
-    private fun loadTip() {
-        val preferences: SharedPreferences =
-            requireContext().getSharedPreferences("TODAYS_TIP", Context.MODE_PRIVATE)
-        val heading = preferences.getString("tipHeading", null)
-        val description =
-            preferences.getString("description", null)
-
-        if (heading != null && description != null) {
-            binding.tagline.text = heading
-            binding.tipDescription.text = description
-        } else {
-            hideTip()
-        }
-
-    }
-
-    private fun hideTip() {
-        binding.apply {
-            tagline.visibility = View.INVISIBLE
-            tipDescription.visibility = View.INVISIBLE
-            todaysTipTextView.visibility = View.INVISIBLE
-            tagline.height = 0
-            tipDescription.height = 0
-            todaysTipTextView.height = 0
-        }
-    }
 
     override fun onResume() {
 
@@ -1055,6 +929,10 @@ class HomePageFragment : Fragment() {
         else
             visited=false
         super.onResume()
+    }
+
+    override fun onClickedItem(navId: Int) {
+        findNavController().navigate(navId)
     }
 }
 

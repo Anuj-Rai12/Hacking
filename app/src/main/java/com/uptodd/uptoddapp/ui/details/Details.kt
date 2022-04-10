@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.DetailsFragmentBinding
 import com.uptodd.uptoddapp.utilities.ScreenDpi
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
 class Details : Fragment() {
 
@@ -33,6 +35,10 @@ class Details : Fragment() {
         binding.lifecycleOwner = this
         viewModel = ViewModelProvider(this).get(DetailsViewModel::class.java)
         binding.musicDetailsBinding = viewModel
+
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
+            findNavController())
 
         //Get music id from safeargs
         val args = DetailsArgs.fromBundle(requireArguments())

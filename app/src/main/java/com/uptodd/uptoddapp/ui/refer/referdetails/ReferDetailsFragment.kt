@@ -14,12 +14,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.databinding.FragmentReferDetailsBinding
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 
 class ReferDetailsFragment : Fragment() {
@@ -79,6 +81,11 @@ class ReferDetailsFragment : Fragment() {
         }
 
         setFields()
+
+        binding.toolbar?.let {
+            ToolbarUtils.initNCToolbar(requireActivity(),"Details", it,
+                findNavController())
+        }
 
         binding.referralDetailsViewModel=viewModel
 

@@ -14,6 +14,6 @@ data class BlogCategories(
     var categoryId: Long = 0,
 
     @ColumnInfo(name = "category_name")
-    var categoryName: String? = null
+    var categoryName: String?
 
 )

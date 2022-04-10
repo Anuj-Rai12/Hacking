@@ -72,6 +72,14 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.stories),"Parenting Tools for You",
+            R.drawable.act_stories_icon
+
+        )
+
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))

@@ -11,7 +11,7 @@ data class Webinars(
     var webinarId: Long = 0,
 
     @ColumnInfo(name = "webinarCategoryId")
-    val webinarCategoryId: Long? = null,
+    var webinarCategoryId: Long = 0,
 
     @ColumnInfo(name = "image_url")
     var imageURL: String? = null,

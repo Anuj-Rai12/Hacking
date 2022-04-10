@@ -45,7 +45,7 @@ class UptoddNotifications {
             val stringIntentExtras = HashMap<String, String>()
             stringIntentExtras["notificationTitle"] = "Refer & Earn"
             stringIntentExtras["notificationText"] =
-                "Refer and earn INR 5000 or even more for every person who joins UpTodd, mom/dad the gift amount is good ;)"
+                "Refer and earn INR 10000 or even more for every person who joins UpTodd, mom/dad the gift amount is good ;)"
             stringIntentExtras["notificationChannelId"] = "others"
 
             val intIntentExtras = HashMap<String, Int>()

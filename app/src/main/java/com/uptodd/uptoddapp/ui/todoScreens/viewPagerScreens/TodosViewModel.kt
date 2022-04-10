@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Config
 import android.util.Log
 import androidx.core.util.rangeTo
 import androidx.lifecycle.*
@@ -541,11 +542,6 @@ class TodosViewModel(
 
     fun checkForAppUpdate(context: Context)
     {
-        val json= JSONObject().apply {
-            put("version", BuildConfig.VERSION_NAME.toDouble())
-            put("deviceType","android")
-        }
-
         val lastCheck=UptoddSharedPreferences.getInstance(context).getLastVersionCheck()
 
         val calendar = Calendar.getInstance()
@@ -559,20 +555,43 @@ class TodosViewModel(
 
 
 
-        AndroidNetworking.post("https://www.uptodd.com/api/isValidVersion")
+        AndroidNetworking.get("https://www.uptodd.com/api/appusers/dailyChecks/${AllUtil.getUserId()}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-            .addJSONObjectBody(json)
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object :JSONObjectRequestListener
             {
                 override fun onResponse(response: JSONObject?) {
+                    val data=response?.get("data") as JSONObject
 
-                    val res=response?.get("data") as Int
+                    Log.d("data",data.toString())
 
-                    Log.d("data version","$res")
+                    val res=(data.get("versionDetails") as JSONObject).
+                    getDouble("android_supported")
 
-                    _isOutdatedVersion.value = res==0
+                    val isOnBoardingFilled=(data.get("onboardingFormDetails") as JSONObject)
+                        .get("isOnboardingFormFilled") as Int
+
+                    val isDevelopmentFormOpen=(data.get("isDevelopmentFormOpen")) as Int
+
+                    val onboardingFormLink=(data.get("onboardingFormDetails") as JSONObject)
+                        .get("onboardingFormLink") as String
+                    val isSessionBookingAllowed=(data.get("sessionDetails") as JSONObject)
+                        .get("isSessionBookingAllowed") as Int
+                    val shouldShowKit = (data.get("kitTutorial")) as Int
+
+
+
+                    val sharedPreferences=UptoddSharedPreferences.getInstance(context)
+                    sharedPreferences.setOnBoardingDetailsFilled(isOnBoardingFilled)
+                    sharedPreferences.setIsSessionBookingAllowed(isSessionBookingAllowed)
+                    sharedPreferences.setOnboardingLink(onboardingFormLink)
+                    sharedPreferences.setShouldShowKitTutorial(shouldShowKit==1)
+                    sharedPreferences.setFillDevelopmentForm(isDevelopmentFormOpen)
+                    Log.d("Fill development form","$isDevelopmentFormOpen")
+                    Log.d("data version","$res ")
+
+                    _isOutdatedVersion.value = BuildConfig.VERSION_NAME.toDouble() < res
                     Log.d("called version","true")
                     UptoddSharedPreferences.getInstance(context).saveLastVersionChecked(calendar.timeInMillis)
                 }
@@ -584,6 +603,8 @@ class TodosViewModel(
 
             })
     }
+
+
 
 
 
@@ -1585,11 +1606,6 @@ class TodosViewModel(
             }
         }
     }
-
-//
-//    private fun doInBackground(url: String, uri: Uri, mManager: DownloadManager): Boolean? {
-//
-//    }
 
 
     private fun downloadMusicFiles(

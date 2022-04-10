@@ -12,6 +12,8 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.api.getMonth
+import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.database.media.music.MusicFilesDatabaseDao
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -19,9 +21,9 @@ import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: Application) :
+class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, var applicationContext: Application) :
     AndroidViewModel(
-        application
+        applicationContext
     ) {
 
     private var dpi = ""
@@ -62,6 +64,13 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
     val isPlaying: LiveData<Boolean>
         get() = _isPlaying
 
+
+    private var _isDownloaded = MutableLiveData<Boolean>()
+    val isDownloaded:LiveData<Boolean>
+        get() = _isDownloaded
+
+    private var  memoryDatabase: MemoryFilesDao?=null
+
     var notActivate=false
 
     private var currentPlaying = 0
@@ -83,6 +92,7 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
     }
 
     private fun initializePoems() {
+        memoryDatabase= UptoddDatabase.getInstance(applicationContext.applicationContext).memoryBoosterDao
         viewModelScope.launch {
             downloadedPoems = database.getAllSpeedBoosterFiles()
         }
@@ -198,14 +208,35 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
                         if(response.get("data").toString()!="null") {
                             viewModelScope.launch {
                                 val poems = AllUtil.getAllMusic(response.get("data").toString())
+
+
+                                var checkSize=0
+
+                                poems.forEachIndexed { index, musicFiles ->
+                                    if(getIsPoemDownloaded(poems[index])){
+                                        checkSize++;
+                                    }
+                                }
+
+                                if(poems.size>0)
+                                    _isDownloaded.postValue(checkSize>10)
+
+                                poems.forEachIndexed { index, musicFiles ->
+                                    if(!getIsPoemDownloaded(poems[index])){
+                                        if(_isDownloaded.value==null||_isDownloaded.value!!) {
+                                            _isDownloaded.postValue(false)
+                                        }
+
+                                    }
+                                }
+
+
                                 UptoddSharedPreferences.getInstance(context)
                                     .saveCountMemoryBooster(poems.size)
                                 poems.forEach {
-                                    if (getIsPoemDownloaded(it))
-                                        it.filePath = database.getFilePath(it.id)
-                                    else
-                                        it.filePath = "NA"
+                                    getIsPoemDownloaded(it)
                                 }
+
                                 notActivate=poems.isEmpty()
                                 _poems.value = poems
 
@@ -265,14 +296,15 @@ class MemoryBoosterViewModel(val database: MusicFilesDatabaseDao, application: A
         return dpi
     }
 
-    fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
-        downloadedPoems.forEach {
+    suspend fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
+        memoryDatabase?.getAllFiles()?.forEach {
             if (it.id == poem.id)
             {
                 poem.filePath=it.filePath
                 return@getIsPoemDownloaded true
             }
         }
+        poem.filePath="NA"
         return false
     }
 

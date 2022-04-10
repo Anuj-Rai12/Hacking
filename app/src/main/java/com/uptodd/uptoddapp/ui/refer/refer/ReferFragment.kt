@@ -1,21 +1,26 @@
 package com.uptodd.uptoddapp.ui.refer.refer
 
+import android.R.attr.label
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.*
+import android.content.ClipData
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,10 +31,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentReferBinding
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.ChangeLanguage
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
 import pl.droidsonroids.gif.GifImageView
 import java.util.regex.Pattern
 
@@ -44,12 +47,39 @@ class ReferFragment : Fragment() {
 
     var preferences: SharedPreferences? = null
 
+    var countryCodes= arrayListOf("+91","+1")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+    }
+    private fun downloadGuidelinesPdf(url:String,name:String) {
+        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.let {
+                JishnuDownloadManager(
+                    url,
+                    name,
+                    it, requireContext(),
+                    requireActivity()
+                )
+            }
+        } else {
+            val snackbar = binding?.root?.let {
+                Snackbar.make(
+                    it,
+                    getString(R.string.no_internet_connection),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(getString(R.string.retry)) {
+                        downloadGuidelinesPdf(url,name)
+                    }
+            }
+            snackbar?.show()
+        }
 
     }
 
@@ -63,7 +93,11 @@ class ReferFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_refer, container, false)
         binding.lifecycleOwner = this
-
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar!!,
+            findNavController(),getString(R.string.refer),"Happy Parenting Journey",
+            R.drawable.refer_earn_icon
+        )
         viewModel = ViewModelProvider(this).get(ReferViewModel::class.java)
 
         preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
@@ -72,16 +106,37 @@ class ReferFragment : Fragment() {
         if (preferences!!.contains("token"))
             viewModel.token = preferences!!.getString("token", "")
 
+        val  adapter= ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,countryCodes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.loginSpinner?.adapter=adapter
+
+        viewModel.getReferProgramDetails(requireContext())
+
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.title =
             getString(R.string.refer_and_earn)
         (requireActivity() as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
         binding.buttonSubmit.setOnClickListener { onClickSubmit() }
+        binding.tapToCopyLayoutDash?.setOnClickListener { onTapToCopy() }
         binding.textViewPreviousReferrals.setOnClickListener { onClickPreviousReferrals() }
         binding.textViewCode.text = "${viewModel.code.value}"
         binding.buttonShare.setOnClickListener { onClickShareCode() }
         binding.buttonSave.setOnClickListener { onClickCopyCode() }
+
+
+        viewModel.code.observe(viewLifecycleOwner, Observer {
+            binding.textViewCode.text=it
+        })
+        viewModel.privacyLink.observe(viewLifecycleOwner, Observer {
+
+            val link=it
+
+            binding.refferalPolicy?.setOnClickListener {
+                downloadGuidelinesPdf(link,"ReferralPolicy")
+            }
+        })
+
 
         viewModel.isReferralSentSuccess.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -167,13 +222,15 @@ class ReferFragment : Fragment() {
             binding.textViewError.text = getString(R.string.enter_valid_name)
         else if (binding.editTextEmail.text.isEmpty() || !isEmailValid(binding.editTextEmail.text.toString()))
             binding.textViewError.text = getString(R.string.enter_valid_email)
-        else if (binding.editTextPhone.text.length < 10)
+        else if (binding.editTextPhone.text.length != 10 )
             binding.textViewError.text = getString(R.string.enter_valid_phone)
         else {
+            var mNumber="${countryCodes[binding.loginSpinner?.selectedItemPosition!!]}${
+                binding.editTextPhone.text.toString()}"
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 viewModel.sendReferral(
                     binding.editTextToys.text.toString(), binding.editTextEmail.text.toString(),
-                    binding.editTextPhone.text.toString(), System.currentTimeMillis()
+                    mNumber, System.currentTimeMillis()
                 )
             } else {
                 Snackbar.make(
@@ -214,6 +271,16 @@ class ReferFragment : Fragment() {
 
         val mPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.ting)
         mPlayer.start()
+    }
+
+    fun onTapToCopy() {
+        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+        val textView="My baby is doing wonderful with Uptodd under IITs, AIIMS etc team with complete personalisation, I am referring this code to you so you can visit https://uptodd.com and avail 50% discount to get this in budget price and moreover use interest free EMIs for lifelong foundation of the child\n" +
+                "\n" +
+                "${binding.textViewCode.text}"
+        val clip = ClipData.newPlainText("Copied Code",textView)
+        clipboard!!.setPrimaryClip(clip)
+        Toast.makeText(requireContext(),"Refferal Code copied",Toast.LENGTH_LONG).show()
     }
 
     /*override fun onOptionsItemSelected(item: MenuItem): Boolean {

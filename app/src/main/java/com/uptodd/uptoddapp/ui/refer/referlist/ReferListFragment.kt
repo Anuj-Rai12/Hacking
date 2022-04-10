@@ -27,6 +27,7 @@ import com.uptodd.uptoddapp.database.referrals.ReferredListItemPatient
 import com.uptodd.uptoddapp.databinding.FragmentReferListBinding
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import java.util.*
 import kotlin.collections.HashMap
@@ -57,6 +58,9 @@ class ReferListFragment : Fragment() {
 
         binding= DataBindingUtil.inflate(layoutInflater,R.layout.fragment_refer_list,container,false)
         binding.lifecycleOwner=this
+
+        ToolbarUtils.initNCToolbar(requireActivity(),"My referrals",binding.toolbar,
+            findNavController())
 
         viewModel= ViewModelProvider(this).get(ReferListViewModel::class.java)
 

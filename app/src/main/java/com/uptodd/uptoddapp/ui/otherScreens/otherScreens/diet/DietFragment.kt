@@ -71,6 +71,13 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.diet),"Parenting Tools for You",
+            R.drawable.diet_icon
+        )
+
+
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))

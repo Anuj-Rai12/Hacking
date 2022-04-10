@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.EditAlarmsViewPagerAdapter
 import com.uptodd.uptoddapp.databinding.FragmentEditAlarmsViewPagerBinding
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
 
 class EditAlarmsViewPagerFragment : Fragment() {
@@ -26,6 +28,11 @@ class EditAlarmsViewPagerFragment : Fragment() {
         ChangeLanguage(requireContext()).setLanguage()
 
         initialiseBindingAndViewModel(inflater, container)
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),"Routine alarm"," Easy & Simple | Just for you",
+            R.drawable.routine_alaram_icon
+        )
         setupViewPager()
         if(AllUtil.isUserPremium(requireContext()))
         {

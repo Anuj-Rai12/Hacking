@@ -71,6 +71,13 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
         initialiseBindingAndViewModel(inflater, container)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.expected_outcomes),
+            "Parenting Tools for You",
+            R.drawable.toys_icon
+        )
+
         preferences =
             requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         expectedOutcomeDao = UptoddDatabase.getInstance(requireContext()).expectedOutcomeDao

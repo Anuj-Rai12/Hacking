@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.order.orderlist.OrderListFragment">
+
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:titleTextColor="@color/white"
+        android:background="@color/color_normal"
+        android:layout_alignParentTop="true"
+
+        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/toolbar"
+            android:layout_above="@id/submitForm"
+            >
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/questionFormRecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/question_form_recyclerview_item"
+                    />
+
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submitForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit form"
+        android:layout_alignParentBottom="true"
+        android:background="@color/buttonBlue">
+    </com.google.android.material.button.MaterialButton>
+
+</RelativeLayout>
+
+
+
+
+
+</layout>

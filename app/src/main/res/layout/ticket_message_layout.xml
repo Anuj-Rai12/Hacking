@@ -7,13 +7,14 @@
             name="ticketMessageLayoutBinding"
             type="com.uptodd.uptoddapp.support.view.TicketMessage" />
     </data>
+
     <LinearLayout
         android:id="@+id/ticket_message_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="left"
         android:layout_margin="6dp"
+        android:gravity="right"
         layoutGravity="@{ticketMessageLayoutBinding}"
         android:padding="5dp"
         >
@@ -33,9 +34,10 @@
             app:layout_constraintTop_toBottomOf="@+id/babyAgeView" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_weight="1"
             >
 
 
@@ -47,10 +49,9 @@
                 supportStatus="@{ticketMessageLayoutBinding}"
                 android:textStyle="bold"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="25dp"
-                android:outlineAmbientShadowColor="@color/black"
+                android:layout_weight="1"
                 android:padding="6dp"
                 android:orientation="vertical"
                 ticketLayout="@{ticketMessageLayoutBinding}"
@@ -59,10 +60,11 @@
 
                 <TextView
                     android:id="@+id/ticket_message_item_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:textSize="16sp"
+                    android:text="helloddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     ticketMessage="@{ticketMessageLayoutBinding}"
 
                     />
@@ -99,18 +101,12 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="3dp"
-            android:src="@drawable/samplebaby"
             android:visibility="gone"
+            android:src="@drawable/samplebaby"
             app:civ_border_color="@color/white"
             sendImageStatus="@{ticketMessageLayoutBinding}"
             app:civ_border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/babyAgeView" />
-
-
-
-
+         />
 
 
     </LinearLayout>

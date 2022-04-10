@@ -102,7 +102,7 @@ class UptoddNotificationUtilities {
             notificationTitle: String,
             notificationText: String,
             notificationIntent: Intent?,
-            channelId: String
+            channelId: String,isPlaying:Boolean=true
         ): NotificationCompat.Builder {
 
             var pendingIntent:PendingIntent?=null

@@ -100,6 +100,9 @@ class AccountFragment : Fragment() {
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_account, container, false)
         binding.lifecycleOwner = this
 
+        ToolbarUtils.initNCToolbar(requireActivity(),"Account",binding.toolbar,
+            findNavController())
+
 
         if (preferences.contains("uid"))
             uid = preferences.getString("uid", "")
@@ -273,7 +276,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun onClickRanking() {
-        findNavController().navigate(AccountFragmentDirections.actionAccountFragment2ToRankingFragment())
+       // findNavController().navigate(AccountFragmentDirections.actionAccountFragment2ToRankingFragment())
     }
 
     private fun onClickChangeLanguage() {
@@ -592,10 +595,14 @@ class AccountFragment : Fragment() {
                                 )
                                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
                                 values.put(MediaStore.MediaColumns.DATA, imageFile.absolutePath)
-                                activity?.contentResolver?.insert(
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    values
-                                )
+                                try {
+                                    activity?.contentResolver?.insert(
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                        values
+                                    )
+                                } catch (e:Exception){
+
+                                }
                             }
 
                             override fun onLoadCleared(placeholder: Drawable?) {

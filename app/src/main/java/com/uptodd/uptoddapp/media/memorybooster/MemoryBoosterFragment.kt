@@ -30,6 +30,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.makeramen.roundedimageview.RoundedImageView
@@ -40,13 +44,15 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MemoryBoosterFragmentBinding
 import com.uptodd.uptoddapp.databinding.PoemFragmentBinding
-import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
 import com.uptodd.uptoddapp.media.poem.PoemFragmentDirections
+import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
+import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckMemoryBoosterWorkManager
-import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckPodcastWorkManager
+import org.json.JSONObject
 import java.util.*
 
 
@@ -57,6 +63,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
     private lateinit var uptoddDialogs: UpToddDialogs
     private lateinit var viewModel: MemoryBoosterViewModel
     private lateinit var preferences: SharedPreferences
+    private var videosRespons: VideosUrlResponse?=null
 
     private val adapter = SpeedBoosterAdapter(this)
     var count = 0
@@ -85,6 +92,11 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         )
 
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.memory_booster),"Curated in UpTodd's Lab",
+            R.drawable.memory_booster_icon
+        )
         if(AllUtil.isUserPremium(requireContext()))
         {
             if(!AllUtil.isSubscriptionOverActive(requireContext()))
@@ -220,6 +232,30 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
             updatePoems(today)
         }
 
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowBoosterTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_booster),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownBoosterTip(false)
+        }
+
+        fetchTutorials(requireContext())
+
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
+
+            fragmentManager?.let { it1 ->
+                val intent = Intent(context, PodcastWebinarActivity::class.java)
+                intent.putExtra("url", videosRespons?.memoryBooster)
+                intent.putExtra("title", "Memory Booster")
+                intent.putExtra("kit_content","")
+                intent.putExtra("description","")
+                startActivity(intent)
+            }
+
+
+        }
+
+        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
+
         return binding.root
     }
 
@@ -270,6 +306,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 binding.musicTitle.text = viewModel.title.value
         })
     }
+
 
     private fun redrawList(
         list: ArrayList<MusicFiles>,
@@ -326,11 +363,11 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                     true
                 }
 
-
                 val layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
+
 ////            layoutParams.gravity = Gravity.CENTER
                 layoutParams.weight = 1F
                 layoutParams.rightMargin = 8
@@ -339,11 +376,9 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 v.layoutParams = layoutParams
                 v.setPadding(2, 2, 2, 2)
 
-                if (count == 2) {
-                    poemList.addView(row)
-                    row = getNewRow()
-                    count = 0
-                }
+                poemList.addView(row)
+                row = getNewRow()
+                count = 0
                 row.addView(v)
                 count++
             }
@@ -362,7 +397,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         linearLayoutParams.gravity = Gravity.CENTER
         linearLayoutParams.setMargins(8, 8, 8, 8)
         row.layoutParams = linearLayoutParams
-        row.weightSum = 2f
+        row.weightSum = 1f
         row.gravity = Gravity.CENTER
         return row
     }
@@ -470,11 +505,6 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT       //to restrict landscape orientation
 
         super.onResume()
-        val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
-        supportActionBar.title = getString(R.string.memory_booster)
-        supportActionBar.setHomeButtonEnabled(true)
-        supportActionBar.setDisplayHomeAsUpEnabled(true)
-        val intent = Intent(requireContext(), BackgroundPlayer::class.java)
         /*
         intent.putExtra("toRun", false)
         intent.putExtra("musicType", "poem")
@@ -514,6 +544,23 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
             preferences.edit().putInt("ALREADY_REQUESTED", 1).apply()
         }
+    }
+    fun fetchTutorials(context: Context) {
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
     }
 
 }

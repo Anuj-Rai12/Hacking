@@ -7,8 +7,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -22,12 +24,12 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
+import com.uptodd.uptoddapp.databinding.YoutubeVideoBottomsheetBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
+import com.uptodd.uptoddapp.utilities.YoutubeBottomSheet
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.AllUtil
-import com.uptodd.uptoddapp.utilities.AppNetworkStatus
-import com.uptodd.uptoddapp.utilities.KidsPeriod
-import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
 
     private lateinit var binding: FragmentActivityPodcastBinding
+    private var videosRespons:VideosUrlResponse?=null
 
     private val sharedPreferences: SharedPreferences by lazy {
         requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
@@ -80,6 +83,29 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ToolbarUtils.initToolbar(
+            requireActivity(), binding.collapseToolbar,
+            findNavController(),getString(R.string.activity_podcast),"Curated in UpTodd's Lab",
+            R.drawable.activity_podcast_icon
+        )
+
+        fetchTutorials(requireContext())
+
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
+
+            fragmentManager?.let { it1 ->
+                val intent = Intent(context, PodcastWebinarActivity::class.java)
+                intent.putExtra("url", videosRespons?.activityPodcast)
+                intent.putExtra("title", "Activity Podcast")
+                intent.putExtra("kit_content","")
+                intent.putExtra("description","")
+                startActivity(intent)
+            }
+
+
+        }
+
+        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
 
         val lastFetched = sharedPreferences.getLong("ACTIVITY_PODCAST", -1)
         val calendar = Calendar.getInstance().apply {
@@ -101,6 +127,13 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         binding.activityPodcastRefresh.setOnRefreshListener {
             hideNodata()
             fetchDataFromApi()
+        }
+
+
+        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip())
+        {
+            ShowInfoDialog.showInfo(getString(R.string.screen_podcast),requireFragmentManager())
+            UptoddSharedPreferences.getInstance(requireContext()).setShownPodcastTip(false)
         }
     }
 
@@ -297,5 +330,34 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         intent.putExtra("kit_content",act_podacast.kitContent)
         intent.putExtra("description",act_podacast.description)
         startActivity(intent)
+    }
+    override fun onOptionsItemSelected(@NonNull item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                findNavController().navigateUp()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    fun fetchTutorials(context: Context){
+        AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object :JSONObjectRequestListener
+            {
+                override fun onResponse(response: JSONObject?) {
+                    val data=response?.get("data") as JSONObject
+                    videosRespons=AllUtil.getVideosUrlResponse(data.toString())
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+
+            })
     }
 }
