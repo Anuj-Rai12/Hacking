@@ -14,6 +14,8 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DevelopmentTrackerFragmentBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.adapters.DevelopmentTrackerAdapter
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.AllResponse
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.FormQuestionResponse
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 
@@ -22,6 +24,7 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
     var binding:DevelopmentTrackerFragmentBinding?= null
     var viewModel:DevelopmentTrackerViewModel?=null
     var adapter:DevelopmentTrackerAdapter?=null
+    var formQuestionResponse:FormQuestionResponse?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +33,7 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
     ): View? {
 
         binding = DevelopmentTrackerFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[DevelopmentTrackerViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DevelopmentTrackerViewModel::class.java]
         ToolbarUtils.initToolbar(
             requireActivity(), binding?.collapseToolbar!!,
             findNavController(),"Monthly Development form","",
@@ -59,6 +62,7 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
         adapter?.listener=this
         binding?.trackerListRecyclerView?.adapter = adapter
         viewModel?.fetchTrackerResponse(requireContext())
+        binding?.trackerRefresh?.isRefreshing=true
 
         viewModel?.trackerList?.observe(viewLifecycleOwner) {
 
@@ -76,9 +80,12 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
             }
         }
         //for testing remove it later
-        binding?.fillForm?.visibility = View.VISIBLE
         binding?.fillForm?.setOnClickListener {
-            findNavController().navigate(R.id.action_developmentTrackerFragment_to_questionsFormFragment)
+            formQuestionResponse.let {
+                findNavController().navigate(
+                    DevelopmentTrackerFragmentDirections.
+                    actionDevelopmentTrackerFragmentToQuestionsFormFragment(formQuestionResponse))
+            }
         }
         viewModel?.errorResponse?.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context,"Error occur",Toast.LENGTH_LONG).show()
@@ -87,6 +94,19 @@ class DevelopmentTrackerFragment:Fragment(),DevelopmentTrackerAdapter.Developmen
         binding?.trackerRefresh?.setOnRefreshListener {
             viewModel?.fetchTrackerResponse(requireContext())
         }
+        viewModel?.formQuestions?.observe(viewLifecycleOwner, Observer {
+            if(it.response.isNotEmpty() && viewModel?.formSubmitted?.value==null) {
+                binding?.fillForm?.visibility = View.VISIBLE
+                formQuestionResponse = it
+            }
+        })
+        viewModel?.formSubmitted?.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                binding?.fillForm?.visibility = View.GONE
+            } else {
+                binding?.fillForm?.visibility = View.VISIBLE
+            }
+        })
     }
 
     override fun onClick(allResponse: AllResponse) {

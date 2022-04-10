@@ -7,21 +7,27 @@
 
 
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:titleTextColor="@color/white"
+        android:background="@color/color_normal"
+        android:layout_alignParentTop="true"
+
+        />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_below="@id/toolbar"
+            android:layout_above="@id/submitForm"
             >
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:titleTextColor="@color/white"
-                android:background="@color/color_normal"
-
-                />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -38,9 +44,20 @@
                     />
 
 
+
             </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submitForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit form"
+        android:layout_alignParentBottom="true"
+        android:background="@color/buttonBlue">
+    </com.google.android.material.button.MaterialButton>
+
+</RelativeLayout>
 
 
 

@@ -23,7 +23,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
 import com.uptodd.uptoddapp.databinding.FragmentUpcomingSessionsBinding
-import com.uptodd.uptoddapp.ui.monthlyDevelopment.HomeExpertCounsellingDirections
+
 import com.uptodd.uptoddapp.utilities.AllUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

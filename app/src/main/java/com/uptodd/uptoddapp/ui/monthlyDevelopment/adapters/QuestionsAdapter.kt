@@ -26,6 +26,7 @@ class QuestionsAdapter(val clickListener: UpcomingSessionInterface?=null) :
         holder.bind(list[position])
     }
 
+
     inner class QuestionsViewHolder(val binding: QuestionRecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {

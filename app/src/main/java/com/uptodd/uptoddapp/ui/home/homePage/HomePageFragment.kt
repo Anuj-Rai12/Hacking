@@ -194,7 +194,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 //            }
 //        })
 
-        viewModel?.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
+        viewModel.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
 
             if(it)
             {
@@ -757,7 +757,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         binding.apply {
 
 
-            if(!viewModel?.isRefreshing.value!!)
+            if(!viewModel.isRefreshing.value!!)
             {
                 btnSeeAllActivites.visibility = View.INVISIBLE
                 scoreView.visibility = View.INVISIBLE

@@ -141,7 +141,7 @@ class TrackerResponseFragment : Fragment() {
         }
 
         val fragmentTitleList = arrayListOf(
-            "Tips",
+            "Report",
             "Form Details"
         )
 

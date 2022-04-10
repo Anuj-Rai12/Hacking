@@ -25,7 +25,7 @@
         android:id="@+id/noDataContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tips will be added soon by expert team"
+        android:text="@string/tips_will_be_added_soon_to_r_d_team_will_add_the_report_soon"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"

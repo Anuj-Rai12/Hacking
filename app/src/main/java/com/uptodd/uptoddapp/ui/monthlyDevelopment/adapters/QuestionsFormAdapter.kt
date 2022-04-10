@@ -30,6 +30,18 @@ class QuestionsFormAdapter(val clickListener: UpcomingSessionInterface?=null) :
     override fun onBindViewHolder(holder: QuestionsViewHolder, position: Int) {
         holder.bind(list[position])
     }
+    
+    fun checkValidationOfForm():Boolean{
+        list.forEach { it1 ->
+
+            it1.questions.forEach { 
+                if(it.answer.isNullOrEmpty() || it.answer.isNullOrBlank())
+                    return false
+            }
+        }
+        
+        return true
+    }
 
     inner class QuestionsViewHolder(val binding: QuestionFormRecyclerviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

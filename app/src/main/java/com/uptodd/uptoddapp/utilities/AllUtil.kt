@@ -46,6 +46,7 @@ import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.support.view.TicketMessage
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.DevelopmentTracker
+import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.FormQuestionResponse
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Question
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
@@ -279,19 +280,6 @@ class AllUtil{
             sharedPreferences = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
         }
 
-        fun getAllQuestions():ArrayList<Response>{
-            val responses= arrayListOf<Response>()
-            responses.apply {
-                add(Response(listOf(Question("",1, listOf("yes","no","partially"),"Hello","New type")
-                ,Question("",2, listOf("yes","no","partially"),"Hello 2","New type"),
-                    Question("",3, listOf("yes","no","partially"),"Comments","Others")
-                ),"New type"))
-                add(Response(listOf(Question("",4, listOf("yes","nope","partially"),"Hello 9","New type")),"New type"))
-            }
-
-            return responses
-        }
-
 
 
 
@@ -342,6 +330,11 @@ class AllUtil{
         fun getDevelopmentTrackerResponse(jsonString: String):DevelopmentTracker{
             val gson = Gson()
             return  gson.fromJson(jsonString,DevelopmentTracker::class.java)
+        }
+
+        fun getDevelopmentFormQuestions(jsonString: String):FormQuestionResponse{
+            val gson=Gson()
+            return  gson.fromJson(jsonString,FormQuestionResponse::class.java)
         }
 
 

@@ -521,7 +521,7 @@ class MusicFragment : Fragment() {
 
             viewModel.doneLoading()
 
-            showHint(binding?.collapseToolbar?.tvLayout)
+            binding?.collapseToolbar?.tvLayout?.let { showHint(it) }
         }
         else
         {
