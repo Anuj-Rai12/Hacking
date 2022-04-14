@@ -43,11 +43,11 @@
                 android:id="@+id/videoTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
                 android:layout_alignParentBottom="true"
+                android:padding="8dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 tools:text="Sample Title" />
         </RelativeLayout>
     </LinearLayout>

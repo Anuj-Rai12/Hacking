@@ -2,6 +2,7 @@ package com.uptodd.uptoddapp.ui.otherScreens.otherScreens.stories
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -28,6 +29,8 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.stories.StoriesDao
 import com.uptodd.uptoddapp.databinding.FragmentStoriesBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
+import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -222,7 +225,8 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
                     url = appendable + obj.getString("image") + ".webp",
                     image = obj.getString("image"),
                     description = obj.getString("description"),
-                    language = obj.getString("language")
+                    language = obj.getString("language"),
+                    podcast = obj.getString("podcast")
                 )
             )
             i++
@@ -271,12 +275,17 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
     override fun onClickStory(position: Int) {
         val bundle = Bundle()
-        bundle.putString("actionBar", getString(R.string.stories))
-        bundle.putString("image", list[position].image)
-        bundle.putString("title", list[position].name)
-        bundle.putString("description", list[position].description)
-        bundle.putString("folder", "stories")
-        findNavController().navigate(R.id.action_storiesFragment_to_detailsFragment, bundle)
+//        bundle.putString("actionBar", getString(R.string.stories))
+//        bundle.putString("image", list[position].image)
+//        bundle.putString("title", list[position].name)
+//        bundle.putString("description", list[position].description)
+//        bundle.putString("folder", "stories")
+//        findNavController().navigate(R.id.action_storiesFragment_to_detailsFragment, bundle)
+        val intent = Intent(context, StoryPlayActivity::class.java)
+        intent.putExtra("podcast", list[position].podcast)
+        intent.putExtra("title", list[position].name)
+        intent.putExtra("description",list[position].description)
+        startActivity(intent)
     }
 
     private fun showLoadingDialog() {

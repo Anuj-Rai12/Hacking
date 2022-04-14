@@ -26,6 +26,7 @@ import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
 import com.uptodd.uptoddapp.databinding.YoutubeVideoBottomsheetBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.utilities.YoutubeBottomSheet
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
@@ -99,6 +100,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                 intent.putExtra("title", "Activity Podcast")
                 intent.putExtra("kit_content","")
                 intent.putExtra("description","")
+                intent.putExtra("videos", SuggestedVideosModel(mutableListOf()))
                 startActivity(intent)
             }
 
@@ -329,6 +331,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         intent.putExtra("title", act_podacast.title)
         intent.putExtra("kit_content",act_podacast.kitContent)
         intent.putExtra("description",act_podacast.description)
+        intent.putExtra("videos", SuggestedVideosModel(mutableListOf()))
         startActivity(intent)
     }
     override fun onOptionsItemSelected(@NonNull item: MenuItem): Boolean {

@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.webinars.podcastwebinar
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -7,23 +8,35 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.database.activitysample.ActivitySample
+import com.uptodd.uptoddapp.databinding.ActivityCaptureMomentsBindingImpl
 import com.uptodd.uptoddapp.databinding.ActivityPodcastWebinarBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
+import com.uptodd.uptoddapp.ui.webinars.adapters.SuggestedVideoAdapter
+import com.uptodd.uptoddapp.ui.webinars.adapters.SuggestedVideoInterface
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarViewModel
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.YouTubeConfig
+import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
+import org.json.JSONObject
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 
-class PodcastWebinarActivity: YouTubeBaseActivity() {
+class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
 
     lateinit var binding: ActivityPodcastWebinarBinding
     lateinit var viewModel: FullWebinarViewModel
@@ -36,7 +49,10 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
     private lateinit var title: String
     private  var description: String? = null
     private  var kitContent:String? = null
+    private lateinit var videos: MutableList<ActivitySample>
+    private lateinit var model: SuggestedVideosModel
     var player:YouTubePlayer?=null
+    private val adapter = SuggestedVideoAdapter(this)
 
     private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
 
@@ -60,10 +76,43 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
         }
         val intent: Intent = intent
         VIDEO_SAMPLE = intent.getStringExtra("url")!!
+
         Log.d("div", "FullWebinarActivity L93 $VIDEO_SAMPLE")
         title = intent.getStringExtra("title")!!
         description=intent.getStringExtra("description")
         kitContent=intent.getStringExtra("kit_content")
+
+        videos = mutableListOf()
+
+        try{
+            model = intent.getSerializableExtra("videos") as SuggestedVideosModel
+        }catch (e: Exception){
+            model = SuggestedVideosModel(videos)
+        }
+
+        videos = model.videos
+
+        if(videos.size>0){
+            binding.suggestedVideoTxt.visibility= View.VISIBLE
+            binding.sugVideoRecView.visibility = View.VISIBLE
+            var list: MutableList<ActivitySample> = mutableListOf()
+            var count = 0
+            for (video in videos){
+                if(!video.title.equals(title)){
+                    list.add(video)
+                    count++
+                }
+                if(count==3){
+                    break
+                }
+            }
+            adapter.list = list
+            binding.sugVideoRecView.adapter = adapter
+        }else{
+            binding.suggestedVideoTxt.visibility = View.GONE
+            binding.sugVideoRecView.visibility = View.GONE
+        }
+
 
         binding.title.text = title
         binding.description.text=description
@@ -247,6 +296,8 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
 
     }
 
+
+
     override fun onDestroy() {
         if(!UpToddMediaPlayer.isPlaying)
         {
@@ -262,5 +313,14 @@ class PodcastWebinarActivity: YouTubeBaseActivity() {
         }
         super.onDestroy()
 
+    }
+
+    override fun onClick(act_sample: ActivitySample) {
+        val intent = Intent(this, PodcastWebinarActivity::class.java)
+        intent.putExtra("url", act_sample.video)
+        intent.putExtra("title", act_sample.title)
+        intent.putExtra("videos",SuggestedVideosModel(videos))
+        startActivity(intent)
+        finishAffinity()
     }
 }

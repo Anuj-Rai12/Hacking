@@ -15,7 +15,7 @@
     <string name="your_weekly_score_board">Your Weekly Score Board</string>
     <string name="your_essential_score_board">Your Essential Score Board</string>
     <string name="your_monthly_score_board">Your Monthly Score Board</string>
-    <string  name="your_daily_score_board">Your Daily Score Board</string>
+    <string name="your_daily_score_board">Your Daily Score Board</string>
 
 
     <!--Upgrade-->
@@ -157,7 +157,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="doctor_referral_guide">Doctor Referral Guide</string>
     <string name="doctor_brochure">Doctor Brochure</string>
     <string name="resources">Resources</string>
-    <string translatable="false" name="tutorial">App tutorials</string>
+    <string name="tutorial" translatable="false">App tutorials</string>
     <string name="kit_tutorial" translatable="false">Kit Tutorial</string>
     <string name="all_activities">All Routines</string>
     <string name="essentialsAlarmDescription">Essentials Alarms are scheduled for first and second Monday, and the last Saturday and Sunday of the month</string>
@@ -384,7 +384,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="go_back" translatable="false">go back</string>
     <string name="activity_sample">Session</string>
     <string name="expert_counselling" translatable="false">Expert Counselling</string>
-     <string name="no_data" translatable="false">No Data</string>
+    <string name="no_data" translatable="false">No Data</string>
 
     <!--Activity Podcast-->
 
@@ -420,4 +420,6 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="screen_booster" translatable="false">This is a section to help child enhance learning, new boosters will keep getting added by your expert after research works for you at regular basis</string>
     <string name="screen_support" translatable="false">Click on Support for general queries and expert for any question you have for your expert</string>
     <string name="tips_will_be_added_soon_to_r_d_team_will_add_the_report_soon" translatable="false">R&amp;D team will add the report soon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

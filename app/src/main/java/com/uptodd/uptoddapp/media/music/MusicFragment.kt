@@ -49,6 +49,7 @@ import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import java.util.*
 
 import com.erkutaras.showcaseview.ShowcaseManager
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import org.json.JSONObject

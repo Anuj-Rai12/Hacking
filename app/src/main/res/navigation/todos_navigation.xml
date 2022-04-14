@@ -439,13 +439,15 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
+
     <fragment
         android:id="@+id/storiesFragment"
         android:name="com.uptodd.uptoddapp.ui.otherScreens.otherScreens.stories.StoriesFragment"
         android:label="Stories">
         <action
             android:id="@+id/action_storiesFragment_to_todoDetailsFragment"
-            app:destination="@id/todoDetailsFragment" />
+            app:destination="@id/todoDetailsFragment"
+            />
         <action
             android:id="@+id/action_storiesFragment_to_detailsFragment"
             app:destination="@id/detailsFragment"

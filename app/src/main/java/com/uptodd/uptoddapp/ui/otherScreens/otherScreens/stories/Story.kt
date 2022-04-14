@@ -17,5 +17,7 @@ data class Story(
     @ColumnInfo(name = "description")
     val description: String,
     @ColumnInfo(name = "language")
-    val language: String
+    val language: String,
+    @ColumnInfo(name = "podcast")
+    val podcast: String
 )

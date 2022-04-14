@@ -41,6 +41,7 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".ReferActivity" />
         <activity android:name=".OrderActivity" />
+        <activity android:name=".ui.otherScreens.otherScreens.stories.StoryPlayActivity"/>
         <activity android:name=".ui.upgrade.PaymentActivity"
             android:exported="false"
             >

@@ -25,6 +25,7 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
@@ -90,7 +91,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
                 intent.putExtra("description", "")
                 startActivity(intent)
             }
-
 
         }
 
@@ -270,6 +270,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_sample.video)
         intent.putExtra("title", act_sample.title)
+        intent.putExtra("videos",SuggestedVideosModel(activitySampleList))
         startActivity(intent)
     }
 
