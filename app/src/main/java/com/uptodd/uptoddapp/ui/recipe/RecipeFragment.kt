@@ -24,14 +24,18 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
-import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
+import com.uptodd.uptoddapp.database.recipe.Recipe
+import com.uptodd.uptoddapp.database.recipe.RecipeAdapter
+import com.uptodd.uptoddapp.database.recipe.RecipeClickListener
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.tutorials.TutorialAdapter
 import com.uptodd.uptoddapp.ui.tutorials.TutorialInterface
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
+import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import kotlinx.android.synthetic.main.fragment_diet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,16 +45,16 @@ import java.util.*
 
 private const val TAG = "ActivitySampleFragment"
 
-class RecipeFragment : Fragment(), TutorialInterface {
+class RecipeFragment : Fragment(), RecipeClickListener {
 
 
     private lateinit var binding: FragmentActivitySampleBinding
 
 
-    private var activitySampleList = mutableListOf<ActivitySample>()
+    private var activitySampleList = mutableListOf<Recipe>()
 
 
-    private val adapter = TutorialAdapter(this)
+    private val adapter = RecipeAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +88,7 @@ class RecipeFragment : Fragment(), TutorialInterface {
     private fun fetchDataFromApi() {
         val uid = AllUtil.getUserId()
 
-        AndroidNetworking.get("https://uptodd.com/api/recipeTutorials")
+        AndroidNetworking.get("https://uptodd.com/api/recipeTutorialsV2")
             .addQueryParameter("userId", uid.toString())
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
@@ -94,6 +98,8 @@ class RecipeFragment : Fragment(), TutorialInterface {
 
                     if (response == null) return
 
+                    val data = response.get("data") as JSONArray
+                    Log.e("data",data.toString())
                     Log.i(TAG, "${response.get("data")}")
 
                     /* the get method doesn't support returning
@@ -103,7 +109,6 @@ class RecipeFragment : Fragment(), TutorialInterface {
                     */
 
                     try {
-                        val data = response.get("data") as JSONArray
                         if (data.length() <= 0) {
                             showNoData()
                             hideRecyclerView()
@@ -133,26 +138,26 @@ class RecipeFragment : Fragment(), TutorialInterface {
     }
 
     private fun parseData(data: JSONArray) {
-
         activitySampleList.clear()
         for (i in 0 until data.length()) {
             val obj = data.get(i) as JSONObject
 
-            val sample = ActivitySample(
+            val sample = Recipe(
                 id = obj.getInt("id"),
                 title = obj.getString("name"),
-                video = obj.getString("video")
+                description = obj.getString("description"),
+                video = obj.getString("video"),
             )
             activitySampleList.add(sample)
         }
-
-
+        Log.e("data", activitySampleList.toString())
         setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         adapter.list = activitySampleList
         binding.activitySampleRecycler.adapter = adapter
+        binding.activitySampleRecycler.visibility = View.VISIBLE
         showRecyclerView()
     }
 
@@ -193,11 +198,12 @@ class RecipeFragment : Fragment(), TutorialInterface {
 
 
 
-    override fun onClick(act_sample: ActivitySample) {
+    override fun onClick(recipe: Recipe) {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
-        intent.putExtra("url", act_sample.video)
-        intent.putExtra("title", act_sample.title)
-        intent.putExtra("videos",SuggestedVideosModel(activitySampleList))
+        intent.putExtra("url", recipe.video)
+        intent.putExtra("title", recipe.title)
+        intent.putExtra("description", recipe.description)
+        intent.putExtra("videos",SuggestedVideosModel(mutableListOf()))
         startActivity(intent)
     }
 

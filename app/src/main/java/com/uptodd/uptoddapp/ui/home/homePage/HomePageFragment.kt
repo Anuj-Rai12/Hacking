@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.work.ListenableWorker
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -38,6 +40,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.coolerfall.download.DownloadManager
+import com.coolerfall.download.OkHttpDownloader
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -46,6 +50,9 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
+import com.uptodd.uptoddapp.api.getMonth
+import com.uptodd.uptoddapp.api.getPeriod
+import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.databinding.FragmentHomePageBinding
 import com.uptodd.uptoddapp.helperClasses.DateClass
@@ -62,11 +69,13 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
+import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -136,13 +145,11 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             }
         }
 
-
-
-
-
-
-
         uptoddDialogs = UpToddDialogs(requireContext())
+
+        checkMemoryBoosterAdded(requireContext())
+        checkPodcastAdded(requireContext())
+        checkSessionAdded(requireContext())
 
 
         // if this is first time login save the launch time
@@ -933,6 +940,129 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
     override fun onClickedItem(navId: Int) {
         findNavController().navigate(navId)
+    }
+
+    private fun checkSessionAdded(context: Context)
+    {
+        val period = getPeriod(context)
+        val uid = AllUtil.getUserId()
+        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
+        val country= AllUtil.getCountry(context)
+        val size= UptoddSharedPreferences.getInstance(context).getSaveCountSession()
+
+        AndroidNetworking.get("https://www.uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
+            .addPathParameter("userId", uid.toString())
+            .addPathParameter("period", period.toString())
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+
+                    if (response == null) return
+                    try {
+                        val data = response.get("data") as JSONArray
+
+                        if(data.length()>size) {
+                            AddedPopUpDialog.showInfo("New Session Added", "Hey Mom/Dad, Check new Session Added for you.",parentFragmentManager)
+                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("ACTIVITY_SAMPLE",-1).apply()
+                        }
+
+                    } catch (e: Exception) {
+
+                        return
+                    } finally {
+
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+
+                }
+            })
+    }
+
+    private fun checkPodcastAdded(context: Context)
+    {
+        val uid = AllUtil.getUserId()
+        val months= getMonth(context)
+        val lang= AllUtil.getLanguage()
+        val country= AllUtil.getCountry(context)
+        val stage=UptoddSharedPreferences.getInstance(context).getStage()
+        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
+        val size= UptoddSharedPreferences.getInstance(context).getSaveCountPodcast()
+
+        AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
+            .addPathParameter("userId", uid.toString())
+            .addPathParameter("months", months.toString())
+            .addPathParameter("lang",lang)
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+
+                    if (response == null) return
+
+                    try {
+
+                        val data = response.get("data") as JSONArray
+
+                        Log.d("size p","${data.length()} > $size")
+
+                        if(data.length()>size) {
+                            AddedPopUpDialog.showInfo("New Podcast Added", "Hey Mom/Dad, Check new Podcast Added for you.",parentFragmentManager)
+                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("ACTIVITY_PODCAST",-1).apply()
+                        }
+
+                    }
+                    catch (exception:Exception) {
+
+                    }
+                }
+
+                override fun onError(anError: ANError?) {
+                    ListenableWorker.Result.retry()
+                }
+            })
+    }
+
+    private fun checkMemoryBoosterAdded(context: Context)
+    {
+
+        val uid = AllUtil.getUserId()
+        val stage= UptoddSharedPreferences.getInstance(context).getStage()
+        val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
+        val lang = AllUtil.getLanguage()
+        val country= AllUtil.getCountry(context)
+        val userType=UptoddSharedPreferences.getInstance(context).getUserType()
+        val size= UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
+        AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
+            .addPathParameter("userId",uid.toString())
+            .addPathParameter("prenatal",prenatal.toString())
+            .addPathParameter("lang",lang)
+            .setPriority(Priority.HIGH)
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject) {
+                    if (response.getString("status") == "Success") {
+
+                        val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
+                        Log.d("size m","${poems.size} > $size")
+                        if(poems?.size>size) {
+                            AddedPopUpDialog.showInfo("New Memory Booster Added", "Hey Mom/Dad, Check new Memory Booster Added for you.",parentFragmentManager)
+                        }
+
+                    } else {
+
+                    }
+                }
+
+                override fun onError(error: ANError) {
+                    Log.i("error", error.errorBody)
+                }
+            })
     }
 }
 

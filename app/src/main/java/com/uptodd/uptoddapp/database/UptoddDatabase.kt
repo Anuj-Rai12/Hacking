@@ -27,6 +27,7 @@ import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
 import com.uptodd.uptoddapp.database.media.resource.ResourceFilesDatabaseDao
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccountDao
+import com.uptodd.uptoddapp.database.recipe.Recipe
 import com.uptodd.uptoddapp.database.score.Score
 import com.uptodd.uptoddapp.database.score.ScoreDatabaseDao
 import com.uptodd.uptoddapp.database.stories.StoriesDao
@@ -58,8 +59,8 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         ExpectedOutcomes::class, Yoga::class, Diet::class,
         Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class,
         ResourceFiles::class,NonPremiumAccount::class,MemoryBoosterFiles::class
-        ,ExpertCounselling::class],
-    version = 18,
+        ,ExpertCounselling::class,Recipe::class],
+    version = 20,
     exportSchema = true
 )
 

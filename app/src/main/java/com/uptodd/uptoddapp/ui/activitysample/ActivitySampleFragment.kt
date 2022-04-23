@@ -69,8 +69,6 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
             }
         }
         binding.upgradeButton.setOnClickListener {
-
-
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
 

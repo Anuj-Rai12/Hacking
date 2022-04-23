@@ -25,13 +25,11 @@
         <ScrollView
             android:id="@+id/scrollView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/btnPlayPause"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/videoView"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintBottom_toTopOf="@id/btnPlayPause">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,40 +99,34 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Description"
+                    android:text="The lentils  are a good source of fibre and vitamins as well as low fat, cholesterol, and sodium, all of which are essential for the growth and development of a baby . But you need to give them in moderation to your baby.\n\n What we need in ingredients?- We need\n1 Tbsp oil\n1 small onion, diced\n1 Large Carrot, peeled and cut into a small dice\n1 Garlic Clove\n1 Tsp fresh ginger, minced\n2 Tsp curry powder\n1 Tsp cumin\n1 Tsp turmeric\n2 Cups water\n2 Tsp kosher salt\n1 14 oz Can Tomato Puree\n1 Cups Red Lentils, rinsed well\n Brown or White Basmati Rice\n \nMethod-\n1. Heat the oil in a large saucepan over medium heat.\n2. Saute the onions and carrots for 4 minutes.\n3. Add the garlic, ginger, curry, cumin and turmeric and cook for 2 minutes.\n4. Add the lentils, water, salt and tomato puree and bring to a boil.\n5. Stir, cover, reduce heat to a simmer and cook for 35 minutes or until creamy and tender.\n6. Serve it with basmati rice.\n*Allow to cool, store in an appropriate container or ziploc bag, label and freeze for up to 4 months. When ready, defrost in the fridge for 24 hours or place in a pot and bring to heat over low-medium heat.\n \nDisclaimer- Please, be careful with knives, don’t cook recipes with ingredients the baby is allergic to, and use your best judgement with raw ingredients. You are responsible to do the necessary research and make appropriate food-handling decisions for you and your baby.\n\n"
                     android:textSize="15sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/suggestedVideoTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suggested Videos"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/activeBlue"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/scrollView3"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sugVideoRecView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/suggested_video_item"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             </LinearLayout>
         </ScrollView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/suggestedVideoTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Suggested Videos"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/activeBlue"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scrollView3"/>
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/suggestedVideoTxt">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/sugVideoRecView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                tools:itemCount="3"
-                tools:listitem="@layout/suggested_video_item"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        </ScrollView>
 
 
         <Button

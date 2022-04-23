@@ -113,8 +113,6 @@ class HomeExpertCounselling : Fragment() {
                 intent.putExtra("description","")
                 startActivity(intent)
             }
-
-
         }
 
         binding?.collapseToolbar?.playTutorialIcon?.visibility=View.VISIBLE

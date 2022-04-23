@@ -19,7 +19,6 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
-import com.uptodd.uptoddapp.databinding.ActivityCaptureMomentsBindingImpl
 import com.uptodd.uptoddapp.databinding.ActivityPodcastWebinarBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel

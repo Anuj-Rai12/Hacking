@@ -235,6 +235,7 @@
             android:name="ticketSupportTeam"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/todosViewPagerFragment"
         android:name="com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.TodosViewPagerFragment"
@@ -252,6 +253,7 @@
         <action
             android:id="@+id/action_todosViewPagerFragment_to_upgradeFragment"
             app:destination="@id/upgradeFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/todoDetailsFragment"

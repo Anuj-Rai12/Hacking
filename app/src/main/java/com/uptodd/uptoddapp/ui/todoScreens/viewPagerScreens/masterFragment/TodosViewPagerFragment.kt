@@ -22,6 +22,7 @@ import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
 import com.uptodd.uptoddapp.databinding.FragmentTodosViewPagerBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.*
+import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ShowInfoDialog
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
