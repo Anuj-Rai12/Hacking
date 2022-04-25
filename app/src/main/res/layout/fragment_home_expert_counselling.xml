@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="allTicketsBinding"
+            type="com.uptodd.uptoddapp.ui.expertCounselling.HomeCounsellingViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+
+        <include
+            android:id="@+id/collapseToolbar"
+            layout="@layout/layout_collapase_toolbar"
+            app:shouldShowPlay="@{true}"
+            app:icon="@{@drawable/counselling_icon}"
+            app:title="@{@string/expert_counselling}"
+            />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".ui.HomeExpertCounselling"
+            android:layout_marginBottom="120dp"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabPaddingStart="-1dp"
+                    app:tabPaddingEnd="-1dp"
+                    app:tabGravity="fill"
+                    app:tabIndicator="@drawable/viewpager_style"
+                    app:tabIndicatorColor="@color/colorPrimary"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabSelectedTextColor="@color/colorPrimary"
+                    app:tabTextAppearance="@style/tab_text_style" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/all_tickets_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/expConRecycler"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="12dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    tools:listitem="@layout/upcoming_session_recyclerview_item"-->
+<!--                    app:spanCount="2"-->
+<!--                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tncText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Terms &amp; Condition"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    />-->
+<!--                <androidx.appcompat.widget.AppCompatButton-->
+<!--                    android:id="@+id/booking_button"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:text="Book Session"-->
+<!--                    android:fontFamily="@font/crimson_text_bold"-->
+<!--                    android:background="@color/buttonBlue"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:visibility="visible"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    />-->
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
