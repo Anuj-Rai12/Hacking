@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
@@ -40,7 +42,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
+import com.coolerfall.download.DownloadRequest
 import com.coolerfall.download.OkHttpDownloader
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.android.material.snackbar.Snackbar
@@ -53,6 +57,8 @@ import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
 import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
+import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.databinding.FragmentHomePageBinding
 import com.uptodd.uptoddapp.helperClasses.DateClass
@@ -147,10 +153,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
         uptoddDialogs = UpToddDialogs(requireContext())
 
-        checkMemoryBoosterAdded(requireContext())
-        checkPodcastAdded(requireContext())
-        checkSessionAdded(requireContext())
-
+//        Handler(Looper.getMainLooper()).postDelayed({
+//
+//        })
 
         // if this is first time login save the launch time
         val preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
@@ -667,7 +672,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         animationDrawable.setEnterFadeDuration(2000)
         animationDrawable.setExitFadeDuration(3000)
         animationDrawable.start()
-
+        checkMemoryBoosterAdded(requireContext())
+        checkPodcastAdded(requireContext())
+        checkSessionAdded(requireContext())
     }
 
     private fun validateFreshness(): Boolean {
@@ -962,10 +969,11 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                     if (response == null) return
                     try {
                         val data = response.get("data") as JSONArray
-
                         if(data.length()>size) {
-                            AddedPopUpDialog.showInfo("New Session Added", "Hey Mom/Dad, Check new Session Added for you.",parentFragmentManager)
-                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("ACTIVITY_SAMPLE",-1).apply()
+                            if(size>0)
+                                AddedPopUpDialog.showInfo("New Session Added", "Hey Mom/Dad, Check new Session Added for you.",parentFragmentManager)
+
+                            UptoddSharedPreferences.getInstance(context).saveCountSession(data.length())
                         }
 
                     } catch (e: Exception) {
@@ -1011,8 +1019,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                         Log.d("size p","${data.length()} > $size")
 
                         if(data.length()>size) {
-                            AddedPopUpDialog.showInfo("New Podcast Added", "Hey Mom/Dad, Check new Podcast Added for you.",parentFragmentManager)
-                            context.getSharedPreferences("last_updated", Context.MODE_PRIVATE).edit().putLong("ACTIVITY_PODCAST",-1).apply()
+                            if(size>0)
+                                AddedPopUpDialog.showInfo("New Podcast Added", "Hey Mom/Dad, Check new Podcast Added for you.",parentFragmentManager)
+                            UptoddSharedPreferences.getInstance(context).saveCountPodcast(data.length())
                         }
 
                     }
@@ -1037,6 +1046,12 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         val country= AllUtil.getCountry(context)
         val userType=UptoddSharedPreferences.getInstance(context).getUserType()
         val size= UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
+        val database= UptoddDatabase.getInstance(context).memoryBoosterDao
+        val manager: DownloadManager = DownloadManager.Builder().context(context)
+            .downloader(OkHttpDownloader.create())
+            .threadPoolSize(3)
+            .logger { message -> Log.d("TAG", message!!) }
+            .build()
         AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .addPathParameter("userId",uid.toString())
@@ -1050,15 +1065,16 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
                         val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
                         Log.d("size m","${poems.size} > $size")
-                        if(poems?.size>size) {
-                            AddedPopUpDialog.showInfo("New Memory Booster Added", "Hey Mom/Dad, Check new Memory Booster Added for you.",parentFragmentManager)
+                        if(poems.size >size) {
+                            if(size>0)
+                                AddedPopUpDialog.showInfo("New Memory Booster Added", "Hey Mom/Dad, Check new Memory Booster Added for you.",parentFragmentManager)
+                            UptoddSharedPreferences.getInstance(context).saveCountMemoryBooster(poems.size)
                         }
 
                     } else {
 
                     }
                 }
-
                 override fun onError(error: ANError) {
                     Log.i("error", error.errorBody)
                 }

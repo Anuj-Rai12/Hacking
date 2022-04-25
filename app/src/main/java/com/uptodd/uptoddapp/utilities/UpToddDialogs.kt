@@ -24,8 +24,6 @@ class UpToddDialogs(val context: Context) {
         ChangeLanguage(context).setLanguage()
     }
 
-
-
     fun showInfoDialog(text: String,buttonText: String,upToddClickListener: UpToddDialogListener):UpToddDialogs
     {
         this.upToddDialogListener = upToddClickListener
