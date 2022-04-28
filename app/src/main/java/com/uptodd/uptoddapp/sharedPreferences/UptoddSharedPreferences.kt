@@ -616,4 +616,12 @@ class UptoddSharedPreferences private constructor(var context: Context) {
     fun getDailyDialogTimeForDevelopmentForm(): Long {
         return loginSharedPreference.getLong("dialogTimeDevelopment", 0)
     }
+
+    fun setPopUpDate(day: Int){
+        lastUpdatedPreferences.edit().putInt("popupDay", day).apply()
+    }
+
+    fun getPopUpDate(): Int{
+        return lastUpdatedPreferences.getInt("popupDay",0)
+    }
 }

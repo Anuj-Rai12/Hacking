@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.databinding.FragmentTipsBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
 
-
 class TipsFragment : Fragment() {
-
 
     private lateinit var binding: FragmentTipsBinding
 
@@ -57,8 +55,4 @@ class TipsFragment : Fragment() {
     private fun showNoData() {
         binding.noDataContainer.visibility=View.VISIBLE
     }
-
-
-
-
 }

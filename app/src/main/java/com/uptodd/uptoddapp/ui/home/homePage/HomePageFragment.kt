@@ -1,6 +1,5 @@
 package com.uptodd.uptoddapp.ui.home.homePage
 
-import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -9,11 +8,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
@@ -24,8 +20,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -42,23 +36,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
-import com.coolerfall.download.DownloadRequest
 import com.coolerfall.download.OkHttpDownloader
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
-import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.adapters.TodoViewPagerAdapter
 import com.uptodd.uptoddapp.api.getMonth
 import com.uptodd.uptoddapp.api.getPeriod
 import com.uptodd.uptoddapp.database.UptoddDatabase
-import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
-import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.databinding.FragmentHomePageBinding
 import com.uptodd.uptoddapp.helperClasses.DateClass
@@ -66,7 +55,6 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.blogs.fullblog.FullBlogActivity
 import com.uptodd.uptoddapp.ui.expertCounselling.TermsAndConditions
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
-import com.uptodd.uptoddapp.ui.home.homePage.adapter.models.OptionsItem
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
@@ -75,17 +63,15 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
-import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -571,7 +557,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         }
         val dur=Calendar.getInstance().timeInMillis-sharedPreferences.getSessionBookingDate()
         if(sharedPreferences.isSessionBookingAllowed()
-            && (TimeUnit.MILLISECONDS.toDays(dur)>7 || sharedPreferences.getSessionBookingDate()==0L))
+            && (TimeUnit.MILLISECONDS.toDays(dur)>=1L || sharedPreferences.getSessionBookingDate()==0L))
         {
             val termsAndConditions=TermsAndConditions("You can book next session now,from " +
                     "Expert Session page as slots are open for you now,Please ignore if already booked."
@@ -579,7 +565,6 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
 
             sharedPreferences.setShownSessionBookingDate(Calendar.getInstance().timeInMillis)
-
         }
         checkForDevelopmentFormDialog()
     }
@@ -672,9 +657,14 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         animationDrawable.setEnterFadeDuration(2000)
         animationDrawable.setExitFadeDuration(3000)
         animationDrawable.start()
-        checkMemoryBoosterAdded(requireContext())
-        checkPodcastAdded(requireContext())
-        checkSessionAdded(requireContext())
+        val day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+        val lastDay = UptoddSharedPreferences.getInstance(requireContext()).getPopUpDate()
+        if(day>lastDay||lastDay==0) {
+            checkMemoryBoosterAdded(requireContext())
+            checkPodcastAdded(requireContext())
+            checkSessionAdded(requireContext())
+            UptoddSharedPreferences.getInstance(requireContext()).setPopUpDate(day)
+        }
     }
 
     private fun validateFreshness(): Boolean {
