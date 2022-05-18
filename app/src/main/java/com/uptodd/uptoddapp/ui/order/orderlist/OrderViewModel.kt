@@ -18,7 +18,7 @@ class OrderViewModel:ViewModel()
 {
 
 
-    val order1= Order(1,"111-222-333-444",1,"MyProduct",2,true,
+    val order1= Order(1,"MyProduct",true,
         "05022020","https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf")
 
     private var _allOrderList=MutableLiveData<List<Order>>()
@@ -59,20 +59,14 @@ class OrderViewModel:ViewModel()
                                 val obj = cardsListData.get(i) as JSONObject
                                 if (obj.getBoolean("deliveryStatus")) {
                                     list.add(Order(obj.getLong("id"),
-                                        obj.getLong("orderNo").toString(),
-                                        obj.getLong("monthNo"),
                                         obj.getString("productName"),
-                                        obj.getLong("quantity"),
                                         obj.getBoolean("deliveryStatus"),
                                         obj.getString("deliveryDate"),
                                         obj.getString("detailsPdfUrl"),
                                         obj.getString("description")))
                                 } else {
                                     list.add(Order(obj.getLong("id"),
-                                        obj.getLong("orderNo").toString(),
-                                        obj.getLong("monthNo"),
                                         obj.getString("productName"),
-                                        obj.getLong("quantity"),
                                         obj.getBoolean("deliveryStatus"),
                                         obj.getString("deliveryExpectedDate"),
                                         obj.getString("detailsPdfUrl"),

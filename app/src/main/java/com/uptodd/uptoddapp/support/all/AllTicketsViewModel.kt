@@ -19,7 +19,9 @@ class AllTicketsViewModel : ViewModel() {
     val isLoading: LiveData<Int>
         get() = _isLoading
 
-    private var _allTickets = ArrayList<Ticket>()
+    private var _allTickets = MutableLiveData<ArrayList<Ticket>>()
+    val allTickets: LiveData<ArrayList<Ticket>>
+        get() = _allTickets
 
     private var _tickets: MutableLiveData<ArrayList<Ticket>> = MutableLiveData()
     val tickets: LiveData<ArrayList<Ticket>>
@@ -50,7 +52,7 @@ class AllTicketsViewModel : ViewModel() {
                         allTickets.forEach {
                             it.time = AllUtil.getTimeFromTimeStamp(it.ticketCreationDate)
                         }
-                        _allTickets = allTickets
+                        _allTickets.value = allTickets
                     }
                     _isLoading.value = 0
                 }
@@ -66,7 +68,7 @@ class AllTicketsViewModel : ViewModel() {
     }
 
     fun sortArray(type: String){
-        _tickets.value = ArrayList(_allTickets.filter { it.type == type })
+        _tickets.value = ArrayList(_allTickets.value!!.filter { it.type == type })
         _tickets.value = ArrayList(_tickets.value!!.sortedByDescending { it.time })
     }
 

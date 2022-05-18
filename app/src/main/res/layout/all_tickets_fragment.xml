@@ -35,35 +35,76 @@
         android:layout_marginBottom="120dp"
         >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabPaddingStart="-1dp"
-                app:tabPaddingEnd="-1dp"
-                app:tabGravity="fill"
-                app:tabIndicator="@drawable/viewpager_style"
-                app:tabIndicatorColor="@color/colorPrimary"
-                app:tabIndicatorFullWidth="false"
-                app:tabSelectedTextColor="@color/colorPrimary"
-                app:tabTextAppearance="@style/tab_text_style" />
+                android:layout_height="match_parent"
+                tools:context=".support.all.expert.ExpertTeam">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/all_tickets_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <Button
+                    android:id="@+id/generate_support_ticket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:background="@drawable/round_button_new_ticket"
+                    android:text="Raise support ticket"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/generate_expert_ticket"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/generate_expert_ticket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_new_ticket"
+                    android:text="Raise expert ticket"
+                    android:textSize="12sp"
+                    android:padding="8dp"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/generate_support_ticket"
+                    app:layout_constraintTop_toTopOf="@id/generate_support_ticket"/>
 
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/generate_expert_ticket">
+
+                    <LinearLayout
+                        android:id="@+id/ticket_list_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <ImageView
+
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:scaleType="fitXY"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_hourglass_empty_24" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_tickets_found"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

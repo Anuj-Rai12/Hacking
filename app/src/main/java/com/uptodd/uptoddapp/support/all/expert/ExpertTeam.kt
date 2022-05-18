@@ -85,7 +85,7 @@ class ExpertTeam : Fragment(), UpdateListener {
             }
         })
 
-        binding.generateNewTicket.setOnClickListener {
+        binding.generateExpertTicket.setOnClickListener {
             findNavController().navigate(AllTicketsFragmentDirections.actionAllTicketsFragmentToCreateTicketFragment("Expert Suggestion"))
         }
 
@@ -100,7 +100,6 @@ class ExpertTeam : Fragment(), UpdateListener {
         super.onResume()
         Log.i("support", "Expert team fragment")
         viewModel.getAllTickets()
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -188,7 +187,6 @@ class ExpertTeam : Fragment(), UpdateListener {
         cal.timeInMillis = time
         return "" + cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + cal.get(Calendar.MONTH).toString() + "/" + cal.get(
             Calendar.YEAR)
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -255,15 +253,15 @@ class ExpertTeam : Fragment(), UpdateListener {
                 submit.isClickable = true
                 submit.isFocusable = true
                 submit.isFocusableInTouchMode = true
+                submit.setOnClickListener {
+                    if(rating.value!=0){
+                        ticket.rating = rating.value!!
+                        viewModel.sendRating(ticket, index, message.text.toString())
+                        dialog.dismiss()
+                    }
+                }
             }
         })
-        submit.setOnClickListener {
-            if(rating.value!=0){
-                ticket.rating = rating.value!!
-                viewModel.sendRating(ticket, index, message.text.toString())
-                dialog.dismiss()
-            }
-        }
         dialog.show()
     }
 

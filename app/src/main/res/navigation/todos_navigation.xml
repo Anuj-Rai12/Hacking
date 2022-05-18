@@ -357,7 +357,11 @@
             app:destination="@id/webinarFragment" />
         <action
             android:id="@+id/action_homePageFragment_to_accountFragment2"
-            app:destination="@id/accountFragment2" />
+            app:destination="@id/accountFragment2"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_homePageFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
@@ -654,6 +658,20 @@
         android:id="@+id/memoryBoosterDetailsFragment"
         android:name="com.uptodd.uptoddapp.media.memorybooster.MemoryBoosterDetailsFragment"
         android:label="Details" />
+
+    <fragment
+        android:id="@+id/viewPDFFragment"
+        android:name="com.uptodd.uptoddapp.doctor.resources.ViewPDFFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_view_pdf">
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+
     <fragment
         android:id="@+id/resourcesFragment"
         android:name="com.uptodd.uptoddapp.media.resources.ResourceFragment"
@@ -661,6 +679,11 @@
         <action
             android:id="@+id/action_resourcesFragment_to_upgradeFragment"
             app:destination="@id/upgradeFragment" />
+        <action
+            android:id="@+id/action_resourceFragment_to_viewPDFFragment"
+            app:destination="@id/viewPDFFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/upgradeFragment"

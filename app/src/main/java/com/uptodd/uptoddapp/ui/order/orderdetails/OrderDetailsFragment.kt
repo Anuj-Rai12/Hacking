@@ -49,7 +49,7 @@ class OrderDetailsFragment : Fragment() {
 
         ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
             findNavController())
-        (activity as AppCompatActivity).supportActionBar!!.title= if(order!=null) getString(R.string.order_no)+" "+order!!.orderNo
+        (activity as AppCompatActivity).supportActionBar!!.title= if(order!=null) order!!.productname
         else getString(R.string.order_details)
 
         setFields()
@@ -59,7 +59,7 @@ class OrderDetailsFragment : Fragment() {
 
     private fun setFields() {
         if(order!=null) {
-            binding.textViewOrderNo.text = getString(R.string.order_no)+" "+order!!.orderNo
+//            binding.textViewOrderNo.text = getString(R.string.order_no)+" "+order!!.orderNo
             if(order!!.deliveryStatus)
                 binding.textViewDate.text=getString(R.string.delivery_date)+" "+order!!.deliveryDate
             else

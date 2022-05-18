@@ -35,28 +35,24 @@ class ExpertCounsellingAdapter(val clickListener: ExpertCounsellingInterface) :
             binding.root.setOnClickListener {
                 clickListener.onClick(expCon)
             }
-            if (!expCon.date.isNullOrEmpty())
-            {
+            if (!expCon.date.isNullOrEmpty()) {
                 binding.date.text = expCon.date
-            }
-            else
-                binding.dateLayout.visibility=View.GONE
+            } else
+                binding.dateLayout.visibility = View.GONE
 
-            if (!expCon.status.isNullOrEmpty())
-            {
-                binding.status.text =expCon.status
-            }
-            else
-                binding.date.visibility=View.GONE
+            if (!expCon.status.isNullOrEmpty()) {
+                binding.status.text = expCon.status
+            } else
+                binding.date.visibility = View.GONE
 
-            if(expCon.status=="Completed")
-            {
+            if (expCon.status.equals("Completed")) {
                 binding.status.setTextColor(Color.GREEN)
-            }
-            else
+            } else if (expCon.status.equals("Missed")){
                 binding.status.setTextColor(Color.RED)
-
-
+            } else{
+                binding.status.setTextColor(Color.BLUE)
+                binding.status.text = "Upcoming"
+            }
         }
 
     }

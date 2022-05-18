@@ -39,5 +39,14 @@
             app:layout_constraintStart_toStartOf="@+id/confettiImageView"
             app:layout_constraintTop_toBottomOf="@id/confettiImageView" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
+            android:background="?android:attr/listDivider" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

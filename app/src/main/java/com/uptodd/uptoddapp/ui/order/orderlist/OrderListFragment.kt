@@ -40,7 +40,7 @@ class OrderListFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderListBinding
     private lateinit var viewModel: OrderViewModel
-    private var  shouldShowButton=false;
+    private var  shouldShowButton=false
 
     lateinit var preferences: SharedPreferences
     var row=false
@@ -213,10 +213,7 @@ class OrderListFragment : Fragment() {
         for (i in 0..2)
         {
             var order=Order(i.toLong(),
-                "${System.currentTimeMillis()}",
-                (Math.random()%2).toLong()+1,
-                "Demo $i",
-                (Math.random()%2).toLong()+1,true,
+                "Demo $i",true,
                 SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),"","")
             orderList.add(order)
         }
@@ -231,24 +228,10 @@ class OrderListFragment : Fragment() {
                     activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 childView = inflater.inflate(R.layout.order_item_view, null)
 
-                if(row) {
-                    childView.textView2.text = " Prescription No: "
-                }
-                childView.textView_deliveryStatus.text="Date: "
-                childView.textView_orderNo.text = order.orderNo
-                childView.textView_monthNo.text ="Month: " + order.monthNo
-                childView.textView_productNameAndQty.text = "${order.productname} "+" | " + getString(R.string.qty) + order.quantity
-               /* if(row)
-                {
-                    childView.textView_productNameAndQty.text = "${order.productname} "+ getString(R.string.qty) + order.quantity
-                }
-                else
-                {
-                    childView.textView_productNameAndQty.text = "Product Name: "+order.productname + " | " + getString(R.string.qty) + order.quantity
-                }
-                */
+                childView.textView_deliveryStatus.text="Expected delivery date: "
 
-                //val date=decodeDate(order.deliveryDate)
+                childView.textView_productNameAndQty.text = "${order.productname}"
+
                 childView.textView_date.text = "( " + order.deliveryDate + " )"
                 if (order.details == "null" || order.details == null) {
                     childView.button_viewDetails.visibility = View.GONE
@@ -264,7 +247,10 @@ class OrderListFragment : Fragment() {
 
             if(orderList.isEmpty())
             {
+                binding.textView5.visibility = View.VISIBLE
                 binding.textView5.text="Your Order List is Empty"
+            }else{
+                binding.textView5.visibility = View.GONE
             }
         }
 

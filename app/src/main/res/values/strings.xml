@@ -297,8 +297,8 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="upgrade">UpGrade</string>
     <string name="no_orders">No orders</string>
     <string name="extend_subscription">Extend Subscription</string>
-    <string name="order_no">Order No : </string>
-    <string name="date">Expected Delivery Date : </string>
+    <string name="order_no">Delivery Set : </string>
+    <string name="date">Expected Delivery Date: </string>
     <string name="order_details">Order details</string>
     <string name="unable_to_load_pdf">Unable to load PDF</string>
     <string name="wait_">Wait…</string>
@@ -330,7 +330,7 @@ reach you out within 24-48 hours to start your onboarding</string>
 
     <!--Webinars-->
     <string name="order_no_caps">ORDER NO:</string>
-    <string name="product_name_qty">Product name | Qty:</string>
+    <string name="product_name_qty">Product name</string>
     <string name="delivery_status">Delivery Status</string>
     <string name="view_details">View Details</string>
     <string name="photo_type">Photo Type</string>

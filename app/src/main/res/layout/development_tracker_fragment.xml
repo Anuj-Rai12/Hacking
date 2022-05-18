@@ -33,9 +33,6 @@
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-
-
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/trackerRefresh"
                 android:layout_width="match_parent"
@@ -58,7 +55,7 @@
                         app:spanCount="2"
                         tools:layout_editor_absoluteX="8dp"
                         tools:listitem="@layout/development_tracker_recycler_view_item"
-                        tools:visibility="visible" />
+                        tools:visibility="gone" />
 
 
 
@@ -67,16 +64,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="gone">
+                        >
 
                         <ImageView
 
                             android:layout_width="300dp"
                             android:layout_height="300dp"
+                            android:layout_marginBottom="16dp"
                             android:layout_gravity="center"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_baseline_hourglass_empty_24" />
@@ -86,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/no_poems_found"
+                            android:text="No previous tracker response found"
                             android:textSize="18sp" />
 
                     </LinearLayout>

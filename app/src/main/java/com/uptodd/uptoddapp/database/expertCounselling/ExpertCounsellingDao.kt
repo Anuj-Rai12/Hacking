@@ -18,5 +18,4 @@ interface ExpertCounsellingDao {
 
     @Query("DELETE  FROM expert_counselling")
     suspend fun clear()
-
 }
