@@ -258,7 +258,7 @@ class AllTicketsFragment : Fragment() {
                 }else{
                     ticketType.text = "Support"
                 }
-                ticketType.setBackgroundResource(R.drawable.ticket_type_bg)
+                //ticketType.setBackgroundResource(R.drawable.ticket_type_bg)
 
                 ticketItem.setOnClickListener {
                     findNavController().navigate(
