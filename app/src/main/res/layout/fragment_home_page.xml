@@ -30,9 +30,6 @@
             android:layout_marginBottom="16dp">
 
 
-
-
-
             <TextView
                 android:id="@+id/introText"
                 android:layout_width="wrap_content"
@@ -40,10 +37,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/hey_mumma"
-                android:visibility="gone"
                 android:textColor="@color/activeBlue"
                 android:textSize="17sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,46 +49,45 @@
                 android:layout_width="180dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
-                android:visibility="gone"
                 android:layout_marginTop="2dp"
                 android:background="@color/activeBlue"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/introText" />
 
 
-<RelativeLayout
-    android:id="@+id/constraintRoot"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/underline"
-    android:background="@color/color_primary"
-    >
+            <RelativeLayout
+                android:id="@+id/constraintRoot"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/color_primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/underline">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/navBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
-        app:srcCompat="@drawable/nav_bar_icon"
-        app:tint="@color/white" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/navBar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    app:srcCompat="@drawable/nav_bar_icon"
+                    app:tint="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/accountIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="6dp"
-        app:srcCompat="@drawable/account_icon" />
-
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/accountIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="6dp"
+                    app:srcCompat="@drawable/account_icon" />
 
 
-</RelativeLayout>
+            </RelativeLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -100,9 +96,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="20dp"
-                android:padding="10dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/round_doctor_dashboard"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,12 +172,12 @@
                             android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:layout_marginTop="14dp"
                             android:layout_marginEnd="14dp"
                             android:text="@string/ideal_weight"
                             android:textColor="@color/timeDisplayWhite"
                             android:textSize="13sp"
-                            android:layout_marginStart="6dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -189,10 +185,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:textSize="13sp"
                             android:layout_marginEnd="14dp"
                             android:text="@{todosViewModel.idealWeight}"
                             android:textColor="@color/timeDisplayWhite"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
 
@@ -208,12 +204,12 @@
                             android:id="@+id/idealHeightText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginEnd="14dp"
-                            android:layout_marginStart="6dp"
-                            android:textSize="13sp"
                             android:text="@string/ideal_height"
                             android:textColor="@color/timeDisplayWhite"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -222,10 +218,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_marginEnd="14dp"
-                            android:textSize="13sp"
                             android:layout_marginBottom="14dp"
                             android:text="@{todosViewModel.idealHeight}"
                             android:textColor="@color/timeDisplayWhite"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
 
@@ -249,7 +245,6 @@
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <LinearLayout
@@ -276,24 +271,24 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="16dp"
-                    card_view:cardElevation="1dp"
                     android:layout_margin="10dp"
-                    android:padding="6dp"
                     android:background="@drawable/bg_border"
-                    >
+                    android:padding="6dp"
+                    card_view:cardCornerRadius="16dp"
+                    card_view:cardElevation="1dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_border"
-                        >
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/personalizedRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="4" />
+                        android:background="@drawable/bg_border">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/personalizedRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -312,23 +307,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp"
                     android:background="@drawable/bg_border"
-                    >
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_border"
-                        >
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/premiumRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="4" />
+                        android:background="@drawable/bg_border">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/premiumRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4" />
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -477,29 +471,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    app:cardCornerRadius="16dp"
                     android:background="@drawable/bg_border"
+                    app:cardCornerRadius="16dp"
                     app:cardElevation="1dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_border"
-                        >
+                        android:background="@drawable/bg_border">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/parentRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:spanCount="4" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/parentRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="4" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
             </LinearLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
