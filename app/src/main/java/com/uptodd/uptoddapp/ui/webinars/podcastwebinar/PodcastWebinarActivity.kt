@@ -2,12 +2,14 @@ package com.uptodd.uptoddapp.ui.webinars.podcastwebinar
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -30,43 +32,49 @@ import com.uptodd.uptoddapp.ui.webinars.fullwebinar.YouTubeConfig
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
+import com.uptodd.uptoddapp.utils.changeStatusBarColor
+import com.uptodd.uptoddapp.utils.getRandomBgColor
 import org.json.JSONObject
 import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 
-class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
+class PodcastWebinarActivity : YouTubeBaseActivity(), SuggestedVideoInterface {
 
     lateinit var binding: ActivityPodcastWebinarBinding
     lateinit var viewModel: FullWebinarViewModel
-    var selected=false
-    var flag=false
-    var musicPlayed=false
+    var selected = false
+    var flag = false
+    var musicPlayed = false
 
-    var handler: Handler?=null
+    var handler: Handler? = null
     private lateinit var VIDEO_SAMPLE: String
     private lateinit var title: String
-    private  var description: String? = null
-    private  var kitContent:String? = null
+    private var description: String? = null
+    private var kitContent: String? = null
     private lateinit var videos: MutableList<ActivitySample>
     private lateinit var model: SuggestedVideosModel
-    var player:YouTubePlayer?=null
+    var player: YouTubePlayer? = null
     private val adapter = SuggestedVideoAdapter(this)
 
     private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ChangeLanguage(this).setLanguage()
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_podcast_webinar
-        )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_podcast_webinar)
 
-        if(UpToddMediaPlayer.isPlaying)
-        {
-            musicPlayed=true
+
+        getRandomBgColor.apply {
+            changeStatusBarColor(this.first)
+            binding.videoViewLayout.setBackgroundResource(this.second)
+        }
+
+
+        if (UpToddMediaPlayer.isPlaying) {
+            musicPlayed = true
             UpToddMediaPlayer.upToddMediaPlayer.playPause()
             val intent = Intent(this, BackgroundPlayer::class.java)
             intent.putExtra("toRun", false)
@@ -78,51 +86,51 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
 
         Log.d("div", "FullWebinarActivity L93 $VIDEO_SAMPLE")
         title = intent.getStringExtra("title")!!
-        description=intent.getStringExtra("description")
-        kitContent=intent.getStringExtra("kit_content")
+        description = intent.getStringExtra("description")
+        kitContent = intent.getStringExtra("kit_content")
 
         videos = mutableListOf()
 
-        try{
+        try {
             model = intent.getSerializableExtra("videos") as SuggestedVideosModel
-        }catch (e: Exception){
+        } catch (e: Exception) {
             model = SuggestedVideosModel(videos)
         }
 
         videos = model.videos
 
-        if(videos.size>0){
-            binding.suggestedVideoTxt.visibility= View.VISIBLE
+        if (videos.size > 0) {
+            binding.suggestedVideoTxt.visibility = View.VISIBLE
             binding.sugVideoRecView.visibility = View.VISIBLE
             var list: MutableList<ActivitySample> = mutableListOf()
             var count = 0
-            for (video in videos){
-                if(!video.title.equals(title)){
+            for (video in videos) {
+                if (!video.title.equals(title)) {
                     list.add(video)
                     count++
                 }
-                if(count==3){
+                if (count == 3) {
                     break
                 }
             }
             adapter.list = list
             binding.sugVideoRecView.adapter = adapter
-        }else{
+        } else {
             binding.suggestedVideoTxt.visibility = View.GONE
             binding.sugVideoRecView.visibility = View.GONE
         }
 
 
         binding.title.text = title
-        binding.description.text=description
-        binding.kitContent.text="Home material: $kitContent"
-        if(description.isNullOrEmpty()){
-            binding.description.visibility=View.GONE
+        binding.description.text = description
+        binding.kitContent.text = "Home material: $kitContent"
+        if (description.isNullOrEmpty()) {
+            binding.description.visibility = View.GONE
         }
-        if(kitContent.isNullOrEmpty()){
-            binding.kitContent.visibility=View.GONE
+        if (kitContent.isNullOrEmpty()) {
+            binding.kitContent.visibility = View.GONE
         }
-        handler= Handler(Looper.getMainLooper())
+        handler = Handler(Looper.getMainLooper())
 
         binding.seekBar.setOnSeekBarChangeListener(seekBarChangeListener)
 
@@ -135,10 +143,9 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
             ) {
 
 
-
                 if (p1 != null) {
 
-                    player=p1
+                    player = p1
                     p1.setPlaybackEventListener(playBackChangeListener)
 
                     p1.loadVideo(VIDEO_SAMPLE)
@@ -154,15 +161,15 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
                         }
 
                         override fun onVideoStarted() {
-                           displayTime()
+                            displayTime()
 
 
                         }
 
                         override fun onLoaded(p0: String?) {
                             displayTime()
-                            p1?.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
-                            p1.setShowFullscreenButton(true)
+                            p1.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
+                            //p1.setShowFullscreenButton(true)
                         }
 
                         override fun onVideoEnded() {
@@ -176,18 +183,18 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
 
                     binding.btnPlayPause.setOnClickListener {
 
-                            selected = if (!selected) {
-                                p1.play()
-                                binding.btnPlayPause.text = "Pause"
-                                !selected
-                            } else {
-                                p1.pause()
-                                binding.btnPlayPause.text = "Play"
-                                !selected
-                            }
+                        selected = if (!selected) {
+                            p1.play()
+                            binding.btnPlayPause.text = "Pause"
+                            !selected
+                        } else {
+                            p1.pause()
+                            binding.btnPlayPause.text = "Play"
+                            !selected
                         }
                     }
                 }
+            }
 
             override fun onInitializationFailure(
                 p0: YouTubePlayer.Provider?,
@@ -202,10 +209,9 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
     }
 
 
-    var playBackChangeListener=object: YouTubePlayer.PlaybackEventListener
-    {
+    var playBackChangeListener = object : YouTubePlayer.PlaybackEventListener {
         override fun onPlaying() {
-           handler?.postDelayed(runnable,100)
+            handler?.postDelayed(runnable, 100)
             displayTime()
 
 
@@ -227,58 +233,55 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
 
         override fun onSeekTo(p0: Int) {
 
-            handler?.postDelayed(runnable,100)
+            handler?.postDelayed(runnable, 100)
         }
 
     }
 
-    fun displayTime()
-    {
+    fun displayTime() {
         player.let {
 
-            val time= it?.durationMillis?.minus(it?.currentTimeMillis!!)
-            val ftext="${time?.toLong()?.let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${time?.toLong()?.let { it1 ->
-                TimeUnit.MILLISECONDS.toSeconds(it1)%60
-            }}"
+            val time = it?.durationMillis?.minus(it?.currentTimeMillis!!)
+            val ftext = "${time?.toLong()?.let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${
+                time?.toLong()?.let { it1 ->
+                    TimeUnit.MILLISECONDS.toSeconds(it1) % 60
+                }
+            }"
 
             player.let {
 
-                val total=TimeUnit.MILLISECONDS.toSeconds(it!!.durationMillis.toLong())
+                val total = TimeUnit.MILLISECONDS.toSeconds(it!!.durationMillis.toLong())
 
-                val occ=TimeUnit.MILLISECONDS.toSeconds(it!!.currentTimeMillis.toLong())
+                val occ = TimeUnit.MILLISECONDS.toSeconds(it!!.currentTimeMillis.toLong())
 
 
-                val per=((occ/total.toFloat())*100).toInt()
-                Log.d("per","${((occ/total.toFloat())*100).toInt()}   $per")
-                flag=true
-                binding.seekBar?.progress=per.toInt()
-                flag=false
+                val per = ((occ / total.toFloat()) * 100).toInt()
+                Log.d("per", "${((occ / total.toFloat()) * 100).toInt()}   $per")
+                flag = true
+                binding.seekBar?.progress = per.toInt()
+                flag = false
                 binding.videoTime.text = ftext
             }
 
 
-
         }
     }
 
-    var runnable= object :Runnable{
+    var runnable = object : Runnable {
 
         override fun run() {
-           displayTime()
-            handler?.postDelayed(this,100)
+            displayTime()
+            handler?.postDelayed(this, 100)
         }
-
 
 
     }
 
-    var seekBarChangeListener=object :SeekBar.OnSeekBarChangeListener
-    {
+    var seekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
             player.let {
-                if(p2)
-                {
-                    val per=((it!!.durationMillis *p1)/100)
+                if (p2) {
+                    val per = ((it!!.durationMillis * p1) / 100)
                     it.seekToMillis(per)
                 }
 
@@ -296,12 +299,9 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
     }
 
 
-
     override fun onDestroy() {
-        if(!UpToddMediaPlayer.isPlaying)
-        {
-            if(UpToddMediaPlayer.songPlaying!=null && musicPlayed)
-            {
+        if (!UpToddMediaPlayer.isPlaying) {
+            if (UpToddMediaPlayer.songPlaying != null && musicPlayed) {
                 UpToddMediaPlayer.upToddMediaPlayer.playPause()
                 val intent = Intent(this, BackgroundPlayer::class.java)
                 intent.putExtra("toRun", true)
@@ -318,7 +318,7 @@ class PodcastWebinarActivity: YouTubeBaseActivity(), SuggestedVideoInterface {
         val intent = Intent(this, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_sample.video)
         intent.putExtra("title", act_sample.title)
-        intent.putExtra("videos",SuggestedVideosModel(videos))
+        intent.putExtra("videos", SuggestedVideosModel(videos))
         startActivity(intent)
         finishAffinity()
     }

@@ -31,7 +31,6 @@
     <color name="gradientCarouselIndicatorEndColor">#5DB4EA</color>
 
 
-
     <color name="themeBlue">#0679C3</color>
     <color name="gradientStartColor">#3372C2</color>
     <color name="gradientEndColor">#5DB4EA</color>
@@ -55,4 +54,11 @@
     <color name="black_high_opacity">#40000000</color>
     <color name="color_normal">#3372C2</color>
     <color name="color_primary">#0679C3</color>
+
+    <color name="video_container">#7ea8e7</color>
+    <color name="video_inner_color">#d4e2f7</color>
+
+    <color name="video_container_2">#e2b99c</color>
+    <color name="video_inner_color_2">#f8eee7</color>
+
 </resources>
