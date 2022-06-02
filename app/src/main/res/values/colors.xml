@@ -61,4 +61,13 @@
     <color name="video_container_2">#e2b99c</color>
     <color name="video_inner_color_2">#f8eee7</color>
 
+
+    <color name="video_container_3">#c9d095</color>
+    <color name="video_inner_color_3">#edefdc</color>
+
+
+    <color name="video_container_4">#bd96cf</color>
+    <color name="video_inner_color_4">#e9dcef</color>
+
+
 </resources>
