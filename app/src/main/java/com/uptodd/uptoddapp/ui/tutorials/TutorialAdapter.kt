@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.target.SimpleTarget
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.ItemActSampleBinding
@@ -42,6 +45,7 @@ class TutorialAdapter(val clickListener: TutorialInterface) :
             val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/mqdefault.jpg"
             Glide.with(view.root.context)
                 .load(Uri.parse(imageUrl))
+                .transform(CenterCrop(), RoundedCorners(20))
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.default_set_android_thumbnail)
                 .into(view.videoThumbnail)
