@@ -5,21 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.makeramen.roundedimageview.RoundedImageView
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
+import com.uptodd.uptoddapp.databinding.ItemActPodcastBinding
+import com.uptodd.uptoddapp.utils.getAdaptorViewHolderBg
 
-class ActivityPodcastAdapter(val clickListener: ActivityPodcastInterface):
-RecyclerView.Adapter<ActivityPodcastAdapter.ActivityViewHolder>() {
+class ActivityPodcastAdapter(val clickListener: ActivityPodcastInterface) :
+    RecyclerView.Adapter<ActivityPodcastAdapter.ActivityViewHolder>() {
 
     var list = listOf<ActivityPodcast>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_act_podcast, parent, false)
+        val view = DataBindingUtil.inflate<ItemActPodcastBinding>(
+            inflater,
+            R.layout.item_act_podcast,
+            parent,
+            false
+        )
         return ActivityViewHolder(view)
     }
 
@@ -29,23 +37,21 @@ RecyclerView.Adapter<ActivityPodcastAdapter.ActivityViewHolder>() {
         holder.bind(list[position])
     }
 
-    inner class ActivityViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        private val videoThumbnail: RoundedImageView =
-            view.findViewById<RoundedImageView>(R.id.item_act_podcast_videoThumbnail)
-        private val videoTitle: TextView = view.findViewById<TextView>(R.id.item_act_podcast_videoTitle)
+    inner class ActivityViewHolder(val view: ItemActPodcastBinding) :
+        RecyclerView.ViewHolder(view.root) {
 
         fun bind(activitySample: ActivityPodcast) {
-
+            view.rootLayoutItemActPodcast.setBackgroundResource(getAdaptorViewHolderBg)
             val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/mqdefault.jpg"
-            Glide.with(view.context)
+            Glide.with(view.root.context)
                 .load(Uri.parse(imageUrl))
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.default_set_android_thumbnail)
-                .into(videoThumbnail)
+                .into(view.itemActPodcastVideoThumbnail)
 
-            videoTitle.text = activitySample.title
+            view.itemActPodcastVideoTitle.text = activitySample.title
 
-            view.setOnClickListener {
+            view.root.setOnClickListener {
                 clickListener.onClick(activitySample)
             }
         }
