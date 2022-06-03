@@ -32,13 +32,13 @@ class WebinarAdapter(val clickListener: WebinarInterface) :
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position],position)
     }
 
     inner class ActivityViewHolder(val view: ItemActSampleBinding) :
         RecyclerView.ViewHolder(view.root) {
-        fun bind(activitySample: ActivitySample) {
-            view.rootLayoutItemActSample.setBackgroundResource(getAdaptorViewHolderBg)
+        fun bind(activitySample: ActivitySample, position: Int) {
+            view.rootLayoutItemActSample.setBackgroundResource(getAdaptorViewHolderBg[position % getAdaptorViewHolderBg.size])
             val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/mqdefault.jpg"
             Glide.with(view.root.context)
                 .load(Uri.parse(imageUrl))

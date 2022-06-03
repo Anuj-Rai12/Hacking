@@ -36,14 +36,14 @@ class ActivityPodcastAdapter(val clickListener: ActivityPodcastInterface) :
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position],position)
     }
 
     inner class ActivityViewHolder(val view: ItemActPodcastBinding) :
         RecyclerView.ViewHolder(view.root) {
 
-        fun bind(activitySample: ActivityPodcast) {
-            view.rootLayoutItemActPodcast.setBackgroundResource(getAdaptorViewHolderBg)
+        fun bind(activitySample: ActivityPodcast, position: Int) {
+            view.rootLayoutItemActPodcast.setBackgroundResource(getAdaptorViewHolderBg[position % getAdaptorViewHolderBg.size])
             val imageUrl = "https://img.youtube.com/vi/${activitySample.video}/mqdefault.jpg"
             Glide.with(view.root.context)
                 .load(Uri.parse(imageUrl))
