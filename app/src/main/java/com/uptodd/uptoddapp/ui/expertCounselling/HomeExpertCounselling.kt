@@ -179,38 +179,38 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                             parseData(AllUtil.getExpertCounselling(obj.get("allSessions").toString()))
                             hideNodata()
 
-                            if (obj.getInt("sessionBookingAllowed") == 1) {
 
-                                if(obj.getString("bookingLink").toString().isEmpty() ||
-                                    obj.getString("bookingLink")=="null") {
-                                    Log.d(TAG,"empty")
-                                    fetchBookingLink(obj.getInt("sessionBookingId"))
-                                }
-                                else {
-                                    binding.bookingButton.visibility=View.VISIBLE
-                                    val link=obj.getString("bookingLink")
-                                    binding.bookingButton.setOnClickListener {
-                                        if(!TextUtils.isEmpty(link) && link.startsWith("http")) {
-                                            var intent = Intent(
-                                                Intent.ACTION_VIEW, Uri.parse(
-                                                    link
-                                                )
-                                            )
-                                            startActivity(intent)
-                                        }
-                                    }
-                                }
-
-                            }
-                            else {
-                                binding.bookingButton.visibility=View.GONE
-                            }
                         }
                         binding.tncText.setOnClickListener {
                             TermsAndConditions.show((response.get("data") as JSONObject).getString("tnc")
                                 ,parentFragmentManager)
                         }
+                        if (obj.getInt("sessionBookingAllowed") == 1) {
 
+                            if(obj.getString("bookingLink").toString().isEmpty() ||
+                                obj.getString("bookingLink")=="null") {
+                                Log.d(TAG,"empty")
+                                fetchBookingLink(obj.getInt("sessionBookingId"))
+                            }
+                            else {
+                                binding.bookingButton.visibility=View.VISIBLE
+                                val link=obj.getString("bookingLink")
+                                binding.bookingButton.setOnClickListener {
+                                    if(!TextUtils.isEmpty(link) && link.startsWith("http")) {
+                                        var intent = Intent(
+                                            Intent.ACTION_VIEW, Uri.parse(
+                                                link
+                                            )
+                                        )
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+
+                        }
+                        else {
+                            binding.bookingButton.visibility=View.GONE
+                        }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
                         showNoData()
