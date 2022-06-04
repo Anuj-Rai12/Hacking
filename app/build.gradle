@@ -14,7 +14,7 @@ android {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 32
+        versionCode 33
         versionName "4.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
