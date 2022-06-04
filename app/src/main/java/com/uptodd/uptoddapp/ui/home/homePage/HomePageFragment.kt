@@ -112,9 +112,8 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         Log.d("div", "${System.currentTimeMillis()}")
 
         initialiseBindingAndViewModel(inflater, container)
-        viewModel?.checkForAppUpdate(requireContext())
-        viewModel?.isOutDatedVersion?.observe(viewLifecycleOwner
-        ) {
+        viewModel.checkForAppUpdate(requireContext())
+        viewModel.isOutDatedVersion.observe(viewLifecycleOwner) {
 
             if (!it) {
                 initiateDataRefresh()
