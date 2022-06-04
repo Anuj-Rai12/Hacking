@@ -8,14 +8,14 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdk 30
-    buildToolsVersion '33.0.0 rc2'
+    buildToolsVersion '32.0.0'
 
     defaultConfig {
         applicationId "com.uptodd.uptoddapp"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 33
-        versionName "4.6"
+        versionCode 34
+        versionName "4.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
