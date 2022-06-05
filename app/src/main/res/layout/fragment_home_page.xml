@@ -123,6 +123,7 @@
                     android:src="@android:color/transparent"
                     app:civ_border_color="#fff"
                     app:civ_border_width="0dp"
+                    app:layout_constraintVertical_bias=".5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -157,9 +158,10 @@
                     android:id="@+id/heightWeight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="1dp"
                     android:orientation="vertical"
+                    app:layout_constraintRight_toLeftOf="@id/appCompatImageView"
                     app:layout_constraintStart_toEndOf="@+id/profile_image_border"
                     app:layout_constraintTop_toBottomOf="@+id/babyAgeWelcome">
 
@@ -185,7 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:layout_marginEnd="14dp"
+                            android:layout_marginEnd="10dp"
                             android:text="@{todosViewModel.idealWeight}"
                             android:textColor="@color/timeDisplayWhite"
                             android:textSize="13sp"
@@ -197,6 +199,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingEnd="10dp"
                         android:orientation="horizontal">
 
 
@@ -217,8 +220,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:layout_marginEnd="14dp"
-                            android:layout_marginBottom="14dp"
+                            android:layout_marginBottom="13dp"
                             android:text="@{todosViewModel.idealHeight}"
                             android:textColor="@color/timeDisplayWhite"
                             android:textSize="13sp"
@@ -233,6 +235,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/round_edittext"
                         android:padding="8dp"
@@ -287,6 +290,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4" />
                     </LinearLayout>
@@ -321,6 +325,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4" />
                     </LinearLayout>
@@ -485,6 +490,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:overScrollMode="never"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4" />
 

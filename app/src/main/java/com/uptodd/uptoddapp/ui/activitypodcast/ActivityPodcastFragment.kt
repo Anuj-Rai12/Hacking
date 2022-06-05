@@ -215,7 +215,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                         }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
-                        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+                        //val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
                         if(!AllUtil.isUserPremium(requireContext()))
                         {

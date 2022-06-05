@@ -1308,7 +1308,7 @@ class TodosViewModel(
                             if (response != null) {
                                 val data = response.get("data") as JSONObject
                                 val weight = data.getString("weight")
-                                val height = data.getString("height")
+                                val height = data.getString("height").trim()
 
                                 idealHeight.value = "$height cm"
                                 idealWeight.value = "$weight  Kg"
