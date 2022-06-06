@@ -55,7 +55,7 @@ class UpToddMediaPlayer {
 
             } catch (e: Exception) {
 
-                Log.e("Error", e.message!!)
+                Log.e("Error", e.message.toString())
                 isPlaying=false
                 mediaPlayerListener?.onError()
             }
