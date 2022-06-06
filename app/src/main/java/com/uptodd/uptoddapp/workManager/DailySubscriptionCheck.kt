@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
@@ -56,8 +57,7 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
                                     (response.get("data") as JSONObject).getString("nannyPassUpdateTime")
 
 
-                                if (subscriptionActive != 1)
-                                {
+                                if (subscriptionActive != 1) {
 
                                 }
 
@@ -77,7 +77,7 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
 
                                 if (lastUserPasswordUpdate != "null" && currentDate != null) {
                                     val userDateParsed =
-                                        SimpleDateFormat("uuuu-MM-dd").parse(lastUserPasswordUpdate)
+                                        SimpleDateFormat(getDatePattern).parse(lastUserPasswordUpdate)
                                     if (currentDate.before(userDateParsed)) {
                                         // logout user if password is updated.
                                         logout()
@@ -87,7 +87,9 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
 
                                 if (lastNannyPasswordUpdate != "null" && currentDate != null) {
                                     val nannyDateParsed =
-                                        SimpleDateFormat("uuuu-MM-dd").parse(lastNannyPasswordUpdate)
+                                        SimpleDateFormat(getDatePattern).parse(
+                                            lastNannyPasswordUpdate
+                                        )
 
                                     if (currentDate.before(nannyDateParsed)) {
                                         // logout nanny if password is updated.
@@ -116,6 +118,13 @@ class DailySubscriptionCheck(context: Context, workerParams: WorkerParameters) :
 
         Result.success()
     }
+
+    private val getDatePattern= if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            "yyyy-MM-dd"
+        } else {
+            "uuuu-MM-dd"
+        }
+
 
     private fun logout() {
         editor.putBoolean("loggedIn", false)
