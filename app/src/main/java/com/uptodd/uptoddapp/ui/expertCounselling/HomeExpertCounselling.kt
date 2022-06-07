@@ -38,13 +38,14 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 private const val TAG = "Expert Counselling"
+
 class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
 
     companion object {
         fun newInstance() = HomeExpertCounselling()
     }
 
-    private var videosRespons: VideosUrlResponse?=null
+    private var videosRespons: VideosUrlResponse? = null
 
     private lateinit var viewModel: AllTicketsViewModel
     private lateinit var binding: FragmentHomeExpertCounsellingBinding
@@ -54,7 +55,10 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
         requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
     }
 
-    private val uptoddDatabase: UptoddDatabase by lazy {
+    private val uptoddDatabase: UptoddDatabase? by lazy {
+        if (context == null) {
+            return@lazy null
+        }
         UptoddDatabase.getInstance(requireContext())
     }
 
@@ -81,12 +85,17 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
 
         uptoddDialogs = UpToddDialogs(requireContext())
 
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_home_expert_counselling, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_home_expert_counselling,
+            container,
+            false
+        )
         binding?.lifecycleOwner = this
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding?.collapseToolbar!!,
-            findNavController(),getString(R.string.expert_counselling),"Happy Parenting Journey",
+            findNavController(), getString(R.string.expert_counselling), "Happy Parenting Journey",
             R.drawable.counselling_icon
         )
 
@@ -100,22 +109,22 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
                 intent.putExtra("url", videosRespons?.counselling)
                 intent.putExtra("title", "Couselling Support")
-                intent.putExtra("kit_content","")
-                intent.putExtra("description","")
+                intent.putExtra("kit_content", "")
+                intent.putExtra("description", "")
                 startActivity(intent)
             }
         }
 
-        binding?.collapseToolbar?.playTutorialIcon?.visibility=View.VISIBLE
+        binding?.collapseToolbar?.playTutorialIcon?.visibility = View.VISIBLE
 
 
-        val end=SimpleDateFormat("yyyy-MM-dd").parse(UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate())
-        if(!AllUtil.isUserPremium(requireContext()))
-        {
+        val end = SimpleDateFormat("yyyy-MM-dd").parse(
+            UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate()
+        )
+        if (!AllUtil.isUserPremium(requireContext())) {
             val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers","Close",
-                object :UpToddDialogs.UpToddDialogListener
-                {
+            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers", "Close",
+                object : UpToddDialogs.UpToddDialogListener {
                     override fun onDialogButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
                     }
@@ -125,13 +134,10 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                     }
                 }
             )
-        }
-        else if(AllUtil.isSubscriptionOver(end))
-        {
+        } else if (AllUtil.isSubscriptionOver(end)) {
             val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers","Close",
-                object :UpToddDialogs.UpToddDialogListener
-                {
+            upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers", "Close",
+                object : UpToddDialogs.UpToddDialogListener {
                     override fun onDialogButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
                     }
@@ -142,8 +148,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
 
                 }
             )
-        }
-        else{
+        } else {
             fetchDataFromApi()
         }
 
@@ -176,27 +181,33 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                             showNoData()
                             hideRecyclerView()
                         } else {
-                            parseData(AllUtil.getExpertCounselling(obj.get("allSessions").toString()))
+                            parseData(
+                                AllUtil.getExpertCounselling(
+                                    obj.get("allSessions").toString()
+                                )
+                            )
                             hideNodata()
 
 
                         }
                         binding.tncText.setOnClickListener {
-                            TermsAndConditions.show((response.get("data") as JSONObject).getString("tnc")
-                                ,parentFragmentManager)
+                            TermsAndConditions.show(
+                                (response.get("data") as JSONObject).getString("tnc"),
+                                parentFragmentManager
+                            )
                         }
                         if (obj.getInt("sessionBookingAllowed") == 1) {
 
-                            if(obj.getString("bookingLink").toString().isEmpty() ||
-                                obj.getString("bookingLink")=="null") {
-                                Log.d(TAG,"empty")
+                            if (obj.getString("bookingLink").toString().isEmpty() ||
+                                obj.getString("bookingLink") == "null"
+                            ) {
+                                Log.d(TAG, "empty")
                                 fetchBookingLink(obj.getInt("sessionBookingId"))
-                            }
-                            else {
-                                binding.bookingButton.visibility=View.VISIBLE
-                                val link=obj.getString("bookingLink")
+                            } else {
+                                binding.bookingButton.visibility = View.VISIBLE
+                                val link = obj.getString("bookingLink")
                                 binding.bookingButton.setOnClickListener {
-                                    if(!TextUtils.isEmpty(link) && link.startsWith("http")) {
+                                    if (!TextUtils.isEmpty(link) && link.startsWith("http")) {
                                         var intent = Intent(
                                             Intent.ACTION_VIEW, Uri.parse(
                                                 link
@@ -207,9 +218,8 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                                 }
                             }
 
-                        }
-                        else {
-                            binding.bookingButton.visibility=View.GONE
+                        } else {
+                            binding.bookingButton.visibility = View.GONE
                         }
                     } catch (e: Exception) {
                         Log.i(TAG, "${e.message}")
@@ -236,8 +246,8 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
         setupRecyclerView()
 
         ioScope.launch {
-            uptoddDatabase.expertCounsellingDao.clear()
-            uptoddDatabase.expertCounsellingDao.insertAll(expertCounsellingList)
+            uptoddDatabase?.expertCounsellingDao?.clear()
+            uptoddDatabase?.expertCounsellingDao?.insertAll(expertCounsellingList)
         }
     }
 
@@ -247,7 +257,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
         showRecyclerView()
     }
 
-    fun fetchBookingLink(sessionId:Int) {
+    fun fetchBookingLink(sessionId: Int) {
         val uid = AllUtil.getUserId()
         AndroidNetworking.get("https://www.uptodd.com/api/appusers/getBookingLink/$uid?sessionBookingId=$sessionId")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -267,15 +277,14 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                     */
 
                     try {
-                        binding.bookingButton.visibility=View.VISIBLE
+                        binding.bookingButton.visibility = View.VISIBLE
                         val data = (response.get("data") as String)
                         binding.bookingButton.setOnClickListener {
-                            if(!TextUtils.isEmpty(data) && data.startsWith("http")) {
+                            if (!TextUtils.isEmpty(data) && data.startsWith("http")) {
                                 var intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
                                 startActivity(intent)
-                            }
-                            else
-                                binding.bookingButton.visibility=View.GONE
+                            } else
+                                binding.bookingButton.visibility = View.GONE
                         }
 
 
@@ -315,8 +324,10 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
 
     override fun onClick(exp_con: ExpertCounselling) {
         findNavController().navigate(
-            HomeExpertCounsellingDirections.
-            actionHomeExpertCounsellingFragmentToExpertSuggestionsFragment(exp_con))
+            HomeExpertCounsellingDirections.actionHomeExpertCounsellingFragmentToExpertSuggestionsFragment(
+                exp_con
+            )
+        )
     }
 
     fun fetchTutorials(context: Context) {

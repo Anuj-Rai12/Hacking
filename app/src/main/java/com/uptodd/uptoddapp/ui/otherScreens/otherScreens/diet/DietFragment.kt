@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
@@ -73,16 +74,14 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.diet),"Parenting Tools for You",
+            findNavController(), getString(R.string.diet), "Parenting Tools for You",
             R.drawable.diet_icon
         )
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
@@ -139,9 +138,9 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
-            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val country=AllUtil.getCountry(requireContext())
+            val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country = AllUtil.getCountry(requireContext())
             uiScope.launch {
                 AndroidNetworking.get("https://www.uptodd.com/api/diets/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addPathParameter(
@@ -153,17 +152,16 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response["data"]!="null") {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "DietFragment L72 $data")
                                 parseData(data)
-                            }
-                            else
-                            {
+                            } else {
                                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                                     if (!AllUtil.isUserPremium(requireContext())) {
-                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                                        val title =
+                                            (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                                         val upToddDialogs = UpToddDialogs(requireContext())
                                         upToddDialogs.showInfoDialog("$title is not activated/required for you",
@@ -206,9 +204,16 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
     }
 
     private fun parseData(data: JSONArray) {
+        if (context == null) {
+            activity?.let {
+                Toast.makeText(it, "Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val period = KidsPeriod(requireActivity()).getPeriod()
-        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/activities/$period/$dpi/"
+        val appendable =
+            "https://www.uptodd.com/images/app/android/thumbnails/activities/$period/$dpi/"
         Log.d("div", "DietFragment L100 $data")
         var i = 0
         list.clear()
@@ -228,8 +233,7 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
             Log.d("div", "DietsFragment L117 ${list[i].url}")
             i++
         }
-        if(data.length()==0)
-        {
+        if (data.length() == 0) {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
                 val upToddDialogs = UpToddDialogs(requireContext())

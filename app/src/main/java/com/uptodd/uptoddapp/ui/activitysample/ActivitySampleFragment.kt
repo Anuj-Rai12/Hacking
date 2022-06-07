@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -92,7 +93,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
         }
 
-        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.visibility = View.VISIBLE
 
         return binding.root
     }
@@ -234,25 +235,31 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
     }
 
     private fun showNoData() {
-        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+        try {
+            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
-            val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                "Close",
-                object : UpToddDialogs.UpToddDialogListener {
-                    override fun onDialogButtonClicked(dialog: Dialog) {
-                        dialog.dismiss()
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
 
-                    }
+                        }
 
-                    override fun onDialogDismiss() {
-                        findNavController().navigateUp()
-                    }
-                })
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                        }
+                    })
 
+            }
+            binding.noDataContainer.isVisible = true
+        } catch (e: Exception) {
+            activity?.let {
+                Toast.makeText(it, "Unknown Error Found", Toast.LENGTH_SHORT).show()
+            }
         }
-        binding.noDataContainer.isVisible = true
     }
 
     private fun showRecyclerView() {
@@ -268,7 +275,7 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_sample.video)
         intent.putExtra("title", act_sample.title)
-        intent.putExtra("videos",SuggestedVideosModel(activitySampleList))
+        intent.putExtra("videos", SuggestedVideosModel(activitySampleList))
         startActivity(intent)
     }
 

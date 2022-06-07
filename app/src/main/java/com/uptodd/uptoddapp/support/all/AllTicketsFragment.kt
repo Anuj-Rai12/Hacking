@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -83,7 +84,7 @@ class AllTicketsFragment : Fragment() {
 
         fetchTutorials(requireContext())
 
-        binding?.collapseToolbar?.playTutorialIcon?.setOnClickListener {
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
 
             fragmentManager?.let { it1 ->
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
@@ -97,7 +98,7 @@ class AllTicketsFragment : Fragment() {
 
         }
 
-        binding?.collapseToolbar?.playTutorialIcon?.visibility = View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.visibility = View.VISIBLE
 
         val end = SimpleDateFormat("yyyy-MM-dd").parse(
             UptoddSharedPreferences.getInstance(requireContext()).getAppExpiryDate()
@@ -172,11 +173,17 @@ class AllTicketsFragment : Fragment() {
         }
 
         binding.generateSupportTicket.setOnClickListener {
-            findNavController().navigate(
-                AllTicketsFragmentDirections.actionAllTicketsFragmentToCreateTicketFragment(
-                    "Support"
+            try {
+                findNavController().navigate(
+                    AllTicketsFragmentDirections.actionAllTicketsFragmentToCreateTicketFragment(
+                        "Support"
+                    )
                 )
-            )
+            } catch (e: Exception) {
+                activity?.let {
+                    Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.generateExpertTicket.setOnClickListener {
@@ -223,7 +230,10 @@ class AllTicketsFragment : Fragment() {
             })
     }
 
-    private fun addTicketsOnScreen(ticketList: MutableList<Ticket>, ticketListLayout: LinearLayout) {
+    private fun addTicketsOnScreen(
+        ticketList: MutableList<Ticket>,
+        ticketListLayout: LinearLayout
+    ) {
         if (ticketList.isNotEmpty()) {
             ticketListLayout.removeAllViews()
             ticketList.forEachIndexed { _, ticket ->
@@ -251,11 +261,11 @@ class AllTicketsFragment : Fragment() {
                     }
                 }
 
-                ticketItemDetails.text= getDateFromTime(ticket.time)
+                ticketItemDetails.text = getDateFromTime(ticket.time)
 
-                if(ticket.type.equals("Expert Suggestion")){
+                if (ticket.type.equals("Expert Suggestion")) {
                     ticketType.text = "Expert"
-                }else{
+                } else {
                     ticketType.text = "Support"
                 }
                 //ticketType.setBackgroundResource(R.drawable.ticket_type_bg)
@@ -276,8 +286,10 @@ class AllTicketsFragment : Fragment() {
     private fun getDateFromTime(time: Long): String {
         val cal = Calendar.getInstance()
         cal.timeInMillis = time
-        return "" + cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + cal.get(Calendar.MONTH).toString() + "/" + cal.get(
-            Calendar.YEAR)
+        return "" + cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + cal.get(Calendar.MONTH)
+            .toString() + "/" + cal.get(
+            Calendar.YEAR
+        )
     }
 
 }

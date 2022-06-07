@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -70,11 +71,11 @@ class RecipeFragment : Fragment(), RecipeClickListener {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),"Recipe","Happy Parenting Journey",
+            findNavController(), "Recipe", "Happy Parenting Journey",
             R.drawable.recepie_icon_inner
         )
         binding.activitySampleRefresh.isRefreshing = true
-        binding.upgradeButton.visibility=View.GONE
+        binding.upgradeButton.visibility = View.GONE
         fetchDataFromApi()
 
         binding.activitySampleRefresh.setOnRefreshListener {
@@ -82,7 +83,6 @@ class RecipeFragment : Fragment(), RecipeClickListener {
             fetchDataFromApi()
         }
     }
-
 
 
     private fun fetchDataFromApi() {
@@ -99,7 +99,7 @@ class RecipeFragment : Fragment(), RecipeClickListener {
                     if (response == null) return
 
                     val data = response.get("data") as JSONArray
-                    Log.e("data",data.toString())
+                    Log.e("data", data.toString())
                     Log.i(TAG, "${response.get("data")}")
 
                     /* the get method doesn't support returning
@@ -167,6 +167,12 @@ class RecipeFragment : Fragment(), RecipeClickListener {
     }
 
     private fun showNoData() {
+        if (context == null) {
+            activity?.let {
+                Toast.makeText(it, "Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
             val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
@@ -197,13 +203,12 @@ class RecipeFragment : Fragment(), RecipeClickListener {
     }
 
 
-
     override fun onClick(recipe: Recipe) {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", recipe.video)
         intent.putExtra("title", recipe.title)
         intent.putExtra("description", recipe.description)
-        intent.putExtra("videos",SuggestedVideosModel(mutableListOf()))
+        intent.putExtra("videos", SuggestedVideosModel(mutableListOf()))
         startActivity(intent)
     }
 

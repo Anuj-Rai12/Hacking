@@ -1,6 +1,5 @@
 package com.uptodd.uptoddapp.ui.webinars.podcastwebinar
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,31 +10,22 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.databinding.ActivityPodcastWebinarBinding
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
-import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.adapters.SuggestedVideoAdapter
 import com.uptodd.uptoddapp.ui.webinars.adapters.SuggestedVideoInterface
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarViewModel
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.YouTubeConfig
-import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import com.uptodd.uptoddapp.utils.changeStatusBarColor
 import com.uptodd.uptoddapp.utils.getRandomBgColor
-import org.json.JSONObject
-import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 
@@ -102,10 +92,10 @@ class PodcastWebinarActivity : YouTubeBaseActivity(), SuggestedVideoInterface {
         if (videos.size > 0) {
             binding.suggestedVideoTxt.visibility = View.VISIBLE
             binding.sugVideoRecView.visibility = View.VISIBLE
-            var list: MutableList<ActivitySample> = mutableListOf()
+            val list: MutableList<ActivitySample> = mutableListOf()
             var count = 0
             for (video in videos) {
-                if (!video.title.equals(title)) {
+                if (video.title != title) {
                     list.add(video)
                     count++
                 }
@@ -239,29 +229,29 @@ class PodcastWebinarActivity : YouTubeBaseActivity(), SuggestedVideoInterface {
     }
 
     fun displayTime() {
-        player.let {
+        player?.let {yt2->
 
-            val time = it?.durationMillis?.minus(it?.currentTimeMillis!!)
-            val ftext = "${time?.toLong()?.let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${
-                time?.toLong()?.let { it1 ->
+            val time = yt2.durationMillis.minus(yt2.currentTimeMillis)
+            val ftext = "${time.toLong().let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${
+                time.toLong().let { it1 ->
                     TimeUnit.MILLISECONDS.toSeconds(it1) % 60
                 }
             }"
 
-            player.let {
+            player?.let { yt ->
 
-                val total = TimeUnit.MILLISECONDS.toSeconds(it!!.durationMillis.toLong())
+                val total = TimeUnit.MILLISECONDS.toSeconds(yt.durationMillis.toLong())
 
-                val occ = TimeUnit.MILLISECONDS.toSeconds(it!!.currentTimeMillis.toLong())
+                val occ = TimeUnit.MILLISECONDS.toSeconds(yt.currentTimeMillis.toLong())
 
 
                 val per = ((occ / total.toFloat()) * 100).toInt()
                 Log.d("per", "${((occ / total.toFloat()) * 100).toInt()}   $per")
                 flag = true
-                binding.seekBar?.progress = per.toInt()
+                binding.seekBar.progress = per
                 flag = false
                 binding.videoTime.text = ftext
-            }
+            } ?: Log.i("PlayerList", "Player is Null")
 
 
         }

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
@@ -29,8 +30,6 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.stories.StoriesDao
 import com.uptodd.uptoddapp.databinding.FragmentStoriesBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
-import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +64,8 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
         }
 
         enterTransition = fadeThrough
-        reenterTransition = fadeThrough    }
+        reenterTransition = fadeThrough
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,17 +77,15 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.stories),"Parenting Tools for You",
+            findNavController(), getString(R.string.stories), "Parenting Tools for You",
             R.drawable.act_stories_icon
 
         )
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -151,9 +149,9 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
-            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val country=AllUtil.getCountry(requireContext())
+            val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country = AllUtil.getCountry(requireContext())
             uiScope.launch {
                 AndroidNetworking.get("https://www.uptodd.com/api/stories?userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -161,16 +159,15 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response["data"]!="null") {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 parseData(data)
-                            }
-                            else
-                            {
+                            } else {
                                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                                     if (!AllUtil.isUserPremium(requireContext())) {
-                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                                        val title =
+                                            (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                                         val upToddDialogs = UpToddDialogs(requireContext())
                                         upToddDialogs.showInfoDialog("$title is not activated/required for you",
@@ -212,6 +209,12 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
     }
 
     private fun parseData(data: JSONArray) {
+        if (context == null) {
+            activity?.let {
+                Toast.makeText(it, "Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val appendable = "https://www.uptodd.com/images/app/android/thumbnails/stories/$dpi/"
         var i = 0
@@ -231,8 +234,7 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
             )
             i++
         }
-        if(data.length()==0)
-        {
+        if (data.length() == 0) {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
                 val upToddDialogs = UpToddDialogs(requireContext())
@@ -284,7 +286,7 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
         val intent = Intent(context, StoryPlayActivity::class.java)
         intent.putExtra("podcast", list[position].podcast)
         intent.putExtra("title", list[position].name)
-        intent.putExtra("description",list[position].description)
+        intent.putExtra("description", list[position].description)
         startActivity(intent)
     }
 
