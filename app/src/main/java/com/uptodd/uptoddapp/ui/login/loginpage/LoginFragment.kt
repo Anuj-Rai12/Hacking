@@ -353,7 +353,6 @@ class LoginFragment : Fragment() {
         initObservers()
 
 
-
         //val textView: TextView = binding.googleSignInButton.getChildAt(0) as TextView
         //textView.setText("")
         //binding.googleSignInButton.setStyle(2,0)
@@ -456,24 +455,20 @@ class LoginFragment : Fragment() {
 
 
 
-        when (isNew)
-        {
-            0->
-            {
-                view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+        when (isNew) {
+            0 -> {
+                view?.findNavController()
+                    ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
             }
-            1->
-            {
+            1 -> {
                 view?.findNavController()
                     ?.navigate(R.id.action_loginFragment_to_dobFragment)
             }
-            2->
-            {
+            2 -> {
                 view?.findNavController()
                     ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
             }
-            3->
-            {
+            3 -> {
                 view?.findNavController()
                     ?.navigate(R.id.action_loginFragment_to_addressFragment)
             }
@@ -498,15 +493,13 @@ class LoginFragment : Fragment() {
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer { userInfo ->
             userInfo?.let {
-                UptoddSharedPreferences.getInstance(requireContext()).saveAppExpiryDate(viewModel.appAccessingDate)
+                UptoddSharedPreferences.getInstance(requireContext())
+                    .saveAppExpiryDate(viewModel.appAccessingDate)
                 UptoddSharedPreferences.getInstance(requireContext()).saveLoginInfo(userInfo)
-                if(viewModel.motherStage=="pre birth")
-                {
-                    viewModel.motherStage="prenatal"
-                }
-                else if(viewModel.motherStage=="post birth")
-                {
-                    viewModel.motherStage="postnatal"
+                if (viewModel.motherStage == "pre birth") {
+                    viewModel.motherStage = "prenatal"
+                } else if (viewModel.motherStage == "post birth") {
+                    viewModel.motherStage = "postnatal"
                 }
 
 
@@ -519,10 +512,12 @@ class LoginFragment : Fragment() {
                 UptoddSharedPreferences.getInstance(requireContext())
                     .saveSubEndDate(viewModel.subsriptionEndDate)
 
-                val start = SimpleDateFormat("yyyy-MM-dd",Locale.US).parse(viewModel.subscriptionStartDate)
-                val end = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(viewModel.subsriptionEndDate)
+                val start =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(viewModel.subscriptionStartDate)
+                val end =
+                    SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(viewModel.subsriptionEndDate)
 
-                val months=AllUtil.getDifferenceMonth(start.time,end.time)
+                val months = AllUtil.getDifferenceMonth(start.time, end.time)
                 UptoddSharedPreferences.getInstance(requireContext()).saveCurrentSubPlan(months)
 
                 val difference = AllUtil.getDifferenceDay(start.time, end.time)
@@ -535,55 +530,54 @@ class LoginFragment : Fragment() {
                     viewModel.iSNPNew.observe(viewLifecycleOwner, Observer {
 
                         if (it) {
-                            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
-                        }
-                        else
-                        {
-                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                            view?.findNavController()
+                                ?.navigate(LoginFragmentDirections.actionLoginFragmentToSelectParentFragment())
+                        } else {
+                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name, false)
+                                ?.apply()
                             startActivity(
                                 Intent(activity, TodosListActivity::class.java)
                             )
                             activity?.finish()
                         }
-                        Log.d("subscription"," not ended")
+                        Log.d("subscription", " not ended")
 
-                       /*
-                        if(!AllUtil.isSubscriptionOver(end))
-                        {
-                            UpgradeViewModel.isFromLogin=true
-                            preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
-                            view?.findNavController()?.navigate(R.id.action_loginFragment_to_upgradeFragment2)
-                            Log.d("subscription","ended")
-                        }
-                        else
-                        {
-                        }
-                        */
+                        /*
+                         if(!AllUtil.isSubscriptionOver(end))
+                         {
+                             UpgradeViewModel.isFromLogin=true
+                             preferences?.edit()?.putBoolean(UserInfo::isNewUser.name,false)?.apply()
+                             view?.findNavController()?.navigate(R.id.action_loginFragment_to_upgradeFragment2)
+                             Log.d("subscription","ended")
+                         }
+                         else
+                         {
+                         }
+                         */
                     })
                 } else {
                     UptoddSharedPreferences.getInstance(requireContext()).saveUserType("premium")
 
-                    val country=if(viewModel.phoneNo?.startsWith("+91")!!)
+                    val country = if (viewModel.phoneNo?.startsWith("+91")!!)
                         "india"
                     else
                         "row"
 
                     AllUtil.registerToken("normal")
-                    if(AllUtil.isSubscriptionOverActive(requireContext()))
-                    {
+                    if (AllUtil.isSubscriptionOverActive(requireContext())) {
                         AllUtil.logoutOnly(requireContext())
                         val upToddDialogs = UpToddDialogs(requireContext())
-                        upToddDialogs.showInfoDialog("Your Premium Subscription is ended now","Close",
-                            object :UpToddDialogs.UpToddDialogListener {
+                        upToddDialogs.showInfoDialog("Your Premium Subscription is ended now",
+                            "Close",
+                            object : UpToddDialogs.UpToddDialogListener {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
                                     dialog.dismiss()
                                 }
                             }
                         )
 
-                    }
-                    else if (userInfo.isNewUser) {
-                        if(viewModel.motherStage=="prenatal") {
+                    } else if (userInfo.isNewUser) {
+                        if (viewModel.motherStage == "prenatal") {
 
 
                             if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
@@ -596,25 +590,26 @@ class LoginFragment : Fragment() {
                                     Intent(activity, TodosListActivity::class.java)
                                 )
                             }
-                        }
-                        else{
-                            view?.findNavController()
-                                ?.navigate(R.id.action_loginFragment_to_babyGenderFragment)
+                        } else {
+                            try {
+                                val action =
+                                    LoginFragmentDirections.actionLoginFragmentToBabyGenderFragment()
+                                findNavController().navigate(action)
+                            } catch (e: Exception) {
+
+                                Log.i("MOVE_LOGIN_TO_GENDER", "initObservers: ${e.localizedMessage}")
+                            }
                         }
                     } else {
-                        if((userInfo.kidsDob==null || userInfo.kidsDob=="null")&&viewModel.motherStage=="postnatal")
-                        {
+                        if ((userInfo.kidsDob == null || userInfo.kidsDob == "null") && viewModel.motherStage == "postnatal") {
 
-                                view?.findNavController()
-                                    ?.navigate(R.id.action_loginFragment_to_dobFragment)
-                        }
-                        else if((userInfo.address==null ||userInfo.address=="null") && country=="india")
-                        {
+                            view?.findNavController()
+                                ?.navigate(R.id.action_loginFragment_to_dobFragment)
+                        } else if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
 
                             view?.findNavController()
                                 ?.navigate(R.id.action_loginFragment_to_addressFragment)
-                        }
-                        else {
+                        } else {
 
                             startActivity(
                                 Intent(activity, TodosListActivity::class.java)
@@ -1062,8 +1057,8 @@ class LoginFragment : Fragment() {
         }, R.string.loadingDuarationInMillis.toLong())
 
     }
-    private fun setupHeader()
-    {
+
+    private fun setupHeader() {
         val b = OkHttpClient.Builder()
         b.addNetworkInterceptor(HttpLoggingInterceptor())
         b.readTimeout(120, TimeUnit.SECONDS)
@@ -1076,12 +1071,12 @@ class LoginFragment : Fragment() {
             //add auth token in header
             var token = AllUtil.getAuthToken()
             val request = original.newBuilder()
-                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .header("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .method(original.method(), original.body())
                 .build()
             chain.proceed(request)
         }
-        AndroidNetworking.initialize(requireContext().applicationContext,b.build())
+        AndroidNetworking.initialize(requireContext().applicationContext, b.build())
     }
 }
 

@@ -297,8 +297,14 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
             getString(R.string.back),
             object : UpToddDialogs.UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {
-                    dialog.dismiss()
-                    findNavController().navigateUp()
+                    try {
+                        dialog.dismiss()
+                        findNavController().navigateUp()
+                    }catch (e:Exception){
+                        activity?.let {
+                            Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             })
         isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {

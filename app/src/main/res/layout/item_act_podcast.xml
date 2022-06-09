@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <RelativeLayout
         android:id="@+id/root_layout_item_act_podcast"
         android:layout_width="match_parent"

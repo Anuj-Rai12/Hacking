@@ -76,17 +76,17 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener {
+class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener {
 
     private lateinit var uptoddDialogs: UpToddDialogs
     private lateinit var binding: FragmentHomePageBinding
     private val viewModel: TodosViewModel by activityViewModels()
-    private var personalizedOptionsAdapter:HomeOptionsAdapter?=null
+    private var personalizedOptionsAdapter: HomeOptionsAdapter? = null
 
-    companion object
-    {
-        var visited=false
+    companion object {
+        var visited = false
     }
+
     val dialogs by lazy {
         UpToddDialogs(requireContext())
     }
@@ -188,12 +188,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
         viewModel.isDataOutdatedFlag.observe(viewLifecycleOwner, Observer {
 
-            if(it)
-            {
-               changeToLoading()
-            }
-            else
-            {
+            if (it) {
+                changeToLoading()
+            } else {
                 changeToNormalLayout()
             }
 
@@ -251,7 +248,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         })
 
         binding.navBar.setOnClickListener {
-            val activity=requireActivity() as TodosListActivity
+            val activity = requireActivity() as TodosListActivity
             activity.openDrawer()
         }
         binding.accountIcon.setOnClickListener {
@@ -294,19 +291,15 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
 
         val months = KidsPeriod(requireActivity()).getKidsAge()
-        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-        if(stage=="pre birth" ||stage=="prenatal")
-        {
-             binding.babyAgeView.text = getString(R.string.babyAgePrenatal)
-        }
-        else if(months==0)
-        {
-            binding.babyAgeView.text="The Baby is in womb"
-        }
-        else if (months <12)
+        val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+        if (stage == "pre birth" || stage == "prenatal") {
+            binding.babyAgeView.text = getString(R.string.babyAgePrenatal)
+        } else if (months == 0) {
+            binding.babyAgeView.text = "The Baby is in womb"
+        } else if (months < 12)
             binding.babyAgeView.text = getString(R.string.babyMonthsFormat, months)
         else
-            binding.babyAgeView.text=getString(R.string.babyYearFormat,months/12,months%12)
+            binding.babyAgeView.text = getString(R.string.babyYearFormat, months / 12, months % 12)
     }
 
 
@@ -383,7 +376,6 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
     }
 
 
-
     private fun openBlog(webinar: Webinars) {
         val intent = Intent(context, FullBlogActivity::class.java)
         intent.putExtra("url", webinar.webinarURL)
@@ -402,7 +394,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             viewModel.refreshDataByCallingApi(requireContext(), requireActivity())
             UptoddSharedPreferences.getInstance(requireContext()).initSave(false)
             testInternetConnectionAndRefreshData()
-    //        UptoddSharedPreferences.getInstance(requireContext()).setLastDailyTodoFetchedDate(DateClass().getCurrentDateTimeAsString())
+            //        UptoddSharedPreferences.getInstance(requireContext()).setLastDailyTodoFetchedDate(DateClass().getCurrentDateTimeAsString())
 //            val connection =
 //                testInternetConnectionAndRefreshData() // test internet connection and assign a disposable to connection so that we can dispose it after data is refreshed
 //
@@ -434,8 +426,8 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                 && preferences.getString("babyName", "") != "baby"
             )
                 stage = "post"
-            stage= UptoddSharedPreferences.getInstance(requireContext()).getStage()!!
-           val res = if (stage == "prenatal" ||stage=="pre birth")
+            stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()!!
+            val res = if (stage == "prenatal" || stage == "pre birth")
                 R.drawable.pre_birth_profile
             else
                 R.drawable.post_birth_profile
@@ -529,67 +521,73 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
     }
 
-    fun checkForDailog()
-    {
-        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
-        val calCurrent=Calendar.getInstance().apply {
+    fun checkForDailog() {
+        val sharedPreferences = UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        val calPrev=Calendar.getInstance().apply {
+        val calPrev = Calendar.getInstance().apply {
             time = Date(sharedPreferences.getDailyDialogTime())
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        if(!sharedPreferences.isOnboardingDetailsFilled() &&
-            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
-        {
-            val termsAndConditions=TermsAndConditions("Please Fill Onboarding Form by " +
-                    "clicking button at bottom on order's page,then only kit will go for approval"
-            ,sharedPreferences.getOnboardingLink())
+        if (!sharedPreferences.isOnboardingDetailsFilled() &&
+            (calCurrent.timeInMillis != calPrev.timeInMillis || calPrev.timeInMillis == 0L)
+        ) {
+            val termsAndConditions = TermsAndConditions(
+                "Please Fill Onboarding Form by " +
+                        "clicking button at bottom on order's page,then only kit will go for approval",
+                sharedPreferences.getOnboardingLink()
+            )
             sharedPreferences.setDailyDialogTime(calCurrent.timeInMillis)
-            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+            termsAndConditions.show(requireFragmentManager(), TermsAndConditions::class.java.name)
         }
-        val dur=Calendar.getInstance().timeInMillis-sharedPreferences.getSessionBookingDate()
-        if(sharedPreferences.isSessionBookingAllowed()
-            && (TimeUnit.MILLISECONDS.toDays(dur)>=1L || sharedPreferences.getSessionBookingDate()==0L))
-        {
-            val termsAndConditions=TermsAndConditions("You can book next session now,from " +
-                    "Expert Session page as slots are open for you now,Please ignore if already booked."
-                ,"navigateToSession")
-            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+        val dur = Calendar.getInstance().timeInMillis - sharedPreferences.getSessionBookingDate()
+        if (sharedPreferences.isSessionBookingAllowed()
+            && (TimeUnit.MILLISECONDS.toDays(dur) >= 1L || sharedPreferences.getSessionBookingDate() == 0L)
+        ) {
+            val termsAndConditions = TermsAndConditions(
+                "You can book next session now,from " +
+                        "Expert Session page as slots are open for you now,Please ignore if already booked.",
+                "navigateToSession"
+            )
+            termsAndConditions.show(requireFragmentManager(), TermsAndConditions::class.java.name)
 
             sharedPreferences.setShownSessionBookingDate(Calendar.getInstance().timeInMillis)
         }
         checkForDevelopmentFormDialog()
     }
 
-    fun checkForDevelopmentFormDialog(){
+    fun checkForDevelopmentFormDialog() {
 
-        val sharedPreferences=UptoddSharedPreferences.getInstance(requireContext())
-        val calCurrent=Calendar.getInstance().apply {
+        val sharedPreferences = UptoddSharedPreferences.getInstance(requireContext())
+        val calCurrent = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        val calPrev=Calendar.getInstance().apply {
+        val calPrev = Calendar.getInstance().apply {
             time = Date(sharedPreferences.getDailyDialogTimeForDevelopmentForm())
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        if(sharedPreferences.isFillDevelopmentForm() &&
-            (calCurrent.timeInMillis!=calPrev.timeInMillis || calPrev.timeInMillis==0L))
-        {
-            val termsAndConditions=TermsAndConditions("Fill your monthly development form to get tips by our expert.","navigateToDevelopment")
+        if (sharedPreferences.isFillDevelopmentForm() &&
+            (calCurrent.timeInMillis != calPrev.timeInMillis || calPrev.timeInMillis == 0L)
+        ) {
+            val termsAndConditions = TermsAndConditions(
+                "Fill your monthly development form to get tips by our expert.",
+                "navigateToDevelopment"
+            )
             sharedPreferences.setDailyDialogTimeForDevelopmentForm(calCurrent.timeInMillis)
-            termsAndConditions.show(requireFragmentManager(),TermsAndConditions::class.java.name)
+            termsAndConditions.show(requireFragmentManager(), TermsAndConditions::class.java.name)
 
         }
     }
@@ -602,19 +600,19 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             // anything else what you can do with RxJava
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ connectivity ->
-                    // do something with connectivity
-                    // you can call connectivity.state();
-                    // connectivity.type(); or connectivity.toString();
-                    if (connectivity.available()) {
+                // do something with connectivity
+                // you can call connectivity.state();
+                // connectivity.type(); or connectivity.toString();
+                if (connectivity.available()) {
 
-                        viewModel.performAction(requireContext(), requireActivity())
+                    viewModel.performAction(requireContext(), requireActivity())
 
 
-                        // viewModel.uploadMonthlyTodosThroughApi()
+                    // viewModel.uploadMonthlyTodosThroughApi()
 //                        Toast.makeText(requireContext(), "Connected", Toast.LENGTH_LONG)
 //                            .show()
 
-                    } else {
+                } else {
 //                        val snackbar = Snackbar.make(
 //                            binding.mainConstraintLayout,
 //                            getString(R.string.no_internet_connection),
@@ -625,15 +623,15 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 ////                            }
 //                        snackbar.show()
 
-                    }
+                }
 
-                },
+            },
                 {
-                 it.let {
-                 if(isAdded){
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                 }
-                 }
+                    it.let {
+                        if (isAdded) {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
             )
@@ -658,11 +656,17 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         animationDrawable.start()
         val day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         val lastDay = UptoddSharedPreferences.getInstance(requireContext()).getPopUpDate()
-        if(day>lastDay||lastDay==0) {
-            checkMemoryBoosterAdded(requireContext())
-            checkPodcastAdded(requireContext())
-            checkSessionAdded(requireContext())
-            UptoddSharedPreferences.getInstance(requireContext()).setPopUpDate(day)
+        if (day > lastDay || lastDay == 0) {
+            if (context != null) {
+                checkMemoryBoosterAdded(requireContext())
+                checkPodcastAdded(requireContext())
+                checkSessionAdded(requireContext())
+                UptoddSharedPreferences.getInstance(requireContext()).setPopUpDate(day)
+            } else {
+                activity?.let {
+                    Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -677,7 +681,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
     }
 
     private fun setupViewPager() {
-        val adapter = TodoViewPagerAdapter(childFragmentManager,lifecycle)
+        val adapter = TodoViewPagerAdapter(childFragmentManager, lifecycle)
         binding.viewPager.adapter = adapter
 
         adapter.apply {
@@ -700,7 +704,6 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
 
 
                 when (tab?.position) {
@@ -729,25 +732,37 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
 
-       // (requireActivity() as AppCompatActivity).supportActionBar!!.title = getString(R.string.home)
+        // (requireActivity() as AppCompatActivity).supportActionBar!!.title = getString(R.string.home)
 
         binding.todosViewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.personalizedRecyclerview.layoutManager=GridLayoutManager(requireContext(),
-            3)
-        binding.parentRecyclerview.layoutManager=GridLayoutManager(requireContext(),
-            3)
-        binding.premiumRecyclerview.layoutManager=GridLayoutManager(requireContext(),
-            3)
+        binding.personalizedRecyclerview.layoutManager = GridLayoutManager(
+            requireContext(),
+            3
+        )
+        binding.parentRecyclerview.layoutManager = GridLayoutManager(
+            requireContext(),
+            3
+        )
+        binding.premiumRecyclerview.layoutManager = GridLayoutManager(
+            requireContext(),
+            3
+        )
 
-        personalizedOptionsAdapter = HomeOptionsAdapter(requireContext(),
-            HomeOptionsAdapter.PERSONALIZED,this)
+        personalizedOptionsAdapter = HomeOptionsAdapter(
+            requireContext(),
+            HomeOptionsAdapter.PERSONALIZED, this
+        )
         binding.personalizedRecyclerview.adapter = personalizedOptionsAdapter
-        binding.parentRecyclerview.adapter = HomeOptionsAdapter(requireContext(),
-            HomeOptionsAdapter.PARENT,this)
-        binding.premiumRecyclerview.adapter = HomeOptionsAdapter(requireContext(),
-            HomeOptionsAdapter.PREMIUM,this)
+        binding.parentRecyclerview.adapter = HomeOptionsAdapter(
+            requireContext(),
+            HomeOptionsAdapter.PARENT, this
+        )
+        binding.premiumRecyclerview.adapter = HomeOptionsAdapter(
+            requireContext(),
+            HomeOptionsAdapter.PREMIUM, this
+        )
     }
 
 
@@ -781,8 +796,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         binding.apply {
 
 
-            if(!viewModel.isRefreshing.value!!)
-            {
+            if (!viewModel.isRefreshing.value!!) {
                 btnSeeAllActivites.visibility = View.INVISIBLE
                 scoreView.visibility = View.INVISIBLE
                 superManImageView.visibility = View.VISIBLE
@@ -792,8 +806,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                 Glide.with(requireActivity())
                     .load(R.drawable.superparentgif)
                     .into(confettiImageView)
-            }
-            else
+            } else
                 changeToLoading()
         }
     }
@@ -812,8 +825,7 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
     }
 
 
-    private fun changeToLoading()
-    {
+    private fun changeToLoading() {
         binding.apply {
             btnSeeAllActivites.visibility = View.INVISIBLE
             scoreView.visibility = View.INVISIBLE
@@ -834,8 +846,8 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
 
 
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val type=UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val type = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
 
             AndroidNetworking.get("https://www.uptodd.com/api/appGuidelines?motherStage=$stage&userType=$type")
                 .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -847,12 +859,12 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                             if (it.getString("data") != "null") {
 
                                 val data = it.get("data") as String
-                                var url = if(!data.startsWith("https://wwww")) {
+                                var url = if (!data.startsWith("https://wwww")) {
                                     "https://www.${data.substring(8)}"
                                 } else
                                     data
 
-                                Log.d("url","$url")
+                                Log.d("url", "$url")
 
                                 JishnuDownloadManager(
                                     url,
@@ -900,51 +912,50 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
     }
 
 
-
-
-
-
     override fun onResume() {
 
-        val notifyId=activity?.intent?.getStringExtra("notifyId").toString()
+        val notifyId = activity?.intent?.getStringExtra("notifyId").toString()
 
-        Log.d("todo come",notifyId)
+        Log.d("todo come", notifyId)
 
-        if(!visited)
-        {
-            when(notifyId) {
+        if (!visited) {
+            when (notifyId) {
                 "Podcast" -> {
                     findNavController()?.navigate(R.id.action_homePageFragment_to_activityPodcastFragment)
-                    visited=true
+                    visited = true
                 }
-                "MemoryBooster" -> { findNavController()?.navigate(R.id.action_homePageFragment_to_speedBoosterFragment)
-                    visited=true
+                "MemoryBooster" -> {
+                    findNavController()?.navigate(R.id.action_homePageFragment_to_speedBoosterFragment)
+                    visited = true
                 }
-                "ActivitySample" ->
-                {
+                "ActivitySample" -> {
 
                     findNavController()?.navigate(R.id.action_homePageFragment_to_activitySampleFragment)
-                    visited=true
+                    visited = true
                 }
 
             }
-        }
-        else
-            visited=false
+        } else
+            visited = false
         super.onResume()
     }
 
     override fun onClickedItem(navId: Int) {
-        findNavController().navigate(navId)
+        try {
+            findNavController().navigate(navId)
+        } catch (e: Exception) {
+            activity?.let {
+                Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    private fun checkSessionAdded(context: Context)
-    {
+    private fun checkSessionAdded(context: Context) {
         val period = getPeriod(context)
         val uid = AllUtil.getUserId()
-        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
-        val country= AllUtil.getCountry(context)
-        val size= UptoddSharedPreferences.getInstance(context).getSaveCountSession()
+        val userType = UptoddSharedPreferences.getInstance(context).getUserType()
+        val country = AllUtil.getCountry(context)
+        val size = UptoddSharedPreferences.getInstance(context).getSaveCountSession()
 
         AndroidNetworking.get("https://www.uptodd.com/api/activitysample?userId={userId}&period={period}&userType=$userType&country=$country")
             .addPathParameter("userId", uid.toString())
@@ -958,11 +969,16 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                     if (response == null) return
                     try {
                         val data = response.get("data") as JSONArray
-                        if(data.length()>size) {
-                            if(size>0)
-                                AddedPopUpDialog.showInfo("New Session Added", "Hey Mom/Dad, Check new Session Added for you.",parentFragmentManager)
+                        if (data.length() > size) {
+                            if (size > 0)
+                                AddedPopUpDialog.showInfo(
+                                    "New Session Added",
+                                    "Hey Mom/Dad, Check new Session Added for you.",
+                                    parentFragmentManager
+                                )
 
-                            UptoddSharedPreferences.getInstance(context).saveCountSession(data.length())
+                            UptoddSharedPreferences.getInstance(context)
+                                .saveCountSession(data.length())
                         }
 
                     } catch (e: Exception) {
@@ -979,20 +995,19 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             })
     }
 
-    private fun checkPodcastAdded(context: Context)
-    {
+    private fun checkPodcastAdded(context: Context) {
         val uid = AllUtil.getUserId()
-        val months= getMonth(context)
-        val lang= AllUtil.getLanguage()
-        val country= AllUtil.getCountry(context)
-        val stage=UptoddSharedPreferences.getInstance(context).getStage()
-        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
-        val size= UptoddSharedPreferences.getInstance(context).getSaveCountPodcast()
+        val months = getMonth(context)
+        val lang = AllUtil.getLanguage()
+        val country = AllUtil.getCountry(context)
+        val stage = UptoddSharedPreferences.getInstance(context).getStage()
+        val userType = UptoddSharedPreferences.getInstance(context).getUserType()
+        val size = UptoddSharedPreferences.getInstance(context).getSaveCountPodcast()
 
         AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addPathParameter("userId", uid.toString())
             .addPathParameter("months", months.toString())
-            .addPathParameter("lang",lang)
+            .addPathParameter("lang", lang)
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
@@ -1005,16 +1020,20 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
 
                         val data = response.get("data") as JSONArray
 
-                        Log.d("size p","${data.length()} > $size")
+                        Log.d("size p", "${data.length()} > $size")
 
-                        if(data.length()>size) {
-                            if(size>0)
-                                AddedPopUpDialog.showInfo("New Podcast Added", "Hey Mom/Dad, Check new Podcast Added for you.",parentFragmentManager)
-                            UptoddSharedPreferences.getInstance(context).saveCountPodcast(data.length())
+                        if (data.length() > size) {
+                            if (size > 0)
+                                AddedPopUpDialog.showInfo(
+                                    "New Podcast Added",
+                                    "Hey Mom/Dad, Check new Podcast Added for you.",
+                                    parentFragmentManager
+                                )
+                            UptoddSharedPreferences.getInstance(context)
+                                .saveCountPodcast(data.length())
                         }
 
-                    }
-                    catch (exception:Exception) {
+                    } catch (exception: Exception) {
 
                     }
                 }
@@ -1025,17 +1044,16 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             })
     }
 
-    private fun checkMemoryBoosterAdded(context: Context)
-    {
+    private fun checkMemoryBoosterAdded(context: Context) {
 
         val uid = AllUtil.getUserId()
-        val stage= UptoddSharedPreferences.getInstance(context).getStage()
-        val prenatal =if(stage=="pre birth" || stage=="prenatal")  0 else 1
+        val stage = UptoddSharedPreferences.getInstance(context).getStage()
+        val prenatal = if (stage == "pre birth" || stage == "prenatal") 0 else 1
         val lang = AllUtil.getLanguage()
-        val country= AllUtil.getCountry(context)
-        val userType=UptoddSharedPreferences.getInstance(context).getUserType()
-        val size= UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
-        val database= UptoddDatabase.getInstance(context).memoryBoosterDao
+        val country = AllUtil.getCountry(context)
+        val userType = UptoddSharedPreferences.getInstance(context).getUserType()
+        val size = UptoddSharedPreferences.getInstance(context).getSaveCountMemory()
+        val database = UptoddDatabase.getInstance(context).memoryBoosterDao
         val manager: DownloadManager = DownloadManager.Builder().context(context)
             .downloader(OkHttpDownloader.create())
             .threadPoolSize(3)
@@ -1043,9 +1061,9 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
             .build()
         AndroidNetworking.get("https://www.uptodd.com/api/memorybooster?userId={userId}&prenatal={prenatal}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-            .addPathParameter("userId",uid.toString())
-            .addPathParameter("prenatal",prenatal.toString())
-            .addPathParameter("lang",lang)
+            .addPathParameter("userId", uid.toString())
+            .addPathParameter("prenatal", prenatal.toString())
+            .addPathParameter("lang", lang)
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
@@ -1053,17 +1071,23 @@ class HomePageFragment : Fragment(),HomeOptionsAdapter.HomeOptionsClickListener 
                     if (response.getString("status") == "Success") {
 
                         val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
-                        Log.d("size m","${poems.size} > $size")
-                        if(poems.size >size) {
-                            if(size>0)
-                                AddedPopUpDialog.showInfo("New Memory Booster Added", "Hey Mom/Dad, Check new Memory Booster Added for you.",parentFragmentManager)
-                            UptoddSharedPreferences.getInstance(context).saveCountMemoryBooster(poems.size)
+                        Log.d("size m", "${poems.size} > $size")
+                        if (poems.size > size) {
+                            if (size > 0)
+                                AddedPopUpDialog.showInfo(
+                                    "New Memory Booster Added",
+                                    "Hey Mom/Dad, Check new Memory Booster Added for you.",
+                                    parentFragmentManager
+                                )
+                            UptoddSharedPreferences.getInstance(context)
+                                .saveCountMemoryBooster(poems.size)
                         }
 
                     } else {
 
                     }
                 }
+
                 override fun onError(error: ANError) {
                     Log.i("error", error.errorBody)
                 }

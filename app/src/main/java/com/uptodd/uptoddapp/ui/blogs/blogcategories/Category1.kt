@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -243,7 +244,9 @@ class Category1 : Fragment(), BlogsAdapter.OnCompleteClickListener {
             object : UpToddDialogs.UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {
                     dialog.dismiss()
-                    findNavController().navigateUp()
+                    lifecycleScope.launchWhenResumed {
+                        findNavController().navigateUp()
+                    }
                 }
             })
 

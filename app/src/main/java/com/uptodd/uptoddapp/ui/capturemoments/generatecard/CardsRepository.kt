@@ -10,6 +10,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.capturemoments.generatecard.Card
 import com.uptodd.uptoddapp.database.capturemoments.generatecard.GenerateCardDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -48,7 +49,7 @@ class CardsRepository(private val database: GenerateCardDatabase)
                                 Log.d("div", "CardsRepository L35 ${list.get(0)}")
                                 i++
                             }
-                            AsyncTask.execute {
+                            runBlocking(Dispatchers.IO) {
                                 database.generateCardDatabaseDao.insertCardsToRoom(list)
                             }
                         }

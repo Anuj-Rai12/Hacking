@@ -52,33 +52,33 @@ import java.util.*
 class GenerateCardFragment : Fragment() {
 
     var preferences: SharedPreferences? = null
-    var token:String?=null
+    var token: String? = null
 
-    private var imagePath:String?=null
-    private var type:String?=null
+    private var imagePath: String? = null
+    private var type: String? = null
 
 
+    private lateinit var binding: FragmentGenerateCard1Binding
+    private lateinit var viewModel: GenerateCardViewModel
 
-    private lateinit var binding:FragmentGenerateCard1Binding
-    private lateinit var viewModel:GenerateCardViewModel
+    private val requiredBitmapSize: Int = 900
+    private val textSize: Float = 75f
+    private val lineDifference =
+        75f              //lineDifference>=textSize and lineDifference should not be too much
+    private val cardListMarginInDP = 5f
+    private val cardWidthToHeightRatio = 0.5625
+    private val paddingLeftRightText = 50
+    private val imageTopPadding = 50f
+    private val lowerBitmapHeight = 300
 
-    private val requiredBitmapSize:Int=900
-    private val textSize:Float=75f
-    private val lineDifference=75f              //lineDifference>=textSize and lineDifference should not be too much
-    private val cardListMarginInDP=5f
-    private val cardWidthToHeightRatio=0.5625
-    private val paddingLeftRightText=50
-    private val imageTopPadding=50f
-    private val lowerBitmapHeight=300
-
-    private var imageBitmap: Bitmap?=null
-    private var rescaledBitmap: Bitmap?=null
-    private var roundedCornerBitmap:Bitmap?=null
+    private var imageBitmap: Bitmap? = null
+    private var rescaledBitmap: Bitmap? = null
+    private var roundedCornerBitmap: Bitmap? = null
     //private var finalBitmap:Bitmap?=null
 
     private lateinit var adapter: GenerateCardAdapter
 
-    private val REQUEST_CODE_SHARE=0
+    private val REQUEST_CODE_SHARE = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,8 +88,8 @@ class GenerateCardFragment : Fragment() {
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
 
         arguments?.let {
-            imagePath=it.getString("imagePath")
-            type= it.getString("photoType")
+            imagePath = it.getString("imagePath")
+            type = it.getString("photoType")
             Log.d("div", "GenerateCardFragment L61 $imagePath $type")
         }
     }
@@ -113,22 +113,25 @@ class GenerateCardFragment : Fragment() {
         StrictMode.setVmPolicy(builder.build())
 
         preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
-        if(preferences!!.contains("token"))
-            token= preferences!!.getString("token", "")
+        if (preferences!!.contains("token"))
+            token = preferences!!.getString("token", "")
 
-        viewModel=ViewModelProvider(this, GenerateCardViewModelFactory(requireActivity().application, type, token))
+        viewModel = ViewModelProvider(
+            this,
+            GenerateCardViewModelFactory(requireActivity().application, type, token)
+        )
             .get(GenerateCardViewModel::class.java)
         viewModel.imagePath = imagePath
 
-        if(preferences!!.contains("uid"))
-            viewModel.uid=preferences!!.getString("uid", "")
-        if(preferences!!.contains("babyName"))
-            viewModel.babyName= preferences!!.getString("babyName", "baby").toString()
+        if (preferences!!.contains("uid"))
+            viewModel.uid = preferences!!.getString("uid", "")
+        if (preferences!!.contains("babyName"))
+            viewModel.babyName = preferences!!.getString("babyName", "baby").toString()
         //viewModel.type = type
         //viewModel.refreshDatabase(type)
         //viewModel.getFromDatabase()
 
-        (activity as AppCompatActivity?)?.supportActionBar?.title=getString(R.string.choose_Card)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.choose_Card)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
@@ -175,9 +178,11 @@ class GenerateCardFragment : Fragment() {
 
                     saveFileToLocal(viewModel.finalBitmap!!)
                 } else if (!viewModel.isCancelled) {
-                    Toast.makeText(activity,
+                    Toast.makeText(
+                        activity,
                         getString(R.string.error_saving_to_database),
-                        Toast.LENGTH_LONG)
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
             }
@@ -203,12 +208,13 @@ class GenerateCardFragment : Fragment() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
             showLoadingDialog()
             viewModel.refresh()
-        }
-        else{
-            val snackbar= Snackbar.make(binding.layout,
+        } else {
+            val snackbar = Snackbar.make(
+                binding.layout,
                 getString(R.string.no_internet_connection),
-                Snackbar.LENGTH_LONG)
-                .setAction(getString(R.string.retry)){
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(getString(R.string.retry)) {
                     loadData()
                 }
             snackbar.show()
@@ -216,20 +222,21 @@ class GenerateCardFragment : Fragment() {
     }
 
 
-    private fun getImageFromStorage()
-    {
+    private fun getImageFromStorage() {
         val imgFile = File(viewModel.imagePath!!)
         if (imgFile.exists()) {
             imageBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-        }
-        else{
-            Toast.makeText(activity, getString(R.string.image_not_found_in_storage), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(
+                activity,
+                getString(R.string.image_not_found_in_storage),
+                Toast.LENGTH_LONG
+            ).show()
             requireActivity().finish()
         }
     }
 
-    private fun rescaleBitmap()
-    {
+    private fun rescaleBitmap() {
         /*val largerDimension=if(imageBitmap!!.width>imageBitmap!!.height) imageBitmap!!.width else imageBitmap!!.height
         val scalingFactor:Float=requiredBitmapSize.toFloat()/largerDimension.toFloat()
 
@@ -255,128 +262,156 @@ class GenerateCardFragment : Fragment() {
         )
         Log.d("div","GenerateCardFragment L253 ${rescaledBitmap!!.height} ${rescaledBitmap!!.width}")*/
 
-        rescaledBitmap=imageBitmap!!        //The rescaling is being done in CaptureImageFragment in resolveRotationErrorAndRescaleImage function
+        rescaledBitmap =
+            imageBitmap!!        //The rescaling is being done in CaptureImageFragment in resolveRotationErrorAndRescaleImage function
 
     }
 
-    private fun roundedCornersBitmap()
-    {
-        val rounder = Bitmap.createBitmap(rescaledBitmap!!.width,
+    private fun roundedCornersBitmap() {
+        val rounder = Bitmap.createBitmap(
+            rescaledBitmap!!.width,
             rescaledBitmap!!.height,
-            Bitmap.Config.ARGB_8888)
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(rounder)
-        val paint=Paint()
-        canvas.drawRoundRect(RectF(0f,
-            0f,
-            rescaledBitmap!!.width.toFloat(),
-            rescaledBitmap!!.height.toFloat()), 20.0f, 20.0f, paint)
+        val paint = Paint()
+        canvas.drawRoundRect(
+            RectF(
+                0f,
+                0f,
+                rescaledBitmap!!.width.toFloat(),
+                rescaledBitmap!!.height.toFloat()
+            ), 20.0f, 20.0f, paint
+        )
         canvas.drawBitmap(rescaledBitmap!!, 0f, 0f, null)
-        rescaledBitmap=rounder
+        rescaledBitmap = rounder
     }
 
-    private fun addCardsToList()
-    {
+    private fun addCardsToList() {
 
-        for((i, imgUrl) in viewModel.cardTypeList.value!!.withIndex()) {
+        for ((i, imgUrl) in viewModel.cardTypeList.value!!.withIndex()) {
             imgUrl.let {
-                val dpi= ScreenDpi(requireContext()).getScreenDrawableType()
+                val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
                 val appendable = "https://www.uptodd.com/images/app/android/details/cards/$dpi/"
                 Log.d("div", "GenerateCardFragment L243 ${appendable + imgUrl.imageURL + ".webp"}")
-                var cardBitmap:Bitmap?
-                Glide.
-                with(this).
-                asBitmap().
-                load(appendable + imgUrl.imageURL + ".webp").
-                into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap>?,
-                    ) {
-                        cardBitmap = resource
+                var cardBitmap: Bitmap?
+                Glide.with(this).asBitmap().load(appendable + imgUrl.imageURL + ".webp")
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?,
+                        ) {
+                            cardBitmap = resource
 
-                        //These 4 lines are written to to avoid same bitmap being created for same image url
-                        val bmOverlay = Bitmap.createBitmap(cardBitmap!!.width,
-                            cardBitmap!!.height,
-                            cardBitmap!!.config)
-                        val canvas = Canvas(bmOverlay)
-                        canvas.drawBitmap(cardBitmap!!, Matrix(), null)
-                        cardBitmap = bmOverlay
-                        Log.d("div",
-                            "GenerateCardFragment L255 $resource \t $cardBitmap \t $bmOverlay")
+                            //These 4 lines are written to to avoid same bitmap being created for same image url
+                            val bmOverlay = Bitmap.createBitmap(
+                                cardBitmap!!.width,
+                                cardBitmap!!.height,
+                                cardBitmap!!.config
+                            )
+                            val canvas = Canvas(bmOverlay)
+                            canvas.drawBitmap(cardBitmap!!, Matrix(), null)
+                            cardBitmap = bmOverlay
+                            Log.d(
+                                "div",
+                                "GenerateCardFragment L255 $resource \t $cardBitmap \t $bmOverlay"
+                            )
 
-                        if (cardBitmap != null && rescaledBitmap != null) {
-                            /* Uncomment this for previous version of cards*/
-                            /*val canvas = Canvas(cardBitmap!!)
-                            rescaledBitmap?.let {
-                                canvas.drawBitmap(it, (cardBitmap!!.width - rescaledBitmap!!.width) / 2f, imageTopPadding, null)
-                                addTextToBitmap(cardBitmap!!, viewModel.cardTypeList.value!![i].text.toString())
-                            }*/
-                            cardBitmap = Bitmap.createScaledBitmap(cardBitmap!!, requiredBitmapSize,
-                                lowerBitmapHeight, true)
-                            Log.d("div","GenerateCardFragment L313 ${cardBitmap!!.width} ${cardBitmap!!.height}")
-                            val newBitmap = Bitmap.createBitmap(requiredBitmapSize,
-                                rescaledBitmap!!.height + lowerBitmapHeight,
-                                Bitmap.Config.ARGB_8888)
-                            Log.d("div",
-                                "GenerateCardFragment L291 ${newBitmap.height} ${newBitmap.width}")
-                            val canvas = Canvas(newBitmap)
-                            canvas.drawColor(0x00000000)
-                            canvas.drawBitmap(rescaledBitmap!!, 0f, 0f, null)
-                            canvas.drawBitmap(cardBitmap!!,
-                                0f,
-                                rescaledBitmap!!.height.toFloat(),
-                                null)
-                            val card = FinalCard(System.currentTimeMillis(),
-                                newBitmap,
-                                viewModel.cardTypeList.value!![i].cardId)
-                            viewModel.finalCards.add(card)
-                            binding.viewPager.adapter!!.notifyDataSetChanged()
-                            Log.d("div", "GenerateCardFragment L162 ${viewModel.finalCards.size}")
-                        } else {
-                            Toast.makeText(activity, getString(R.string.unable_to_load_image), Toast.LENGTH_LONG)
-                                .show()
+                            if (cardBitmap != null && rescaledBitmap != null) {
+                                /* Uncomment this for previous version of cards*/
+                                /*val canvas = Canvas(cardBitmap!!)
+                                rescaledBitmap?.let {
+                                    canvas.drawBitmap(it, (cardBitmap!!.width - rescaledBitmap!!.width) / 2f, imageTopPadding, null)
+                                    addTextToBitmap(cardBitmap!!, viewModel.cardTypeList.value!![i].text.toString())
+                                }*/
+                                cardBitmap = Bitmap.createScaledBitmap(
+                                    cardBitmap!!, requiredBitmapSize,
+                                    lowerBitmapHeight, true
+                                )
+                                Log.d(
+                                    "div",
+                                    "GenerateCardFragment L313 ${cardBitmap!!.width} ${cardBitmap!!.height}"
+                                )
+                                val newBitmap = Bitmap.createBitmap(
+                                    requiredBitmapSize,
+                                    rescaledBitmap!!.height + lowerBitmapHeight,
+                                    Bitmap.Config.ARGB_8888
+                                )
+                                Log.d(
+                                    "div",
+                                    "GenerateCardFragment L291 ${newBitmap.height} ${newBitmap.width}"
+                                )
+                                val canvas = Canvas(newBitmap)
+                                canvas.drawColor(0x00000000)
+                                canvas.drawBitmap(rescaledBitmap!!, 0f, 0f, null)
+                                canvas.drawBitmap(
+                                    cardBitmap!!,
+                                    0f,
+                                    rescaledBitmap!!.height.toFloat(),
+                                    null
+                                )
+                                val card = FinalCard(
+                                    System.currentTimeMillis(),
+                                    newBitmap,
+                                    viewModel.cardTypeList.value!![i].cardId
+                                )
+                                viewModel.finalCards.add(card)
+                                binding.viewPager.adapter!!.notifyDataSetChanged()
+                                Log.d(
+                                    "div",
+                                    "GenerateCardFragment L162 ${viewModel.finalCards.size}"
+                                )
+                            } else {
+                                Toast.makeText(
+                                    activity,
+                                    getString(R.string.unable_to_load_image),
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            }
                         }
-                    }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        Log.d("div", "GenerateCardFragment L190 $placeholder")
-                    }
-                })
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            Log.d("div", "GenerateCardFragment L190 $placeholder")
+                        }
+                    })
 
             }
         }
     }
 
-    private fun addTextToBitmap(cardBitmap: Bitmap, text1: String)
-    {
+    private fun addTextToBitmap(cardBitmap: Bitmap, text1: String) {
         Log.d("div", "GenerateCardFragment L291 $cardBitmap")
-        var text=text1.replace("<Baby Name>", viewModel.babyName)
-        text=text.replace("<baby>", viewModel.babyName)
-        text=text.replace("<Babe Name>", viewModel.babyName)
-        text=text.replace("<Baby name>", viewModel.babyName)
+        var text = text1.replace("<Baby Name>", viewModel.babyName)
+        text = text.replace("<baby>", viewModel.babyName)
+        text = text.replace("<Babe Name>", viewModel.babyName)
+        text = text.replace("<Baby name>", viewModel.babyName)
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Log.d("div", "GenerateCardFragment L294 $cardBitmap")
-            val canvas=Canvas(cardBitmap)
+            val canvas = Canvas(cardBitmap)
             val textPaint = TextPaint()
             textPaint.textSize = textSize
             textPaint.color = Color.rgb(66, 66, 66)                          //textColor
             textPaint.style = Paint.Style.FILL
-            val staticLayout = StaticLayout(text,
+            val staticLayout = StaticLayout(
+                text,
                 textPaint,
                 requiredBitmapSize,
                 Layout.Alignment.ALIGN_CENTER,
                 1.0f,
                 0.0f,
-                false)
-            canvas.translate(((canvas.width - staticLayout.width) / 2).toFloat(),
-                (requiredBitmapSize + (cardBitmap.height - requiredBitmapSize - staticLayout.height) / 2).toFloat())
+                false
+            )
+            canvas.translate(
+                ((canvas.width - staticLayout.width) / 2).toFloat(),
+                (requiredBitmapSize + (cardBitmap.height - requiredBitmapSize - staticLayout.height) / 2).toFloat()
+            )
             staticLayout.draw(canvas)
-        }
-        else {
+        } else {
             Log.d("div", "GenerateCardFragment L305 $cardBitmap")
-            val lineText=DivideIntoLines(text)
-            val canvas=Canvas(cardBitmap)
+            val lineText = DivideIntoLines(text)
+            val canvas = Canvas(cardBitmap)
             val textPaint = Paint()
             textPaint.textSize = textSize
             textPaint.color = Color.WHITE                          //textColor
@@ -384,45 +419,40 @@ class GenerateCardFragment : Fragment() {
             val bounds = Rect()
             //val height: Float = textPaint.measureText("yY")
             //val width: Float = textPaint.measureText(text)
-            var y:Float= (requiredBitmapSize+100).toFloat()
+            var y: Float = (requiredBitmapSize + 100).toFloat()
             for (line in lineText.split("\n")) {
                 textPaint.getTextBounds(lineText, 0, line.length, bounds)
-                val x:Float= ((cardBitmap.width-bounds.width())/2).toFloat()
+                val x: Float = ((cardBitmap.width - bounds.width()) / 2).toFloat()
                 Log.d(
                     "div",
                     "GenerateCradFragment L221 ${cardBitmap.width} ${line.length} ${bounds.width()}"
                 )
-                y+=lineDifference
+                y += lineDifference
                 canvas.drawText(line, x, y, textPaint)
             }
         }
     }
 
-    private fun DivideIntoLines(text: String): String{
-        var textCopy=text
-        var word:String=""
-        var finalString=""
-        textCopy= "$textCopy "
-        var i=0
-        var lineLength=-1
-        while(i<textCopy.length)
-        {
-            if(textCopy[i]!=' ')
+    private fun DivideIntoLines(text: String): String {
+        var textCopy = text
+        var word: String = ""
+        var finalString = ""
+        textCopy = "$textCopy "
+        var i = 0
+        var lineLength = -1
+        while (i < textCopy.length) {
+            if (textCopy[i] != ' ')
                 word += textCopy[i]
-            else
-            {
-                if(lineLength==-1 || lineLength+word.length<((rescaledBitmap!!.width - paddingLeftRightText*2)/40))
-                {
-                    if(lineLength==-1)lineLength=0
-                    finalString+="$word "
-                    lineLength+=word.length
-                }
-                else
-                {
+            else {
+                if (lineLength == -1 || lineLength + word.length < ((rescaledBitmap!!.width - paddingLeftRightText * 2) / 40)) {
+                    if (lineLength == -1) lineLength = 0
+                    finalString += "$word "
+                    lineLength += word.length
+                } else {
                     finalString += "\n$word "
                     lineLength = 0
                 }
-                word=""
+                word = ""
             }
             i++
         }
@@ -432,19 +462,25 @@ class GenerateCardFragment : Fragment() {
     }
 
     private fun onClickSave() {
-        viewModel.isSavedToLocal.value=false
+        viewModel.isSavedToLocal.value = false
         Log.d("div", "GenerateCardFragment L292 ${adapter.getCardId()}")
-        val finalCard=viewModel.getBitmapById(adapter.getCardId())
-        viewModel.finalBitmap=finalCard.finalCard
-        if(viewModel.finalBitmap!=null) {
+        if (viewModel.finalCards.isEmpty()) {
+            activity?.let {
+                Toast.makeText(it, "Unknown Error", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+        val finalCard = viewModel.getBitmapById(adapter.getCardId())
+        viewModel.finalBitmap = finalCard.finalCard
+        if (viewModel.finalBitmap != null) {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                viewModel.isSavingToDatabase.value=true
-                viewModel.isCardSavedToDatabase=false
-                viewModel.isCancelled=false
+                viewModel.isSavingToDatabase.value = true
+                viewModel.isCardSavedToDatabase = false
+                viewModel.isCancelled = false
                 showUploadingDialog()
-                viewModel.isSavedToLocalCache=false
-                val file=saveFileToLocalCache(viewModel.finalBitmap)
-                if(file!=null && file.exists() && viewModel.isSavedToLocalCache) {
+                viewModel.isSavedToLocalCache = false
+                val file = saveFileToLocalCache(viewModel.finalBitmap)
+                if (file != null && file.exists() && viewModel.isSavedToLocalCache) {
                     viewModel.saveFinalCardToDatabase(finalCard, type!!, imagePath)
                     viewModel.isSavingToDatabase.observe(viewLifecycleOwner, Observer {
                         /*if (!it) {
@@ -460,13 +496,20 @@ class GenerateCardFragment : Fragment() {
                         }*/
                         file.delete()
                     })
-                }
-                else
-                    Toast.makeText(activity, getString(R.string.error_caching_image), Toast.LENGTH_LONG).show()
+                } else
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.error_caching_image),
+                        Toast.LENGTH_LONG
+                    ).show()
             } else {
                 //showInternetNotConnectedDialog()
-                Snackbar.make(binding.layout, getString(R.string.no_internet_connection), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.retry)){
+                Snackbar.make(
+                    binding.layout,
+                    getString(R.string.no_internet_connection),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(getString(R.string.retry)) {
                         onClickSave()
                     }.show()
             }
@@ -474,7 +517,7 @@ class GenerateCardFragment : Fragment() {
     }
 
     private fun saveFileToLocalCache(finalBitmap: Bitmap?): File? {
-        try{
+        try {
             /*var imageFile: File? = null
             val state: String = Environment.getExternalStorageState()
             var folder: File? = null
@@ -510,7 +553,7 @@ class GenerateCardFragment : Fragment() {
             fOut.flush()
             fOut.close()
             //file.setReadable(true, false)
-            viewModel.isSavedToLocalCache=true
+            viewModel.isSavedToLocalCache = true
             return file
 
         } catch (e: Exception) {
@@ -520,35 +563,36 @@ class GenerateCardFragment : Fragment() {
     }
 
     private fun saveFileToLocal(finalBitmap: Bitmap): File? {
-        var imageFile: File?=null
+        var imageFile: File? = null
 
-        try{
+        try {
             //val state: String = Environment.getExternalStorageState()
             var folder: File?
-                folder =
-                    File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
+            folder =
+                File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
 
             var success = true
             if (!folder.exists()) {
                 success = folder.mkdirs()
-                if(!success)
-                {
+                if (!success) {
                     folder = File(
-                    requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                        .toString() + "/UpToddCards"
-                )
-                    success= folder.mkdirs()
+                        requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                            .toString() + "/UpToddCards"
+                    )
+                    success = folder.mkdirs()
                 }
 
             }
             if (success) {
                 //imageFile = File(imagePath!!)             //overwrite to capturedImage in CaptureImageFragment
-                val date= Date()
+                val date = Date()
                 imageFile = File(
-                    folder.absolutePath + File.separator + Timestamp(date.time).time + "Card.jpg")
+                    folder.absolutePath + File.separator + Timestamp(date.time).time + "Card.jpg"
+                )
                 imageFile.createNewFile()
             } else {
-                Toast.makeText(activity, getString(R.string.image_not_saved), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.image_not_saved), Toast.LENGTH_SHORT)
+                    .show()
 
             }
             val ostream = ByteArrayOutputStream()
@@ -565,7 +609,7 @@ class GenerateCardFragment : Fragment() {
             //activity?.contentResolver?.openOutputStream(Uri.fromFile(imageFile))
             //Toast.makeText(activity, "Saved", Toast.LENGTH_LONG).show()
 
-            viewModel.isSavedToLocal.value=true
+            viewModel.isSavedToLocal.value = true
 
         } catch (e: Exception) {
             Log.d("div", "GenerateCardFragment L408 $e")
@@ -574,31 +618,38 @@ class GenerateCardFragment : Fragment() {
     }
 
 
-
     private fun onClickShare() {
-        var finalBitmap:Bitmap? =null
-        try
-        {
-            finalBitmap= viewModel.getBitmapById(adapter.getCardId()).finalCard
-        }
-        catch (e:Exception)
-        {
+        var finalBitmap: Bitmap? = null
+        try {
+            if (viewModel.finalCards.isEmpty()) {
+                activity?.let {
+                    Toast.makeText(it, "UnKnown Error", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+            finalBitmap = viewModel.getBitmapById(adapter.getCardId()).finalCard
+        } catch (e: Exception) {
 
         }
 
         Log.d("div", "GenerateCardFragment L539 ")
-        if(finalBitmap!=null) {
+        if (finalBitmap != null) {
             try {
 
                 Log.d("div", "GenerateCardFragment L543 ")
-                viewModel.isSavedToLocalCache=false
-                val pathBitmap=MediaStore.Images.Media.insertImage(requireContext().contentResolver,finalBitmap,"${System.currentTimeMillis()}",null)
+                viewModel.isSavedToLocalCache = false
+                val pathBitmap = MediaStore.Images.Media.insertImage(
+                    requireContext().contentResolver,
+                    finalBitmap,
+                    "${System.currentTimeMillis()}",
+                    null
+                )
                 Log.d("div", "GenerateCardFragment L546 ")
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "image/*"
                 Log.d("div", "GenerateCardFragment L548 ")
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.flags=Intent.FLAG_GRANT_READ_URI_PERMISSION
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 Log.d("div", "GenerateCardFragment L550 ")
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(pathBitmap))
                 Log.d("div", "GenerateCardFragment L552 ")
@@ -609,16 +660,15 @@ class GenerateCardFragment : Fragment() {
                 Log.d("div", "GenerateCardFragment L577 $e")
                 e.printStackTrace()
             }
-        }
-        else{
-            Toast.makeText(activity, getString(R.string.wait_card_not_ready), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(activity, getString(R.string.wait_card_not_ready), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
-    private fun formatViewPager(viewPager: ViewPager)
-    {
-        viewPager.clipToPadding=false
-        viewPager.pageMargin=50
+    private fun formatViewPager(viewPager: ViewPager) {
+        viewPager.clipToPadding = false
+        viewPager.pageMargin = 50
         viewPager.setPadding(100, 0, 100, 0)
         val nextItemVisiblePx = 50
         val currentItemHorizontalMarginPx = 50
@@ -637,17 +687,15 @@ class GenerateCardFragment : Fragment() {
 
     }
 
-    private fun setUpViewPager(list: List<FinalCard>)
-    {
-        adapter= GenerateCardAdapter(list, this.requireContext())
-        binding.viewPager.adapter=adapter
+    private fun setUpViewPager(list: List<FinalCard>) {
+        adapter = GenerateCardAdapter(list, this.requireContext())
+        binding.viewPager.adapter = adapter
         formatViewPager(binding.viewPager)
         onPageChangeListener()
         Log.d("div", "GenerateCardFragment L311 ViewPager set up")
     }
 
-    private fun onPageChangeListener()
-    {
+    private fun onPageChangeListener() {
         binding.viewPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -668,8 +716,8 @@ class GenerateCardFragment : Fragment() {
 
     private fun setLayoutBackground() {
         val drawable: Drawable = BitmapDrawable(resources, imageBitmap)
-        drawable.alpha=100
-        binding.viewPager.background=drawable
+        drawable.alpha = 100
+        binding.viewPager.background = drawable
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -693,6 +741,7 @@ class GenerateCardFragment : Fragment() {
                 }
             })
     }
+
     private fun showUploadingDialog() {
         val upToddDialogs = UpToddDialogs(requireContext())
         upToddDialogs.showDialog(R.drawable.gif_upload,
@@ -712,7 +761,7 @@ class GenerateCardFragment : Fragment() {
                 upToddDialogs.dismissDialog()
             }
         })
-        val handler= Handler()
+        val handler = Handler()
         handler.postDelayed({
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())
@@ -735,7 +784,7 @@ class GenerateCardFragment : Fragment() {
                 upToddDialogs.dismissDialog()
             }
         })
-        val handler= Handler()
+        val handler = Handler()
         handler.postDelayed({
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())

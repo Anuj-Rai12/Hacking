@@ -206,7 +206,7 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
     }
 
     private fun parseData(data: JSONArray) {
-        val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
+       // val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val appendable =
             "https://www.uptodd.com/images/app/android/details/vaccination/vaccination.webp"
         var i = 0

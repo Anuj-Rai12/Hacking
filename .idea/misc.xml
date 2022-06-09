@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/bg_border.xml" value="0.214" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/date_selected.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_play_circle_filled_24.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_card_background.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refferal_code_bg.xml" value="0.1255" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_capture_image.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_generate_card_1.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_gift_voucher.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_home_page.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_kit_tutorial.xml" value="0.2234375" />
@@ -38,8 +40,10 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_podcast.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_custom_notify_media.xml" value="0.10822401614530777" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_terms_condition.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/nanny_todos_list.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/select_photo_type_view_pager_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/suggested_video_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/doctor_account.xml" value="0.2234375" />

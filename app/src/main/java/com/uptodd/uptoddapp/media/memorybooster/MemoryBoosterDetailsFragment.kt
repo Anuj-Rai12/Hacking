@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -41,7 +40,7 @@ import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import java.util.*
 
-class MemoryBoosterDetailsFragment: Fragment() {
+class MemoryBoosterDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentMemoryBoosterDetailsBinding
     private lateinit var downloadManager: UpToddDownloadManager
@@ -72,8 +71,10 @@ class MemoryBoosterDetailsFragment: Fragment() {
             false
         )
 
-        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
-            findNavController())
+        ToolbarUtils.initNCToolbar(
+            requireActivity(), "Details", binding.toolbar,
+            findNavController()
+        )
 
         preferences = requireActivity().getSharedPreferences("SPEED_BOOSTER", Context.MODE_PRIVATE)
 
@@ -90,9 +91,10 @@ class MemoryBoosterDetailsFragment: Fragment() {
         val viewModelFactory =
             UptoddViewModelFactory.getInstance(requireActivity().application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterDetailsViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(MemoryBoosterDetailsViewModel::class.java)
         viewModel.initMemoryDatabase(requireContext())
-        binding.memoryBoosterViewModel=viewModel
+        binding.memoryBoosterViewModel = viewModel
 
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
 
@@ -122,10 +124,8 @@ class MemoryBoosterDetailsFragment: Fragment() {
             } else {
                 updatePoems(today)
             }
-        }
-        else
-        {
-            viewModel._isLoading.value=2
+        } else {
+            viewModel._isLoading.value = 2
         }
 
 
@@ -179,8 +179,8 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
         viewModel.poems.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
-            val position=preferences.getInt("currentFileIndex",-1)
-            if(it.size>position) {
+            val position = preferences.getInt("currentFileIndex", -1)
+            if (it.size > position) {
                 val music: MusicFiles? = it[position]
                 viewModel.playFile(music!!)
                 binding.musicTitle.text = music.name
@@ -188,9 +188,9 @@ class MemoryBoosterDetailsFragment: Fragment() {
             }
         })
 
-            //if time is already set and the user changes music, cancel the timer
-            if (UpToddMediaPlayer.timer != null)
-                binding.musicTimer.performClick()
+        //if time is already set and the user changes music, cancel the timer
+        if (UpToddMediaPlayer.timer != null)
+            binding.musicTimer.performClick()
 
         viewModel.isMediaReady.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.let {
@@ -209,17 +209,17 @@ class MemoryBoosterDetailsFragment: Fragment() {
 
         viewModel.isPlaying.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it) {
+                binding.musicPlay.setImageResource(R.drawable.material_pause)
                 val intent = Intent(requireContext(), BackgroundPlayer::class.java)
                 intent.putExtra("toRun", true)
                 intent.putExtra("musicType", "poem")
                 requireContext().sendBroadcast(intent)
-                binding.musicPlay.setImageResource(R.drawable.material_pause)
             } else {
+                binding.musicPlay.setImageResource(R.drawable.material_play)
                 val intent = Intent(requireContext(), BackgroundPlayer::class.java)
                 intent.putExtra("toRun", false)
                 intent.putExtra("musicType", "poem")
                 requireContext().sendBroadcast(intent)
-                binding.musicPlay.setImageResource(R.drawable.material_play)
             }
         })
 

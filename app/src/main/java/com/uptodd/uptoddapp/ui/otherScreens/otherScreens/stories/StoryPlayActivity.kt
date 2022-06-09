@@ -24,30 +24,29 @@ class StoryPlayActivity : YouTubeBaseActivity() {
 
     private lateinit var binding: ActivityStoryPlayBinding
 
-    var selected=false
-    var flag=false
+    var selected = false
+    var flag = false
     private var title: String? = null
     private var description: String? = null
     private var podcast: String? = null
-    var player: YouTubePlayer?=null
-    var handler: Handler?=null
-    var musicPlayed=false
+    var player: YouTubePlayer? = null
+    var handler: Handler? = null
+    var musicPlayed = false
     private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         ChangeLanguage(this).setLanguage()
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_story_play)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_story_play)
         val intent: Intent = intent
         podcast = intent.getStringExtra("podcast")!!
         Log.d("div", "FullWebinarActivity L93 $podcast")
         title = intent.getStringExtra("title")!!
-        description=intent.getStringExtra("description")
+        description = intent.getStringExtra("description")
 
-        if(UpToddMediaPlayer.isPlaying)
-        {
-            musicPlayed=true
+        if (UpToddMediaPlayer.isPlaying) {
+            musicPlayed = true
             UpToddMediaPlayer.upToddMediaPlayer.playPause()
             val intent = Intent(this, BackgroundPlayer::class.java)
             intent.putExtra("toRun", false)
@@ -56,11 +55,11 @@ class StoryPlayActivity : YouTubeBaseActivity() {
         }
 
         binding.title.text = title
-        binding.description.text=description
-        if(description.isNullOrEmpty()){
-            binding.description.visibility= View.GONE
+        binding.description.text = description
+        if (description.isNullOrEmpty()) {
+            binding.description.visibility = View.GONE
         }
-        handler= Handler(Looper.getMainLooper())
+        handler = Handler(Looper.getMainLooper())
 
         binding.seekBar.setOnSeekBarChangeListener(seekBarChangeListener)
 
@@ -73,10 +72,9 @@ class StoryPlayActivity : YouTubeBaseActivity() {
             ) {
 
 
-
                 if (p1 != null) {
 
-                    player=p1
+                    player = p1
                     p1.setPlaybackEventListener(playBackChangeListener)
 
                     p1.loadVideo(podcast)
@@ -138,10 +136,9 @@ class StoryPlayActivity : YouTubeBaseActivity() {
         binding.videoView.initialize(YouTubeConfig().getApiKey(), mOnInitializedListener)
     }
 
-    var playBackChangeListener=object: YouTubePlayer.PlaybackEventListener
-    {
+    var playBackChangeListener = object : YouTubePlayer.PlaybackEventListener {
         override fun onPlaying() {
-            handler?.postDelayed(runnable,100)
+            handler?.postDelayed(runnable, 100)
             displayTime()
 
 
@@ -163,58 +160,59 @@ class StoryPlayActivity : YouTubeBaseActivity() {
 
         override fun onSeekTo(p0: Int) {
 
-            handler?.postDelayed(runnable,100)
+            handler?.postDelayed(runnable, 100)
         }
 
     }
 
-    fun displayTime()
-    {
-        player.let {
+    fun displayTime() {
+        player?.let {
 
-            val time= it?.durationMillis?.minus(it?.currentTimeMillis!!)
-            val ftext="${time?.toLong()?.let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${time?.toLong()?.let { it1 ->
-                TimeUnit.MILLISECONDS.toSeconds(it1)%60
-            }}"
+            val time = it.durationMillis.minus(it.currentTimeMillis)
+            val ftext = "${time.toLong().let { it1 -> TimeUnit.MILLISECONDS.toMinutes(it1) }} : ${
+                time.toLong().let { it1 ->
+                    TimeUnit.MILLISECONDS.toSeconds(it1) % 60
+                }
+            }"
 
-            player.let {
+            player?.let { player ->
 
-                val total= TimeUnit.MILLISECONDS.toSeconds(it!!.durationMillis.toLong())
+                val total = TimeUnit.MILLISECONDS.toSeconds(player.durationMillis.toLong())
 
-                val occ= TimeUnit.MILLISECONDS.toSeconds(it!!.currentTimeMillis.toLong())
+                val occ = TimeUnit.MILLISECONDS.toSeconds(player.currentTimeMillis.toLong())
 
 
-                val per=((occ/total.toFloat())*100).toInt()
-                Log.d("per","${((occ/total.toFloat())*100).toInt()}   $per")
-                flag=true
-                binding.seekBar?.progress=per.toInt()
-                flag=false
+                val per = ((occ / total.toFloat()) * 100).toInt()
+                Log.d("per", "${((occ / total.toFloat()) * 100).toInt()}   $per")
+                flag = true
+                binding.seekBar.progress = per.toInt()
+                flag = false
                 binding.videoTime.text = ftext
             }
 
 
-
         }
     }
 
-    var runnable= object :Runnable{
+    var runnable = object : Runnable {
 
         override fun run() {
             displayTime()
-            handler?.postDelayed(this,100)
+            handler?.postDelayed(this, 100)
         }
-
 
 
     }
 
-    var seekBarChangeListener=object : SeekBar.OnSeekBarChangeListener
-    {
+    override fun onPause() {
+        player?.release()
+        super.onPause()
+    }
+    var seekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
             player.let {
-                if(p2)
-                {
-                    val per=((it!!.durationMillis *p1)/100)
+                if (p2) {
+                    val per = ((it!!.durationMillis * p1) / 100)
                     it.seekToMillis(per)
                 }
 
@@ -232,10 +230,8 @@ class StoryPlayActivity : YouTubeBaseActivity() {
     }
 
     override fun onDestroy() {
-        if(!UpToddMediaPlayer.isPlaying)
-        {
-            if(UpToddMediaPlayer.songPlaying!=null && musicPlayed)
-            {
+        if (!UpToddMediaPlayer.isPlaying) {
+            if (UpToddMediaPlayer.songPlaying != null && musicPlayed) {
                 UpToddMediaPlayer.upToddMediaPlayer.playPause()
                 val intent = Intent(this, BackgroundPlayer::class.java)
                 intent.putExtra("toRun", true)

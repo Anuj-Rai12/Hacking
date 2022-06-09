@@ -155,11 +155,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Exoplayer
-    implementation "com.google.android.exoplayer:exoplayer-core:2.8.3"
-    implementation "com.google.android.exoplayer:exoplayer-ui:2.8.3"
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.8.3'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.8.3'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.8.3'
+//    implementation "com.google.android.exoplayer:exoplayer-core:2.8.3"
+   implementation "com.google.android.exoplayer:exoplayer-ui:2.8.3"
+//    implementation 'com.google.android.exoplayer:exoplayer-hls:2.8.3'
+//    implementation 'com.google.android.exoplayer:exoplayer-dash:2.8.3'
+//    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.8.3'
 
     //CardView
     implementation 'androidx.cardview:cardview:1.0.0'

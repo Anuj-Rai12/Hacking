@@ -12,10 +12,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -77,16 +74,14 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.poem),"Parenting Tools for You",
+            findNavController(), getString(R.string.poem), "Parenting Tools for You",
             R.drawable.poem_icon
         )
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -132,7 +127,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         } else {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 updatePoems(today)
-            } else{
+            } else {
                 viewModel.initializeOffline()
             }
         }
@@ -147,9 +142,7 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
 
         if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
             binding.musicPlayerLayout.visibility = View.GONE
-        }
-        else
-        {
+        } else {
 
         }
 
@@ -157,23 +150,23 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         viewModel.poems.observe(viewLifecycleOwner, Observer { poems ->
             Log.i("update", "$poems")
 //            redrawList(poems, binding)
-            if (poems.isEmpty()&& viewModel.notActive) {
+            if (poems.isEmpty() && viewModel.notActive) {
 
                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                        val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
-                        val upToddDialogs = UpToddDialogs(requireContext())
-                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                            "Close",
-                            object : UpToddDialogs.UpToddDialogListener {
-                                override fun onDialogButtonClicked(dialog: Dialog) {
-                                    dialog.dismiss()
-                                }
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
 
-                                override fun onDialogDismiss() {
-                                    findNavController().navigateUp()
-                                    super.onDialogDismiss()
-                                }
-                            })
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                                super.onDialogDismiss()
+                            }
+                        })
                 }
                 binding.poemListGridView.isVisible = true
             } else {
@@ -199,8 +192,15 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
                         getString(R.string.close),
                         object : UpToddDialogs.UpToddDialogListener {
                             override fun onDialogButtonClicked(dialog: Dialog) {
-                                uptoddDialogs.dismissDialog()
-                                findNavController().navigateUp()
+                                try {
+                                    uptoddDialogs.dismissDialog()
+                                    findNavController().navigateUp()
+                                } catch (e: Exception) {
+                                    activity?.let {
+                                        Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                                }
                             }
                         })
                     if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
@@ -296,11 +296,13 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
         })
 
         viewModel.isDownloaded.observe(viewLifecycleOwner, Observer {
-            if(it){
+            if (it) {
 
-            }else{
-                ShowInfoDialog.showInfo("Poems are Downloading will add one by one till it is completed",
-                    requireActivity().supportFragmentManager);
+            } else {
+                ShowInfoDialog.showInfo(
+                    "Poems are Downloading will add one by one till it is completed",
+                    requireActivity().supportFragmentManager
+                );
             }
         })
     }
@@ -492,12 +494,12 @@ class PoemFragment : Fragment(), PoemAdapterInterface {
     override fun onPause() {
 
         super.onPause()
-            /*
-        val intent = Intent(requireContext(), BackgroundPlayer::class.java)
-        intent.putExtra("toRun", true)
-        intent.putExtra("musicType", "poem")
-        requireContext().sendBroadcast(intent)
-             */
+        /*
+    val intent = Intent(requireContext(), BackgroundPlayer::class.java)
+    intent.putExtra("toRun", true)
+    intent.putExtra("musicType", "poem")
+    requireContext().sendBroadcast(intent)
+         */
     }
 
     override fun onResume() {
