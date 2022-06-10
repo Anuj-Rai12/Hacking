@@ -150,7 +150,7 @@ class BirthViewModel: ViewModel() {
     }
 
     fun insertDobDetails(dob:String) {
-        val jsonObject: JSONObject = JSONObject()
+        val jsonObject = JSONObject()
         jsonObject.put("kidsDob",dob)
 
 

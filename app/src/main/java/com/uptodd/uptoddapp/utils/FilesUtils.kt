@@ -3,7 +3,9 @@ package com.uptodd.uptoddapp.utils
 import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -25,3 +27,15 @@ val getAdaptorViewHolderBg
         R.drawable.viedo_container_layout_5,
         R.drawable.viedo_container_layout_6
     )
+
+
+fun Fragment.setUpErrorMessageDialog(
+    title: String = "Oops something Went Wrong",
+    content: String = "Cannot process the request for podcast ,so please Try Again.."
+) {
+    AddedPopUpDialog.showInfo(
+        title,
+        content,
+        parentFragmentManager
+    )
+}

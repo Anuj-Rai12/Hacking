@@ -63,6 +63,7 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -1024,7 +1025,8 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
 
                         if (data.length() > size) {
                             if (size > 0)
-                                AddedPopUpDialog.showInfo(
+                                AddedPopUpDialog.
+                                showInfo(
                                     "New Podcast Added",
                                     "Hey Mom/Dad, Check new Podcast Added for you.",
                                     parentFragmentManager
@@ -1034,7 +1036,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                         }
 
                     } catch (exception: Exception) {
-
+                        setUpErrorMessageDialog()
                     }
                 }
 
@@ -1084,7 +1086,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                         }
 
                     } else {
-
+                        setUpErrorMessageDialog()
                     }
                 }
 

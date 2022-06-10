@@ -24,6 +24,7 @@ import com.uptodd.uptoddapp.ui.login.selectaddress.AddressViewModel
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -121,6 +122,7 @@ class DobFragment : Fragment() {
                         activity?.finish()
                     }
                 } else {
+                    setUpErrorMessageDialog(content = getString(R.string.failed_to_load_to_database))
                     Toast.makeText(
                         activity,
                         getString(R.string.failed_to_load_to_database),
