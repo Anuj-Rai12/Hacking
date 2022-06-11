@@ -568,8 +568,9 @@ class GenerateCardFragment : Fragment() {
         try {
             //val state: String = Environment.getExternalStorageState()
             var folder: File?
-            folder =
-                File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
+            folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "/UpToddCards")
+            //File(Environment.getExternalStorageDirectory().toString() + "/UpToddCards")
 
             var success = true
             if (!folder.exists()) {
