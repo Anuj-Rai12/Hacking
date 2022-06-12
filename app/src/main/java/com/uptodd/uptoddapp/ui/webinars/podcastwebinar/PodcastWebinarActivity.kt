@@ -38,7 +38,7 @@ class PodcastWebinarActivity : YouTubeBaseActivity(), SuggestedVideoInterface {
     var musicPlayed = false
 
     var handler: Handler? = null
-    private lateinit var VIDEO_SAMPLE: String
+    private var VIDEO_SAMPLE: String?=null
     private lateinit var title: String
     private var description: String? = null
     private var kitContent: String? = null
@@ -72,7 +72,7 @@ class PodcastWebinarActivity : YouTubeBaseActivity(), SuggestedVideoInterface {
             this.sendBroadcast(intent)
         }
         val intent: Intent = intent
-        VIDEO_SAMPLE = intent.getStringExtra("url")!!
+        VIDEO_SAMPLE = intent.getStringExtra("url")
 
         Log.d("div", "FullWebinarActivity L93 $VIDEO_SAMPLE")
         title = intent.getStringExtra("title")!!

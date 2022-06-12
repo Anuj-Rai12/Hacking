@@ -647,7 +647,7 @@ class CaptureImageFragment : Fragment() {
         "Home"              //Enter the previous activity here and get it through intent also
 
     private val requiredBitmapSize: Int = 900
-    private var onCap:OnCaptureListener?=null
+    private var onCap: OnCaptureListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -682,10 +682,9 @@ class CaptureImageFragment : Fragment() {
         setHasOptionsMenu(true)
         binding.cameraView!!.setLifecycleOwner(this)
 
-        binding.cameraView!!.addCameraListener(object :CameraListener()
-        {
+        binding.cameraView!!.addCameraListener(object : CameraListener() {
             override fun onCameraError(exception: CameraException) {
-                Log.e("camera error",exception.localizedMessage)
+                Log.e("camera error", exception.localizedMessage)
             }
 
             override fun onCameraOpened(options: CameraOptions) {
@@ -697,9 +696,6 @@ class CaptureImageFragment : Fragment() {
             }
 
         })
-
-
-
 
 
         val orientation = this.resources.configuration.orientation
@@ -731,8 +727,7 @@ class CaptureImageFragment : Fragment() {
                     .show()
                 requireActivity().onBackPressed()
             }
-        } else
-        {
+        } else {
             binding.cameraView!!.mode = Mode.PICTURE
             binding.cameraView!!.setLifecycleOwner(viewLifecycleOwner)
 
@@ -748,20 +743,18 @@ class CaptureImageFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onCap=(activity as TodosListActivity)
+        onCap = (activity as TodosListActivity)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                if(onCap!=null)
+                if (onCap != null)
                     onCap?.onCapturedAttach()
-            },1000
+            }, 1000
         )
     }
-
 
 
     private fun hasStoragePermission() {
@@ -882,8 +875,7 @@ class CaptureImageFragment : Fragment() {
         }
     }
 
-    private fun onClickFlash()
-    {
+    private fun onClickFlash() {
         flashMode = (flashMode + 1) % 3
         if (flashMode == FLASH_ON) {
             binding.cameraView!!.flash = Flash.ON
@@ -1027,22 +1019,35 @@ class CaptureImageFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("imagePath", path)
 
-            view?.findNavController()?.navigate(
-                R.id.action_captureImageFragment_to_selectTypeFragment,
-                bundle
-            )
+            try {
+                findNavController().navigate(
+                    R.id.action_captureImageFragment_to_selectTypeFragment,
+                    bundle
+                )
+            } catch (e: Exception) {
+                activity?.let {
+                    Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         } else {
-            val bundle = Bundle()
-            bundle.putString("imagePath", path)
-            bundle.putString("photoType", DEFAULT_CARD_CATEGORY)
-            view?.findNavController()?.navigate(
-                R.id.action_captureImageFragment_to_generateCardFragment,
-                bundle
-            )
+            try {
+                val bundle = Bundle()
+                bundle.putString("imagePath", path)
+                bundle.putString("photoType", DEFAULT_CARD_CATEGORY)
+                findNavController().navigate(
+                    R.id.action_captureImageFragment_to_generateCardFragment,
+                    bundle
+                )
+            } catch (e: Exception) {
+                activity?.let {
+                    Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
-    interface OnCaptureListener
-    {
+
+    interface OnCaptureListener {
         fun onCapturedAttach()
     }
 
