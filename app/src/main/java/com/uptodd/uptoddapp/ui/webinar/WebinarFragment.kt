@@ -24,6 +24,7 @@ import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -115,6 +116,7 @@ class WebinarFragment : Fragment(), WebinarInterface {
 
                 override fun onError(anError: ANError?) {
                     Log.e(TAG, "${anError?.message}")
+                    setUpErrorMessageDialog()
                     binding.activitySampleRefresh.isRefreshing = false
                 }
 

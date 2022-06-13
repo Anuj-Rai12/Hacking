@@ -36,6 +36,7 @@ import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.android.synthetic.main.fragment_diet.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -131,6 +132,7 @@ class RecipeFragment : Fragment(), RecipeClickListener {
 
                 override fun onError(anError: ANError?) {
                     Log.e(TAG, "${anError?.message}")
+                    setUpErrorMessageDialog()
                     binding.activitySampleRefresh.isRefreshing = false
                 }
 

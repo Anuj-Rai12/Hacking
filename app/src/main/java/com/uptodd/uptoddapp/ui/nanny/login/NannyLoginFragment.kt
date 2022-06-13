@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,9 +24,6 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentNannyLoginBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.ui.login.loginpage.LoginFragmentDirections
-import com.uptodd.uptoddapp.ui.login.loginpage.LoginFragmentDirections.actionLoginFragmentToSelectParentFragment
-import com.uptodd.uptoddapp.ui.nanny.logout.NannyLogoutFragmentDirections
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.UpToddDialogs

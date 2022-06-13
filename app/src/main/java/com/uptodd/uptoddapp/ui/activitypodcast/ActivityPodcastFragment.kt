@@ -24,11 +24,9 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
 import com.uptodd.uptoddapp.databinding.FragmentActivityPodcastBinding
-import com.uptodd.uptoddapp.databinding.YoutubeVideoBottomsheetBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
-import com.uptodd.uptoddapp.utilities.YoutubeBottomSheet
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
 import kotlinx.coroutines.CoroutineScope

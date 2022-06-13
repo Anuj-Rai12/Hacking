@@ -28,6 +28,7 @@ import com.uptodd.uptoddapp.databinding.FragmentYogaBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -171,7 +172,7 @@ class YogaFragment : Fragment(), YogaRecyclerAdapter.YogasListener {
                         }
 
                         override fun onError(anError: ANError?) {
-
+                            setUpErrorMessageDialog()
                         }
                     })
             }

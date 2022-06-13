@@ -29,6 +29,7 @@ import com.uptodd.uptoddapp.database.diet.DietDao
 import com.uptodd.uptoddapp.databinding.FragmentDietBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -185,6 +186,7 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
 
                         override fun onError(anError: ANError?) {
                             binding.dietRefresh.isRefreshing = false
+                            setUpErrorMessageDialog()
                         }
                     })
             }

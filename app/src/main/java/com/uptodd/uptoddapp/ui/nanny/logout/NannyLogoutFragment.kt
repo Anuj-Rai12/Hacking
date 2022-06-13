@@ -22,6 +22,7 @@ import com.uptodd.uptoddapp.databinding.DialogExtendSubscriptionBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import com.uptodd.uptoddapp.workManager.cancelAllWorkManagers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,6 +91,7 @@ class NannyLogoutFragment : Fragment() {
 
                     override fun onError(anError: ANError?) {
                         Log.i("debug", "${anError?.message}")
+                        setUpErrorMessageDialog()
                     }
                 })
 

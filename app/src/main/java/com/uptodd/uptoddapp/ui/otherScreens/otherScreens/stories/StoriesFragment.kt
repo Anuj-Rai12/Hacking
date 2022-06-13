@@ -31,6 +31,7 @@ import com.uptodd.uptoddapp.database.stories.StoriesDao
 import com.uptodd.uptoddapp.databinding.FragmentStoriesBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -191,6 +192,7 @@ class StoriesFragment : Fragment(), StoriesRecyclerAdapter.StoriesListener {
 
                         override fun onError(anError: ANError?) {
                             binding.storyRefresh.isRefreshing = false
+                            setUpErrorMessageDialog()
                         }
                     })
             }

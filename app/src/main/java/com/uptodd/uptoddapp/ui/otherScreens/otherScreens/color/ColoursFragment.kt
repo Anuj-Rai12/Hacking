@@ -30,6 +30,7 @@ import com.uptodd.uptoddapp.database.colour.ColourDao
 import com.uptodd.uptoddapp.databinding.FragmentColorsBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -206,6 +207,7 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
                         override fun onError(anError: ANError?) {
                             binding.colorRefresh.isRefreshing = false
                             binding.colorProgress.visibility = View.GONE
+                            setUpErrorMessageDialog()
                         }
                     })
             }

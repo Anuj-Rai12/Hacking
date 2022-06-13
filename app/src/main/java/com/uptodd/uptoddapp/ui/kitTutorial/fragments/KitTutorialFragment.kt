@@ -34,6 +34,7 @@ import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResp
 import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -140,6 +141,7 @@ class KitTutorialFragment : Fragment(), KitTutorialInterface {
 
                 override fun onError(anError: ANError?) {
                     Log.e(TAG, "${anError?.message}")
+                    setUpErrorMessageDialog()
                     binding.activitySampleRefresh.isRefreshing = false
                 }
 

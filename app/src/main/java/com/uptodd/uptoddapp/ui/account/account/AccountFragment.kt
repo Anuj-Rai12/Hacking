@@ -52,6 +52,7 @@ import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import com.uptodd.uptoddapp.workManager.cancelUptoddWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -217,6 +218,7 @@ class AccountFragment : Fragment() {
 
                     override fun onError(anError: ANError?) {
                         Log.i("debug", "${anError?.message}")
+                        setUpErrorMessageDialog()
                     }
                 })
 

@@ -29,6 +29,7 @@ import com.uptodd.uptoddapp.database.expectedoutcome.ExpectedOutcomeDao
 import com.uptodd.uptoddapp.databinding.FragmentExpectedOutcomesBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -196,6 +197,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
                         override fun onError(anError: ANError?) {
                             binding.expoutRefresh.isRefreshing = false
+                            setUpErrorMessageDialog()
                         }
                     })
             }

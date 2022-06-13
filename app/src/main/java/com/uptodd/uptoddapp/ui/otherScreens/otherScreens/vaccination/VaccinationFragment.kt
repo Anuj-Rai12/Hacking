@@ -29,6 +29,7 @@ import com.uptodd.uptoddapp.database.vaccination.VaccinationDao
 import com.uptodd.uptoddapp.databinding.FragmentVaccinationBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -187,6 +188,7 @@ class VaccinationFragment : Fragment(), VaccinationRecyclerAdapter.VaccinationLi
                         }
 
                         override fun onError(anError: ANError?) {
+                            setUpErrorMessageDialog()
                             binding.vaccinationRefresh.isRefreshing = false
                         }
                     })
