@@ -18,7 +18,9 @@ fun Activity.changeStatusBarColor(color: Int) {
 val getRandomBgColor
     get() = listOf(
         Pair(R.color.video_container, R.drawable.viedo_container_layout),
-        Pair(R.color.video_container_2, R.drawable.video_container_layout_2)
+        Pair(R.color.video_container_2, R.drawable.video_container_layout_2),
+        Pair(R.color.video_container_3, R.drawable.video_player_convertor_3),
+        Pair(R.color.video_container_4, R.drawable.video_player_convetor_4)
     ).random()
 
 
