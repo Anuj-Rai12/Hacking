@@ -2,7 +2,9 @@ package com.uptodd.uptoddapp.utils
 
 import android.app.Activity
 import android.os.Build
+import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
@@ -39,3 +41,18 @@ fun Fragment.setUpErrorMessageDialog(
         parentFragmentManager
     )
 }
+
+
+fun View.hide() {
+    this.isVisible = false
+}
+
+fun View.show() {
+    this.isVisible = true
+}
+
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+

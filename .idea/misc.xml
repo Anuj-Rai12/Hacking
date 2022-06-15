@@ -3,57 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/bg_border.xml" value="0.214" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/date_selected.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_play_circle_filled_24.xml" value="0.214" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_card_background.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refferal_code_bg.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_3.xml" value="0.2" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_contner_part_2.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout.xml" value="0.214" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout_4.xml" value="0.2" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout_5.xml" value="0.2" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout_6.xml" value="0.2" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_contation_layout.xml" value="0.2" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_blogs.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_home.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_login.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_main.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_podcast_webinar.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_podcast_webinar.xml" value="0.2" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_refer.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_support.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_todos_list.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_sessions_fragment.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/create_ticket_fragment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_story_play.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/development_tracker_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_sample.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_blogs.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_capture_image.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_generate_card_1.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_gift_voucher.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_home_page.xml" value="0.264" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_home_page.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_kit_tutorial.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_login.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_memory_booster_details.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_refer.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_tips.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/home_options_recyclerview_item.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_podcast.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.4" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_added_dialog.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_custom_notify_media.xml" value="0.10822401614530777" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_terms_condition.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/nanny_todos_list.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/select_photo_type_view_pager_item.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/slot_timing_fragment.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/suggested_video_item.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.6" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_message_layout.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/view_ticket_fragment.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/yoga_recycler_item.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.1" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/doctor_account.xml" value="0.2234375" />
         <entry key="app/src/main/res/drawable/bg_border.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/all_tickets_fragment.xml" value="0.14356884057971014" />
@@ -81,12 +47,5 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.264" />
-      </ProjectState>
-    </option>
   </component>
 </project>
