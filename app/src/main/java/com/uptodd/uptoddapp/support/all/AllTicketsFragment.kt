@@ -31,6 +31,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -224,7 +225,7 @@ class AllTicketsFragment : Fragment() {
                 }
 
                 override fun onError(anError: ANError?) {
-
+                    setUpErrorMessageDialog()
                 }
 
             })
@@ -265,8 +266,10 @@ class AllTicketsFragment : Fragment() {
 
                 if (ticket.type.equals("Expert Suggestion")) {
                     ticketType.text = "Expert"
+                    ticketType.setBackgroundResource(R.drawable.open_status_bg)
                 } else {
                     ticketType.text = "Support"
+                    ticketType.setBackgroundResource(R.drawable.close_status_bg)
                 }
                 //ticketType.setBackgroundResource(R.drawable.ticket_type_bg)
 

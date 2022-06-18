@@ -65,7 +65,9 @@
         <activity android:name=".media.PoemActivity"
             android:screenOrientation="fullSensor" />
         -->
-        <activity android:name=".support.SupportActivity" />
+        <activity android:name=".support.SupportActivity"
+            android:hardwareAccelerated="true"
+            />
         <activity android:name=".ui.home.homePage.HomeActivity" />
         <activity
             android:name=".ui.todoScreens.TodosListActivity"
