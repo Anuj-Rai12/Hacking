@@ -39,7 +39,7 @@ class UptoddPushNotifications : FirebaseMessagingService() {
         //Compulsory to send or else it will crash
         val title = remoteMessage.data["title"]
         val text = remoteMessage.data["text"]
-        val notificationId = remoteMessage.data["notificationId"]!!.toInt()
+        val notificationId = remoteMessage.data["notificationId"]?.toInt()
 
 
         //Optional
@@ -74,6 +74,8 @@ class UptoddPushNotifications : FirebaseMessagingService() {
                     .setSummaryText(text)
             )
         }
-        NotificationManagerCompat.from(applicationContext).UptoddNotify(builder, notificationId)
+        notificationId?.let {
+            NotificationManagerCompat.from(applicationContext).UptoddNotify(builder, it)
+        }
     }
 }

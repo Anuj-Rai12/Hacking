@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
@@ -166,7 +167,17 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "ExpectedOutcomesFragment L72 $data")
-                                parseData(data)
+                                if (context!=null) {
+                                    parseData(data)
+                                }else{
+                                    activity?.let {
+                                        Toast.makeText(
+                                            it,
+                                            "Oops something Went Wrong",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
                             }
                             else
                             {

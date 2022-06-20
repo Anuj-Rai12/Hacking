@@ -920,22 +920,31 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         Log.d("todo come", notifyId)
 
         if (!visited) {
-            when (notifyId) {
+            val action = when (notifyId) {
                 "Podcast" -> {
-                    findNavController()?.navigate(R.id.action_homePageFragment_to_activityPodcastFragment)
-                    visited = true
+                    R.id.action_homePageFragment_to_activityPodcastFragment
                 }
                 "MemoryBooster" -> {
-                    findNavController()?.navigate(R.id.action_homePageFragment_to_speedBoosterFragment)
-                    visited = true
+                    R.id.action_homePageFragment_to_speedBoosterFragment
                 }
                 "ActivitySample" -> {
-
-                    findNavController()?.navigate(R.id.action_homePageFragment_to_activitySampleFragment)
-                    visited = true
+                    R.id.action_homePageFragment_to_activitySampleFragment
                 }
 
+                else -> {
+                    null
+                }
             }
+            action?.let {
+                try {
+                    findNavController().navigate(it)
+                }catch (e:Exception){
+                    activity?.let {
+                        Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            visited = true
         } else
             visited = false
         super.onResume()
@@ -1025,8 +1034,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
 
                         if (data.length() > size) {
                             if (size > 0)
-                                AddedPopUpDialog.
-                                showInfo(
+                                AddedPopUpDialog.showInfo(
                                     "New Podcast Added",
                                     "Hey Mom/Dad, Check new Podcast Added for you.",
                                     parentFragmentManager

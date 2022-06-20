@@ -158,8 +158,18 @@ class AllTicketsFragment : Fragment() {
                             "OK",
                             object : UpToddDialogs.UpToddDialogListener {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
-                                    uptoddDialogs.dismissDialog()
-                                    findNavController().navigateUp()
+                                    try {
+                                        uptoddDialogs.dismissDialog()
+                                        findNavController().navigateUp()
+                                    } catch (e: Exception) {
+                                        activity?.let { act ->
+                                            Toast.makeText(
+                                                act,
+                                                "Please Try Again",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
                                 }
                             })
                     }

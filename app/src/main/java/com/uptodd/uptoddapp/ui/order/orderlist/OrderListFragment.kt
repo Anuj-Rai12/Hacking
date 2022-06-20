@@ -15,8 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,10 +40,10 @@ class OrderListFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderListBinding
     private lateinit var viewModel: OrderViewModel
-    private var  shouldShowButton=false
+    private var shouldShowButton = false
 
     lateinit var preferences: SharedPreferences
-    var row=false
+    var row = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +62,12 @@ class OrderListFragment : Fragment() {
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_order_list, container, false)
         binding.lifecycleOwner = this
 
-        ToolbarUtils.initNCToolbar(requireActivity(),"Orders",binding.toolbar,findNavController())
+        ToolbarUtils.initNCToolbar(
+            requireActivity(),
+            "Orders",
+            binding.toolbar,
+            findNavController()
+        )
 
         Log.d("div", "OrderListFragment L44")
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
@@ -87,11 +92,9 @@ class OrderListFragment : Fragment() {
         initObservers()
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -101,39 +104,38 @@ class OrderListFragment : Fragment() {
         binding.buttonUpgrade.setOnClickListener { onClickExtendSubscription() }
         binding.buttonExtendSubscription.setOnClickListener { onClickExtendSubscription() }
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar!!
-        val country=if(UptoddSharedPreferences.getInstance(requireContext()).getPhone()?.startsWith("+91")!!)
+        val country = if (UptoddSharedPreferences.getInstance(requireContext()).getPhone()
+                ?.startsWith("+91")!!
+        )
             "india"
         else
             "row"
-        if(country=="row") {
-            row=true
+        if (country == "row") {
+            row = true
             supportActionBar.title = "Expert Prescription"
         }
 
         return binding.root
     }
 
-    private fun checkForButton(link:String)
-    {
-        if(shouldShowButton)
-        {
-            binding.sessionCount.visibility=View.VISIBLE
+    private fun checkForButton(link: String) {
+        if (shouldShowButton) {
+            binding.sessionCount.visibility = View.VISIBLE
             binding.sessionCount.setOnClickListener {
 
-                if(!TextUtils.isEmpty(link) &&
-                    link.startsWith("http")) {
+                if (!TextUtils.isEmpty(link) &&
+                    link.startsWith("http")
+                ) {
                     val intent = Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse(link)
                     )
                     startActivity(intent)
-                }
-                else
-                    binding.sessionCount.visibility=View.GONE
+                } else
+                    binding.sessionCount.visibility = View.GONE
             }
-        }
-        else
-            binding.sessionCount.visibility=View.GONE
+        } else
+            binding.sessionCount.visibility = View.GONE
 
     }
 
@@ -147,7 +149,7 @@ class OrderListFragment : Fragment() {
                     "OrderListFragment L52 Observercalled ${viewModel.allOrderList.value!!}"
                 )
                 if (viewModel.allOrderList.value!!.isEmpty()) {
-                   // binding.imageViewEmpty.visibility = View.VISIBLE
+                    // binding.imageViewEmpty.visibility = View.VISIBLE
                     //binding.textViewEmpty.visibility = View.VISIBLE
                     //binding.buttonExtendSubscription.visibility = View.INVISIBLE
                 } else {
@@ -176,11 +178,11 @@ class OrderListFragment : Fragment() {
         })
 
         viewModel.shouldShowBookingButton.observe(viewLifecycleOwner, Observer {
-            if(!it)
-                binding.sessionCount.visibility=View.VISIBLE
+            if (!it)
+                binding.sessionCount.visibility = View.VISIBLE
             else
-                binding.sessionCount.visibility=View.GONE
-            shouldShowButton=!it
+                binding.sessionCount.visibility = View.GONE
+            shouldShowButton = !it
         })
         viewModel.bookingLink.observe(viewLifecycleOwner, Observer {
             checkForButton(it)
@@ -206,15 +208,15 @@ class OrderListFragment : Fragment() {
         }
     }
 
-    private fun createOrderList():List<Order>
-    {
+    private fun createOrderList(): List<Order> {
 
-        var orderList= arrayListOf<Order>()
-        for (i in 0..2)
-        {
-            var order=Order(i.toLong(),
-                "Demo $i",true,
-                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),"","")
+        var orderList = arrayListOf<Order>()
+        for (i in 0..2) {
+            var order = Order(
+                i.toLong(),
+                "Demo $i", true,
+                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time), "", ""
+            )
             orderList.add(order)
         }
         return orderList.toList()
@@ -228,7 +230,7 @@ class OrderListFragment : Fragment() {
                     activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 childView = inflater.inflate(R.layout.order_item_view, null)
 
-                childView.textView_deliveryStatus.text="Expected delivery date: "
+                childView.textView_deliveryStatus.text = "Expected delivery date: "
 
                 childView.textView_productNameAndQty.text = "${order.productname}"
 
@@ -245,11 +247,10 @@ class OrderListFragment : Fragment() {
                 binding.linearLayout.addView(childView)
             }
 
-            if(orderList.isEmpty())
-            {
+            if (orderList.isEmpty()) {
                 binding.textView5.visibility = View.VISIBLE
-                binding.textView5.text="Your Order List is Empty"
-            }else{
+                binding.textView5.text = "Your Order List is Empty"
+            } else {
                 binding.textView5.visibility = View.GONE
             }
         }
@@ -358,8 +359,18 @@ class OrderListFragment : Fragment() {
             getString(R.string.back),
             object : UpToddDialogs.UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {
-                    dialog.dismiss()
-                    findNavController().navigateUp()
+                    try {
+                        dialog.dismiss()
+                        findNavController().navigateUp()
+                    } catch (e: Exception) {
+                        activity?.let { act ->
+                            Toast.makeText(
+                                act,
+                                "Please Try Again",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             })
         viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {

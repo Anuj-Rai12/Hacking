@@ -7,18 +7,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FragmentTodoDetailsBinding
-import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 
 // data has directly been bound in the layout
@@ -43,26 +42,25 @@ class TodoDetailsFragment : Fragment() {
 
         val arguments = TodoDetailsFragmentArgs.fromBundle(requireArguments())
 
-        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
-            findNavController())
+        ToolbarUtils.initNCToolbar(
+            requireActivity(), "Details", binding.toolbar,
+            findNavController()
+        )
 
         binding.btnEditTime.setOnClickListener {
 
-            if(AllUtil.isUserPremium(requireContext())) {
+            if (AllUtil.isUserPremium(requireContext())) {
                 findNavController().navigate(
                     TodoDetailsFragmentDirections.actionTodoDetailsFragmentToEditAlarmTimeFragment(
                         arguments.todoId
                     )
                 )
-            }
-            else
-            {
+            } else {
                 val upToddDialogs = UpToddDialogs(requireContext())
-                upToddDialogs.showInfoDialog("This feature is only for Premium Subscribers","Close",
-                    object :UpToddDialogs.UpToddDialogListener
-                    {
-                        override fun onDialogButtonClicked(dialog: Dialog)
-                        {
+                upToddDialogs.showInfoDialog("This feature is only for Premium Subscribers",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
                             dialog.dismiss()
                         }
 
@@ -79,14 +77,16 @@ class TodoDetailsFragment : Fragment() {
                     "https://www.uptodd.com/images/app/android/details/activities/$period/$dpi/"
 
 
-                Log.d("thumbnail details","$appendable$imageUrl.webp")
+                Log.d("thumbnail details", "$appendable$imageUrl.webp")
                 Glide.with(this)
                     .load("$appendable$imageUrl.webp")
                     .error(R.drawable.default_set_android_thumbnail)
-                    .placeholder(   ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.loading_animation
-                    ))
+                    .placeholder(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.loading_animation
+                        )
+                    )
                     .into(binding.todoImageView)
 
                 isLoadingDialogVisible.value = false
@@ -96,7 +96,7 @@ class TodoDetailsFragment : Fragment() {
         viewModel?.title?.observe(viewLifecycleOwner, Observer {
 
             it.let {
-                binding.todoTaskName.text=it
+                binding.todoTaskName.text = it
             }
         })
 
@@ -130,8 +130,18 @@ class TodoDetailsFragment : Fragment() {
             "Back",
             object : UpToddDialogs.UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {
-                    dialog.dismiss()
-                    findNavController().navigateUp()
+                    try {
+                        dialog.dismiss()
+                        findNavController().navigateUp()
+                    } catch (e: Exception) {
+                        activity?.let { act ->
+                            Toast.makeText(
+                                act,
+                                "Please Try Again",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             })
         isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {

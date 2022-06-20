@@ -10,9 +10,7 @@ import android.view.View
 import android.webkit.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -122,7 +120,6 @@ class PodcastWebinarActivity : AppCompatActivity(), SuggestedVideoInterface {
         }
 
         listenForProgress()
-
 
     }
 

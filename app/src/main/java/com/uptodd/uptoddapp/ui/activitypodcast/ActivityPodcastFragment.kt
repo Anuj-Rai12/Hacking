@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -39,11 +40,11 @@ import java.util.*
 private const val TAG = "ActivityPodcastFragment"
 
 
-class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
+class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
 
 
     private lateinit var binding: FragmentActivityPodcastBinding
-    private var videosRespons:VideosUrlResponse?=null
+    private var videosRespons: VideosUrlResponse? = null
 
     private val sharedPreferences: SharedPreferences by lazy {
         requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
@@ -65,11 +66,9 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentActivityPodcastBinding.inflate(inflater, container, false)
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if( !AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -84,7 +83,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.activity_podcast),"Curated in UpTodd's Lab",
+            findNavController(), getString(R.string.activity_podcast), "Curated in UpTodd's Lab",
             R.drawable.activity_podcast_icon
         )
 
@@ -96,8 +95,8 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
                 intent.putExtra("url", videosRespons?.activityPodcast)
                 intent.putExtra("title", "Activity Podcast")
-                intent.putExtra("kit_content","")
-                intent.putExtra("description","")
+                intent.putExtra("kit_content", "")
+                intent.putExtra("description", "")
                 intent.putExtra("videos", SuggestedVideosModel(mutableListOf()))
                 startActivity(intent)
             }
@@ -105,7 +104,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
         }
 
-        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.visibility = View.VISIBLE
 
         val lastFetched = sharedPreferences.getLong("ACTIVITY_PODCAST", -1)
         val calendar = Calendar.getInstance().apply {
@@ -130,13 +129,11 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         }
 
 
-        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip())
-        {
-            ShowInfoDialog.showInfo(getString(R.string.screen_podcast),requireFragmentManager())
+        if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip()) {
+            ShowInfoDialog.showInfo(getString(R.string.screen_podcast), requireFragmentManager())
             UptoddSharedPreferences.getInstance(requireContext()).setShownPodcastTip(false)
         }
     }
-
 
 
     private fun fetchDataFromLocalDb() {
@@ -156,8 +153,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     }
 
 
-    fun com.androidnetworking.AndroidNetworking.postS(s:String)
-    {
+    fun com.androidnetworking.AndroidNetworking.postS(s: String) {
 
     }
 
@@ -171,9 +167,9 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
 
         Log.d("months", months.toString())
-        val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-        val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-        val country=AllUtil.getCountry(requireContext())
+        val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+        val country = AllUtil.getCountry(requireContext())
 
 
         AndroidNetworking.get("https://www.uptodd.com/api/activitypodcast?userId={userId}&months={months}&lang={lang}&userType=$userType&country=$country&motherStage=$stage")
@@ -187,8 +183,7 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                 override fun onResponse(response: JSONObject?) {
 
 
-                    if (response == null)
-                    {
+                    if (response == null) {
                     }
 
                     /* the get method doesn't support returning
@@ -200,13 +195,14 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                     try {
                         val data = response?.get("data") as JSONArray
 
-                        Log.d("activity podcast c","${data.length()}")
+                        Log.d("activity podcast c", "${data.length()}")
 
                         if (data.length() <= 0) {
                             showNoData()
                             hideRecyclerView()
                         } else {
-                            UptoddSharedPreferences.getInstance(requireContext()).saveCountPodcast(data.length())
+                            UptoddSharedPreferences.getInstance(requireContext())
+                                .saveCountPodcast(data.length())
                             parseData(response.get("data") as JSONArray)
                             hideNodata()
                             showRecyclerView()
@@ -215,16 +211,25 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                         Log.i(TAG, "${e.message}")
                         //val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
-                        if(!AllUtil.isUserPremium(requireContext()))
-                        {
-                            val title=activity?.actionBar?.title.toString()
+                        if (context != null && !AllUtil.isUserPremium(requireContext())) {
+                            val title = activity?.actionBar?.title.toString()
 
                             val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("$title is not activated/required for you","Close",
+                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                                "Close",
                                 object : UpToddDialogs.UpToddDialogListener {
                                     override fun onDialogButtonClicked(dialog: Dialog) {
-                                        findNavController().navigateUp()
-
+                                        try {
+                                            findNavController().navigateUp()
+                                        } catch (e: Exception) {
+                                            activity?.let { act ->
+                                                Toast.makeText(
+                                                    act,
+                                                    "Please Try Again",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        }
                                     }
                                 })
 
@@ -237,14 +242,15 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
                         binding.activityPodcastRefresh.isRefreshing = false
                     }
                 }
+
                 override fun onError(anError: ANError?) {
 
-                   val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
+                    val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
 
-                    if(stage=="prenatal" || stage=="pre birth")
-                    {
+                    if (stage == "prenatal" || stage == "pre birth") {
                         val upToddDialogs = UpToddDialogs(requireContext())
-                        upToddDialogs.showInfoDialog("This section is only for postnatal user","Close",
+                        upToddDialogs.showInfoDialog("This section is only for postnatal user",
+                            "Close",
                             object : UpToddDialogs.UpToddDialogListener {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
 
@@ -297,19 +303,20 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
 
     private fun showNoData() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+            val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
-                val upToddDialogs = UpToddDialogs(requireContext())
-                upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                    "Close",
-                    object : UpToddDialogs.UpToddDialogListener {
-                        override fun onDialogButtonClicked(dialog: Dialog) {
-                            dialog.dismiss()
-                        }
-                        override fun onDialogDismiss() {
-                            findNavController().navigateUp()
-                        }
-                    })
+            val upToddDialogs = UpToddDialogs(requireContext())
+            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                "Close",
+                object : UpToddDialogs.UpToddDialogListener {
+                    override fun onDialogButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                    }
+
+                    override fun onDialogDismiss() {
+                        findNavController().navigateUp()
+                    }
+                })
 
         }
         binding.noDataContainer.isVisible = true
@@ -327,11 +334,12 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
         val intent = Intent(context, PodcastWebinarActivity::class.java)
         intent.putExtra("url", act_podacast.video)
         intent.putExtra("title", act_podacast.title)
-        intent.putExtra("kit_content",act_podacast.kitContent)
-        intent.putExtra("description",act_podacast.description)
+        intent.putExtra("kit_content", act_podacast.kitContent)
+        intent.putExtra("description", act_podacast.description)
         intent.putExtra("videos", SuggestedVideosModel(mutableListOf()))
         startActivity(intent)
     }
+
     override fun onOptionsItemSelected(@NonNull item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -343,16 +351,15 @@ class ActivityPodcastFragment:Fragment() , ActivityPodcastInterface {
     }
 
 
-    fun fetchTutorials(context: Context){
+    fun fetchTutorials(context: Context) {
         AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
-            .getAsJSONObject(object :JSONObjectRequestListener
-            {
+            .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
-                    val data=response?.get("data") as JSONObject
-                    videosRespons=AllUtil.getVideosUrlResponse(data.toString())
+                    val data = response?.get("data") as JSONObject
+                    videosRespons = AllUtil.getVideosUrlResponse(data.toString())
                 }
 
                 override fun onError(anError: ANError?) {

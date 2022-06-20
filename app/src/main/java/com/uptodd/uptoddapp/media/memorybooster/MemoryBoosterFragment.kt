@@ -13,10 +13,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -57,14 +54,14 @@ import org.json.JSONObject
 import java.util.*
 
 
-class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
+class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
 
     private lateinit var binding: MemoryBoosterFragmentBinding
     private lateinit var downloadManager: UpToddDownloadManager
     private lateinit var uptoddDialogs: UpToddDialogs
     private lateinit var viewModel: MemoryBoosterViewModel
     private lateinit var preferences: SharedPreferences
-    private var videosRespons: VideosUrlResponse?=null
+    private var videosRespons: VideosUrlResponse? = null
 
     private val adapter = SpeedBoosterAdapter(this)
     var count = 0
@@ -95,14 +92,12 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.memory_booster),"Curated in UpTodd's Lab",
+            findNavController(), getString(R.string.memory_booster), "Curated in UpTodd's Lab",
             R.drawable.memory_booster_icon
         )
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -125,8 +120,9 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         val viewModelFactory =
             UptoddViewModelFactory.getInstance(requireActivity().application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MemoryBoosterViewModel::class.java)
-        binding.speedBoosterViewModel=viewModel
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(MemoryBoosterViewModel::class.java)
+        binding.speedBoosterViewModel = viewModel
 
         viewModel.setDpi(ScreenDpi(requireContext()).getScreenDrawableType())
 
@@ -145,7 +141,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         } else if (lastUpdated.toLong() < today.timeInMillis) {
             updatePoems(today)
         } else {
-           updatePoems(today)
+            updatePoems(today)
         }
 
 
@@ -194,20 +190,21 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 0 -> {
                     initializeObservers(binding)
                     if (AppNetworkStatus.getInstance(requireContext()).isOnline && viewModel.notActivate) {
-                            val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                                "Close",
-                                object : UpToddDialogs.UpToddDialogListener {
-                                    override fun onDialogButtonClicked(dialog: Dialog) {
-                                        dialog.dismiss()
-                                    }
+                        val title =
+                            (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                        val upToddDialogs = UpToddDialogs(requireContext())
+                        upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                            "Close",
+                            object : UpToddDialogs.UpToddDialogListener {
+                                override fun onDialogButtonClicked(dialog: Dialog) {
+                                    dialog.dismiss()
+                                }
 
-                                    override fun onDialogDismiss() {
-                                        findNavController().navigateUp()
-                                        super.onDialogDismiss()
-                                    }
-                                })
+                                override fun onDialogDismiss() {
+                                    findNavController().navigateUp()
+                                    super.onDialogDismiss()
+                                }
+                            })
                     }
                     uptoddDialogs.dismissDialog()
                 }
@@ -233,9 +230,8 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
             updatePoems(today)
         }
 
-        if(UptoddSharedPreferences.getInstance(requireContext()).shouldShowBoosterTip())
-        {
-            ShowInfoDialog.showInfo(getString(R.string.screen_booster),requireFragmentManager())
+        if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowBoosterTip()) {
+            ShowInfoDialog.showInfo(getString(R.string.screen_booster), requireFragmentManager())
             UptoddSharedPreferences.getInstance(requireContext()).setShownBoosterTip(false)
         }
 
@@ -247,15 +243,15 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
                 intent.putExtra("url", videosRespons?.memoryBooster)
                 intent.putExtra("title", "Memory Booster")
-                intent.putExtra("kit_content","")
-                intent.putExtra("description","")
+                intent.putExtra("kit_content", "")
+                intent.putExtra("description", "")
                 startActivity(intent)
             }
 
 
         }
 
-        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.visibility = View.VISIBLE
 
         return binding.root
     }
@@ -272,7 +268,6 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
     }
 
     private fun initializeObservers(binding: MemoryBoosterFragmentBinding) {
-
 
 
         viewModel.isMediaReady.observe(viewLifecycleOwner, Observer {
@@ -517,26 +512,31 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
     }
 
-    override fun onClickPoem(poem: MusicFiles,position:Int) {
+    override fun onClickPoem(poem: MusicFiles, position: Int) {
         //if time is already set and the user changes music, cancel the timer
 
-        if(UpToddMediaPlayer.isPlaying)
-        {
-           if(UpToddMediaPlayer.songPlaying.id!=poem.id)
-           {
-               UpToddMediaPlayer.isPlaying=false
-           }
+        if (UpToddMediaPlayer.isPlaying) {
+            if (UpToddMediaPlayer.songPlaying.id != poem.id) {
+                UpToddMediaPlayer.isPlaying = false
+            }
         }
-        preferences.edit().putInt("currentFileIndex",position).apply()
+        preferences.edit().putInt("currentFileIndex", position).apply()
 
-        Navigation.findNavController(requireView()).navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
+        try {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
+        } catch (e: Exception) {
+            activity?.let { act ->
+                Toast.makeText(act, "Please Try Again", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
-    private fun requestWorkManager()
-    {
 
-        val check=preferences.getInt("ALREADY_REQUESTED",0)
+    private fun requestWorkManager() {
 
-        if(check==0) {
+        val check = preferences.getInt("ALREADY_REQUESTED", 0)
+
+        if (check == 0) {
             var workRequest = OneTimeWorkRequest.Builder(
                 CheckMemoryBoosterWorkManager::class.java
             ).build()
@@ -546,6 +546,7 @@ class MemoryBoosterFragment : Fragment(),SpeedBoosterAdpaterInterface {
             preferences.edit().putInt("ALREADY_REQUESTED", 1).apply()
         }
     }
+
     fun fetchTutorials(context: Context) {
         AndroidNetworking.get("https://uptodd.com/api/featureTutorials?userId=${AllUtil.getUserId()}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")

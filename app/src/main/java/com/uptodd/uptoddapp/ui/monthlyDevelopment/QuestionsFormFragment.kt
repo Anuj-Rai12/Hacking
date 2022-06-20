@@ -45,7 +45,7 @@ class QuestionsFormFragment :Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args = QuestionsFormFragmentArgs.fromBundle(requireArguments())
         val adapter=QuestionsFormAdapter()
-        adapter.list= args.questionForm?.response!!
+        adapter.list= args.questionForm?.response?: listOf()
         binding?.questionFormRecyclerview?.adapter=adapter
 
         val uptoddDialog = UpToddDialogs(requireContext())
