@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -210,7 +211,17 @@ class MusicFragment : Fragment() {
                         object : UpToddDialogs.UpToddDialogListener {
                             override fun onDialogButtonClicked(dialog: Dialog) {
                                 uptoddDialogs.dismissDialog()
-                                findNavController().navigateUp()
+                                try {
+                                    findNavController().navigateUp()
+                                }catch (e:Exception){
+                                    activity?.let {act->
+                                        Toast.makeText(
+                                            act,
+                                            "Oops Something Wrong Please Try Again",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
                             }
                         })
 

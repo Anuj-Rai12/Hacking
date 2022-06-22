@@ -214,8 +214,10 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
                         if (context != null && !AllUtil.isUserPremium(requireContext())) {
                             val title = activity?.actionBar?.title.toString()
 
-                            val upToddDialogs = UpToddDialogs(requireContext())
-                            upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                            val upToddDialogs = context?.let {
+                                return@let UpToddDialogs(it)
+                            }
+                            upToddDialogs?.showInfoDialog("$title is not activated/required for you",
                                 "Close",
                                 object : UpToddDialogs.UpToddDialogListener {
                                     override fun onDialogButtonClicked(dialog: Dialog) {
