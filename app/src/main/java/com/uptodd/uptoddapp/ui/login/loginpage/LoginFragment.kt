@@ -997,8 +997,17 @@ class LoginFragment : Fragment() {
                 true
             )
         )
-            view?.findNavController()
-                ?.navigate(R.id.action_loginFragment_to_selectParentFragment)
+            try {
+                findNavController().navigate(R.id.action_loginFragment_to_selectParentFragment)
+            }catch (e:Exception){
+                activity?.let {
+                    Toast.makeText(
+                        it,
+                        "Oops something Went Wrong Please Try Again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     private fun showInternetNotConnectedDialog() {

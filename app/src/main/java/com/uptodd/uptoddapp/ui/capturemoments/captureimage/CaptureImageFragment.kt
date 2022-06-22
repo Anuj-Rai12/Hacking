@@ -680,7 +680,7 @@ class CaptureImageFragment : Fragment() {
             getString(R.string.capture_moments)
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
-        binding.cameraView!!.setLifecycleOwner(this)
+        binding.cameraView?.setLifecycleOwner(this)
 
         binding.cameraView!!.addCameraListener(object : CameraListener() {
             override fun onCameraError(exception: CameraException) {
