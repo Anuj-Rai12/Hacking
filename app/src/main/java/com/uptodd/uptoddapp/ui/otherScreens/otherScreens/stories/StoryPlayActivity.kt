@@ -62,6 +62,9 @@ class StoryPlayActivity : AppCompatActivity() {
                 .error(R.drawable.default_set_android_thumbnail)
                 .into(binding.videoThumbnail)
         }
+        binding.bckArrow.setOnClickListener {
+            onBackPressed()
+        }
 
         binding.mainImageLayout.setOnClickListener {
             binding.videoThumbnail.invisible()

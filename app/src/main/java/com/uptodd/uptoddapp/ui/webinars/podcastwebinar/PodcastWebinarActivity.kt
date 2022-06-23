@@ -67,6 +67,11 @@ class PodcastWebinarActivity : AppCompatActivity(), SuggestedVideoInterface {
             SuggestedVideosModel(videos)
         }
 
+
+        binding.bckArrow.setOnClickListener {
+            onBackPressed()
+        }
+
         videos = model.videos
 
         if (videos.size > 0) {
