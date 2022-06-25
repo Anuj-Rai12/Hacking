@@ -3,8 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/account_bottom_doctor.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow_circle_right.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/bg_border.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_arrow.xml" value="0.214" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_back_black.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_accessibility_new_24.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_star_rate_24.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_round_star_24.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_syringe_svgrepo_com.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_cancel.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_filter.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_home.xml" value="0.1" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_message_recieved.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_pause.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_play.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_prev.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_save_white.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_shopping_cart.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/meatrial_next.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_pending.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_success.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/round_rate_ticket_background.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/rounded_corners_text_view_login.xml" value="0.214" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ticket_detail_drawable.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_2.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_3.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_contner_part_2.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_player_convertor_3.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_player_convetor_4.xml" value="0.1255" />
@@ -27,13 +53,17 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_home_page.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_kit_tutorial.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_refer.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_select_language.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_webinars.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_collapase_toolbar.xml" value="0.16847826086956522" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/session_list_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.536" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/view_ticket_fragment.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/youtube_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/doctor_account.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/todos_drawer.xml" value="0.536" />
         <entry key="app/src/main/res/drawable/bg_border.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/all_tickets_fragment.xml" value="0.14356884057971014" />
         <entry key="app/src/main/res/layout/details_fragment.xml" value="0.14356884057971014" />
