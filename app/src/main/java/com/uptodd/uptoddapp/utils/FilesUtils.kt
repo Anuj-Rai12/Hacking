@@ -3,6 +3,7 @@ package com.uptodd.uptoddapp.utils
 import android.app.Activity
 import android.os.Build
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -53,6 +54,9 @@ fun View.show() {
     this.isVisible = true
 }
 
+fun Activity.toastMsg(string: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, string, length).show()
+}
 
 fun View.invisible() {
     this.visibility = View.INVISIBLE

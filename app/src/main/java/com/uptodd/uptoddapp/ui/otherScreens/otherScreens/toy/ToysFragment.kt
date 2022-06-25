@@ -30,6 +30,7 @@ import com.uptodd.uptoddapp.databinding.FragmentToysBinding
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
+import com.uptodd.uptoddapp.utils.toastMsg
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -80,18 +81,16 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.toys),"Parenting Tools for You",
+            findNavController(), getString(R.string.toys), "Parenting Tools for You",
             R.drawable.milestone_icon
         )
 
 
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -155,28 +154,31 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
-            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val country=AllUtil.getCountry(requireContext())
+            val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country = AllUtil.getCountry(requireContext())
             uiScope.launch {
                 AndroidNetworking.get("https://www.uptodd.com/api/toys/{age}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-                    .addPathParameter("age", if(stage=="prenatal") (-1).toString() else  KidsPeriod(requireActivity()).getKidsAge().toString())
+                    .addPathParameter(
+                        "age",
+                        if (stage == "prenatal") (-1).toString() else KidsPeriod(requireActivity()).getKidsAge()
+                            .toString()
+                    )
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response["data"]!="null") {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "ToysFragment L72 $data")
                                 parseData(data)
-                            }
-                            else
-                            {
+                            } else {
                                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                                     if (!AllUtil.isUserPremium(requireContext())) {
-                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                                        val title =
+                                            (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                                         val upToddDialogs = UpToddDialogs(requireContext())
                                         upToddDialogs.showInfoDialog("$title is not activated/required for you",
@@ -221,34 +223,35 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
 
 
     private fun parseData(data: JSONArray) {
+        if (context == null) {
+            activity?.toastMsg("Oops SomeThing Went Wrong")
+            return
+        }
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
         val appendable = "https://www.uptodd.com/images/app/android/thumbnails/toys/$dpi/"
         var i = 0
         list.clear()
 
-        if(data.length()==0)
-        {
+        if (data.length() == 0) {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                    val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
-                    val upToddDialogs = UpToddDialogs(requireContext())
-                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                        "Close",
-                        object : UpToddDialogs.UpToddDialogListener {
-                            override fun onDialogButtonClicked(dialog: Dialog) {
-                                dialog.dismiss()
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
 
-                            }
+                        }
 
-                            override fun onDialogDismiss() {
-                                findNavController().navigateUp()
-                            }
-                        })
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                        }
+                    })
 
             }
-        }
-        else
-        {
+        } else {
             while (i < data.length()) {
                 val fetchedTodoData = data.get(i) as JSONObject
                 list.add(
