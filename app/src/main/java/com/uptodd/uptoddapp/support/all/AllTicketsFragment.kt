@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -158,16 +160,23 @@ class AllTicketsFragment : Fragment() {
                             "OK",
                             object : UpToddDialogs.UpToddDialogListener {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
-                                    try {
-                                        uptoddDialogs.dismissDialog()
-                                        findNavController().navigateUp()
-                                    } catch (e: Exception) {
-                                        activity?.let { act ->
-                                            Toast.makeText(
-                                                act,
-                                                "Please Try Again",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                    val handler=Handler(Looper.getMainLooper())
+                                    var showDialogOnce=true
+                                    handler.post {
+                                        if (showDialogOnce){
+                                            showDialogOnce=false
+                                            try {
+                                                uptoddDialogs.dismissDialog()
+                                                findNavController().navigateUp()
+                                            } catch (e: Exception) {
+                                                activity?.let { act ->
+                                                    Toast.makeText(
+                                                        act,
+                                                        "Please Try Again",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
                                         }
                                     }
                                 }

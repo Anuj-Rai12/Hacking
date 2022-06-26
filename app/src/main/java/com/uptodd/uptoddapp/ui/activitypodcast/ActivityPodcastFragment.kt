@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
@@ -248,20 +251,24 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
                 override fun onError(anError: ANError?) {
 
                     val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
-
+                    var dialogOnce = false
                     if (stage == "prenatal" || stage == "pre birth") {
-                        val upToddDialogs = UpToddDialogs(requireContext())
-                        upToddDialogs.showInfoDialog("This section is only for postnatal user",
-                            "Close",
-                            object : UpToddDialogs.UpToddDialogListener {
-                                override fun onDialogButtonClicked(dialog: Dialog) {
+                        val handler=Handler(Looper.getMainLooper())
+                        handler.post {
+                            if (!dialogOnce) {
+                                dialogOnce = true
+                                val upToddDialogs = UpToddDialogs(requireContext())
+                                upToddDialogs.showInfoDialog("This section is only for postnatal user",
+                                    "Close",
+                                    object : UpToddDialogs.UpToddDialogListener {
+                                        override fun onDialogButtonClicked(dialog: Dialog) {
 
-                                    findNavController().navigateUp()
+                                            findNavController().navigateUp()
 
-                                }
-                            })
-
-
+                                        }
+                                    })
+                            }
+                        }
                     }
 
                     binding.activityPodcastRefresh.isRefreshing = false
