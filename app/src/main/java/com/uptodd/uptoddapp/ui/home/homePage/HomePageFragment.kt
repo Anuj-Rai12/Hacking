@@ -10,6 +10,8 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
@@ -938,7 +940,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
             action?.let {
                 try {
                     findNavController().navigate(it)
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     activity?.let {
                         Toast.makeText(it, "Please Try Again", Toast.LENGTH_SHORT).show()
                     }
@@ -1055,7 +1057,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
     }
 
     private fun checkMemoryBoosterAdded(context: Context) {
-
+        var showDialogOnce = true
         val uid = AllUtil.getUserId()
         val stage = UptoddSharedPreferences.getInstance(context).getStage()
         val prenatal = if (stage == "pre birth" || stage == "prenatal") 0 else 1
@@ -1078,23 +1080,29 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
-                    if (response.getString("status") == "Success") {
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        if (showDialogOnce) {
+                            showDialogOnce=false
+                            if (response.getString("status") == "Success") {
+                                val poems =
+                                    AllUtil.getAllMemoryFiles(response.get("data").toString())
+                                Log.d("size m", "${poems.size} > $size")
+                                if (poems.size > size) {
+                                    if (size > 0)
+                                        AddedPopUpDialog.showInfo(
+                                            "New Memory Booster Added",
+                                            "Hey Mom/Dad, Check new Memory Booster Added for you.",
+                                            parentFragmentManager
+                                        )
+                                    UptoddSharedPreferences.getInstance(context)
+                                        .saveCountMemoryBooster(poems.size)
+                                }
 
-                        val poems = AllUtil.getAllMemoryFiles(response.get("data").toString())
-                        Log.d("size m", "${poems.size} > $size")
-                        if (poems.size > size) {
-                            if (size > 0)
-                                AddedPopUpDialog.showInfo(
-                                    "New Memory Booster Added",
-                                    "Hey Mom/Dad, Check new Memory Booster Added for you.",
-                                    parentFragmentManager
-                                )
-                            UptoddSharedPreferences.getInstance(context)
-                                .saveCountMemoryBooster(poems.size)
+                            } else {
+                                setUpErrorMessageDialog()
+                            }
                         }
-
-                    } else {
-                        setUpErrorMessageDialog()
                     }
                 }
 

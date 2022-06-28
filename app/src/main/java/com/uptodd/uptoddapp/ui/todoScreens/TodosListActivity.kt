@@ -75,7 +75,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureListener,
+class TodosListActivity : AppCompatActivity(), CaptureImageFragment.OnCaptureListener,
     PaymentResultListener {
 
     private lateinit var navController: NavController
@@ -86,15 +86,15 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     private var storagePermissinGranted: Boolean = false
 
     private val STORAGE_PERMISSION_REQUEST_CODE = 0
-    private val READ_PHONE_STATE =3
+    private val READ_PHONE_STATE = 3
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
 
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
-    var rpListener:RazorPayListener?=null
-    lateinit var downloadIntent:Intent;
+    var rpListener: RazorPayListener? = null
+    lateinit var downloadIntent: Intent;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +113,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
         if (userType == "Nanny")
             inflateNannyMode()
-        else if (userType == "Normal")
+        else //if (userType == "Normal")
             inflateNormalMode()
 
         hasStoragePermission()
@@ -134,7 +134,8 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         viewModel.notificationIntentExtras.value = intent.extras
 
 
-        viewModel?.isOutDatedVersion?.observe(this
+        viewModel?.isOutDatedVersion?.observe(
+            this
         ) {
             if (!it) {
                 requestFireAllWorkManagers()
@@ -158,33 +159,31 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         }
 
 
-        if(UptoddSharedPreferences.getInstance(this).shouldShowHomeTip())
-        {
+        if (UptoddSharedPreferences.getInstance(this).shouldShowHomeTip()) {
             UptoddSharedPreferences.getInstance(this).setShownHomeTip(false)
-            startActivity(Intent(this,OnboardingActivity::class.java))
+            startActivity(Intent(this, OnboardingActivity::class.java))
         }
 
-     //   downloadIntent = Intent(this, DownloadService::class.java)
-       // startDownloadInBackground()
+        //   downloadIntent = Intent(this, DownloadService::class.java)
+        // startDownloadInBackground()
 
     }
 
 
     fun startDownloadInBackground() {
-      if(!isDownloadServiceRunning(DownloadService::class.java)) {
-          startService(downloadIntent)
-      }
+        if (!isDownloadServiceRunning(DownloadService::class.java)) {
+            startService(downloadIntent)
+        }
     }
+
     fun stopDownloadInBackground() {
-        if(isDownloadServiceRunning(DownloadService::class.java)) {
+        if (isDownloadServiceRunning(DownloadService::class.java)) {
             stopService(downloadIntent)
         }
     }
 
 
-
-    private fun setupHeader()
-    {
+    private fun setupHeader() {
         val b = OkHttpClient.Builder()
         b.addNetworkInterceptor(HttpLoggingInterceptor())
         b.readTimeout(120, TimeUnit.SECONDS)
@@ -197,50 +196,51 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             //add auth token in header
 
             val request = original.newBuilder()
-                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .header("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .method(original.method(), original.body())
                 .build()
             chain.proceed(request)
         }
-        AndroidNetworking.initialize(applicationContext,b.build())
+        AndroidNetworking.initialize(applicationContext, b.build())
     }
 
 
-    private fun initCheck()
+    private fun initCheck() {
 
-    {
-
-        if(intent.getIntExtra("showUp",0)==1 ||UptoddSharedPreferences.getInstance(this).getShowUp())
-        {
+        if (intent.getIntExtra("showUp", 0) == 1 || UptoddSharedPreferences.getInstance(this)
+                .getShowUp()
+        ) {
             findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
             UptoddSharedPreferences.getInstance(this).showUpgrade(0)
-        }
-        else
-        {
-            val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
+        } else {
+            val endStr = UptoddSharedPreferences.getInstance(this).getSubEnd()
             val end = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(endStr)
-            if(!AllUtil.isUserPremium(this)  && !AllUtil.isSubscriptionOver(end) && preferences.getInt("welcome_shown",0)==0) {
+            if (!AllUtil.isUserPremium(this) && !AllUtil.isSubscriptionOver(end) && preferences.getInt(
+                    "welcome_shown",
+                    0
+                ) == 0
+            ) {
 
                 val upToddDialogs = UpToddDialogs(this)
-                upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development","Next",
-                    object :UpToddDialogs.UpToddDialogListener {
+                upToddDialogs.showInfoDialog("Thank you -Welcome to UpTodd,we'll help you in this rapid program to boost overall baby's development",
+                    "Next",
+                    object : UpToddDialogs.UpToddDialogListener {
                         override fun onDialogButtonClicked(dialog: Dialog) {
 
                             dialog.dismiss()
                         }
 
                         override fun onDialogDismiss() {
-                            upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited","Continue",
-                                object :UpToddDialogs.UpToddDialogListener
-                                {
+                            upToddDialogs.showInfoDialog("Note-This is rapid program ,so features are limited",
+                                "Continue",
+                                object : UpToddDialogs.UpToddDialogListener {
                                     override fun onDialogButtonClicked(dialog: Dialog) {
 
                                         try {
-                                            preferences.edit().putInt("welcome_shown",1).apply()
+                                            preferences.edit().putInt("welcome_shown", 1).apply()
                                             //   findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
-                                        }catch (e:Exception)
-                                        {
-                                            Log.e("dialog error",e.localizedMessage)
+                                        } catch (e: Exception) {
+                                            Log.e("dialog error", e.localizedMessage)
                                         }
                                         dialog.dismiss()
                                     }
@@ -254,19 +254,16 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             }
         }
 
-        val endStr=UptoddSharedPreferences.getInstance(this).getSubEnd()
+        val endStr = UptoddSharedPreferences.getInstance(this).getSubEnd()
         val end = SimpleDateFormat("yyyy-MM-dd").parse(endStr)
-        if(!AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOver(end))
-        {
+        if (!AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOver(end)) {
             findNavController(R.id.home_page_fragment).navigate(R.id.action_homePageFragment_to_upgradeFragment)
-        }
-        else if(AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOverActive(this))
-        {
+        } else if (AllUtil.isUserPremium(this) && AllUtil.isSubscriptionOverActive(this)) {
             val upToddDialogs = UpToddDialogs(this)
-            upToddDialogs.showInfoDialog("Your premium Subscription is ended now","Logout",
-                object :UpToddDialogs.UpToddDialogListener {
+            upToddDialogs.showInfoDialog("Your premium Subscription is ended now", "Logout",
+                object : UpToddDialogs.UpToddDialogListener {
                     override fun onDialogButtonClicked(dialog: Dialog) {
-                        AllUtil.logout(this@TodosListActivity,this@TodosListActivity)
+                        AllUtil.logout(this@TodosListActivity, this@TodosListActivity)
                     }
                 }
             )
@@ -275,17 +272,13 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
 
     }
 
-    private fun initNP(viewModel: TodosViewModel)
-    {
-        if(!AllUtil.isUserPremium(this)) {
+    private fun initNP(viewModel: TodosViewModel) {
+        if (!AllUtil.isUserPremium(this)) {
             viewModel.getNPDetails(this)
             viewModel.isNewUser.observe(this, Observer {
-                if(it)
-                {
+                if (it) {
 
-                }
-                else
-                {
+                } else {
                     val np = UptoddSharedPreferences.getInstance(this).getNonPAccount()
                     np.kidsDob?.let { Log.d("kidsDob", it) }
                     np.motherStage?.let { Log.d("stage", it) }
@@ -295,7 +288,6 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             })
         }
     }
-
 
 
     private fun inflateNormalMode() {
@@ -344,15 +336,15 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         )
 
 
-        val country=if(UptoddSharedPreferences.getInstance(this).getPhone()?.startsWith("+91")!!)
+        val country = if (UptoddSharedPreferences.getInstance(this).getPhone()?.startsWith("+91")!!)
             "india"
         else
             "row"
-        if(country=="row")
-        navView.menu.findItem(R.id.orderListFragment).title=("Expert prescription")
+        if (country == "row")
+            navView.menu.findItem(R.id.orderListFragment).title = ("Expert prescription")
 
         navController = findNavController(R.id.home_page_fragment)
-      //  setupActionBarWithNavController(navController, appBarConfiguration)
+        //  setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
@@ -477,9 +469,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                             values
                                         )
-                                    }
-                                    catch (e:Exception)
-                                    {
+                                    } catch (e: Exception) {
 
                                     }
 
@@ -528,7 +518,8 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
             storagePermissinGranted = true
         }
     }
-    private fun hasPhoneStatePermission(){
+
+    private fun hasPhoneStatePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -581,8 +572,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                 fireDailyCheckWorkManager()
                 fireDailyActivities()
                 fireDailySubscriptionCheckWorkManager()
-                if(!AllUtil.isUserPremium(this@TodosListActivity))
-                {
+                if (!AllUtil.isUserPremium(this@TodosListActivity)) {
                     fireUpgradeCheckWorkManager()
                 }
                 uptoddSharedPreferences.setWorkManagerFiredStatusTrue()
@@ -597,13 +587,11 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
                 .build()
 
 
-
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyAlarmScheduler)
     }
 
-    fun AndroidNetworking.get(url: String):ANRequest.GetRequestBuilder<*>
-    {
+    fun AndroidNetworking.get(url: String): ANRequest.GetRequestBuilder<*> {
         return AndroidNetworking.get(url)
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
     }
@@ -644,16 +632,16 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         workManager.enqueue(dailyCheckWorker)
     }
 
-    private fun fireDailyActivities()
-    {
-        val dailyCheckWorker = PeriodicWorkRequestBuilder<CheckDailyActivites>(5,TimeUnit.HOURS)
-            .setInitialDelay(24,TimeUnit.HOURS)
+    private fun fireDailyActivities() {
+        val dailyCheckWorker = PeriodicWorkRequestBuilder<CheckDailyActivites>(5, TimeUnit.HOURS)
+            .setInitialDelay(24, TimeUnit.HOURS)
             .addTag(DAILYCHECK_WORK_MANAGER_TAG)
             .build()
 
         val workManager = WorkManager.getInstance(application)
         workManager.enqueue(dailyCheckWorker)
     }
+
     private fun fireUpgradeCheckWorkManager() {
         val dailyCheckWorker = OneTimeWorkRequestBuilder<UpgradeWorkManager>()
             .addTag(DAILY_UP_CHECK_WORK_MANAGER)
@@ -686,39 +674,32 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         drawerLayout.openDrawer(Gravity.LEFT)
         drawerLayout.closeDrawer(Gravity.LEFT)
     }
-    fun openDrawer(){
+
+    fun openDrawer() {
         if (!drawerLayout.isDrawerOpen(Gravity.LEFT))
-        drawerLayout.openDrawer(Gravity.LEFT)
+            drawerLayout.openDrawer(Gravity.LEFT)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
-        navController?.popBackStack(R.id.homePageFragment,false)
+        navController?.popBackStack(R.id.homePageFragment, false)
     }
-
 
 
     override fun onBackPressed() {
 
-        if(drawerLayout.isDrawerOpen(Gravity.LEFT))
-        {
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawer(Gravity.LEFT)
-        }
-        else if(UpgradeFragment.over || FragmentUpdateApp.isOutDated)
-        {
+        } else if (UpgradeFragment.over || FragmentUpdateApp.isOutDated) {
             finish()
-        }
-        else
-        {
+        } else {
             super.onBackPressed()
         }
     }
 
 
-
-    interface  RazorPayListener
-    {
+    interface RazorPayListener {
 
         fun onPaymentSuccess(id: String?)
         fun onPaymentFailure(d: Int, error: String?)
@@ -730,7 +711,7 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
     }
 
     override fun onPaymentError(id: Int, error: String?) {
-        rpListener?.onPaymentFailure(id,error)
+        rpListener?.onPaymentFailure(id, error)
     }
 
     override fun onDestroy() {
@@ -739,11 +720,11 @@ class TodosListActivity : AppCompatActivity(),CaptureImageFragment.OnCaptureList
         //stopDownloadInBackground()
     }
 
-    private fun  isDownloadServiceRunning(serviceClass:Class<out Service>):Boolean {
+    private fun isDownloadServiceRunning(serviceClass: Class<out Service>): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE)
                 as ActivityManager
-        for(service in activityManager.getRunningServices(Int.MAX_VALUE)){
-            if(serviceClass.name==service.service.className){
+        for (service in activityManager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
                 return true
             }
         }
