@@ -45,6 +45,8 @@ import org.json.JSONObject
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
+import kotlin.math.ceil
 
 class TodosViewModel(
     database: UptoddDatabase,
@@ -577,8 +579,9 @@ class TodosViewModel(
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
                     val data = response?.get("data") as JSONObject
-
+                    val appVersion = context.packageManager.getPackageInfo(context.packageName, 0)
                     Log.d("data", data.toString())
+                    Log.i("ANUJ", "onResponse: $data")
 
                     val res =
                         (data.get("versionDetails") as JSONObject).getDouble("android_supported")
@@ -602,9 +605,12 @@ class TodosViewModel(
                     sharedPreferences.setShouldShowKitTutorial(shouldShowKit == 1)
                     sharedPreferences.setFillDevelopmentForm(isDevelopmentFormOpen)
                     Log.d("Fill development form", "$isDevelopmentFormOpen")
-                    Log.d("data version", "$res ")
-
-                    _isOutdatedVersion.value = BuildConfig.VERSION_NAME.toDouble() < res
+                    Log.d("data version", "$res")
+                    val appVer = appVersion.versionName.toDouble()
+                    (!(ceil(res) <= ceil(appVer) || abs(res) <= abs(appVer))).also {
+                        Log.i("ANUJ", "onResponse: should show Update Screen  $it")
+                        _isOutdatedVersion.value = it
+                    }
                     Log.d("called version", "true")
                     UptoddSharedPreferences.getInstance(context)
                         .saveLastVersionChecked(calendar.timeInMillis)
@@ -612,6 +618,7 @@ class TodosViewModel(
 
                 override fun onError(anError: ANError?) {
                     Log.d("data version error", "${anError?.errorDetail}")
+                    Log.i("ANUJ", "onError: ${anError?.errorDetail}")
                     _isOutdatedVersion.value = false
                 }
 
