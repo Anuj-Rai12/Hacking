@@ -319,9 +319,9 @@ class TodosViewModel(
         viewModelScope.launch {
             multipleDailySelectionTaskStarted()
             val list = CopyOnWriteArrayList(todosList)
-            val iterator=list.iterator()
-            while(iterator.hasNext()) {
-                val todo=iterator.next()
+            val iterator = list.iterator()
+            while (iterator.hasNext()) {
+                val todo = iterator.next()
                 val res = async(IO) {
                     todo.isCompleted = true
                     todoDatabase.update(todo)
@@ -609,11 +609,13 @@ class TodosViewModel(
                     sharedPreferences.setFillDevelopmentForm(isDevelopmentFormOpen)
                     Log.d("Fill development form", "$isDevelopmentFormOpen")
                     Log.d("data version", "$res")
-                    val appVer = appVersion.versionName.toDouble()
-                    (!(ceil(res) <= ceil(appVer) || abs(res) <= abs(appVer))).also {
-                        Log.i("ANUJ", "onResponse: should show Update Screen  $it")
-                        _isOutdatedVersion.value = it
-                    }
+                    val appVer_ceil = ceil(appVersion.versionName.toDouble())
+                    val appVer_abs = abs(appVersion.versionName.toDouble())
+                    val res_ceil = ceil(res)
+                    val res_abs = abs(res)
+                    val result = !(res_ceil <= appVer_ceil || res_abs <= appVer_abs)
+                    Log.i("ANUJ", "onResponse: should show Update Screen  $result")
+                    _isOutdatedVersion.value = result
                     Log.d("called version", "true")
                     UptoddSharedPreferences.getInstance(context)
                         .saveLastVersionChecked(calendar.timeInMillis)
