@@ -75,7 +75,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.expected_outcomes),
+            findNavController(), getString(R.string.expected_outcomes),
             "Parenting Tools for You",
             R.drawable.toys_icon
         )
@@ -85,16 +85,15 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
         expectedOutcomeDao = UptoddDatabase.getInstance(requireContext()).expectedOutcomeDao
 
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = View.GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
 
-            it.findNavController().navigate(R.id.action_expectedOutcomesFragment3_to_upgradeFragment)
+            it.findNavController()
+                .navigate(R.id.action_expectedOutcomesFragment3_to_upgradeFragment)
         }
 
         return binding.root
@@ -151,9 +150,9 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             isLoadingDialogVisible.value = true
             showLoadingDialog()
             val language = ChangeLanguage(requireContext()).getLanguage()
-            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val country=AllUtil.getCountry(requireContext())
+            val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country = AllUtil.getCountry(requireContext())
             uiScope.launch {
                 val period = KidsPeriod(requireActivity()).getPeriod()
                 AndroidNetworking.get("https://www.uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
@@ -163,13 +162,13 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response["data"]!="null") {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 Log.d("div", "ExpectedOutcomesFragment L72 $data")
-                                if (context!=null) {
+                                if (context != null) {
                                     parseData(data)
-                                }else{
+                                } else {
                                     activity?.let {
                                         Toast.makeText(
                                             it,
@@ -178,12 +177,11 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
                                         ).show()
                                     }
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                                     if (!AllUtil.isUserPremium(requireContext())) {
-                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                                        val title =
+                                            (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                                         val upToddDialogs = UpToddDialogs(requireContext())
                                         upToddDialogs.showInfoDialog("$title is not activated/required for you",
@@ -214,7 +212,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             }
         } else {
             Snackbar.make(
-                requireView(),
+                binding.root,
                 getString(R.string.no_internet_connection),
                 Snackbar.LENGTH_LONG
             )
@@ -229,7 +227,8 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
 
     private fun parseData(data: JSONArray) {
         val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
+        val appendable =
+            "https://www.uptodd.com/images/app/android/thumbnails/expected_outcomes/$dpi/"
         var i = 0
         list.clear()
         while (i < data.length()) {
@@ -245,8 +244,7 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             )
             i++
         }
-        if(data.length()==0)
-        {
+        if (data.length() == 0) {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
                 val upToddDialogs = UpToddDialogs(requireContext())

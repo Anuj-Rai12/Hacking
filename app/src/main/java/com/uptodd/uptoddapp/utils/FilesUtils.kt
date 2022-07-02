@@ -11,9 +11,12 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 
 
-@RequiresApi(Build.VERSION_CODES.M)
 fun Activity.changeStatusBarColor(color: Int) {
-    this.window?.statusBarColor = resources.getColor(color, null)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        this.window?.statusBarColor = resources.getColor(color, null)
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        this.window?.statusBarColor = resources.getColor(color)
+    }
 }
 
 val getRandomBgColor

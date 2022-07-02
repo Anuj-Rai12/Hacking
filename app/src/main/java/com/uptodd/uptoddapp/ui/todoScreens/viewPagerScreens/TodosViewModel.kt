@@ -44,6 +44,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -317,8 +318,10 @@ class TodosViewModel(
     ) {
         viewModelScope.launch {
             multipleDailySelectionTaskStarted()
-
-            for (todo in todosList) {
+            val list = CopyOnWriteArrayList(todosList)
+            val iterator=list.iterator()
+            while(iterator.hasNext()) {
+                val todo=iterator.next()
                 val res = async(IO) {
                     todo.isCompleted = true
                     todoDatabase.update(todo)

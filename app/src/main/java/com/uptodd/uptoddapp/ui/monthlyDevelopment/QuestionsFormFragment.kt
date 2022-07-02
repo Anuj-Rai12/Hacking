@@ -19,10 +19,10 @@ import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import kotlinx.android.synthetic.main.question_form_fragment.*
 
-class QuestionsFormFragment :Fragment() {
+class QuestionsFormFragment : Fragment() {
 
-    var binding:QuestionFormFragmentBinding?=null
-    var viewModel:DevelopmentTrackerViewModel?=null
+    var binding: QuestionFormFragmentBinding? = null
+    var viewModel: DevelopmentTrackerViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +32,10 @@ class QuestionsFormFragment :Fragment() {
         binding = QuestionFormFragmentBinding.inflate(inflater)
 
         binding?.toolbar?.let {
-            ToolbarUtils.initNCToolbar(requireActivity(),"Development Form",
-                it,findNavController())
+            ToolbarUtils.initNCToolbar(
+                requireActivity(), "Development Form",
+                it, findNavController()
+            )
         }
         viewModel = ViewModelProvider(requireActivity())[DevelopmentTrackerViewModel::class.java]
 
@@ -44,20 +46,26 @@ class QuestionsFormFragment :Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args = QuestionsFormFragmentArgs.fromBundle(requireArguments())
-        val adapter=QuestionsFormAdapter()
-        adapter.list= args.questionForm?.response?: listOf()
-        binding?.questionFormRecyclerview?.adapter=adapter
+        val adapter = QuestionsFormAdapter()
+        args.questionForm?.response?.let {
+            adapter.list = it
+        } ?: run {
+            adapter.list = listOf()
+        }
+        binding?.questionFormRecyclerview?.adapter = adapter
 
         val uptoddDialog = UpToddDialogs(requireContext())
         uptoddDialog.dismissDialog()
 
         binding?.submitForm?.setOnClickListener {
-            if(adapter.checkValidationOfForm()){
-                uptoddDialog.showLoadingDialog(findNavController(),false)
+            if (adapter.checkValidationOfForm()) {
+                uptoddDialog.showLoadingDialog(findNavController(), false)
                 viewModel?.submitForm(adapter.list as ArrayList<Response>)
             } else {
-                Toast.makeText(requireContext(),"Please answer all the questions",
-                    Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(), "Please answer all the questions",
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
         }
@@ -66,10 +74,11 @@ class QuestionsFormFragment :Fragment() {
 
         viewModel?.formSubmitted?.observe(viewLifecycleOwner, Observer {
             uptoddDialog.dismissDialog()
-            if(it){
+            if (it) {
                 UpToddDialogs(requireContext()).showDialog(
                     R.drawable.gif_done,
-                    "Thank you for response, R&D team will add the report soon.", getString(R.string.close),
+                    "Thank you for response, R&D team will add the report soon.",
+                    getString(R.string.close),
                     object : UpToddDialogs.UpToddDialogListener {
                         override fun onDialogButtonClicked(dialog: Dialog) {
                             dialog.dismiss()
@@ -77,16 +86,15 @@ class QuestionsFormFragment :Fragment() {
                         }
                     })
             } else {
-                Toast.makeText(requireContext(),"Please try again",
-                    Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(), "Please try again",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
 
 
-
-
     }
-
 
 
 }
