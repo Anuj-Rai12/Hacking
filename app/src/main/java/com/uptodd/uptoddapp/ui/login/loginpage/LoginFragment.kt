@@ -271,6 +271,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
+import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.SplashScreenActivity
 import com.uptodd.uptoddapp.UptoddWebsiteActivity
@@ -374,8 +375,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.goToFreeBtn.setOnClickListener {
-            //val intent=Intent(this,)
-            activity?.toastMsg("Working")
+            val intent = Intent(activity, FreeParentingDemoActivity::class.java)
+            startActivity(intent)
         }
 
         viewModel.incorrectEmail.observe(viewLifecycleOwner, Observer {

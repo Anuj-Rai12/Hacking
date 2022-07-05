@@ -73,7 +73,7 @@
             android:theme="@style/AppThemeNoActionBar" />
 
         <activity
-            android:name=".FreeDemoAccount"
+            android:name=".FreeParentingDemoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleInstance"
             android:theme="@style/AppThemeNoActionBar" />

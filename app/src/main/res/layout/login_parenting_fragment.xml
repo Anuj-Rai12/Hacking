@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.uptodd.uptoddapp.ui.freeparenting.login.ParentingLoginFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/main_uptoddLogo"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/app_icon" />
+
+
+            <TextView
+                android:id="@+id/user_full_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Full Name"
+                android:textColor="@color/light_grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_uptoddLogo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_full_name_ed_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/light_grey_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:layout_constraintLeft_toLeftOf="@id/user_full_name_txt"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_full_name_txt">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/full_name_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/email_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/crimson_text_bold"
+                android:text="Email"
+                android:textColor="@color/light_grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/user_full_name_ed_layout"
+                app:layout_constraintTop_toBottomOf="@id/user_full_name_ed_layout" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_email_ed_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/light_grey_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:layout_constraintLeft_toLeftOf="@id/email_txt"
+                app:layout_constraintRight_toRightOf="@id/user_full_name_ed_layout"
+                app:layout_constraintTop_toBottomOf="@id/email_txt">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/user_email_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/phone_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/crimson_text_bold"
+                android:text="Phone Number"
+                android:textColor="@color/light_grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/user_email_ed_layout"
+                app:layout_constraintTop_toBottomOf="@id/user_email_ed_layout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_phone_ed_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/light_grey_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/black"
+                app:layout_constraintLeft_toLeftOf="@id/phone_txt"
+                app:layout_constraintRight_toRightOf="@id/user_email_ed_layout"
+                app:layout_constraintTop_toBottomOf="@id/phone_txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/user_phone_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/montserrat"
+                    android:inputType="phone"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/goToDemoDash_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/gradientCarouselIndicatorStartColor"
+                android:elevation="5dp"
+                android:fontFamily="@font/crimson_text_bold"
+                android:padding="18dp"
+                android:text="Start Demo Now!!"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_phone_ed_layout"
+                app:strokeColor="@color/gradientStartColor"
+                app:strokeWidth="1dp" />
+
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/darkBlue"
+                app:layout_constraintBottom_toBottomOf="@id/goToDemoDash_board"
+                app:layout_constraintLeft_toLeftOf="@id/goToDemoDash_board"
+                app:layout_constraintRight_toRightOf="@id/goToDemoDash_board"
+                app:layout_constraintTop_toTopOf="@id/goToDemoDash_board" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
