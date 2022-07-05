@@ -43,10 +43,10 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
 
-    companion object
-    {
-        const val KEY_NEW="key_new_user"
+    companion object {
+        const val KEY_NEW = "key_new_user"
     }
+
     private val preferences: SharedPreferences by lazy {
         getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
     }
@@ -75,7 +75,7 @@ class SplashScreenActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        
+
         uiScope.launch {
             createScoreDatabase()
         }
@@ -121,7 +121,11 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun openMainApp() {
-        if (preferences.contains("userType") && preferences.getString(
+        //Only For Testing Purpose
+        startActivity(Intent(this, LoginActivity::class.java))
+        this.finishAffinity()
+
+        /*if (preferences.contains("userType") && preferences.getString(
                 "userType",
                 "Normal"
             ) == "Normal"
@@ -220,7 +224,7 @@ class SplashScreenActivity : AppCompatActivity() {
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
             this.finishAffinity()
-        }
+        }*/
 
     }
 
@@ -310,8 +314,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setIntent(intent)
     }
 
-    private fun setupHeader()
-    {
+    private fun setupHeader() {
         val b = OkHttpClient.Builder()
         b.addNetworkInterceptor(HttpLoggingInterceptor())
         b.readTimeout(120, TimeUnit.SECONDS)
@@ -324,12 +327,12 @@ class SplashScreenActivity : AppCompatActivity() {
             //add auth token in header
             var token = AllUtil.getAuthToken()
             val request = original.newBuilder()
-                .header("Authorization","Bearer ${AllUtil.getAuthToken()}")
+                .header("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                 .method(original.method(), original.body())
                 .build()
             chain.proceed(request)
         }
-        AndroidNetworking.initialize(applicationContext,b.build())
+        AndroidNetworking.initialize(applicationContext, b.build())
     }
 
 }

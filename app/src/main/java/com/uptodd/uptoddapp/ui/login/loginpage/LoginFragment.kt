@@ -274,18 +274,16 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.SplashScreenActivity
 import com.uptodd.uptoddapp.UptoddWebsiteActivity
-import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.databinding.FragmentLoginBinding
 import com.uptodd.uptoddapp.doctor.DoctorLogin
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.login.facebooklogin.FacebookLoginActivity
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
-import com.uptodd.uptoddapp.ui.upgrade.UpgradeViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
-import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
+import com.uptodd.uptoddapp.utils.toastMsg
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import java.text.SimpleDateFormat
@@ -375,6 +373,10 @@ class LoginFragment : Fragment() {
             startActivity(Intent(activity, DoctorLogin::class.java))
         }
 
+        binding.goToFreeBtn.setOnClickListener {
+            //val intent=Intent(this,)
+            activity?.toastMsg("Working")
+        }
 
         viewModel.incorrectEmail.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -597,7 +599,10 @@ class LoginFragment : Fragment() {
                                 findNavController().navigate(action)
                             } catch (e: Exception) {
 
-                                Log.i("MOVE_LOGIN_TO_GENDER", "initObservers: ${e.localizedMessage}")
+                                Log.i(
+                                    "MOVE_LOGIN_TO_GENDER",
+                                    "initObservers: ${e.localizedMessage}"
+                                )
                             }
                         }
                     } else {
@@ -999,7 +1004,7 @@ class LoginFragment : Fragment() {
         )
             try {
                 findNavController().navigate(R.id.action_loginFragment_to_selectParentFragment)
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 activity?.let {
                     Toast.makeText(
                         it,

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.uptodd.uptoddapp"
-    >
+    package="com.uptodd.uptoddapp">
 
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,51 +10,49 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-sdk tools:overrideLibrary="com.paypal.pyplcheckout,com.cardinalcommerce.cardinalmobilesdk"
-        />
+    <uses-sdk tools:overrideLibrary="com.paypal.pyplcheckout,com.cardinalcommerce.cardinalmobilesdk" />
 
 
     <application
         android:name=".UpToddActivityClass"
+        android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:label="@string/app_name"
-        android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".ui.login.googlelogin.GoogleLoginActivity" />
         <activity android:name=".UptoddWebsiteActivity" />
         <activity android:name=".media.PoemActivity" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".ReferActivity" />
         <activity android:name=".OrderActivity" />
-        <activity android:name=".ui.otherScreens.otherScreens.stories.StoryPlayActivity"
-            android:hardwareAccelerated="true"
-            />
-        <activity android:name=".ui.upgrade.PaymentActivity"
-            android:exported="false"
-            >
-        </activity>
+        <activity
+            android:name=".ui.otherScreens.otherScreens.stories.StoryPlayActivity"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".ui.upgrade.PaymentActivity"
+            android:exported="false"></activity>
         <activity android:name=".ui.webinars.webinarslist.WebinarsActivity" />
         <activity
             android:name=".ui.webinars.fullwebinar.FullWebinarActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".ui.webinars.podcastwebinar.PodcastWebinarActivity"
-            android:hardwareAccelerated="true"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:hardwareAccelerated="true" />
 
         <activity android:name=".ui.blogs.fullblog.FullBlogActivity" />
         <activity android:name=".ui.blogs.blogslist.BlogsActivity" />
@@ -65,16 +62,22 @@
         <activity android:name=".media.PoemActivity"
             android:screenOrientation="fullSensor" />
         -->
-        <activity android:name=".support.SupportActivity"
-            android:hardwareAccelerated="true"
-            />
+        <activity
+            android:name=".support.SupportActivity"
+            android:hardwareAccelerated="true" />
         <activity android:name=".ui.home.homePage.HomeActivity" />
         <activity
             android:name=".ui.todoScreens.TodosListActivity"
-            android:launchMode="singleInstance"
-            android:theme="@style/AppThemeNoActionBar"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            />
+            android:launchMode="singleInstance"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".FreeDemoAccount"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppThemeNoActionBar" />
+
         <activity android:name=".MainActivity" />
         <activity
             android:name=".doctor.dashboard.DoctorDashboard"
@@ -82,15 +85,15 @@
         <activity android:name=".doctor.DoctorLogin" />
         <activity android:name=".media.MusicPlayer" />
         <activity android:name=".ui.login.facebooklogin.FacebookLoginActivity" />
-        <activity android:name=".HomeActivity"
-            android:exported="false"
-            />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,9 +108,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            />
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity
             android:name=".CaptureMomentsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" /> <!-- For facebook login -->
@@ -121,7 +124,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
 
-        <activity android:name=".OnboardingActivity"/>
+        <activity android:name=".OnboardingActivity" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -200,19 +203,19 @@
             </intent-filter>
         </service>
 
-        <service android:name=".utilities.DownloadService"
+        <service
+            android:name=".utilities.DownloadService"
             android:enabled="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"
-            >
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
-        <receiver android:name=".utilities.RestartDownloadReceiver"
+        <receiver
+            android:name=".utilities.RestartDownloadReceiver"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true">
 
         </receiver>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="fcm.push_notification" />
@@ -225,14 +228,14 @@
 
         <receiver android:name=".receivers.CallReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE"/>
+                <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
     </application>
     <queries>
         <intent>
-            <action android:name="com.google.android.youtube.api.service.START"/>
+            <action android:name="com.google.android.youtube.api.service.START" />
         </intent>
     </queries>
 </manifest>
