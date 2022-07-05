@@ -2,6 +2,8 @@ package com.uptodd.uptoddapp.utils
 
 import android.app.Activity
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -41,11 +43,18 @@ fun Fragment.setUpErrorMessageDialog(
     title: String = "Oops something Went Wrong",
     content: String = "Cannot process the request for podcast ,so please Try Again.."
 ) {
-    AddedPopUpDialog.showInfo(
-        title,
-        content,
-        parentFragmentManager
-    )
+    var isErrorDialogBoxVisible = false
+    val handler = Handler(Looper.getMainLooper())
+    handler.post {
+        if (!isErrorDialogBoxVisible) {
+            isErrorDialogBoxVisible = true
+            AddedPopUpDialog.showInfo(
+                title,
+                content,
+                parentFragmentManager
+            )
+        }
+    }
 }
 
 
