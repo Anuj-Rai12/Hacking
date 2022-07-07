@@ -311,24 +311,31 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
     }
 
     private fun showNoData() {
-        if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-            val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+        val handler=Handler(Looper.getMainLooper())
+        var isShowNoDataVisible=false
+        handler.post {
+            if (!isShowNoDataVisible){
+                isShowNoDataVisible=true
+                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
-            val upToddDialogs = UpToddDialogs(requireContext())
-            upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                "Close",
-                object : UpToddDialogs.UpToddDialogListener {
-                    override fun onDialogButtonClicked(dialog: Dialog) {
-                        dialog.dismiss()
-                    }
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
 
-                    override fun onDialogDismiss() {
-                        findNavController().navigateUp()
-                    }
-                })
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                            }
+                        })
 
+                }
+                binding.noDataContainer.isVisible = true
+            }
         }
-        binding.noDataContainer.isVisible = true
     }
 
     private fun showRecyclerView() {
