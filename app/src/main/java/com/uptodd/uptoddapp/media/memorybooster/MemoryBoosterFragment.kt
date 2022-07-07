@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -215,8 +217,15 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
                         getString(R.string.close),
                         object : UpToddDialogs.UpToddDialogListener {
                             override fun onDialogButtonClicked(dialog: Dialog) {
-                                uptoddDialogs.dismissDialog()
-                                findNavController().navigateUp()
+                                val handler = Handler(Looper.getMainLooper())
+                                var isShowDialogButton = false
+                                handler.post {
+                                    if (!isShowDialogButton){
+                                        isShowDialogButton=true
+                                        uptoddDialogs.dismissDialog()
+                                        findNavController().navigateUp()
+                                    }
+                                }
                             }
                         })
                 }
@@ -514,22 +523,29 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
 
     override fun onClickPoem(poem: MusicFiles, position: Int) {
         //if time is already set and the user changes music, cancel the timer
+        val handler = Handler(Looper.getMainLooper())
+        var isClickedPoem = false
+        handler.post {
+            if (!isClickedPoem) {
+                isClickedPoem = true
+                if (UpToddMediaPlayer.isPlaying) {
+                    if (UpToddMediaPlayer.songPlaying.id != poem.id) {
+                        UpToddMediaPlayer.isPlaying = false
+                    }
+                }
+                preferences.edit().putInt("currentFileIndex", position).apply()
 
-        if (UpToddMediaPlayer.isPlaying) {
-            if (UpToddMediaPlayer.songPlaying.id != poem.id) {
-                UpToddMediaPlayer.isPlaying = false
+                try {
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
+                } catch (e: Exception) {
+                    activity?.let { act ->
+                        Toast.makeText(act, "Please Try Again", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
-        preferences.edit().putInt("currentFileIndex", position).apply()
 
-        try {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_speedBoosterFragment_to_memoryBoosterDetailsFragment)
-        } catch (e: Exception) {
-            activity?.let { act ->
-                Toast.makeText(act, "Please Try Again", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun requestWorkManager() {
