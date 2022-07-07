@@ -9,5 +9,14 @@
         android:id="@+id/parentingLoginFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.ParentingLoginFragment"
         tools:layout="@layout/login_parenting_fragment"
-        android:label="ParentingLoginFragment" />
+        android:label="ParentingLoginFragment" >
+        <action
+            android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
+            app:destination="@id/freeDemoBashBoardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/freeDemoBashBoardFragment"
+        tools:layout="@layout/free_demo_dashboard_screen_framgent"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.dashboard.FreeDemoBashBoardFragment"
+        android:label="FreeDemoBashBoardFragment" />
 </navigation>

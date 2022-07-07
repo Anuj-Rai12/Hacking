@@ -9,14 +9,19 @@ import com.uptodd.uptoddapp.databinding.HomeOptionsRecyclerviewItemBinding
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.models.OptionsItem
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.viewholders.HomeOptionsViewHolder
 
-class HomeOptionsAdapter(var context:Context,var type: Int,var listener: HomeOptionsClickListener) : RecyclerView.Adapter<HomeOptionsViewHolder>(){
+class HomeOptionsAdapter(
+    var context: Context,
+    var type: Int,
+    var listener: HomeOptionsClickListener
+) : RecyclerView.Adapter<HomeOptionsViewHolder>() {
 
-    val optionsList=getOptionsList(type)
+    val optionsList = getOptionsList(type)
 
-    companion object{
-        const val PERSONALIZED=0
-        const val PREMIUM=1
-        const val PARENT=2
+    companion object {
+        const val PERSONALIZED = 0
+        const val PREMIUM = 1
+        const val PARENT = 2
+        const val FreeDemoContent = 3
 
         fun calculateColumns(context: Context, columnWidthDp: Float = 140F): Int {
             val metrics = context.resources.displayMetrics
@@ -24,19 +29,20 @@ class HomeOptionsAdapter(var context:Context,var type: Int,var listener: HomeOpt
 
             return (screenWidth / columnWidthDp + 0.5).toInt()
         }
-        fun getOptionsList(type:Int):ArrayList<OptionsItem>{
-            return if(type== PERSONALIZED)
-                OptionsItem.getPersonalizedList()
-            else if(type== PREMIUM)
-                OptionsItem.getPremiumList()
-            else
-                OptionsItem.getParentToolList()
+
+        fun getOptionsList(type: Int): ArrayList<OptionsItem> {
+            return when (type) {
+                PERSONALIZED -> OptionsItem.getPersonalizedList()
+                PREMIUM -> OptionsItem.getPremiumList()
+                FreeDemoContent -> OptionsItem.getFreeDemoSection()
+                else -> OptionsItem.getParentToolList()
+            }
         }
 
     }
 
-    fun addKitTutorial(){
-        if(optionsList.size==5) {
+    fun addKitTutorial() {
+        if (optionsList.size == 5) {
             optionsList.add(
                 OptionsItem(
                     R.id.action_homePageFragment_to_kitTutorialFragment,
@@ -50,8 +56,9 @@ class HomeOptionsAdapter(var context:Context,var type: Int,var listener: HomeOpt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeOptionsViewHolder {
 
-        return HomeOptionsViewHolder(HomeOptionsRecyclerviewItemBinding.
-        inflate(LayoutInflater.from(context)))
+        return HomeOptionsViewHolder(
+            HomeOptionsRecyclerviewItemBinding.inflate(LayoutInflater.from(context))
+        )
     }
 
     override fun onBindViewHolder(holder: HomeOptionsViewHolder, position: Int) {
@@ -67,9 +74,9 @@ class HomeOptionsAdapter(var context:Context,var type: Int,var listener: HomeOpt
     }
 
 
-    interface HomeOptionsClickListener{
+    interface HomeOptionsClickListener {
 
-        fun onClickedItem(navId:Int);
+        fun onClickedItem(navId: Int)
     }
 
 }

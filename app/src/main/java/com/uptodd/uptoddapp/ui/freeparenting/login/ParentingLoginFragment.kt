@@ -2,11 +2,10 @@ package com.uptodd.uptoddapp.ui.freeparenting.login
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.LoginParentingFragmentBinding
-import com.uptodd.uptoddapp.utils.invisible
 
 class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
     private lateinit var binding: LoginParentingFragmentBinding
@@ -15,8 +14,11 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginParentingFragmentBinding.bind(view)
         binding.goToDemoDashBoard.setOnClickListener {
-            binding.goToDemoDashBoard.invisible()
-            binding.pbBtn.isVisible = true
+            val action=ParentingLoginFragmentDirections
+                .actionParentingLoginFragmentToFreeDemoBashBoardFragment()
+            findNavController().navigate(action)
+//            binding.goToDemoDashBoard.invisible()
+//            binding.pbBtn.isVisible = true
         }
     }
 
