@@ -9,4 +9,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="customTabLayout" parent="Widget.Design.TabLayout">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/crimson_text_bold</item>
+    </style>
 </resources>

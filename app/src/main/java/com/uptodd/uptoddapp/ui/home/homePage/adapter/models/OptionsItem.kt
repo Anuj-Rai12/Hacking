@@ -8,7 +8,7 @@ data class OptionsItem(var navId: Int, var icon: Int, var title: String) {
 
         fun getFreeDemoSection(): ArrayList<OptionsItem> {
             val arrayList = arrayListOf<OptionsItem>()
-            arrayList.add(OptionsItem(0, R.drawable.app_icon, "Video Content"))
+            arrayList.add(OptionsItem(R.id.action_freeDemoBashBoardFragment_to_demoVideoContentFragment, R.drawable.app_icon, "Video Content"))
             arrayList.add(OptionsItem(0, R.drawable.app_icon, "Reviews"))
             arrayList.add(OptionsItem(0, R.drawable.app_icon, "Course Tool kit"))
             arrayList.add(OptionsItem(0, R.drawable.app_icon, "Upgrade"))

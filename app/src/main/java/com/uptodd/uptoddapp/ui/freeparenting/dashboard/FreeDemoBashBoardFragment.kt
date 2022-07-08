@@ -3,6 +3,7 @@ package com.uptodd.uptoddapp.ui.freeparenting.dashboard
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoDashboardScreenFramgentBinding
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
@@ -34,6 +35,13 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
     }
 
     override fun onClickedItem(navId: Int) {
-        activity?.toastMsg("$navId")
+        try {
+            findNavController().navigate(navId)
+        }catch (e:Exception){
+            activity?.toastMsg("$navId")
+        }
     }
+
+
+
 }

@@ -18,5 +18,14 @@
         android:id="@+id/freeDemoBashBoardFragment"
         tools:layout="@layout/free_demo_dashboard_screen_framgent"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.dashboard.FreeDemoBashBoardFragment"
-        android:label="FreeDemoBashBoardFragment" />
+        android:label="FreeDemoBashBoardFragment" >
+        <action
+            android:id="@+id/action_freeDemoBashBoardFragment_to_demoVideoContentFragment"
+            app:destination="@id/demoVideoContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoVideoContentFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
+        android:label="demo_video_content_layout"
+        tools:layout="@layout/demo_video_content_layout" />
 </navigation>
