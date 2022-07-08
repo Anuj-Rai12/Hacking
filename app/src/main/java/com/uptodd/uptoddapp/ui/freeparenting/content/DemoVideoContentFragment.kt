@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
@@ -19,9 +18,9 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     private lateinit var binding: DemoVideoContentLayoutBinding
     private var viewPagerAdaptor: ViewPagerAdapter? = null
 
-    private val tabsArrayList by lazy {
+    /*private val tabsArrayList by lazy {
         arrayListOf("Video", "Information")
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,9 +28,9 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         binding.videoTitle.text = "Video content is good testing sample url!!"
 
         setAdaptor()
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, pos ->
+        /*TabLayoutMediator(binding.tabs, binding.viewPager) { tab, pos ->
             tab.text = tabsArrayList[pos]
-        }.attach()
+        }.attach()*/
         "https://img.youtube.com/vi/uxSh8svEoZQ/mqdefault.jpg".also { url ->
             Glide.with(this)
                 .load(Uri.parse(url))
@@ -47,7 +46,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         viewPagerAdaptor = ViewPagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
         setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.MODULE.name))
-        setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.INFO.name))
+        //setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.INFO.name))
     }
 
 

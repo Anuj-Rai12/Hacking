@@ -138,14 +138,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat"
-            android:text="By Uptodd Team"
+            android:text="By Uptodd Team\n\nRelated Videos"
             android:textColor="@color/black"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="@id/video_title"
             app:layout_constraintTop_toBottomOf="@id/video_title" />
 
 
-        <com.google.android.material.tabs.TabLayout
+        <!--<com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
             app:tabTextAppearance="@style/customTabLayout"
-            app:tabTextColor="@color/black" />
+            app:tabTextColor="@color/black" />-->
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -170,7 +170,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+            app:layout_constraintTop_toBottomOf="@+id/by_uptodd_team" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
