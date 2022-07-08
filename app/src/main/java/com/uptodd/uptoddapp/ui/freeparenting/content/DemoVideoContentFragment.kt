@@ -10,8 +10,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
+import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
 import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
+import com.uptodd.uptoddapp.utils.toastMsg
 
 class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     private lateinit var binding: DemoVideoContentLayoutBinding
@@ -46,6 +48,11 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         binding.viewPager.isUserInputEnabled = false
         setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.MODULE.name))
         setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.INFO.name))
+    }
+
+
+    fun setNewVideo(moduleList: ModuleList) {
+        activity?.toastMsg("$moduleList")
     }
 
     private fun setFragment(fragment: Fragment): Int? {

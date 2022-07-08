@@ -1,25 +1,53 @@
 package com.uptodd.uptoddapp.ui.freeparenting.content.tabs
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoVideoModuleFragmentsBinding
+import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
+import com.uptodd.uptoddapp.datamodel.videocontent.VideoContent
+import com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment
+import com.uptodd.uptoddapp.ui.freeparenting.content.adaptor.ModuleAdaptor
 import com.uptodd.uptoddapp.utils.hide
 import com.uptodd.uptoddapp.utils.show
+import com.uptodd.uptoddapp.utils.toastMsg
 
 class FreeDemoVideoModuleFragments(val type: String, val description: String? = null) :
     Fragment(R.layout.free_demo_video_module_fragments) {
     private lateinit var binding: FreeDemoVideoModuleFragmentsBinding
-
+    private lateinit var adaptorListItem: ModuleAdaptor
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FreeDemoVideoModuleFragmentsBinding.bind(view)
         binding.titleTxt.movementMethod = ScrollingMovementMethod()
         binding.titleTxt.text = description ?: sampleText
+        setUpAdaptor()
 
+    }
 
+    private fun setUpAdaptor() {
+        binding.recycleView.apply {
+            setHasFixedSize(true)
+            adaptorListItem = ModuleAdaptor {
+                setToParentFragment(it)
+            }
+            adapter = adaptorListItem
+            adaptorListItem.submitList(VideoContent.getVideoContent())
+        }
+    }
+
+    private fun setToParentFragment(moduleList: ModuleList) {
+        val handler = Handler(Looper.getMainLooper())
+        val parent = parentFragment
+        handler.post {
+            parent?.let { fragment ->
+                (fragment as DemoVideoContentFragment).setNewVideo(moduleList)
+            } ?: activity?.toastMsg("Testing file")
+        }
     }
 
     override fun onResume() {
