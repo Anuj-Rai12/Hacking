@@ -422,4 +422,5 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="tips_will_be_added_soon_to_r_d_team_will_add_the_report_soon" translatable="false">R&amp;D team will add the report soon</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_sample">Testing Video File</string>
 </resources>
