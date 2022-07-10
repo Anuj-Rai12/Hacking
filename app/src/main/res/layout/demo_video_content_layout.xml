@@ -64,9 +64,11 @@
                         android:background="@drawable/bg_border"
                         android:backgroundTint="@color/black_high_opacity"
                         app:layout_constraintBottom_toBottomOf="@id/videoThumbnail"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintLeft_toLeftOf="@id/videoThumbnail"
                         app:layout_constraintRight_toRightOf="@id/videoThumbnail"
-                        app:layout_constraintTop_toTopOf="@id/videoThumbnail">
+                        app:layout_constraintTop_toTopOf="@id/videoThumbnail"
+                        app:layout_constraintVertical_bias="0.0">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="45dp"
@@ -92,9 +94,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/bck_arrow"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_margin="10dp"
+            android:contentDescription="close button"
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
             android:src="@drawable/ic_keyboard_arrow_down"
@@ -122,11 +125,13 @@
 
         <ImageButton
             android:id="@+id/person_customer_support"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_margin="13dp"
             android:background="@android:color/transparent"
             android:padding="8dp"
+            android:contentDescription="Customer Support"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_person_support"
             android:tint="@color/black"
             app:layout_constraintRight_toRightOf="parent"
@@ -139,29 +144,12 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat"
             android:text="By Uptodd Team\n\nRelated Videos"
-            android:textColor="@color/black"
+            android:textColor="@color/div"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="@id/video_title"
             app:layout_constraintTop_toBottomOf="@id/video_title" />
 
 
-        <!--<com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            app:layout_constraintHorizontal_bias="0.461"
-            app:layout_constraintLeft_toLeftOf="@id/by_uptodd_team"
-            app:layout_constraintRight_toRightOf="@id/person_customer_support"
-            app:layout_constraintTop_toBottomOf="@id/by_uptodd_team"
-            app:tabBackground="@drawable/tab_layout"
-            app:tabIndicatorColor="@android:color/transparent"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextAppearance="@style/customTabLayout"
-            app:tabTextColor="@color/black" />-->
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

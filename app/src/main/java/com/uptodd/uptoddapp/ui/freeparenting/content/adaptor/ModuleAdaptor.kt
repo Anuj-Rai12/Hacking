@@ -26,7 +26,7 @@ class ModuleAdaptor(private val itemClicked: moduleItemClicked) :
         @SuppressLint("SetTextI18n")
         fun makeData(data: VideoContent, itemClicked: moduleItemClicked, position: Int) {
 
-            binding.titleForTxt.text = data.title
+            binding.titleForTxt.text =" $position. ${data.title}"
 
             binding.moduleTitleLayout.setOnClickListener {
                 if (!isModuleOpenFlag) {
@@ -38,6 +38,18 @@ class ModuleAdaptor(private val itemClicked: moduleItemClicked) :
                 }
                 isModuleOpenFlag = !isModuleOpenFlag
             }
+
+            binding.arrow.setOnClickListener {
+                if (!isModuleOpenFlag) {
+                    binding.arrow.setImageResource(R.drawable.ic_keyboard_arrow_up)
+                    binding.recycleViewForModule.show()
+                } else {
+                    binding.arrow.setImageResource(R.drawable.ic_keyboard_arrow_down)
+                    binding.recycleViewForModule.hide()
+                }
+                isModuleOpenFlag = !isModuleOpenFlag
+            }
+
             binding.recycleViewForModule.apply {
                 adaptorVideo = VideoAdaptor {
                     itemClicked.invoke(it)
