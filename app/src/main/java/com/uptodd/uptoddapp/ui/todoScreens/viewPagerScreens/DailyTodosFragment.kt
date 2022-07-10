@@ -59,7 +59,6 @@ class DailyTodosFragment : Fragment(), TodosRecyclerAdapter.TodosInterface {
 //        }
 
 
-
         viewModel.dailyPendingTodosList.observe(viewLifecycleOwner, {
             it?.let {
                 if (it.size == 1) {
@@ -171,7 +170,7 @@ class DailyTodosFragment : Fragment(), TodosRecyclerAdapter.TodosInterface {
 
     private fun initialiseRecyclerView() {
 
-        todosRecyclerAdapter = TodosRecyclerAdapter(emptyList(), this,requireContext())
+        todosRecyclerAdapter = TodosRecyclerAdapter(emptyList(), this, requireContext())
         binding.recyclerView.adapter = todosRecyclerAdapter
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)  // for swipe behaviour
@@ -241,7 +240,7 @@ class DailyTodosFragment : Fragment(), TodosRecyclerAdapter.TodosInterface {
                 isCurrentlyActive: Boolean,
             ) {
 
-                if (todosRecyclerAdapter.todoList[viewHolder.absoluteAdapterPosition].doType == TYPE_HEADER)
+                if (todosRecyclerAdapter.todoList.size > viewHolder.absoluteAdapterPosition && todosRecyclerAdapter.todoList[viewHolder.absoluteAdapterPosition].doType == TYPE_HEADER)
                     return    // do not swipe viewholders containing the header!
 
                 val swipeDecorator = RecyclerViewSwipeDecorator.Builder(
