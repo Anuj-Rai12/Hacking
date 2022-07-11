@@ -1,8 +1,10 @@
 package com.uptodd.uptoddapp.ui.freeparenting.content
 
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -48,6 +50,10 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.MODULE.name))
         //setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.INFO.name))
     }
+
+
+
+
 
 
     fun setNewVideo(moduleList: ModuleList) {
