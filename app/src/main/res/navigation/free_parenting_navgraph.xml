@@ -22,10 +22,18 @@
         <action
             android:id="@+id/action_freeDemoBashBoardFragment_to_demoVideoContentFragment"
             app:destination="@id/demoVideoContentFragment" />
+        <action
+            android:id="@+id/action_freeDemoBashBoardFragment_to_toolKitAndReviewFragment"
+            app:destination="@id/toolKitAndReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/demoVideoContentFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
         android:label="demo_video_content_layout"
         tools:layout="@layout/demo_video_content_layout" />
+    <fragment
+        android:id="@+id/toolKitAndReviewFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.toolkitreview.ToolKitAndReviewFragment"
+        android:label="took_kit_and_review_layout"
+        tools:layout="@layout/took_kit_and_review_layout" />
 </navigation>
