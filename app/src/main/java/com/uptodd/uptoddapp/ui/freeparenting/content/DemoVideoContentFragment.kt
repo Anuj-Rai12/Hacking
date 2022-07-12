@@ -4,7 +4,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil.setContentView
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -52,9 +52,66 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     }
 
 
+    private fun changeLayoutOnLandScape() {
+
+        val param = binding.videoViewLayout.layoutParams
+        param.height = ViewGroup.LayoutParams.MATCH_PARENT
+        binding.mainImageLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+        binding.mainConstraintHolder.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        binding.videoThumbnail.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        binding.musicFragmentLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        binding.mainMusicLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+    }
 
 
+    private fun changeLayoutOnPortrait() {
 
+        val param = binding.videoViewLayout.layoutParams
+        param.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+        binding.mainImageLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
+        binding.mainConstraintHolder.layoutParams.apply {
+            height=ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        binding.videoThumbnail.layoutParams.apply {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
+        binding.musicFragmentLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+        binding.mainMusicLayout.layoutParams.apply {
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            changeLayoutOnLandScape()
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            changeLayoutOnPortrait()
+        }
+    }
 
     fun setNewVideo(moduleList: ModuleList) {
         activity?.toastMsg("$moduleList")
