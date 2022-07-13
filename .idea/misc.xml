@@ -7,15 +7,11 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow_circle_right.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/bg_border.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic__keyboard_arrow.xml" value="0.1305" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_arrow.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_back_black.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_accessibility_new_24.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.234" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_star_rate_24.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_keyboard_arrow_down.xml" value="0.1305" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_person_support.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_round_star_24.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_syringe_svgrepo_com.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_cancel.xml" value="0.1255" />
@@ -33,9 +29,6 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/round_rate_ticket_background.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/rounded_corners_text_view_login.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/shine_btn_desgin.xml" value="0.1255" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_selected.xml" value="0.1295" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_unselected.xml" value="0.1295" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_layout.xml" value="0.1295" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ticket_detail_drawable.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_2.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_3.xml" value="0.1255" />
@@ -47,7 +40,6 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout_5.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_container_layout_6.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/viedo_contation_layout.xml" value="0.2" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout-land/demo_video_content_layout.xml" value="0.18782837127845883" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout-v21/activity_podcast_webinar.xml" value="0.22239583333333332" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_account.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_blogs.xml" value="0.2234375" />
@@ -57,15 +49,12 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_full_blog.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_full_webinar.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_main.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_podcast_webinar.xml" value="0.264" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_podcast_webinar.xml" value="0.536" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_refer.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/activity_story_play.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demeo.xml" value="0.22239583333333332" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demo.xml" value="0.16" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_module_item_layout.xml" value="0.4" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_module_layout.xml" value="0.4" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_content_layout.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/development_tracker_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_sample.xml" value="0.2234375" />
@@ -79,10 +68,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_select_language.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_webinars.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_demo_account_layout.xml" value="0.2234375" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_demo_dashboard_screen_framgent.xml" value="0.264" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_demo_video_module_fragments.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_parenting_action_bar.xml" value="0.4" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/home_options_recyclerview_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_collapase_toolbar.xml" value="0.16847826086956522" />
@@ -92,7 +78,6 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/session_list_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.536" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/took_kit_and_review_layout.xml" value="0.4" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/video_item_tool_kit_and_review_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/view_ticket_fragment.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/youtube_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/doctor_account.xml" value="0.2234375" />
