@@ -17,6 +17,7 @@ import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utils.toastMsg
 import kotlinx.android.synthetic.main.question_form_fragment.*
 
 class QuestionsFormFragment : Fragment() {
@@ -58,14 +59,15 @@ class QuestionsFormFragment : Fragment() {
         uptoddDialog.dismissDialog()
 
         binding?.submitForm?.setOnClickListener {
+            if (adapter.list.isEmpty()) {
+                activity?.toastMsg("Please answer all the questions", Toast.LENGTH_LONG)
+                return@setOnClickListener
+            }
             if (adapter.checkValidationOfForm()) {
                 uptoddDialog.showLoadingDialog(findNavController(), false)
                 viewModel?.submitForm(adapter.list as ArrayList<Response>)
             } else {
-                Toast.makeText(
-                    requireContext(), "Please answer all the questions",
-                    Toast.LENGTH_LONG
-                ).show()
+                activity?.toastMsg("Please answer all the questions", Toast.LENGTH_LONG)
             }
 
         }
