@@ -14,11 +14,9 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.QuestionFormFragmentBinding
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.adapters.QuestionsFormAdapter
 import com.uptodd.uptoddapp.ui.monthlyDevelopment.models.Response
-import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.utils.toastMsg
-import kotlinx.android.synthetic.main.question_form_fragment.*
 
 class QuestionsFormFragment : Fragment() {
 
