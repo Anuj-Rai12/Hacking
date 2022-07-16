@@ -12,7 +12,9 @@
         android:label="ParentingLoginFragment" >
         <action
             android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
-            app:destination="@id/freeDemoBashBoardFragment" />
+            app:destination="@id/freeDemoBashBoardFragment"
+            app:popUpTo="@id/parentingLoginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/freeDemoBashBoardFragment"

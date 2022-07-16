@@ -377,6 +377,7 @@ class LoginFragment : Fragment() {
         binding.goToFreeBtn.setOnClickListener {
             val intent = Intent(activity, FreeParentingDemoActivity::class.java)
             startActivity(intent)
+            activity?.finish()
         }
 
         viewModel.incorrectEmail.observe(viewLifecycleOwner, Observer {
@@ -1087,7 +1088,7 @@ class LoginFragment : Fragment() {
             var token = AllUtil.getAuthToken()
             val request = original.newBuilder()
                 .header("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-                .method(original.method(), original.body())
+                .method(original.method, original.body)
                 .build()
             chain.proceed(request)
         }

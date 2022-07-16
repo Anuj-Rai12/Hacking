@@ -197,7 +197,7 @@ class TodosListActivity : AppCompatActivity(), CaptureImageFragment.OnCaptureLis
 
             val request = original.newBuilder()
                 .header("Authorization", "Bearer ${AllUtil.getAuthToken()}")
-                .method(original.method(), original.body())
+                .method(original.method, original.body)
                 .build()
             chain.proceed(request)
         }

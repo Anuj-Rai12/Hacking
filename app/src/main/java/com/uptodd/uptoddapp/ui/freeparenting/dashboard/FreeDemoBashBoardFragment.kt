@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoDashboardScreenFramgentBinding
+import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
 import com.uptodd.uptoddapp.utils.toastMsg
 
@@ -18,6 +19,10 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FreeDemoDashboardScreenFramgentBinding.bind(view)
+
+        val ins=LoginSingletonResponse.getInstance()
+        activity?.toastMsg("${ins.getLoginRequest()}")
+        activity?.toastMsg("${ins.getLoginResponse()}")
 
         setUpContentRecycleView()
 

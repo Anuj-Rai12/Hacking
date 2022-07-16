@@ -2,13 +2,17 @@ package com.uptodd.uptoddapp.utils
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
+import retrofit2.Retrofit
+import java.util.regex.Pattern
 
 
 fun Activity.changeStatusBarColor(color: Int) {
@@ -65,3 +69,76 @@ fun View.invisible() {
     this.visibility = View.INVISIBLE
 }
 
+
+fun setLogCat(title: String = "TAG", msg: String) {
+    Log.i(title, "$title: $msg")
+}
+
+fun checkUserInput(string: String) = string.isNullOrEmpty() || string.isBlank()
+
+
+fun isValidPhone(phone: String): Boolean {
+    val phonetic = "^[+]?[0-9]{10,13}\$"
+    val pattern = Pattern.compile(phonetic)
+    return pattern.matcher(phone).matches()
+}
+
+fun isValidEmail(target: CharSequence?): Boolean {
+    return if (target == null) {
+        false
+    } else {
+        Patterns.EMAIL_ADDRESS.matcher(target).matches()
+    }
+}
+
+fun getEmojiByUnicode(unicode: Int) = String(Character.toChars(unicode))
+
+
+fun getPhoneNumber(num: String): Array<String?> {
+    val str = arrayOfNulls<String>(2)
+    for (i in num.indices) {
+        val value = num.length - 1 - i
+        if (value == 10) {
+            str[0] = num.substring(0, i + 1)
+            str[1] = num.substring(i + 1)
+            return str
+        }
+    }
+    return str
+}
+
+
+object FilesUtils {
+    const val BASE_URL = "https://uptodd.com/api/"
+    const val NO_INTERNET = "Device is Currently Offline!!"
+    object DATASTORE {
+        const val PERSISTENCE_Login = "LOGIN_INFO"
+        const val LoginType = "userType"
+        const val defValue = "Normal"
+        const val FREE_LOGIN = "freeParentingLoginInfo"
+        object LoginResponse{
+            const val email="email"
+            const val name="name"
+            const val phone="phoneNumber"
+        }
+    }
+
+    object FreeParentingApi {
+        //EndPoints
+        const val Login = "intro-program-login"
+    }
+}
+
+
+fun View.showSnackbar(msg: String, length: Int = Snackbar.LENGTH_SHORT, color: Int? = null) {
+    val snackBar = Snackbar.make(this, msg, length)
+    color?.let {
+        snackBar.view.setBackgroundColor(it)
+    }
+    snackBar.show()
+}
+
+
+inline fun <reified T> buildApi(retrofit: Retrofit): T {
+    return retrofit.create(T::class.java)
+}

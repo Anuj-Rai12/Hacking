@@ -79,11 +79,11 @@ class ReferADoctorViewModel : ViewModel() {
                         if(error.errorCode==0)
                             apiError = "Connection Timeout!"
                         else if(error.response!=null)
-                            apiError = error.response.message()
+                            apiError = error.response.message
                         else
                             apiError = error.message.toString()
                         _isLoading.value = -1
-                        Log.i("error", "${error.errorBody} /n${error.response.message()} \n${error.errorDetail} \n${error.message} \n${error.localizedMessage} \n${error.cause}")
+                        Log.i("error", "${error.errorBody} /n${error.response.message} \n${error.errorDetail} \n${error.message} \n${error.localizedMessage} \n${error.cause}")
                     }
                 })
         }

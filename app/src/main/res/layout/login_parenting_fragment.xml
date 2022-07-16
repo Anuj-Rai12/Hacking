@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Full Name"
                 android:textColor="@color/light_grey_color"
@@ -99,6 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/montserrat"
+                    android:inputType="textEmailAddress"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="@color/black" />
@@ -119,6 +120,30 @@
                 app:layout_constraintTop_toBottomOf="@id/user_email_ed_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/country_code_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Country Code"
+                android:textSize="14sp"
+                app:hintTextColor="@color/light_grey_color"
+                app:boxStrokeColor="@color/light_grey_color"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="@id/phone_txt"
+                app:layout_constraintRight_toRightOf="@id/user_email_ed_layout"
+                app:layout_constraintTop_toBottomOf="@id/phone_txt">
+
+                <AutoCompleteTextView
+                    android:id="@+id/country_code_ed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:text="Country Code" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/user_phone_ed_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
@@ -130,7 +155,7 @@
                 app:endIconTint="@color/black"
                 app:layout_constraintLeft_toLeftOf="@id/phone_txt"
                 app:layout_constraintRight_toRightOf="@id/user_email_ed_layout"
-                app:layout_constraintTop_toBottomOf="@id/phone_txt">
+                app:layout_constraintTop_toBottomOf="@id/country_code_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/user_phone_ed"
