@@ -77,7 +77,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
                 return@setOnClickListener
             }
 
-            if (!isValidPhone(codeId + phoneNumber)) { // Return True means Phone is No Valid
+            if (!isValidPhone(phoneNumber)) { // Return True means Phone is No Valid
                 activity?.toastMsg("Please enter the correct Phone Number!!")
                 return@setOnClickListener
             }
@@ -88,7 +88,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
                 name = fullName,
                 phone = phoneNumber
             )
-
             viewModel.fetchResponse(request)
         }
 
