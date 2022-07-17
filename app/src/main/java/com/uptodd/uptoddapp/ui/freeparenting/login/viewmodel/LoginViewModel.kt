@@ -25,7 +25,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val event: LiveData<Event<String>>
         get() = _event
 
-    private val loginRepository = LoginRepository(RetrofitSingleton.getInstance().getRetrofit(),application)
+    private val loginRepository =
+        LoginRepository(RetrofitSingleton.getInstance().getRetrofit(), application)
     private val context = application
 
     fun fetchResponse(request: FreeParentingLoginRequest) {
@@ -39,6 +40,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             _event.postValue(Event(FilesUtils.NO_INTERNET))
         }
     }
+
+    val getRequestLoginRequest: FreeParentingLoginRequest?
+        get() = loginRepository.getLoginPreferences()
+
 
     override fun onCleared() {
         super.onCleared()

@@ -7,9 +7,7 @@ import com.uptodd.uptoddapp.api.freeparentingapi.LoginApi
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
-import com.uptodd.uptoddapp.utils.ApiResponseWrapper
-import com.uptodd.uptoddapp.utils.FilesUtils
-import com.uptodd.uptoddapp.utils.buildApi
+import com.uptodd.uptoddapp.utils.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -62,4 +60,25 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
             return commit()
         }
     }
+
+
+    fun getLoginPreferences(): FreeParentingLoginRequest? {
+        val email = preferences.getString(FilesUtils.DATASTORE.LoginResponse.email, "") ?: ""
+        val name = preferences.getString(FilesUtils.DATASTORE.LoginResponse.name, "") ?: ""
+        val phone = preferences.getString(FilesUtils.DATASTORE.LoginResponse.phone, "") ?: ""
+
+        if (checkUserInput(phone) || checkUserInput(name) || checkUserInput(email)) {
+            return null
+        }
+
+        val getMobile = getPhoneNumber(phone)
+        return FreeParentingLoginRequest(
+            email = email,
+            name = name,
+            phone = getMobile.last().toString(),
+            mobileCode = getMobile.first().toString()
+        )
+    }
+
+
 }

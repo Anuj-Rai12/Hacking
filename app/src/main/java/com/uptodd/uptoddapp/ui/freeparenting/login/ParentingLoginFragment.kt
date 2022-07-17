@@ -41,7 +41,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         "${getEmojiByUnicode(0x1F1F9)}${getEmojiByUnicode(0x1F1ED)} +66",
         "${getEmojiByUnicode(0x1F1E6)}${getEmojiByUnicode(0x1F1EA)} +971",
     )
-
     private val dropDownArray: ArrayAdapter<String> by lazy {
         ArrayAdapter(requireContext(), R.layout.dropdown, countryCode.toTypedArray())
     }
@@ -61,14 +60,14 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
         binding.goToDemoDashBoard.setOnClickListener {
             val fullName = binding.fullNameEd.text.toString()
-            val email = binding.emailTxt.text.toString()
-            val phoneNumber = binding.phoneTxt.text.toString()
+            val email = binding.userEmailEd.text.toString()
+            val phoneNumber = binding.userPhoneEd.text.toString()
             if (checkUserInput(fullName) || checkUserInput(email) || checkUserInput(phoneNumber)) {
                 activity?.toastMsg("Please Enter Correct Information")
                 return@setOnClickListener
             }
 
-            if (isValidEmail(email)) {//Return True means that Email is Not Valid
+            if (!isValidEmail(email)) {//Return True means that Email is Not Valid
                 activity?.toastMsg("please enter correct Email address")
                 return@setOnClickListener
             }
@@ -78,7 +77,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
                 return@setOnClickListener
             }
 
-            if (isValidPhone(codeId + phoneNumber)) { // Return True means Phone is No Valid
+            if (!isValidPhone(codeId + phoneNumber)) { // Return True means Phone is No Valid
                 activity?.toastMsg("Please enter the correct Phone Number!!")
                 return@setOnClickListener
             }
@@ -97,12 +96,23 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
 
         binding.countryCodeEd.setOnItemClickListener { _, _, position, _ ->
-            codeId = countryCode.elementAt(position)
+            codeId = getCode(countryCode.elementAt(position))
         }
     }
 
+    private fun getCode(str: String): String? {
+        val index = str.indexOf('+')
+        if (index == -1)
+            return null
+        return str.substring(index)
+    }
+
     private fun showErrorDialogBox(msg: String) {
-        showDialogBox(title = "Failed", desc = msg, icon = android.R.drawable.stat_notify_error) {
+        activity?.showDialogBox(
+            title = "Failed",
+            desc = msg,
+            icon = android.R.drawable.stat_notify_error
+        ) {
             setLogCat("showErrorDialogBox", "nothing")
         }
     }

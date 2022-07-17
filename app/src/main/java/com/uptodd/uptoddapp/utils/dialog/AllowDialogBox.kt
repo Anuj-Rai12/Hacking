@@ -1,11 +1,11 @@
 package com.uptodd.uptoddapp.utils.dialog
 
-import androidx.fragment.app.Fragment
+import android.app.Activity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.uptodd.uptoddapp.R
 
 
-fun Fragment.showDialogBox(
+fun Activity.showDialogBox(
     title: String,
     desc: String,
     btn: String = "Ok",
@@ -15,7 +15,7 @@ fun Fragment.showDialogBox(
     listener: () -> Unit
 ) {
     val material = MaterialAlertDialogBuilder(
-        requireActivity(),
+        this,
         R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog_simple
     )
 
