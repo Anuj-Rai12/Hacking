@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MemoryBoosterItemBinding
@@ -35,6 +36,7 @@ class SpeedBoosterAdapter(val clickListener: SpeedBoosterAdpaterInterface) :
             Glide.with(binding.root)
                 .load(AllUtil.getPoemImage(item,dpi))
                 .placeholder(R.drawable.loading_animation)
+                .apply(RequestOptions().override(600,600))
                 .error(R.drawable.default_set_android_thumbnail)
                 .into(binding.speedBoosterItemImage)
 
