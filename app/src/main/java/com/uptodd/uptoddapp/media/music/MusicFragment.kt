@@ -8,6 +8,8 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -503,13 +505,19 @@ class MusicFragment : Fragment() {
                         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
                         builder.setTitle(music.name)
                         builder.setItems(fonts) { _, _ ->
-                            findNavController().navigate(
-                                MusicFragmentDirections.actionMusicToDetails(
-                                    "Music",
-                                    music.id,
-                                    music
-                                )
-                            )
+                            var goneToMusicDetailSection=false
+                            Handler(Looper.getMainLooper()).post {
+                                if (!goneToMusicDetailSection){
+                                    goneToMusicDetailSection=true
+                                    findNavController().navigate(
+                                        MusicFragmentDirections.actionMusicToDetails(
+                                            "Music",
+                                            music.id,
+                                            music
+                                        )
+                                    )
+                                }
+                            }
                         }
                         builder.show()
                         true
