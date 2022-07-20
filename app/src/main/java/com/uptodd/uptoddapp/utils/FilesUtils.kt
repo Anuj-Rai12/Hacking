@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
@@ -18,6 +17,16 @@ fun Activity.changeStatusBarColor(color: Int) {
         this.window?.statusBarColor = resources.getColor(color, null)
     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         this.window?.statusBarColor = resources.getColor(color)
+    }
+}
+
+fun Activity.getColorValue(color: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        resources.getColor(color, null)
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        resources.getColor(color)
+    } else {
+        resources.getColor(color)
     }
 }
 

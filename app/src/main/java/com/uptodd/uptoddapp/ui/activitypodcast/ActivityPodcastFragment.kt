@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,13 +18,13 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.erkutaras.showcaseview.ShowcaseManager
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.activitypodcast.ActivityPodcast
@@ -33,12 +34,15 @@ import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVide
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.getColorValue
+import com.uptodd.uptoddapp.utils.show
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+
 
 private const val TAG = "ActivityPodcastFragment"
 
@@ -133,7 +137,16 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
 
 
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip()) {
-            ShowInfoDialog.showInfo(getString(R.string.screen_podcast), requireFragmentManager())
+            //ShowInfoDialog.showInfo(getString(R.string.screen_podcast), requireFragmentManager())
+            Handler().postDelayed({
+                ShowInfoDialog.showHint(
+                    requireActivity(),
+                    binding.collapseToolbar.tvLayout, "Podcast",
+                    getString(R.string.screen_podcast),
+                    id
+                )
+            }, 1000)
+
             UptoddSharedPreferences.getInstance(requireContext()).setShownPodcastTip(false)
         }
     }
@@ -253,7 +266,7 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
                     val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
                     var dialogOnce = false
                     if (stage == "prenatal" || stage == "pre birth") {
-                        val handler=Handler(Looper.getMainLooper())
+                        val handler = Handler(Looper.getMainLooper())
                         handler.post {
                             if (!dialogOnce) {
                                 dialogOnce = true
@@ -311,11 +324,11 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
     }
 
     private fun showNoData() {
-        val handler=Handler(Looper.getMainLooper())
-        var isShowNoDataVisible=false
+        val handler = Handler(Looper.getMainLooper())
+        var isShowNoDataVisible = false
         handler.post {
-            if (!isShowNoDataVisible){
-                isShowNoDataVisible=true
+            if (!isShowNoDataVisible) {
+                isShowNoDataVisible = true
                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                     val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
 
