@@ -2,12 +2,13 @@ package com.uptodd.uptoddapp.ui.monthlyDevelopment
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
@@ -71,27 +72,31 @@ class QuestionsFormFragment : Fragment() {
         }
 
 
-
-        viewModel?.formSubmitted?.observe(viewLifecycleOwner, Observer {
-            uptoddDialog.dismissDialog()
-            if (it) {
-                UpToddDialogs(requireContext()).showDialog(
-                    R.drawable.gif_done,
-                    "Thank you for response, R&D team will add the report soon.",
-                    getString(R.string.close),
-                    object : UpToddDialogs.UpToddDialogListener {
-                        override fun onDialogButtonClicked(dialog: Dialog) {
-                            dialog.dismiss()
-                            findNavController().navigateUp()
+        var isShowDialog: Boolean?=null
+        viewModel?.formSubmitted?.observe(viewLifecycleOwner) { it ->
+            it?.let { flag ->
+                Handler(Looper.getMainLooper()).post {
+                    if (isShowDialog == null || flag != isShowDialog){
+                        uptoddDialog.dismissDialog()
+                        isShowDialog=flag
+                        if (flag) {
+                            UpToddDialogs(requireContext()).showDialog(
+                                R.drawable.gif_done,
+                                "Thank you for response, R&D team will add the report soon.",
+                                getString(R.string.close),
+                                object : UpToddDialogs.UpToddDialogListener {
+                                    override fun onDialogButtonClicked(dialog: Dialog) {
+                                        dialog.dismiss()
+                                        findNavController().navigateUp()
+                                    }
+                                })
+                        } else {
+                            activity?.toastMsg("Please try again", Toast.LENGTH_LONG)
                         }
-                    })
-            } else {
-                Toast.makeText(
-                    requireContext(), "Please try again",
-                    Toast.LENGTH_LONG
-                ).show()
+                    }
+                }
             }
-        })
+        }
 
 
     }

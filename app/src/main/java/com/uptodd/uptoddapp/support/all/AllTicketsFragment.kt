@@ -221,9 +221,9 @@ class AllTicketsFragment : Fragment() {
             )
         }
 
-        viewModel.allTickets.observe(viewLifecycleOwner, {
+        viewModel.allTickets.observe(viewLifecycleOwner) {
             addTicketsOnScreen(it.asReversed(), binding.ticketListLayout)
-        })
+        }
 
         return binding.root
     }
