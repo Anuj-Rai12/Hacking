@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -13,6 +14,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
 import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
+import com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel.VideoContentViewModel
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.utils.toastMsg
 
@@ -20,19 +22,13 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     private lateinit var binding: DemoVideoContentLayoutBinding
     private var viewPagerAdaptor: ViewPagerAdapter? = null
 
-    /*private val tabsArrayList by lazy {
-        arrayListOf("Video", "Information")
-    }*/
+    private val viewModel: VideoContentViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DemoVideoContentLayoutBinding.bind(view)
-        binding.videoTitle.text = "Video content is good testing sample url!!"
-
+        "Video content is good testing sample url!!".also { binding.videoTitle.text = it }
         setAdaptor()
-        /*TabLayoutMediator(binding.tabs, binding.viewPager) { tab, pos ->
-            tab.text = tabsArrayList[pos]
-        }.attach()*/
         "https://img.youtube.com/vi/uxSh8svEoZQ/mqdefault.jpg".also { url ->
             Glide.with(this)
                 .load(Uri.parse(url))
@@ -47,8 +43,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     private fun setAdaptor() {
         viewPagerAdaptor = ViewPagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
-        setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.MODULE.name))
-        //setFragment(FreeDemoVideoModuleFragments(FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.INFO.name))
+        setFragment(FreeDemoVideoModuleFragments())
     }
 
 
@@ -88,7 +83,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         }
 
         binding.mainConstraintHolder.layoutParams.apply {
-            height=ViewGroup.LayoutParams.MATCH_PARENT
+            height = ViewGroup.LayoutParams.MATCH_PARENT
         }
 
         binding.videoThumbnail.layoutParams.apply {

@@ -111,21 +111,25 @@ fun getPhoneNumber(num: String): Array<String?> {
 object FilesUtils {
     const val BASE_URL = "https://uptodd.com/api/"
     const val NO_INTERNET = "Device is Currently Offline!!"
+
     object DATASTORE {
         const val PERSISTENCE_Login = "LOGIN_INFO"
         const val LoginType = "userType"
         const val defValue = "Normal"
         const val FREE_LOGIN = "freeParentingLoginInfo"
-        object LoginResponse{
-            const val email="email"
-            const val name="name"
-            const val phone="phoneNumber"
+
+        object LoginResponse {
+            const val email = "email"
+            const val name = "name"
+            const val phone = "phoneNumber"
         }
     }
 
     object FreeParentingApi {
         //EndPoints
         const val Login = "intro-program-login"
+        const val DemoContent = "demo-content"
+        const val UPDATE_PROGRESS = "update-demo-progress"
     }
 }
 
