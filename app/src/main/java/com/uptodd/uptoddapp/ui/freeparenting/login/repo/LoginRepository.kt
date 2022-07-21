@@ -3,7 +3,7 @@ package com.uptodd.uptoddapp.ui.freeparenting.login.repo
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.uptodd.uptoddapp.api.freeparentingapi.LoginApi
+import com.uptodd.uptoddapp.api.freeparentingapi.login.LoginApi
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse

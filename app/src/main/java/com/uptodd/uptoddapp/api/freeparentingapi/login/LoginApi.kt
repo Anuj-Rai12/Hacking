@@ -1,4 +1,4 @@
-package com.uptodd.uptoddapp.api.freeparentingapi
+package com.uptodd.uptoddapp.api.freeparentingapi.login
 
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
