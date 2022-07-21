@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,15 +76,16 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
 
-        Handler().postDelayed({
-            ShowInfoDialog.showHint(
-                requireActivity(),
-                binding.collapseToolbar.tvLayout, "Session",
-                getString(R.string.screen_session),
-                id*3
-            )
-        }, 1000)
+
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip()) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                ShowInfoDialog.showHint(
+                    requireActivity(),
+                    binding.collapseToolbar.tvLayout, "Session",
+                    getString(R.string.screen_session),
+                    id*3
+                )
+            }, 1000)
             UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
         }
 

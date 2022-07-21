@@ -160,11 +160,11 @@ class AllTicketsFragment : Fragment() {
                             "OK",
                             object : UpToddDialogs.UpToddDialogListener {
                                 override fun onDialogButtonClicked(dialog: Dialog) {
-                                    val handler=Handler(Looper.getMainLooper())
-                                    var showDialogOnce=true
+                                    val handler = Handler(Looper.getMainLooper())
+                                    var showDialogOnce = true
                                     handler.post {
-                                        if (showDialogOnce){
-                                            showDialogOnce=false
+                                        if (showDialogOnce) {
+                                            showDialogOnce = false
                                             try {
                                                 uptoddDialogs.dismissDialog()
                                                 findNavController().navigateUp()
@@ -186,9 +186,16 @@ class AllTicketsFragment : Fragment() {
             }
         }
 
-
+        Handler(Looper.getMainLooper()).postDelayed({
+            ShowInfoDialog.showHint(
+                requireActivity(),
+                binding.collapseToolbar.tvLayout,
+                desc = getString(R.string.screen_support),
+                title = "Support",
+                key = id * 3
+            )
+        }, 1000)
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSupportTip()) {
-            ShowInfoDialog.showInfo(getString(R.string.screen_support), requireFragmentManager())
             UptoddSharedPreferences.getInstance(requireContext()).setShownSupportTip(false)
         }
 

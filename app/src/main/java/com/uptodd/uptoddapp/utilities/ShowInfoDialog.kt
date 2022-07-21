@@ -46,7 +46,7 @@ class ShowInfoDialog(val info: String) : DialogFragment() {
         }
 
 
-        fun showHint(activity: Activity,view: View, title: String, desc: String,key:Int) {
+        fun showHint(activity: Activity, view: View, title: String, desc: String, key: Int) {
             val builder = ShowcaseManager.Builder()
             builder.context(activity)
                 .key("$key")
@@ -58,7 +58,7 @@ class ShowInfoDialog(val info: String) : DialogFragment() {
                 .descriptionText(desc)
                 .colorDescTitle(Color.WHITE)
                 .colorDescText(Color.WHITE)
-                .buttonText("Done")
+                .buttonText("Ok")
                 //.colorButtonBackground(activity.getColorValue(btnColor))
                 .colorButtonText(Color.WHITE)
                 //.colorBackground(activity.getColorValue(bgColor))

@@ -237,15 +237,15 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
         binding.poemRefresh.setOnRefreshListener {
             updatePoems(today)
         }
-        Handler().postDelayed({
-            ShowInfoDialog.showHint(
-                requireActivity(),
-                binding.collapseToolbar.tvLayout, "Memory Booster",
-                getString(R.string.screen_booster),
-                id*2
-            )
-        }, 1000)
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowBoosterTip()) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                ShowInfoDialog.showHint(
+                    requireActivity(),
+                    binding.collapseToolbar.tvLayout, "Memory Booster",
+                    getString(R.string.screen_booster),
+                    id*2
+                )
+            }, 1000)
             UptoddSharedPreferences.getInstance(requireContext()).setShownBoosterTip(false)
         }
 
