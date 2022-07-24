@@ -27,6 +27,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utils.toastMsg
 
 class StageFragment : Fragment() {
 
@@ -36,7 +37,7 @@ class StageFragment : Fragment() {
     var stage: String = "pre birth"
 
     var preferences: SharedPreferences? = null
-    var editor: SharedPreferences.Editor? = null
+//    var editor: SharedPreferences.Editor? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +48,7 @@ class StageFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(StageViewModel::class.java)
 
-        preferences = activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
-        editor = preferences!!.edit()
+        preferences=activity?.getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
 
         viewModel.uid = preferences!!.getString("uid", "")
         viewModel.loginMethod = preferences!!.getString("loginMethod", "google")
@@ -59,8 +59,13 @@ class StageFragment : Fragment() {
         )
 
         binding.imageButtonBorn.setOnClickListener {
-            editor?.putString("stage", "postnatal")
-            editor?.commit()
+            val value=preferences?.edit()?.apply {
+                putString("stage", "postnatal")
+            }?.commit()
+            if (value==null ||value==false){
+                activity?.toastMsg("Could not store information")
+                return@setOnClickListener
+            }
             UptoddSharedPreferences.getInstance(requireContext()).saveStage("postnatal")
 
             if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
@@ -77,8 +82,15 @@ class StageFragment : Fragment() {
         binding.imageButtonPregnant.setOnClickListener {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
 
-                editor?.putString("stage", "prenatal")?.apply()
-                editor?.commit()
+                /*editor?.putString("stage", "prenatal")?.apply()
+                editor?.commit()*/
+                val value=preferences?.edit()?.apply {
+                    putString("stage", "postnatal")
+                }?.commit()
+                if (value==null ||value==false){
+                    activity?.toastMsg("Could not store information")
+                    return@setOnClickListener
+                }
                 UptoddSharedPreferences.getInstance(requireContext()).saveStage("prenatal")
                 if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
                 {
@@ -135,7 +147,6 @@ class StageFragment : Fragment() {
             if (!it) {
                 upToddDialogs.dismissDialog()
                 if (viewModel.isDataLoadedToDatabase) {
-                    editor?.commit()
                     if(UptoddSharedPreferences.getInstance(requireContext()).getUserType()=="nonPremium")
                     {
                         view?.findNavController()?.navigate(R.id.action_stageFragment_to_nameFragment)

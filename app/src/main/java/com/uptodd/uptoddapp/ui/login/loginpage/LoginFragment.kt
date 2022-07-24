@@ -285,6 +285,7 @@ import com.uptodd.uptoddapp.ui.upgrade.UpgradeViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
+import com.uptodd.uptoddapp.utils.toastMsg
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.CheckDailyActivites
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -578,33 +579,67 @@ class LoginFragment : Fragment() {
 
                     } else if (userInfo.isNewUser) {
                         if (viewModel.motherStage == "prenatal") {
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+/*                    if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
 
+                        view?.findNavController()
+                            ?.navigate(R.id.action_loginFragment_to_addressFragment)
+                    } else {
 
-                            if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
-
-                                view?.findNavController()
-                                    ?.navigate(R.id.action_loginFragment_to_addressFragment)
-                            } else {
-
-                                startActivity(
-                                    Intent(activity, TodosListActivity::class.java)
-                                )
-                            }
+                        startActivity(
+                            Intent(activity, TodosListActivity::class.java)
+                        )
+                    }*/
                         } else {
-                            try {
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                            /*try {
                                 val action =
                                     LoginFragmentDirections.actionLoginFragmentToBabyGenderFragment()
                                 findNavController().navigate(action)
                             } catch (e: Exception) {
 
-                                Log.i("MOVE_LOGIN_TO_GENDER", "initObservers: ${e.localizedMessage}")
-                            }
+                                Log.i(
+                                    "MOVE_LOGIN_TO_GENDER",
+                                    "initObservers: ${e.localizedMessage}"
+                                )
+                            }*/
                         }
                     } else {
-                        if ((userInfo.kidsDob == null || userInfo.kidsDob == "null") && viewModel.motherStage == "postnatal") {
+                        if (viewModel.motherStage == "prenatal") {
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                        } else {
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
+                            /*try {
+                                val action =
+                                    LoginFragmentDirections.actionLoginFragmentToBabyGenderFragment()
+                                findNavController().navigate(action)
+                            } catch (e: Exception) {
 
-                            view?.findNavController()
-                                ?.navigate(R.id.action_loginFragment_to_dobFragment)
+                                Log.i(
+                                    "MOVE_LOGIN_TO_GENDER",
+                                    "initObservers: ${e.localizedMessage}"
+                                )
+                            }*/
+                        }
+
+                        /*if ((userInfo.kidsDob == null || userInfo.kidsDob == "null") && viewModel.motherStage == "postnatal") {
+
+                            startActivity(
+                                Intent(activity, TodosListActivity::class.java)
+                            )
+                            activity?.finish()
                         } else if ((userInfo.address == null || userInfo.address == "null") && country == "india") {
 
                             view?.findNavController()
@@ -616,7 +651,7 @@ class LoginFragment : Fragment() {
                             )
                             activity?.finish()
 
-                        }
+                        }*/
                     }
                 }
             }
@@ -992,7 +1027,18 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d("div", "LoginFragment L454 onStartCalled")
-        if (preferences != null && preferences!!.contains("isNewUser") && preferences!!.getBoolean(
+        val list = listOf("prenatal", "postnatal")
+        val nonePrem = "nonPremium"
+
+        val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+        val motherStage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+
+        if (preferences != null && list.contains(motherStage) && userType != nonePrem) {
+            startActivity(Intent(activity, TodosListActivity::class.java))
+            activity?.finish()
+        }
+
+        /*if (preferences != null && preferences!!.contains("isNewUser") && preferences!!.getBoolean(
                 "isNewUser",
                 true
             )
@@ -1007,7 +1053,7 @@ class LoginFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+            }*/
     }
 
     private fun showInternetNotConnectedDialog() {
@@ -1038,7 +1084,7 @@ class LoginFragment : Fragment() {
                 upToddDialogs.dismissDialog()
             }
         })
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())
