@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoVideoModuleFragmentsBinding
-import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
-import com.uptodd.uptoddapp.datamodel.videocontent.VideoContent
+import com.uptodd.uptoddapp.datamodel.videocontent.Content
+import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment
 import com.uptodd.uptoddapp.ui.freeparenting.content.adaptor.ModuleAdaptor
 import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
@@ -29,7 +29,7 @@ class FreeDemoVideoModuleFragments :
         binding = FreeDemoVideoModuleFragmentsBinding.bind(view)
         setUpAdaptor()
         viewModel.event.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {res->
+            it.getContentIfNotHandled()?.let { res ->
                 showErrorDialogBox(res)
             }
         }
@@ -44,11 +44,10 @@ class FreeDemoVideoModuleFragments :
                 setToParentFragment(it)
             }
             adapter = adaptorListItem
-            adaptorListItem.submitList(VideoContent.getVideoContent())
         }
     }
 
-    private fun setToParentFragment(moduleList: ModuleList) {
+    private fun setToParentFragment(moduleList: Content) {
         val handler = Handler(Looper.getMainLooper())
         val parent = parentFragment
         handler.post {
@@ -77,8 +76,10 @@ class FreeDemoVideoModuleFragments :
                 }
                 is ApiResponseWrapper.Success -> {
                     showRecycleView()
-                    activity?.toastMsg("${it.data}")
-
+                    val res = it.data as VideoContentList?
+                    res?.let {
+                        return@let adaptorListItem.submitList(res.data)
+                    } ?: showErrorDialogBox("Oops Cannot load Data")
                 }
             }
         }

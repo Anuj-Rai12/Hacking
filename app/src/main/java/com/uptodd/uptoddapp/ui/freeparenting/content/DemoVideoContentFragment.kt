@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
-import com.uptodd.uptoddapp.datamodel.videocontent.ModuleList
+import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel.VideoContentViewModel
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
@@ -108,8 +108,8 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         }
     }
 
-    fun setNewVideo(moduleList: ModuleList) {
-        activity?.toastMsg("$moduleList")
+    fun setNewVideo(video: Content) {
+        activity?.toastMsg("$video")
     }
 
     private fun setFragment(fragment: Fragment): Int? {
