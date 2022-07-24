@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,17 +76,19 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
 
         initialiseBindingAndViewModel(inflater, container)
 
-        binding?.toolbar?.let { ToolbarUtils.initNCToolbar(requireActivity(),"Colours", it,
-            findNavController()) }
+        binding?.toolbar?.let {
+            ToolbarUtils.initNCToolbar(
+                requireActivity(), "Colours", it,
+                findNavController()
+            )
+        }
 
         preferences = requireActivity().getSharedPreferences("last_updated", Context.MODE_PRIVATE)
         colourDao = UptoddDatabase.getInstance(requireContext()).colourDao
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.materialButton.visibility= View.GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.materialButton.visibility = View.GONE
             }
         }
         binding.materialButton.setOnClickListener {
@@ -162,9 +165,9 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
             val language = ChangeLanguage(requireContext()).getLanguage()
             isLoadingDialogVisible.value = true
             showLoadingDialog()
-            val userType= UptoddSharedPreferences.getInstance(requireContext()).getUserType()
-            val stage=UptoddSharedPreferences.getInstance(requireContext()).getStage()
-            val country=AllUtil.getCountry(requireContext())
+            val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
+            val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+            val country = AllUtil.getCountry(requireContext())
             uiScope.launch {
                 AndroidNetworking.get("https://www.uptodd.com/api/colors?lang=$language&userType=$userType&country=$country&motherStage=$stage")
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -172,16 +175,15 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
                     .build()
                     .getAsJSONObject(object : JSONObjectRequestListener {
                         override fun onResponse(response: JSONObject?) {
-                            if (response != null && response["data"]!="null") {
+                            if (response != null && response["data"] != "null") {
                                 Log.d("putResposnse", response.get("status").toString())
                                 val data = response.get("data") as JSONArray
                                 parseData(data)
-                            }
-                            else
-                            {
+                            } else {
                                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                                     if (!AllUtil.isUserPremium(requireContext())) {
-                                        val title = (requireActivity() as AppCompatActivity).supportActionBar?.title
+                                        val title =
+                                            (requireActivity() as AppCompatActivity).supportActionBar?.title
 
                                         val upToddDialogs = UpToddDialogs(requireContext())
                                         upToddDialogs.showInfoDialog("$title is not activated/required for you",
@@ -227,42 +229,45 @@ class ColoursFragment : Fragment(), ColoursRecyclerAdapter.ColoursListener {
     }
 
     private fun parseData(data: JSONArray) {
-        val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
-        val appendable = "https://www.uptodd.com/images/app/android/thumbnails/colors/$dpi/"
-        var i = 0
-        list.clear()
-        while (i < data.length()) {
-            val obj = data.get(i) as JSONObject
-            list.add(
-                Colour(
-                    name = obj.getString("name"),
-                    url = appendable + obj.getString("image") + ".webp",
-                    image = obj.getString("image"),
-                    description = obj.getString("description")
+        val handler = Handler(Looper.getMainLooper())
+        handler.post {
+            val dpi = ScreenDpi(requireContext()).getScreenDrawableType()
+            val appendable = "https://www.uptodd.com/images/app/android/thumbnails/colors/$dpi/"
+            var i = 0
+            list.clear()
+            while (i < data.length()) {
+                val obj = data.get(i) as JSONObject
+                list.add(
+                    Colour(
+                        name = obj.getString("name"),
+                        url = appendable + obj.getString("image") + ".webp",
+                        image = obj.getString("image"),
+                        description = obj.getString("description")
+                    )
                 )
-            )
-            i++
-        }
-
-
-        if(data.length()==0)
-        {
-            if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
-                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
-                val upToddDialogs = UpToddDialogs(requireContext())
-                upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                    "Close",
-                    object : UpToddDialogs.UpToddDialogListener {
-                        override fun onDialogButtonClicked(dialog: Dialog) {
-                            dialog.dismiss()
-                        }
-
-                        override fun onDialogDismiss() {
-                            findNavController().navigateUp()
-                            super.onDialogDismiss()
-                        }
-                    })
+                i++
             }
+
+            if (data.length() == 0) {
+                if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
+                    val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                    val upToddDialogs = UpToddDialogs(requireContext())
+                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                        "Close",
+                        object : UpToddDialogs.UpToddDialogListener {
+                            override fun onDialogButtonClicked(dialog: Dialog) {
+                                dialog.dismiss()
+                            }
+
+                            override fun onDialogDismiss() {
+                                findNavController().navigateUp()
+                                super.onDialogDismiss()
+                            }
+                        })
+                }
+            }
+
+
         }
 
         ioScope.launch {
