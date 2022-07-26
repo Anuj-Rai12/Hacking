@@ -76,6 +76,7 @@
             android:name=".FreeParentingDemoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleInstance"
+            android:hardwareAccelerated="true"
             />
 
         <activity android:name=".MainActivity" />

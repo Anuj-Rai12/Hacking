@@ -33,6 +33,7 @@ class ModuleAdaptor(private val itemClicked: moduleItemClicked) :
                 if (!isModuleOpenFlag) {
                     binding.arrow.setImageResource(R.drawable.ic_keyboard_arrow_up)
                     binding.recycleViewForModule.show()
+                    binding.recycleViewForModule.smoothScrollToPosition(data.content.size)
                 } else {
                     binding.arrow.setImageResource(R.drawable.ic_keyboard_arrow_down)
                     binding.recycleViewForModule.hide()
