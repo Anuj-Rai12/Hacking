@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -216,7 +218,9 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
                         object : UpToddDialogs.UpToddDialogListener {
                             override fun onDialogButtonClicked(dialog: Dialog) {
                                 uptoddDialogs.dismissDialog()
-                                findNavController().navigateUp()
+                                Handler(Looper.getMainLooper()).post {
+                                    findNavController().navigateUp()
+                                }
                             }
                         })
                 }
