@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -142,7 +143,7 @@ class OrderListFragment : Fragment() {
 
     private fun initObservers() {
         //Observing for data
-        viewModel.allOrderList.observe(viewLifecycleOwner, Observer {
+        viewModel.allOrderList.observe(viewLifecycleOwner) {
             if (it != null) {
                 Log.d(
                     "div",
@@ -158,10 +159,10 @@ class OrderListFragment : Fragment() {
                 }
                 displayOrders(viewModel.allOrderList.value!!)
             }
-        })
+        }
 
         //Observing for extendSubscription request
-        viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {
+        viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner) {
             Log.d("div", "OrderListFragment L153 ${viewModel.isLoadingDialogVisible.value}")
             if (!it) {
                 if (viewModel.isExtendSubscriptionRequestMade) {
@@ -175,18 +176,18 @@ class OrderListFragment : Fragment() {
                         })
                 }
             }
-        })
+        }
 
-        viewModel.shouldShowBookingButton.observe(viewLifecycleOwner, Observer {
+        viewModel.shouldShowBookingButton.observe(viewLifecycleOwner) {
             if (!it)
                 binding.sessionCount.visibility = View.VISIBLE
             else
                 binding.sessionCount.visibility = View.GONE
             shouldShowButton = !it
-        })
-        viewModel.bookingLink.observe(viewLifecycleOwner, Observer {
+        }
+        viewModel.bookingLink.observe(viewLifecycleOwner) {
             checkForButton(it)
-        })
+        }
     }
 
     private fun loadData() {
@@ -373,12 +374,12 @@ class OrderListFragment : Fragment() {
                     }
                 }
             })
-        viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {
+        viewModel.isLoadingDialogVisible.observe(viewLifecycleOwner) {
             if (!it) {
                 upToddDialogs.dismissDialog()
             }
-        })
-        val handler = Handler()
+        }
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             upToddDialogs.dismissDialog()
         }, R.string.loadingDuarationInMillis.toLong())
