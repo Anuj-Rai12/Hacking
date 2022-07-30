@@ -48,9 +48,6 @@
         android:name="com.uptodd.uptoddapp.ui.order.orderlist.OrderListFragment"
         android:label="Order List">
         <action
-            android:id="@+id/action_orderListFragment_to_fullPdfFragment"
-            app:destination="@id/fullPdfFragment" />
-        <action
             android:id="@+id/action_orderListFragment_to_orderDetailsFragment2"
             app:destination="@id/orderDetailsFragment2"
             app:enterAnim="@android:anim/slide_in_left"
@@ -61,10 +58,6 @@
             android:id="@+id/action_orderListFragment_to_upgradeFragment"
             app:destination="@id/upgradeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fullPdfFragment"
-        android:name="com.uptodd.uptoddapp.ui.order.fullpdf.FullPdfFragment"
-        android:label="Full PDF" />
     <fragment
         android:id="@+id/referDetailsFragment"
         android:name="com.uptodd.uptoddapp.ui.refer.referdetails.ReferDetailsFragment"
