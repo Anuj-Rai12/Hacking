@@ -10,18 +10,12 @@
         android:name="com.uptodd.uptoddapp.ui.order.orderlist.OrderListFragment"
         android:label="fragment_order_list"
         tools:layout="@layout/fragment_order_list" >
-        <action
-            android:id="@+id/action_orderListFragment_to_fullPdfFragment"
-            app:destination="@id/fullPdfFragment" />
+
         <action
             android:id="@+id/action_orderListFragment_to_orderDetailsFragment"
             app:destination="@id/orderDetailsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fullPdfFragment"
-        android:name="com.uptodd.uptoddapp.ui.order.fullpdf.FullPdfFragment"
-        android:label="fragment_full_pdf"
-        tools:layout="@layout/fragment_full_pdf" />
+
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.uptodd.uptoddapp.ui.order.orderdetails.OrderDetailsFragment"
