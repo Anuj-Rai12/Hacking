@@ -19,6 +19,7 @@ import com.uptodd.uptoddapp.database.diet.DietDao
 import com.uptodd.uptoddapp.database.expectedoutcome.ExpectedOutcomeDao
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounselling
 import com.uptodd.uptoddapp.database.expertCounselling.ExpertCounsellingDao
+import com.uptodd.uptoddapp.database.freeparenting.VideoContentDao
 import com.uptodd.uptoddapp.database.media.memorybooster.MemoryBoosterFiles
 import com.uptodd.uptoddapp.database.media.memorybooster.MemoryFilesDao
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
@@ -42,6 +43,7 @@ import com.uptodd.uptoddapp.database.webinars.WebinarCategoryDao
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.database.webinars.WebinarsDatabaseDao
 import com.uptodd.uptoddapp.database.yoga.YogaDao
+import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.color.Colour
 import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.diet.Diet
 import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.outcomes.ExpectedOutcomes
@@ -59,8 +61,8 @@ import com.uptodd.uptoddapp.ui.otherScreens.otherScreens.yoga.allYogas.Yoga
         ExpectedOutcomes::class, Yoga::class, Diet::class,
         Colour::class, Account::class, ActivitySample::class,ActivityPodcast::class,
         ResourceFiles::class,NonPremiumAccount::class,MemoryBoosterFiles::class
-        ,ExpertCounselling::class,Recipe::class],
-    version = 20,
+        ,ExpertCounselling::class,Recipe::class,Content::class],
+    version = 21,
     exportSchema = true
 )
 
@@ -151,6 +153,9 @@ abstract class UptoddDatabase : RoomDatabase() {
 
     //expert counselling
    abstract val expertCounsellingDao:ExpertCounsellingDao
+
+   //Free VideoContent Dao
+   abstract val videoContentDao:VideoContentDao
 
 
 }

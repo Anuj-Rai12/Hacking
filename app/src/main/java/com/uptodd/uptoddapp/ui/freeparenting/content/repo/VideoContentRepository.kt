@@ -2,7 +2,9 @@ package com.uptodd.uptoddapp.ui.freeparenting.content.repo
 
 import com.uptodd.uptoddapp.api.freeparentingapi.freedemocontent.VideoContentApi
 import com.uptodd.uptoddapp.api.freeparentingapi.updateprogress.UpdateUserProgressApi
+import com.uptodd.uptoddapp.database.freeparenting.VideoContentDao
 import com.uptodd.uptoddapp.datamodel.updateuserprogress.UpdateUserProgressRequest
+import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
 import com.uptodd.uptoddapp.utils.buildApi
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
@@ -11,13 +13,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Retrofit
 
-class VideoContentRepository(retrofit: Retrofit) {
+class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDao) {
 
     private val api = buildApi<VideoContentApi>(retrofit)
     private val updateProgressApi = buildApi<UpdateUserProgressApi>(retrofit)
 
     companion object {
-       val error = Pair("Failed to get Response", "Oops something Went Wrong")
+        val error = Pair("Failed to get Response", "Oops something Went Wrong")
     }
 
     fun getVideoContent() = flow {
@@ -56,6 +58,44 @@ class VideoContentRepository(retrofit: Retrofit) {
         }
         emit(data)
     }.flowOn(IO)
+
+    fun getAllVideoFromDb() = flow {
+        emit(ApiResponseWrapper.Loading("Loading Video content"))
+        val data = try {
+            val res = dao.getVideoContentList()
+            ApiResponseWrapper.Success(res)
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun getInsetVideoFromDb(video: List<Content>) = flow {
+        emit(ApiResponseWrapper.Loading("Adding video content..."))
+        val data = try {
+            dao.insertVideoContentItem(video)
+            ApiResponseWrapper.Success("Success fully Inserted")
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+
+
+    fun deleteVideoFromDb() = flow {
+        emit(ApiResponseWrapper.Loading("Loading video content..."))
+        val data = try {
+            dao.deleteAllVideoContent()
+            ApiResponseWrapper.Success("Success fully Deleted")
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(null, e)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 
 
 }
