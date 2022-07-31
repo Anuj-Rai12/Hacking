@@ -9,9 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoDashboardScreenFramgentBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
-import com.uptodd.uptoddapp.datamodel.videocontent.Content
-import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
-import com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel.VideoContentViewModel
 import com.uptodd.uptoddapp.ui.freeparenting.login.viewmodel.LoginViewModel
 import com.uptodd.uptoddapp.ui.home.homePage.adapter.HomeOptionsAdapter
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
@@ -27,8 +24,6 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
     private var freeDemoContentAdaptor: HomeOptionsAdapter? = null
 
     private val viewModel: LoginViewModel by viewModels()
-
-    private val videoContentVideoModel: VideoContentViewModel by viewModels()
 
     private val loginSingletonResponse by lazy {
         LoginSingletonResponse.getInstance()
@@ -47,57 +42,8 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
         }
         setLogCat("Response", loginSingletonResponse.getLoginRequest().toString())
         viewModel.fetchResponse(loginSingletonResponse.getLoginRequest()!!)
-        videoContentVideoModel.getVideoContentItem()
-        //videoContentVideoModel.deleteVideoItemInDb()
         getLoginResponse()
-        getVideoContentResponse()
         setUpContentRecycleView()
-        getVideoContent()
-    }
-
-    private fun getVideoContent() {
-        videoContentVideoModel.videoContentResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is ApiResponseWrapper.Error -> {
-                    setLogCat("Video_Fetch", "getVideoContent: ${it.exception?.localizedMessage}")
-                }
-                is ApiResponseWrapper.Loading -> {
-                    setLogCat("Video_Fetch", "getVideoContent: ${it.data}")
-                }
-                is ApiResponseWrapper.Success -> {
-                    setLogCat("Video_Fetch", "getVideoContent: ${it.data}")
-                    (it.data as VideoContentList?)?.let { videoContentList ->
-                        val item = videoContentVideoModel.getVideoContentFromList(videoContentList)
-                        setLogCat("DB_Response", " item list is => $item")
-                        videoContentVideoModel.insertAllItemInDb(item)
-                    }
-                }
-            }
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getVideoContentResponse() {
-        videoContentVideoModel.getVideoContentResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is ApiResponseWrapper.Error -> {
-                    setLogCat("DB_Response", "${it.exception?.localizedMessage}")
-                }
-                is ApiResponseWrapper.Loading -> {
-                    setLogCat("DB_Response", "${it.data}")
-                }
-                is ApiResponseWrapper.Success -> {
-                    setLogCat("DB_Response", "${it.data}")
-                    if (it.data !is String) {
-
-                        val item = it.data as List<Content>
-                        if (item.isEmpty()) {
-                            videoContentVideoModel.getVideoContent()
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun getLoginResponse() {
