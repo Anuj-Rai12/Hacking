@@ -6,6 +6,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.FreeDemoDashboardScreenFramgentBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
@@ -16,6 +20,9 @@ import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 import com.uptodd.uptoddapp.utils.setLogCat
 import com.uptodd.uptoddapp.utils.showSnackbar
 import com.uptodd.uptoddapp.utils.toastMsg
+import com.uptodd.uptoddapp.workManager.FREE_PARENTING_PROGRAM
+import com.uptodd.uptoddapp.workManager.FreeParentingWorkManger
+import java.util.concurrent.TimeUnit
 
 class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_framgent),
     HomeOptionsAdapter.HomeOptionsClickListener {
@@ -33,7 +40,7 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
         super.onViewCreated(view, savedInstanceState)
         binding = FreeDemoDashboardScreenFramgentBinding.bind(view)
 
-
+        uploadWorkManger()
         viewModel.event.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { res ->
                 view.showSnackbar(msg = res, color = Color.RED)
@@ -46,6 +53,24 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
         setUpContentRecycleView()
     }
 
+    private fun uploadWorkManger() {
+        val constraints = Constraints.Builder()
+            //.setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val workManager = WorkManager.getInstance(requireActivity().application)
+
+        val freeParentingWork =
+            PeriodicWorkRequestBuilder<FreeParentingWorkManger>(15, TimeUnit.MINUTES)
+                .addTag(FREE_PARENTING_PROGRAM)
+                .setConstraints(constraints)
+                .build()
+
+        workManager.cancelAllWorkByTag(FREE_PARENTING_PROGRAM)
+        workManager.enqueue(freeParentingWork)
+        workManager.getWorkInfoByIdLiveData(freeParentingWork.id).observe(viewLifecycleOwner) {
+            setLogCat("WORK_FREE","${it.state}")
+        }
+    }
     private fun getLoginResponse() {
         viewModel.loginResponse.observe(viewLifecycleOwner) {
             when (it) {

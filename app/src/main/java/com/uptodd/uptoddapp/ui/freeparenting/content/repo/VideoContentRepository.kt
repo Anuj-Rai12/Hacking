@@ -71,7 +71,7 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
     }.flowOn(IO)
 
 
-    fun getInsetVideoFromDb(video: List<Content>) = flow {
+    fun getInsetVideoFromDb(video: Content) = flow {
         emit(ApiResponseWrapper.Loading("Adding video content..."))
         val data = try {
             dao.insertVideoContentItem(video)

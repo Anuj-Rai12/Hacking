@@ -27,6 +27,7 @@ import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFra
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel.VideoContentViewModel
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.utils.*
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 
@@ -53,7 +54,10 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         showImage("uSTCoECm3TA")
         setWebViewSetUp()
         listenForProgress()
-        music = MediaPlayer.create(requireActivity(), R.raw.testingfile)
+        music = MediaPlayer.create(
+            requireActivity(),
+            Uri.parse("/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc")
+        )
 
 
         binding.playMusic.setOnClickListener {
@@ -134,7 +138,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
                     binding.playMusic.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
                     "0:00".also { binding.currentMusicDuration.text = it }
                     binding.currentSeekBar.progress = 0
-                    isMusicPlaying=true
+                    isMusicPlaying = true
                 }
                 myHandler.postDelayed(this, 100)
             } catch (e: Exception) {

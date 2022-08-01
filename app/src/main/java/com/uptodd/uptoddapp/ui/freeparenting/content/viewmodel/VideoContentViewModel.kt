@@ -80,13 +80,13 @@ class VideoContentViewModel(application: Application) : AndroidViewModel(applica
     }
 
 
-    fun insertAllItemInDb(content: List<Content>) {
+   /* fun insertAllItemInDb(content: List<Content>) {
         viewModelScope.launch {
             videoRepository.getInsetVideoFromDb(content).collectLatest {
                 _getVideoContentResponse.postValue(it)
             }
         }
-    }
+    }*/
 
 
     override fun onCleared() {

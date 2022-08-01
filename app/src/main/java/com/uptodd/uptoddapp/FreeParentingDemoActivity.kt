@@ -7,21 +7,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.uptodd.uptoddapp.databinding.ActvityFreeDemoBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.login.viewmodel.LoginViewModel
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
-import com.uptodd.uptoddapp.utils.setLogCat
-import com.uptodd.uptoddapp.workManager.DAILY_SUBSCRIPTION_CHECK_WORK_MANAGER_TAG
-import com.uptodd.uptoddapp.workManager.DailySubscriptionCheck
-import com.uptodd.uptoddapp.workManager.FREE_PARENTING_PROGRAM
-import com.uptodd.uptoddapp.workManager.FreeParentingWorkManger
-import java.util.concurrent.TimeUnit
 
 class FreeParentingDemoActivity : AppCompatActivity() {
 
@@ -62,37 +52,7 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         }
         navController = navHostFragment.findNavController()
         navController.setGraph(graph, intent.extras)
-
-        uploadWorkManger()
-
     }
-
-    private fun uploadWorkManger() {
-
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-        val dailySubscriptionCheckWorker =
-            PeriodicWorkRequestBuilder<DailySubscriptionCheck>(15, TimeUnit.MINUTES)
-                .addTag(DAILY_SUBSCRIPTION_CHECK_WORK_MANAGER_TAG)
-                .setConstraints(constraints)
-                .build()
-
-        val workManager = WorkManager.getInstance(application)
-
-        val freeParentingWork =
-            PeriodicWorkRequestBuilder<FreeParentingWorkManger>(15, TimeUnit.MINUTES)
-                .addTag(FREE_PARENTING_PROGRAM)
-                .setConstraints(constraints)
-                .build()
-
-        workManager.enqueue(freeParentingWork)
-        workManager.getWorkInfoByIdLiveData(freeParentingWork.id).observe(this) {
-            setLogCat("WORK_FREE","${it.state}")
-        }
-    }
-
 
     override fun onResume() {
         super.onResume()
