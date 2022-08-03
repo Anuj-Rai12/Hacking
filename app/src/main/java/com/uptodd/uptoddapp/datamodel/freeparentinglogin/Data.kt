@@ -9,5 +9,5 @@ data class Data(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("phone") val phone: String,
-    @SerializedName("progress") val progress: Any?
+    @SerializedName("progress") var progress: Any?
 )

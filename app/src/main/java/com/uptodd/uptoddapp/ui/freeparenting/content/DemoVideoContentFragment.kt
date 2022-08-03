@@ -22,21 +22,26 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
+import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
+import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel.VideoContentViewModel
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.utils.*
-import java.io.File
+import com.uptodd.uptoddapp.utils.dialog.bottom_sheet.DemoBottomSheet
+import com.uptodd.uptoddapp.utils.dialog.bottom_sheet.DemoBottomSheet.Companion.OptionSelection.*
+import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 import java.util.concurrent.TimeUnit
 
 
-class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
+class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), OnBottomClick {
     private lateinit var binding: DemoVideoContentLayoutBinding
     private var viewPagerAdaptor: ViewPagerAdapter? = null
 
     private val viewModel: VideoContentViewModel by viewModels()
-
+    private val allDownloadFile = mutableListOf<Content>()
+    private val allVideoFetchFile = mutableListOf<Content>()
     private var newVideo: String = ""
     private var music: MediaPlayer? = null
     private var isMusicPlaying: Boolean = true
@@ -45,22 +50,27 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     private var endTime: Long = 0
     private var oneTimeOnly = 0
 
+
+    private val loginSingletonResponse by lazy {
+        LoginSingletonResponse.getInstance()
+    }
+
+
     @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DemoVideoContentLayoutBinding.bind(view)
         "Video content is good testing sample url!!".also { binding.videoTitle.text = it }
+        setLogCat("Demo_FREE", "Progress is ${loginSingletonResponse.getProgress()}")
         setAdaptor()
-        showImage("uSTCoECm3TA")
+        getAllItemFromDb()
+        getVideContentResponse()
         setWebViewSetUp()
         listenForProgress()
-        music = MediaPlayer.create(
-            requireActivity(),
-            Uri.parse("/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc")
-        )
-
-
         binding.playMusic.setOnClickListener {
+            if (music == null) {
+                return@setOnClickListener
+            }
             if (isMusicPlaying) {
                 binding.playMusic.setImageResource(R.drawable.exo_icon_pause)
                 music?.start()
@@ -70,14 +80,6 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
             }
             isMusicPlaying = !isMusicPlaying
         }
-
-        endTime = (music?.duration ?: 0).toLong()
-        if (oneTimeOnly == 0) {
-            binding.currentSeekBar.max = endTime.toInt()
-            oneTimeOnly = 1
-        }
-        binding.durationMusicDuration.text = getTimeFormat(endTime)
-
         myHandler.postDelayed(updateSongTime, 100)
         binding.bckArrow.setOnClickListener {
             findNavController().popBackStack()
@@ -109,6 +111,51 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         })
 
 
+        binding.nextBtn.setOnClickListener {
+            val openBottomSheetDialog =
+                DemoBottomSheet("\nWe recommend watching the complete video as it will help you understand how to prepare for parenthood.\n")
+            openBottomSheetDialog.onListener = this
+            openBottomSheetDialog.show(childFragmentManager, "Open Bottom Sheet")
+        }
+
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getAllItemFromDb() {
+        viewModel.getVideoContentResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponseWrapper.Error -> {
+                    setLogCat("DB_VIDEO", "${it.exception}")
+                }
+                is ApiResponseWrapper.Loading -> {
+                    setLogCat("DB_VIDEO", "${it.data}")
+                }
+                is ApiResponseWrapper.Success -> {
+                    setLogCat("DB_VIDEO", "${it.data}")
+                    if (it.data !is String) {
+                        val item = it.data as List<Content>
+                        allDownloadFile.addAll(item)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setMusicFile(url: String = "/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc") {
+        music?.release()
+        oneTimeOnly = 0
+        music = MediaPlayer.create(
+            requireActivity(),
+            Uri.parse(url)
+        )
+        isMusicPlaying = true
+        binding.playMusic.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
+        endTime = (music?.duration ?: 0).toLong()
+        if (oneTimeOnly == 0) {
+            binding.currentSeekBar.max = endTime.toInt()
+            oneTimeOnly = 1
+        }
+        binding.durationMusicDuration.text = getTimeFormat(endTime)
     }
 
     override fun onPause() {
@@ -138,7 +185,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
                     binding.playMusic.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
                     "0:00".also { binding.currentMusicDuration.text = it }
                     binding.currentSeekBar.progress = 0
-                    isMusicPlaying = true
+                    setMusicFile()
                 }
                 myHandler.postDelayed(this, 100)
             } catch (e: Exception) {
@@ -237,8 +284,18 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
     }
 
     fun setNewVideo(video: Content) {
+
+        if (video.id > loginSingletonResponse.getProgress()) {
+            activity?.showDialogBox(
+                "Video Locked",
+                "We recommend watching the complete video before moving to other as it will be more fruitful follow course in series"
+            ) {}
+            return
+        }
+
         when (FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.valueOf(video.type)) {
             FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.VIDEO -> {
+                music?.release()
                 binding.mainConstraintHolder.show()
                 newVideo = video.url
                 getVideoThumbnail()
@@ -249,8 +306,16 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
                 binding.mainConstraintHolder.hide()
                 setWebContentToNull()
                 binding.mainMusicLayout.show()
-
-
+                if (allDownloadFile.isNotEmpty()) {
+                    val res = allDownloadFile.find { it.name == video.name }
+                    res?.let { content ->
+                        setMusicFile(content.url)
+                    } ?: run {
+                        activity?.toastMsg("Error with the url")
+                    }
+                } else {
+                    activity?.toastMsg("Cannot play this video..")
+                }
             }
         }
         binding.videoTitle.text = video.name
@@ -276,6 +341,43 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
         }
     }
 
+    private fun getVideContentResponse() {
+        viewModel.videoContentResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponseWrapper.Error -> {
+
+                }
+                is ApiResponseWrapper.Loading -> {}
+                is ApiResponseWrapper.Success -> {
+
+                    val res = it.data as VideoContentList?
+                    res?.let { video ->
+                        video.data.forEach { data ->
+                            allVideoFetchFile.addAll(data.content)
+                        }
+                        var content = allVideoFetchFile.find { con ->
+                            con.id == loginSingletonResponse.getProgress()
+                        }
+                        if (content == null) {
+                            content = allVideoFetchFile.find { con ->
+                                con.id == ((loginSingletonResponse.getProgress() - 1))
+                            }
+                        }
+                        setNewVideo(content!!)
+
+                    } ?: kotlin.run {
+                        activity?.toastMsg("Video Content error")
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getVideoContentItem()
+        viewModel.getVideoContent()
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setWebViewSetUp() {
@@ -297,6 +399,21 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout) {
                     request: WebResourceRequest?
                 ): Boolean {
                     return false
+                }
+            }
+        }
+    }
+
+    override fun <T> onClickListener(res: T) {
+        if (res is String) {
+            val type = res as String
+
+            when (valueOf(type)) {
+                RESUME -> {
+                    activity?.toastMsg("Resume")
+                }
+                NEXT -> {
+                    activity?.toastMsg("Next")
                 }
             }
         }

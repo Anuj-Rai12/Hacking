@@ -27,5 +27,7 @@ class LoginSingletonResponse {
 
     fun getLoginResponse() = this.response
 
+    fun getProgress() = (this.response?.data?.progress!! as Double).toInt()
+
     fun getLoginRequest() = this.request
 }

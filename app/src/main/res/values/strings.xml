@@ -393,7 +393,7 @@ reach you out within 24-48 hours to start your onboarding</string>
 
     <!--Resource Files-->
 
-
+    <string name="skip_btn"><u>Skip</u></string>
     <!--Non premium forms-->
     <string name="np_next">Next</string>
     <string name="np_finish">Finish</string>

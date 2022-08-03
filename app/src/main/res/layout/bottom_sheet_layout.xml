@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.utils.dialog.bottom_sheet.DemoBottomSheet">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_bg"
+        android:minHeight="250dp">
+
+
+        <TextView
+            android:id="@+id/bottom_sheet_txt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:drawableTop="@drawable/ic_keyboard_arrow_down"
+            android:drawableTint="@color/light_grey_color"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/resume_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_bg_horizontal_gradient"
+            android:minWidth="150dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:text="Resume"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="@id/bottom_sheet_txt"
+            app:layout_constraintRight_toRightOf="@id/bottom_sheet_txt"
+            app:layout_constraintTop_toBottomOf="@id/bottom_sheet_txt" />
+
+
+        <TextView
+            android:id="@+id/skip_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@string/skip_btn"
+            android:textColor="@color/activeBlue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/resume_btn"
+            app:layout_constraintRight_toRightOf="@id/resume_btn"
+            app:layout_constraintTop_toBottomOf="@id/resume_btn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
