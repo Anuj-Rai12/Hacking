@@ -49,11 +49,13 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
     private var startTime: Long = 0
     private var endTime: Long = 0
     private var oneTimeOnly = 0
-
+    private var playMusicUrl: String? = null
 
     private val loginSingletonResponse by lazy {
         LoginSingletonResponse.getInstance()
     }
+
+    private var progressCounter = 8//loginSingletonResponse.getProgress()
 
 
     @SuppressLint("DefaultLocale")
@@ -61,7 +63,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         super.onViewCreated(view, savedInstanceState)
         binding = DemoVideoContentLayoutBinding.bind(view)
         "Video content is good testing sample url!!".also { binding.videoTitle.text = it }
-        setLogCat("Demo_FREE", "Progress is ${loginSingletonResponse.getProgress()}")
+        setLogCat("Demo_FREE", "Progress is $progressCounter")
         setAdaptor()
         getAllItemFromDb()
         getVideContentResponse()
@@ -80,20 +82,11 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
             }
             isMusicPlaying = !isMusicPlaying
         }
-        myHandler.postDelayed(updateSongTime, 100)
         binding.bckArrow.setOnClickListener {
             findNavController().popBackStack()
         }
         binding.mainImageLayout.setOnClickListener {
-            if (checkUserInput(newVideo)) {
-                activity?.toastMsg("Oops Something Went Wrong!!")
-                return@setOnClickListener
-            }
-            binding.videoThumbnail.invisible()
-            binding.darkColorRecycle.hide()
-            binding.webViewPlayer.setBackgroundColor(Color.TRANSPARENT)
-            binding.mainConstraintHolder.setPadding(0)
-            binding.webViewPlayer.loadUrl("https://uptodd.com/playYoutubeVideos/$newVideo?fs=0")
+            playVideo()
         }
 
         binding.currentSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -112,12 +105,44 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
 
 
         binding.nextBtn.setOnClickListener {
-            val openBottomSheetDialog =
-                DemoBottomSheet("\nWe recommend watching the complete video as it will help you understand how to prepare for parenthood.\n")
-            openBottomSheetDialog.onListener = this
-            openBottomSheetDialog.show(childFragmentManager, "Open Bottom Sheet")
+            Log.i(
+                "Demo_FREE",
+                "onViewCreated: ${allVideoFetchFile.last()} and  Progress counter is $progressCounter"
+            )
+            val isInLastVideo = allVideoFetchFile.last().id == progressCounter
+            if (!isInLastVideo) {
+                showBottomSheet()
+            } else {
+                activity?.showDialogBox(
+                    "Course Completed",
+                    "Congratulations for completing course ${getEmojiByUnicode(0x1F389)}${
+                        getEmojiByUnicode(
+                            0x1F389
+                        )
+                    }", "thanks"
+                ) {}
+            }
         }
 
+    }
+
+    private fun showBottomSheet() {
+        val openBottomSheetDialog =
+            DemoBottomSheet("\nWe recommend watching the complete video as it will help you understand how to prepare for parenthood.\n")
+        openBottomSheetDialog.onListener = this
+        openBottomSheetDialog.show(childFragmentManager, "Open Bottom Sheet")
+    }
+
+    private fun playVideo() {
+        if (checkUserInput(newVideo)) {
+            activity?.toastMsg("Oops Something Went Wrong!!")
+            return
+        }
+        binding.videoThumbnail.invisible()
+        binding.darkColorRecycle.hide()
+        binding.webViewPlayer.setBackgroundColor(Color.TRANSPARENT)
+        binding.mainConstraintHolder.setPadding(0)
+        binding.webViewPlayer.loadUrl("https://uptodd.com/playYoutubeVideos/$newVideo?fs=0")
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -141,7 +166,8 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         }
     }
 
-    private fun setMusicFile(url: String = "/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc") {
+    //"/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc"
+    private fun setMusicFile(url: String) {
         music?.release()
         oneTimeOnly = 0
         music = MediaPlayer.create(
@@ -156,6 +182,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
             oneTimeOnly = 1
         }
         binding.durationMusicDuration.text = getTimeFormat(endTime)
+        myHandler.postDelayed(updateSongTime, 100)
     }
 
     override fun onPause() {
@@ -185,7 +212,9 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
                     binding.playMusic.setImageResource(R.drawable.ic_baseline_play_circle_filled_24)
                     "0:00".also { binding.currentMusicDuration.text = it }
                     binding.currentSeekBar.progress = 0
-                    setMusicFile()
+                    playMusicUrl?.let {
+                        setMusicFile(it)
+                    }
                 }
                 myHandler.postDelayed(this, 100)
             } catch (e: Exception) {
@@ -244,7 +273,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         binding.mainMusicLayout.layoutParams.apply {
             height = ViewGroup.LayoutParams.MATCH_PARENT
         }
-
+        binding.nextBtn.hide()
     }
 
 
@@ -271,7 +300,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         binding.mainMusicLayout.layoutParams.apply {
             height = ViewGroup.LayoutParams.WRAP_CONTENT
         }
-
+        binding.nextBtn.show()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -285,7 +314,12 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
 
     fun setNewVideo(video: Content) {
 
-        if (video.id > loginSingletonResponse.getProgress()) {
+        if (video.id == progressCounter + 1) {
+            showBottomSheet()
+            return
+        }
+
+        if (video.id > progressCounter) {
             activity?.showDialogBox(
                 "Video Locked",
                 "We recommend watching the complete video before moving to other as it will be more fruitful follow course in series"
@@ -309,7 +343,8 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
                 if (allDownloadFile.isNotEmpty()) {
                     val res = allDownloadFile.find { it.name == video.name }
                     res?.let { content ->
-                        setMusicFile(content.url)
+                        playMusicUrl = content.url
+                        setMusicFile(playMusicUrl!!)
                     } ?: run {
                         activity?.toastMsg("Error with the url")
                     }
@@ -356,11 +391,11 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
                             allVideoFetchFile.addAll(data.content)
                         }
                         var content = allVideoFetchFile.find { con ->
-                            con.id == loginSingletonResponse.getProgress()
+                            con.id == progressCounter
                         }
                         if (content == null) {
                             content = allVideoFetchFile.find { con ->
-                                con.id == ((loginSingletonResponse.getProgress() - 1))
+                                con.id == ((progressCounter - 1))
                             }
                         }
                         setNewVideo(content!!)
@@ -410,10 +445,16 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
 
             when (valueOf(type)) {
                 RESUME -> {
-                    activity?.toastMsg("Resume")
+                    playVideo()
                 }
                 NEXT -> {
-                    activity?.toastMsg("Next")
+                    val findVideo = allVideoFetchFile.find {
+                        it.id == progressCounter + 1
+                    }
+                    if (findVideo != null) {
+                        progressCounter += 1
+                        setNewVideo(findVideo)
+                    }
                 }
             }
         }
