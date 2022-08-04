@@ -1,14 +1,15 @@
 package com.uptodd.uptoddapp.ui.freeparenting.content.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.datamodel.updateuserprogress.UpdateUserProgressRequest
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
-import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.module.RetrofitSingleton
 import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
-import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
 import com.uptodd.uptoddapp.utils.Event
 import com.uptodd.uptoddapp.utils.isNetworkAvailable
@@ -27,8 +28,9 @@ class VideoContentViewModel(application: Application) : AndroidViewModel(applica
         get() = _videoContentResponse
 
 
-    private val _updateUserProgressResponse = MutableLiveData<ApiResponseWrapper<out Any?>>()
-    val updateUserProgressResponse: LiveData<ApiResponseWrapper<out Any?>>
+    private val _updateUserProgressResponse =
+        MutableLiveData<Pair<ApiResponseWrapper<out Any?>, Content>>()
+    val updateUserProgressResponse: LiveData<Pair<ApiResponseWrapper<out Any?>, Content>>
         get() = _updateUserProgressResponse
 
 
@@ -58,11 +60,11 @@ class VideoContentViewModel(application: Application) : AndroidViewModel(applica
     }
 
 
-    fun updateUserProgress(request: UpdateUserProgressRequest) {
+    fun updateUserProgress(request: UpdateUserProgressRequest,nxtVideo:Content) {
         if (app.isNetworkAvailable()) {
             viewModelScope.launch {
                 videoRepository.updateUserProgress(request).collectLatest {
-                    _updateUserProgressResponse.postValue(it)
+                    _updateUserProgressResponse.postValue(Pair(it,nxtVideo))
                 }
             }
         } else {
@@ -80,39 +82,18 @@ class VideoContentViewModel(application: Application) : AndroidViewModel(applica
     }
 
 
-   /* fun insertAllItemInDb(content: List<Content>) {
-        viewModelScope.launch {
-            videoRepository.getInsetVideoFromDb(content).collectLatest {
-                _getVideoContentResponse.postValue(it)
-            }
-        }
-    }*/
+    /* fun insertAllItemInDb(content: List<Content>) {
+         viewModelScope.launch {
+             videoRepository.getInsetVideoFromDb(content).collectLatest {
+                 _getVideoContentResponse.postValue(it)
+             }
+         }
+     }*/
 
 
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
-    }
-
-
-    fun deleteVideoItemInDb() {
-        viewModelScope.launch {
-            videoRepository.deleteVideoFromDb().collectLatest {
-                _getVideoContentResponse.postValue(it)
-            }
-        }
-    }
-
-
-    fun getVideoContentFromList(videoContentList: VideoContentList): MutableList<Content> {
-        val mutableList = mutableListOf<Content>()
-        videoContentList.data.forEach { data ->
-            val item = data.content.filter { content ->
-                content.type == FreeDemoVideoModuleFragments.Companion.VideoContentTabsEnm.MUSIC.name
-            }
-            mutableList.addAll(item)
-        }
-        return mutableList
     }
 
 

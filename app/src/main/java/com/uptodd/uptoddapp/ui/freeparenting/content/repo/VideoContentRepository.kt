@@ -42,12 +42,16 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
 
 
     fun updateUserProgress(request: UpdateUserProgressRequest) = flow {
-        emit(ApiResponseWrapper.Loading("Please Wait"))
+        emit(ApiResponseWrapper.Loading("updating progress"))
         val data = try {
             val response = updateProgressApi.getUpdateProgress(request)
             val info = if (response.isSuccessful) {
                 response.body()?.let {
-                    ApiResponseWrapper.Success(it)
+                    if(it.data && it.status=="Success"){
+                        ApiResponseWrapper.Success(it)
+                    }else{
+                        ApiResponseWrapper.Error("Failed to track your progress",null)
+                    }
                 } ?: ApiResponseWrapper.Error(error.second, null)
             } else {
                 ApiResponseWrapper.Error(error.first, null)

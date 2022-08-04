@@ -23,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DemoVideoContentLayoutBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
+import com.uptodd.uptoddapp.datamodel.updateuserprogress.UpdateUserProgressRequest
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.ui.freeparenting.content.tabs.FreeDemoVideoModuleFragments
@@ -55,20 +56,21 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         LoginSingletonResponse.getInstance()
     }
 
-    private var progressCounter = 8//loginSingletonResponse.getProgress()
+    private var progressCounter = loginSingletonResponse.getProgress()
 
 
     @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DemoVideoContentLayoutBinding.bind(view)
-        "Video content is good testing sample url!!".also { binding.videoTitle.text = it }
+        //"Video content is good testing sample url!!".also { binding.videoTitle.text = it }
         setLogCat("Demo_FREE", "Progress is $progressCounter")
         setAdaptor()
         getAllItemFromDb()
         getVideContentResponse()
         setWebViewSetUp()
         listenForProgress()
+        checkUserProgress()
         binding.playMusic.setOnClickListener {
             if (music == null) {
                 return@setOnClickListener
@@ -126,6 +128,41 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
 
     }
 
+    private fun checkUserProgress() {
+        viewModel.updateUserProgressResponse.observe(viewLifecycleOwner) { pair ->
+            pair.first.let {
+                when (it) {
+                    is ApiResponseWrapper.Error -> {
+                        if (it.data == null) {
+                            it.exception?.localizedMessage?.let { err ->
+                                activity?.showDialogBox(
+                                    "Failed",
+                                    err,
+                                    icon = R.drawable.network_error
+                                ) {}
+                            }
+                        } else {
+                            activity?.showDialogBox(
+                                "Failed",
+                                "${it.data}",
+                                icon = R.drawable.network_error
+                            ) {}
+                        }
+                    }
+                    is ApiResponseWrapper.Loading -> {
+                        activity?.toastMsg("${it.data}")
+                    }
+                    is ApiResponseWrapper.Success -> {
+                        activity?.toastMsg("Success")
+                        setLogCat("Demo_FREE", "${it.data}")
+                        progressCounter += 1
+                        setNewVideo(pair.second)
+                    }
+                }
+            }
+        }
+    }
+
     private fun showBottomSheet() {
         val openBottomSheetDialog =
             DemoBottomSheet("\nWe recommend watching the complete video as it will help you understand how to prepare for parenthood.\n")
@@ -166,7 +203,7 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         }
     }
 
-    //"/storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc"
+    ///storage/emulated/0/Android/data/com.uptodd.uptoddapp/files/Music/Downloads/FreeParenting/FLOWINGWATERSTIMULATION.acc
     private fun setMusicFile(url: String) {
         music?.release()
         oneTimeOnly = 0
@@ -380,7 +417,21 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
         viewModel.videoContentResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponseWrapper.Error -> {
-
+                    if (it.data != null) {
+                        it.exception?.localizedMessage?.let { err ->
+                            activity?.showDialogBox(
+                                "Failed",
+                                err,
+                                icon = R.drawable.network_error
+                            ) {}
+                        }
+                    } else {
+                        activity?.showDialogBox(
+                            "Failed",
+                            "${it.data}",
+                            icon = R.drawable.network_error
+                        ) {}
+                    }
                 }
                 is ApiResponseWrapper.Loading -> {}
                 is ApiResponseWrapper.Success -> {
@@ -390,17 +441,17 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
                         video.data.forEach { data ->
                             allVideoFetchFile.addAll(data.content)
                         }
-                        var content = allVideoFetchFile.find { con ->
+                        val content = allVideoFetchFile.find { con ->
                             con.id == progressCounter
                         }
-                        if (content == null) {
+                        /*if (content == null) {
                             content = allVideoFetchFile.find { con ->
-                                con.id == ((progressCounter - 1))
+                                con.id == (progressCounter - 1)
                             }
-                        }
+                        }*/
                         setNewVideo(content!!)
 
-                    } ?: kotlin.run {
+                    } ?: run {
                         activity?.toastMsg("Video Content error")
                     }
                 }
@@ -448,12 +499,16 @@ class DemoVideoContentFragment : Fragment(R.layout.demo_video_content_layout), O
                     playVideo()
                 }
                 NEXT -> {
-                    val findVideo = allVideoFetchFile.find {
+                    val nxtVideo = allVideoFetchFile.find {
                         it.id == progressCounter + 1
                     }
-                    if (findVideo != null) {
-                        progressCounter += 1
-                        setNewVideo(findVideo)
+                    if (nxtVideo != null) {
+                        viewModel.updateUserProgress(
+                            UpdateUserProgressRequest(
+                                progress = progressCounter + 1,
+                                userId = loginSingletonResponse.getLoginResponse()?.data?.id!!
+                            ), nxtVideo
+                        )
                     }
                 }
             }

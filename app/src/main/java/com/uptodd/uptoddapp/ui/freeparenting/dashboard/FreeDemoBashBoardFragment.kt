@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
-import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.uptodd.uptoddapp.R
@@ -60,12 +59,13 @@ class FreeDemoBashBoardFragment : Fragment(R.layout.free_demo_dashboard_screen_f
         val workManager = WorkManager.getInstance(requireActivity().application)
 
         val freeParentingWork =
-            PeriodicWorkRequestBuilder<FreeParentingWorkManger>(15, TimeUnit.MINUTES)
+            PeriodicWorkRequestBuilder<FreeParentingWorkManger>(5, TimeUnit.HOURS)
                 .addTag(FREE_PARENTING_PROGRAM)
                 .setConstraints(constraints)
                 .build()
+        //Just for testing purpose
+//        workManager.cancelAllWorkByTag(FREE_PARENTING_PROGRAM)
 
-        workManager.cancelAllWorkByTag(FREE_PARENTING_PROGRAM)
         workManager.enqueue(freeParentingWork)
         workManager.getWorkInfoByIdLiveData(freeParentingWork.id).observe(viewLifecycleOwner) {
             setLogCat("WORK_FREE","${it.state}")
