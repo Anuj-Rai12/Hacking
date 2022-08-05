@@ -72,5 +72,6 @@
 
     //FreeDemo Parenting
     <color name="light_grey_color">#707070</color>
+    <color name="grey_color">#B1ACAC</color>
 
 </resources>

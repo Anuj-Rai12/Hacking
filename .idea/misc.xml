@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable-v21/ic_home.xml" value="0.129" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/account_bottom_doctor.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/animation_btn_see_all_activities.xml" value="0.129" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow.xml" value="0.1255" />
@@ -139,6 +140,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_content_layout.xml" value="0.25" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_item_layout.xml" value="0.536" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/development_tracker_fragment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/doctor_dashboard_activity.xml" value="0.1" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_category2.xml" value="0.2234375" />
@@ -176,7 +178,9 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/video_item_tool_kit_and_review_layout.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/view_ticket_fragment.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/youtube_fragment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/doctor_account.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/free_parenting_btom_nav.xml" value="0.22239583333333332" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/menu/todos_drawer.xml" value="0.536" />
         <entry key="app/src/main/res/drawable/bg_border.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/all_tickets_fragment.xml" value="0.14356884057971014" />
