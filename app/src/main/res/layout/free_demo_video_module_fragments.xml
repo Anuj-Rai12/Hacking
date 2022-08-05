@@ -8,18 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/demo_module_item_layout"
-            tools:visibility="visible" />
-
-
         <TextView
             android:id="@+id/loading_txt"
             android:layout_width="wrap_content"
@@ -34,7 +22,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3"
             tools:text="gfdklgkl dfjlkhklg hjkgfhlkf" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -12,30 +12,21 @@
         android:label="ParentingLoginFragment" >
         <action
             android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
-            app:destination="@id/freeDemoBashBoardFragment"
-            app:popUpTo="@id/parentingLoginFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/freeDemoBashBoardFragment" />
     </fragment>
     <fragment
         android:id="@+id/freeDemoBashBoardFragment"
-        tools:layout="@layout/free_demo_dashboard_screen_framgent"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.dashboard.FreeDemoBashBoardFragment"
-        android:label="FreeDemoBashBoardFragment" >
-        <action
-            android:id="@+id/action_freeDemoBashBoardFragment_to_demoVideoContentFragment"
-            app:destination="@id/demoVideoContentFragment" />
-        <action
-            android:id="@+id/action_freeDemoBashBoardFragment_to_toolKitAndReviewFragment"
-            app:destination="@id/toolKitAndReviewFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/demoVideoContentFragment"
-        android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
-        android:label="demo_video_content_layout"
-        tools:layout="@layout/demo_video_content_layout" />
+        android:label="free_demo_dashboard_screen_framgent"
+        tools:layout="@layout/free_demo_dashboard_screen_framgent" />
     <fragment
         android:id="@+id/toolKitAndReviewFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.toolkitreview.ToolKitAndReviewFragment"
         android:label="took_kit_and_review_layout"
         tools:layout="@layout/took_kit_and_review_layout" />
+    <fragment
+        android:id="@+id/demoVideoContentFragment2"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
+        android:label="demo_video_content_layout"
+        tools:layout="@layout/demo_video_content_layout" />
 </navigation>

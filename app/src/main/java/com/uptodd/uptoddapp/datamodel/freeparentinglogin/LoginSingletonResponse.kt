@@ -5,6 +5,7 @@ class LoginSingletonResponse {
     private var request: FreeParentingLoginRequest? = null
     private var response: FreeParentingResponse? = null
 
+
     companion object {
 
         private var instance: LoginSingletonResponse? = null

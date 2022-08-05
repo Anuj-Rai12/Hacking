@@ -34,7 +34,7 @@ class HomeOptionsAdapter(
             return when (type) {
                 PERSONALIZED -> OptionsItem.getPersonalizedList()
                 PREMIUM -> OptionsItem.getPremiumList()
-                FreeDemoContent -> OptionsItem.getFreeDemoSection()
+                //FreeDemoContent -> OptionsItem.getFreeDemoSection()
                 else -> OptionsItem.getParentToolList()
             }
         }

@@ -6,19 +6,6 @@ data class OptionsItem(var navId: Int, var icon: Int, var title: String) {
 
     companion object {
 
-        fun getFreeDemoSection(): ArrayList<OptionsItem> {
-            val arrayList = arrayListOf<OptionsItem>()
-            arrayList.add(
-                OptionsItem(R.id.action_freeDemoBashBoardFragment_to_demoVideoContentFragment, R.drawable.app_icon, "Video Content"))
-            arrayList.add(OptionsItem(R.id.action_freeDemoBashBoardFragment_to_toolKitAndReviewFragment, R.drawable.app_icon, "Reviews"))
-            arrayList.add(OptionsItem(R.id.action_freeDemoBashBoardFragment_to_toolKitAndReviewFragment, R.drawable.app_icon, "Course Tool kit"))
-            arrayList.add(OptionsItem(0, R.drawable.app_icon, "Upgrade"))
-            arrayList.add(OptionsItem(0, R.drawable.app_icon, "Mentor"))
-            arrayList.add(OptionsItem(0, R.drawable.app_icon, "FAQ"))
-            return arrayList
-        }
-
-
         fun getPersonalizedList(): ArrayList<OptionsItem> {
             val optionsItem = arrayListOf<OptionsItem>()
 
