@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
+import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.LoginParentingFragmentBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
@@ -242,6 +243,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
     override fun onResume() {
         super.onResume()
+        (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
         isRequestPhone = false
         binding.countryCodeEd.setAdapter(dropDownArray)
         val email = binding.userEmailEd.text.toString()

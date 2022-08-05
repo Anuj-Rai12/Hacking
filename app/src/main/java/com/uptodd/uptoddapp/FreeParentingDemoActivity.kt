@@ -7,11 +7,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.uptodd.uptoddapp.databinding.ActvityFreeDemoBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.login.viewmodel.LoginViewModel
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
+import com.uptodd.uptoddapp.utils.hide
+import com.uptodd.uptoddapp.utils.show
 
 class FreeParentingDemoActivity : AppCompatActivity() {
 
@@ -52,8 +55,17 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         }
         navController = navHostFragment.findNavController()
         navController.setGraph(graph, intent.extras)
+        binding.bottomNavBar.setupWithNavController(navController)
     }
 
+
+    fun hideBottomNavBar(){
+        binding.bottomNavBar.hide()
+    }
+
+    fun showBottomNavBar() {
+        binding.bottomNavBar.show()
+    }
     override fun onResume() {
         super.onResume()
         supportActionBar?.hide()

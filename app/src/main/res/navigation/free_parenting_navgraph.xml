@@ -25,7 +25,7 @@
         android:label="took_kit_and_review_layout"
         tools:layout="@layout/took_kit_and_review_layout" />
     <fragment
-        android:id="@+id/demoVideoContentFragment2"
+        android:id="@+id/demoVideoContentFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
         android:label="demo_video_content_layout"
         tools:layout="@layout/demo_video_content_layout" />
