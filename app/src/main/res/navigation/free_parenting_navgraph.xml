@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/parentingLoginFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.ParentingLoginFragment"
-        tools:layout="@layout/login_parenting_fragment"
-        android:label="ParentingLoginFragment" >
+        android:label="ParentingLoginFragment"
+        tools:layout="@layout/login_parenting_fragment">
         <action
             android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
             app:destination="@id/freeDemoBashBoardFragment" />
@@ -20,10 +20,10 @@
         android:label="free_demo_dashboard_screen_framgent"
         tools:layout="@layout/free_demo_dashboard_screen_framgent" />
     <fragment
-        android:id="@+id/toolKitAndReviewFragment"
-        android:name="com.uptodd.uptoddapp.ui.freeparenting.toolkitreview.ToolKitAndReviewFragment"
-        android:label="took_kit_and_review_layout"
-        tools:layout="@layout/took_kit_and_review_layout" />
+        android:id="@+id/DailyBookFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.daily_book.DailyBookFragment"
+        android:label="DailyBookFragment"
+        tools:layout="@layout/daily_book_layout" />
     <fragment
         android:id="@+id/demoVideoContentFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
