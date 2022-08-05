@@ -78,17 +78,22 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
 
 
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                ShowInfoDialog.showHint(
-                    requireActivity(),
-                    binding.collapseToolbar.tvLayout, "Session",
-                    getString(R.string.screen_session),
-                    id*3
-                )
-            }, 1000)
-            UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
+            var onlyShowInfo = true
+                Handler(Looper.getMainLooper()).post {
+                    if (onlyShowInfo) {
+                        onlyShowInfo = false
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        ShowInfoDialog.showHint(
+                            requireActivity(),
+                            binding.collapseToolbar.tvLayout, "Session",
+                            getString(R.string.screen_session),
+                            id * 3
+                        )
+                    }, 1000)
+                    UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
+                }
+            }
         }
-
         fetchTutorials(requireContext())
 
         binding.collapseToolbar.playTutorialIcon.setOnClickListener {

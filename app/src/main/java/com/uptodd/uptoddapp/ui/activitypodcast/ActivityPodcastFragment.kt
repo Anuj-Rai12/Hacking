@@ -262,12 +262,11 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
                 }
 
                 override fun onError(anError: ANError?) {
-
-                    val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+                    val handler = Handler(Looper.getMainLooper())
                     var dialogOnce = false
-                    if (stage == "prenatal" || stage == "pre birth") {
-                        val handler = Handler(Looper.getMainLooper())
-                        handler.post {
+                    handler.post {
+                        val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
+                        if (stage == "prenatal" || stage == "pre birth") {
                             if (!dialogOnce) {
                                 dialogOnce = true
                                 val upToddDialogs = UpToddDialogs(requireContext())
