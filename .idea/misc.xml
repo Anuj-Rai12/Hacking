@@ -112,6 +112,9 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/rounded_corners_text_view_login.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/see_all_activities_btn_bg_2.xml" value="0.129" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/shine_btn_desgin.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_selected.xml" value="0.2145" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_unselected.xml" value="0.2145" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_layout.xml" value="0.2145" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ticket_detail_drawable.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_2.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/video_container_layout_3.xml" value="0.1255" />
@@ -141,6 +144,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.536" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_book_layout.xml" value="0.25" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_fragment.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_module_item_layout.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_content_layout.xml" value="0.25" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_item_layout.xml" value="0.536" />

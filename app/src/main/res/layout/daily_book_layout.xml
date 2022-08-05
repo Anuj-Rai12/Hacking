@@ -10,12 +10,50 @@
         android:layout_height="match_parent">
 
         <include
+            android:id="@+id/toolbar_nav"
             layout="@layout/free_parenting_toolbar_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="3dp"
+            android:paddingBottom="5dp"
+            android:background="@color/white"
+            app:layout_constraintLeft_toLeftOf="@id/toolbar_nav"
+            app:layout_constraintRight_toRightOf="@id/toolbar_nav"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_nav"
+            app:tabBackground="@drawable/tab_layout"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/customTabLayout"
+            app:tabTextColor="@color/darkBlue" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/tabs"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

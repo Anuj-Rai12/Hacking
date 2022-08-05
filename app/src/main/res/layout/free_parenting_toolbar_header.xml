@@ -9,9 +9,9 @@
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
         android:background="@drawable/round_corner_bottom"
         android:backgroundTint="@color/darkBlue"
+        android:minHeight="?attr/actionBarSize"
         app:navigationIcon="@drawable/nav_bar_icon"
         app:navigationIconTint="@color/white">
 
@@ -24,10 +24,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/crimson_text_bold"
                 android:gravity="center"
-                android:textSize="19sp"
                 android:paddingBottom="5dp"
                 android:text="Intro to Parenting Program"
                 android:textColor="@color/white"
+                android:textSize="19sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/account_icon"

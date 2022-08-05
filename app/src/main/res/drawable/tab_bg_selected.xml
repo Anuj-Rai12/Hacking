@@ -4,13 +4,10 @@
         android:left="0dp"
         android:right="0dp"
         android:top="0dp"
-        android:bottom="-5dp">
-        <shape android:shape="rectangle"
-            android:innerRadius="5dp">
+        android:bottom="0dp">
+        <shape android:shape="oval">
             <solid
                 android:color="@color/link"/>
-
-            <corners android:radius="5dp" />
             <stroke
                 android:width="2dp"
                 android:color="@color/darkBlue"
