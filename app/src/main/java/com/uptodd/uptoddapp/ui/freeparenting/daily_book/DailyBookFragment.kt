@@ -21,6 +21,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DailyBookLayoutBinding.bind(view)
+        binding.viewPager.isUserInputEnabled=false
         setAdaptor()
         for (i in 1..arrOfTabs.size) {
             setFragment()

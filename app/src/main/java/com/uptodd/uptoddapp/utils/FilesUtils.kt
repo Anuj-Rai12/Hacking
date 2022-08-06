@@ -1,13 +1,19 @@
 package com.uptodd.uptoddapp.utils
 
 import android.app.Activity
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
@@ -140,6 +146,19 @@ fun View.showSnackbar(msg: String, length: Int = Snackbar.LENGTH_SHORT, color: I
         snackBar.view.setBackgroundColor(it)
     }
     snackBar.show()
+}
+
+fun Context.showImage(id: String, view: ImageView, flag: Boolean) {
+    "https://img.youtube.com/vi/$id/mqdefault.jpg".also { url ->
+        val e = Glide.with(this)
+            .load(Uri.parse(url))
+        if (flag) {
+            e.transform(CenterCrop(), RoundedCorners(20))
+        }
+        e.placeholder(R.drawable.loading_animation)
+            .error(R.drawable.default_set_android_thumbnail)
+            .into(view)
+    }
 }
 
 
