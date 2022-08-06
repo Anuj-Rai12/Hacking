@@ -119,7 +119,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:fontFamily">@font/crimson_text_bold</item>
     </style>
 
 
