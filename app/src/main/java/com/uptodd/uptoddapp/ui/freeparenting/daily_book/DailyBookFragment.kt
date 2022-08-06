@@ -21,18 +21,18 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DailyBookLayoutBinding.bind(view)
-        binding.viewPager.isUserInputEnabled=false
+        //binding.viewPager.isUserInputEnabled = false
         setAdaptor()
-        for (i in 1..arrOfTabs.size) {
-            setFragment()
+        arrOfTabs.forEach {
+            setFragment(it)
         }
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, pos ->
             tab.text = arrOfTabs[pos]
         }.attach()
     }
 
-    private fun setFragment() {
-        viewPagerAdaptor.setFragment(DailyContentFragment())
+    private fun setFragment(title: String) {
+        viewPagerAdaptor.setFragment(DailyContentFragment("Intro to the $title Lecture"))
     }
 
     private fun setAdaptor() {

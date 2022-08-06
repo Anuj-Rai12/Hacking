@@ -10,7 +10,7 @@
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/blue_bg"
-        android:backgroundTint="#f2f2f2"
+        android:backgroundTint="#f5f7f9"
         android:clickable="true"
         android:focusable="true"
         android:minHeight="100dp">
@@ -31,8 +31,8 @@
 
             <ImageView
                 android:id="@+id/video_thumbnail"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/app_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -49,9 +49,9 @@
                 android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:fontFamily="@font/crimson_text_bold"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
+                android:fontFamily="@font/crimson_text_bold"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="17sp"

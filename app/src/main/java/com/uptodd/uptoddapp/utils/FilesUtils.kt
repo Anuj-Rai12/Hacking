@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
@@ -148,6 +149,7 @@ fun View.showSnackbar(msg: String, length: Int = Snackbar.LENGTH_SHORT, color: I
     snackBar.show()
 }
 
+@SuppressLint("CheckResult")
 fun Context.showImage(id: String, view: ImageView, flag: Boolean) {
     "https://img.youtube.com/vi/$id/mqdefault.jpg".also { url ->
         val e = Glide.with(this)

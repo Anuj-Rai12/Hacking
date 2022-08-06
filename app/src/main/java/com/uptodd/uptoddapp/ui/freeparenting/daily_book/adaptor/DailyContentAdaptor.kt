@@ -21,7 +21,7 @@ class DailyContentAdaptor :
         RecyclerView.ViewHolder(binding.root) {
         fun setData(data: DailyCheckData) {
             binding.videoThumbnail.apply {
-                context.showImage(data.url, this,true)
+                context.showImage(data.url, this,false)
             }
             binding.videoTitle.text = data.title
             binding.rootLayout.setOnClickListener {
