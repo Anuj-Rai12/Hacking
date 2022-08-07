@@ -16,6 +16,20 @@ data class DailyCheckData(
                 "Video is of session content 4 segment"
             ), DailyCheckData(
                 "Video is of session content 5 segment"
+            ), DailyCheckData(
+                "Video is of session content 6 segment"
+            ), DailyCheckData(
+                "Video is of session content 7 segment"
+            ), DailyCheckData(
+                "Video is of session content 8 segment"
+            ), DailyCheckData(
+                "Video is of session content 9 segment"
+            ), DailyCheckData(
+                "Video is of session content 10 segment"
+            ), DailyCheckData(
+                "Video is of session content 11 segment"
+            ), DailyCheckData(
+                "Video is of session content 12 segment"
             )
         )
     }

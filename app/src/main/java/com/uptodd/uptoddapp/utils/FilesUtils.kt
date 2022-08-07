@@ -8,7 +8,9 @@ import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -163,6 +165,17 @@ fun Context.showImage(id: String, view: ImageView, flag: Boolean) {
     }
 }
 
+
+fun TextView.setTextViewMovingAnimation() {
+    val animation = TranslateAnimation(
+        1500.0f,
+        0.0f,
+        0.0f,
+        0.0f
+    )
+    animation.duration = 1500 // animation duration
+    this.startAnimation(animation) //your_view for mine is imageView
+}
 
 inline fun <reified T> buildApi(retrofit: Retrofit): T {
     return retrofit.create(T::class.java)

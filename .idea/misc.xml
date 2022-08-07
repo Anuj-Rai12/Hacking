@@ -106,8 +106,10 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/meatrial_next.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/music_player_background.xml" value="0.1465" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/nav_bar_icon.xml" value="0.2145" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_cancelled.xml" value="0.2215" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_pending.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/refer_success.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/round_corner_bottom.xml" value="0.1335" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/round_rate_ticket_background.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/rounded_corners_text_view_login.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/see_all_activities_btn_bg_2.xml" value="0.129" />
@@ -142,7 +144,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demeo.xml" value="0.22239583333333332" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demo.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.536" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_book_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_fragment.xml" value="0.41690962099125367" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_suggestion_item_layout.xml" value="0.6" />

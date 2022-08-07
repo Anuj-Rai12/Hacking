@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.uptodd.uptoddapp.databinding.DailyContentSuggestionItemLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.delete.DailyCheckData
 import com.uptodd.uptoddapp.utils.OnBottomClick
+import com.uptodd.uptoddapp.utils.setTextViewMovingAnimation
 import com.uptodd.uptoddapp.utils.showImage
 
 
@@ -24,6 +25,7 @@ class DailyContentAdaptor :
                 context.showImage(data.url, this,false)
             }
             binding.videoTitle.text = data.title
+            binding.videoTitle.setTextViewMovingAnimation()
             binding.rootLayout.setOnClickListener {
                 itemClickListener?.onClickListener(data)
             }
