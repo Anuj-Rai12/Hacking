@@ -246,6 +246,7 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/view_more_video"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -259,7 +260,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/first_video_set"
-            app:rippleColor="#1AA6C5"
+            app:rippleColor="#c2e7ff"
             app:strokeColor="@color/darkBlue"
             app:strokeWidth="2dp" />
 
