@@ -311,6 +311,12 @@ class MemoryBoosterDetailsViewModel(val database: MusicFilesDatabaseDao, applica
     }
 
     fun getIsPoemDownloaded(poem: MusicFiles): Boolean {
+        if (!this::downloadedPoems.isInitialized){
+            initializePoems()
+        }
+        if (!this::downloadedPoems.isInitialized){
+            return false
+        }
         downloadedPoems.forEach {
             Log.d("file",it.toString())
             if (it.id == poem.id)

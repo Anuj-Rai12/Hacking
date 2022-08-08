@@ -75,23 +75,17 @@ class ActivitySampleFragment : Fragment(), ActivitySampleInterface {
         binding.upgradeButton.setOnClickListener {
             it.findNavController().navigate(R.id.action_activitySampleFragment_to_upgradeFragment)
         }
-
-
-        if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip()) {
-            var onlyShowInfo = true
-                Handler(Looper.getMainLooper()).post {
-                    if (onlyShowInfo) {
-                        onlyShowInfo = false
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        ShowInfoDialog.showHint(
-                            requireActivity(),
-                            binding.collapseToolbar.tvLayout, "Session",
-                            getString(R.string.screen_session),
-                            id * 3
-                        )
-                    }, 1000)
-                    UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
-                }
+        Handler(Looper.getMainLooper()).post {
+            if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSessionTip()) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    ShowInfoDialog.showHint(
+                        requireActivity(),
+                        binding.collapseToolbar.tvLayout, "Session",
+                        getString(R.string.screen_session),
+                        id * 3
+                    )
+                }, 1000)
+                UptoddSharedPreferences.getInstance(requireContext()).setShownSessionTip(false)
             }
         }
         fetchTutorials(requireContext())
