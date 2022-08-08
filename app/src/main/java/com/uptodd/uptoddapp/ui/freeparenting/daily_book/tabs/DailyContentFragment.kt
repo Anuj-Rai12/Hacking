@@ -2,7 +2,6 @@ package com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.TranslateAnimation
 import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyContentFragmentBinding
