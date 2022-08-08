@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.PoemListItemBinding
+import com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboardFragment
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ScreenDpi
+import com.uptodd.uptoddapp.utils.setLogCat
 
 class PoemAdapter(val clickListener: PoemAdapterInterface) :
     ListAdapter<MusicFiles, PoemAdapter.PoemViewHolder>(PoemDiff()) {
@@ -31,11 +31,17 @@ class PoemAdapter(val clickListener: PoemAdapterInterface) :
             binding.poemItemTitle.text = item.name
 
             val dpi = ScreenDpi(binding.poemItemImage.context).getScreenDrawableType()
-            Picasso.get()
+            val url=AllUtil.getPoemImage(item, dpi)
+            setLogCat("URL_IMG", url)
+            DoctorDashboardFragment.setImageWithGlideInImageView(
+                binding.poemItemImage,
+                url
+            )
+            /*Picasso.get()
                 .load(AllUtil.getPoemImage(item, dpi))
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.ic_broken_image)
-                .into(binding.poemItemImage)
+                .into(binding.poemItemImage)*/
 
             binding.root.setOnClickListener {
                 clickListener.onClickPoem(item)
@@ -64,5 +70,5 @@ class PoemDiff : DiffUtil.ItemCallback<MusicFiles>() {
 
 interface PoemAdapterInterface {
     fun onClickPoem(poem: MusicFiles)
-    fun onLongClickPoem(poem:MusicFiles)
+    fun onLongClickPoem(poem: MusicFiles)
 }

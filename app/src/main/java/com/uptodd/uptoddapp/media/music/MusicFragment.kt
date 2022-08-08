@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -32,28 +31,26 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.bumptech.glide.Glide
+import com.erkutaras.showcaseview.ShowcaseManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.makeramen.roundedimageview.RoundedImageView
-import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MusicFragmentBinding
+import com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboardFragment
 import com.uptodd.uptoddapp.media.player.BackgroundPlayer
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
-import com.uptodd.uptoddapp.utilities.*
-import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
-import java.util.*
-
-import com.erkutaras.showcaseview.ShowcaseManager
-import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.SuggestedVideosModel
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
+import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utilities.downloadmanager.UpToddDownloadManager
 import org.json.JSONObject
+import java.util.*
 
 
 private const val musicTimerCode = 2402
@@ -69,11 +66,11 @@ class MusicFragment : Fragment() {
 
     private lateinit var preferences: SharedPreferences
 
-    companion object
-    {
-        var  dpi=""
+    companion object {
+        var dpi = ""
     }
-    private var videosRespons: VideosUrlResponse?=null
+
+    private var videosRespons: VideosUrlResponse? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +98,7 @@ class MusicFragment : Fragment() {
         )
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
-            findNavController(),getString(R.string.music),"Curated in UpTodd's Lab",
+            findNavController(), getString(R.string.music), "Curated in UpTodd's Lab",
             R.drawable.music_icon
         )
 
@@ -114,21 +111,19 @@ class MusicFragment : Fragment() {
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
                 intent.putExtra("url", videosRespons?.music)
                 intent.putExtra("title", "Music")
-                intent.putExtra("kit_content","")
-                intent.putExtra("description","")
+                intent.putExtra("kit_content", "")
+                intent.putExtra("description", "")
                 startActivity(intent)
             }
 
 
         }
 
-        binding.collapseToolbar.playTutorialIcon.visibility=View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.visibility = View.VISIBLE
 
-        if(AllUtil.isUserPremium(requireContext()))
-        {
-            if(!AllUtil.isSubscriptionOverActive(requireContext()))
-            {
-                binding.upgradeButton.visibility= GONE
+        if (AllUtil.isUserPremium(requireContext())) {
+            if (!AllUtil.isSubscriptionOverActive(requireContext())) {
+                binding.upgradeButton.visibility = GONE
             }
         }
         binding.upgradeButton.setOnClickListener {
@@ -166,14 +161,16 @@ class MusicFragment : Fragment() {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
-        if (lastUpdated.isBlank() || UptoddSharedPreferences.getInstance(requireContext()).getMDownStatus()!!) {
+        if (lastUpdated.isBlank() || UptoddSharedPreferences.getInstance(requireContext())
+                .getMDownStatus()!!
+        ) {
             updateMusic(today)
-        } else if (lastUpdated.toLong() < today.timeInMillis ) {
+        } else if (lastUpdated.toLong() < today.timeInMillis) {
             updateMusic(today)
         } else {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                 updateMusic(today)
-            } else{
+            } else {
                 viewModel.initializeOffline()
             }
         }
@@ -183,14 +180,16 @@ class MusicFragment : Fragment() {
         if (!UpToddMediaPlayer.isPlaying || UpToddMediaPlayer.isMemoryBooster!!) {
             binding.musicPlayerLayout.visibility = View.GONE
 
-        }
-        else
-        {
-            Picasso.get()
+        } else {
+            DoctorDashboardFragment.setImageWithGlideInImageView(
+                binding.musicIcon,
+                AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, viewModel.getDpi())
+            )
+            /*Picasso.get()
                 .load(AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, viewModel.getDpi()))
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.default_set_android_thumbnail)
-                .into(binding.musicIcon)
+                .into(binding.musicIcon)*/
 
         }
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
@@ -213,8 +212,8 @@ class MusicFragment : Fragment() {
                                 uptoddDialogs.dismissDialog()
                                 try {
                                     findNavController().navigateUp()
-                                }catch (e:Exception){
-                                    activity?.let {act->
+                                } catch (e: Exception) {
+                                    activity?.let { act ->
                                         Toast.makeText(
                                             act,
                                             "Oops Something Wrong Please Try Again",
@@ -236,8 +235,8 @@ class MusicFragment : Fragment() {
         return binding.root
     }
 
-    private fun showHint(view:View){
-        val builder =ShowcaseManager.Builder()
+    private fun showHint(view: View) {
+        val builder = ShowcaseManager.Builder()
         builder.context(requireContext())
             .key("${AllUtil.getUserId()}")
             .view(view)
@@ -257,8 +256,7 @@ class MusicFragment : Fragment() {
     private fun updateMusic(today: Calendar) {
         if (AllUtil.isNetworkAvailable(requireContext()))
             viewModel.initializeAll(requireContext())
-        else
-        {
+        else {
             viewModel.initializeOffline()
         }
         preferences.edit {
@@ -422,18 +420,27 @@ class MusicFragment : Fragment() {
         })
 
         viewModel.image.observe(viewLifecycleOwner, Observer {
-            if (it != "")
-                Picasso.get()
-                    .load(viewModel.image.value)
+            if (it != "") {
+                Glide.with(this).load(viewModel.image.value)
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.app_icon)
-                    .resize(
-                Conversion.convertDpToPixel(64F, requireContext()),
-                Conversion.convertDpToPixel(64F, requireContext())
-            )
+                    .override(
+                        Conversion.convertDpToPixel(64F, requireContext()),
+                        Conversion.convertDpToPixel(64F, requireContext())
+                    )
                     .into(binding.musicIcon)
+            }
+            /*Picasso.get()
+                .load(viewModel.image.value)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.app_icon)
+                .resize(
+                    Conversion.convertDpToPixel(64F, requireContext()),
+                    Conversion.convertDpToPixel(64F, requireContext())
+                )
+                .into(binding.musicIcon)*/
 
-            Log.d("url",it)
+            Log.d("url", it)
         })
 
         viewModel.title.observe(viewLifecycleOwner, Observer {
@@ -441,11 +448,13 @@ class MusicFragment : Fragment() {
                 binding.musicTitle.text = viewModel.title.value
         })
         viewModel.isDownloaded.observe(viewLifecycleOwner, Observer {
-            if(it){
+            if (it) {
 
-            }else{
-                ShowInfoDialog.showInfo("Musics are Downloading will add one by one till it is completed",
-                requireActivity().supportFragmentManager);
+            } else {
+                ShowInfoDialog.showInfo(
+                    "Musics are Downloading will add one by one till it is completed",
+                    requireActivity().supportFragmentManager
+                );
             }
         })
 
@@ -484,11 +493,15 @@ class MusicFragment : Fragment() {
 
                     musicTitle.text = music.name
 
-                    Picasso.get()
-                        .load(AllUtil.getMusicImage(music, viewModel.getDpi()))
+                    Glide.with(this).load(AllUtil.getMusicImage(music, viewModel.getDpi()))
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.default_set_android_thumbnail)
                         .into(musicImage)
+                    /*Picasso.get()
+                        .load(AllUtil.getMusicImage(music, viewModel.getDpi()))
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.default_set_android_thumbnail)
+                        .into(musicImage)*/
 
                     musicItemView.setOnClickListener { _ ->
                         //if time is already set and the user changes music, cancel the timer
@@ -534,24 +547,22 @@ class MusicFragment : Fragment() {
             viewModel.doneLoading()
 
             binding?.collapseToolbar?.tvLayout?.let { showHint(it) }
-        }
-        else
-        {
+        } else {
             if (AppNetworkStatus.getInstance(requireContext()).isOnline && viewModel.notActive) {
-                    val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
-                    val upToddDialogs = UpToddDialogs(requireContext())
-                    upToddDialogs.showInfoDialog("$title is not activated/required for you",
-                        "Close",
-                        object : UpToddDialogs.UpToddDialogListener {
-                            override fun onDialogButtonClicked(dialog: Dialog) {
-                                dialog.dismiss()
-                            }
+                val title = (requireActivity() as AppCompatActivity).supportActionBar!!.title
+                val upToddDialogs = UpToddDialogs(requireContext())
+                upToddDialogs.showInfoDialog("$title is not activated/required for you",
+                    "Close",
+                    object : UpToddDialogs.UpToddDialogListener {
+                        override fun onDialogButtonClicked(dialog: Dialog) {
+                            dialog.dismiss()
+                        }
 
-                            override fun onDialogDismiss() {
-                                findNavController().navigateUp()
-                                super.onDialogDismiss()
-                            }
-                        })
+                        override fun onDialogDismiss() {
+                            findNavController().navigateUp()
+                            super.onDialogDismiss()
+                        }
+                    })
             }
         }
     }

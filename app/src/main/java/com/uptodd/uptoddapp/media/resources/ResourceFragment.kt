@@ -19,14 +19,11 @@ import com.google.android.material.transition.MaterialFadeThrough
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.resource.ResourceFiles
 import com.uptodd.uptoddapp.databinding.ResourceFragmentBinding
-import com.uptodd.uptoddapp.media.poem.PoemAdapter
-import com.uptodd.uptoddapp.media.poem.PoemViewModel
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.AppNetworkStatus
 import com.uptodd.uptoddapp.utilities.ToolbarUtils
 import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
-import java.io.File
 
 class ResourceFragment:Fragment(), ResourceAdapterInterface {
 

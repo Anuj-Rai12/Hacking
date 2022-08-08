@@ -10,15 +10,16 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.transition.MaterialSharedAxis
-import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.databinding.DoctorDashboardFragmentBinding
@@ -31,6 +32,13 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
     companion object {
         fun newInstance() = DoctorDashboardFragment()
+        fun setImageWithGlideInImageView(view: ImageView, url: String?) {
+            Glide.with(view.context)
+                .load(url)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
+                .into(view)
+        }
     }
 
     private lateinit var uptoddDialogs: UpToddDialogs
@@ -133,11 +141,20 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
                     binding.doctorDashboardWebinar1Text.text = blogsList[0].title
 
-                    Picasso.get()
+                    /*Glide.with(binding.doctorDashboardWebinar1Image.context)
                         .load(blogsList[0].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar1Image)
+                        .into(binding.doctorDashboardWebinar1Image)*/
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar1Image,
+                        blogsList[0].imageURL
+                    )
+                    /*Picasso.get()
+                        .load(blogsList[0].imageURL)
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.ic_broken_image)
+                        .into(binding.doctorDashboardWebinar1Image)*/
 
                     binding.doctorDashboardWatchNow1.setOnClickListener {
                         openBlog(blogsList[0])
@@ -152,11 +169,15 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
                     binding.doctorDashboardWebinar1Text.text = blogsList[0].title
 
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar1Image,
+                        blogsList[0].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[0].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar1Image)
+                        .into(binding.doctorDashboardWebinar1Image)*/
 
                     binding.doctorDashboardWatchNow1.setOnClickListener {
                         openBlog(blogsList[0])
@@ -164,12 +185,15 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
 
                     binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar2Image,
+                        blogsList[1].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[1].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar2Image)
+                        .into(binding.doctorDashboardWebinar2Image)*/
 
                     binding.doctorDashboardWatchNow2.setOnClickListener {
                         openBlog(blogsList[1])
@@ -181,12 +205,15 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
                 3 -> {
 
                     binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar1Image,
+                        blogsList[0].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[0].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar1Image)
+                        .into(binding.doctorDashboardWebinar1Image)*/
 
                     binding.doctorDashboardWatchNow1.setOnClickListener {
                         openBlog(blogsList[0])
@@ -194,12 +221,15 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
 
                     binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar2Image,
+                        blogsList[1].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[1].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar2Image)
+                        .into(binding.doctorDashboardWebinar2Image)*/
 
                     binding.doctorDashboardWatchNow2.setOnClickListener {
                         openBlog(blogsList[1])
@@ -208,11 +238,16 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
 
                     binding.doctorDashboardWebinar3Text.text = blogsList[2].title
 
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar3Image,
+                        blogsList[2].imageURL
+                    )
+
+                    /*Picasso.get()
                         .load(blogsList[2].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar3Image)
+                        .into(binding.doctorDashboardWebinar3Image)*/
 
                     binding.doctorDashboardWatchNow3.setOnClickListener {
                         openBlog(blogsList[2])
@@ -223,48 +258,60 @@ class DoctorDashboardFragment : Fragment(), CarouselAdapter.OnClickListener {
                 else -> {
 
                     binding.doctorDashboardWebinar1Text.text = blogsList[0].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar1Image,
+                        blogsList[0].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[0].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar1Image)
+                        .into(binding.doctorDashboardWebinar1Image)*/
 
                     binding.doctorDashboardWatchNow1.setOnClickListener {
                         openBlog(blogsList[0])
                     }
 
                     binding.doctorDashboardWebinar2Text.text = blogsList[1].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar2Image,
+                        blogsList[1].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[1].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar2Image)
+                        .into(binding.doctorDashboardWebinar2Image)*/
 
                     binding.doctorDashboardWatchNow2.setOnClickListener {
                         openBlog(blogsList[1])
                     }
 
                     binding.doctorDashboardWebinar3Text.text = blogsList[2].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar3Image,
+                        blogsList[2].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[2].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar3Image)
+                        .into(binding.doctorDashboardWebinar3Image)*/
 
                     binding.doctorDashboardWatchNow3.setOnClickListener {
                         openBlog(blogsList[2])
                     }
 
                     binding.doctorDashboardWebinar4Text.text = blogsList[3].title
-
-                    Picasso.get()
+                    setImageWithGlideInImageView(
+                        binding.doctorDashboardWebinar4Image,
+                        blogsList[3].imageURL
+                    )
+                    /*Picasso.get()
                         .load(blogsList[3].imageURL)
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
-                        .into(binding.doctorDashboardWebinar4Image)
+                        .into(binding.doctorDashboardWebinar4Image)*/
 
                     binding.doctorDashboardWatchNow4.setOnClickListener {
                         openBlog(blogsList[3])

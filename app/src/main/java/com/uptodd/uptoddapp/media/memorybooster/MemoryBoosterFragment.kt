@@ -33,16 +33,17 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.makeramen.roundedimageview.RoundedImageView
-import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.UptoddViewModelFactory
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.MemoryBoosterFragmentBinding
 import com.uptodd.uptoddapp.databinding.PoemFragmentBinding
+import com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboardFragment
 import com.uptodd.uptoddapp.media.player.MediaStopReceiver
 import com.uptodd.uptoddapp.media.poem.PoemFragmentDirections
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
@@ -289,16 +290,24 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
 
 
         viewModel.image.observe(viewLifecycleOwner, Observer {
-            if (it != "")
-                Picasso.get()
-                    .load(viewModel.image.value)
-                    .resize(
-                        Conversion.convertDpToPixel(64F, requireContext()),
-                        Conversion.convertDpToPixel(64F, requireContext())
-                    )
+            if (it != "") {
+                Glide.with(this).load(viewModel.image.value)
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.app_icon)
-                    .into(binding.musicIcon)
+                    .override(
+                        Conversion.convertDpToPixel(64F, requireContext()),
+                        Conversion.convertDpToPixel(64F, requireContext())
+                    ).into(binding.musicIcon)
+            }
+            /*Picasso.get()
+                .load(viewModel.image.value)
+                .resize(
+                    Conversion.convertDpToPixel(64F, requireContext()),
+                    Conversion.convertDpToPixel(64F, requireContext())
+                )
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.app_icon)
+                .into(binding.musicIcon)*/
         })
 
         viewModel.title.observe(viewLifecycleOwner, Observer {
@@ -329,11 +338,15 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
                 poemImage.setPadding(10, 5, 10, 5)
                 poemImage.scaleType = ImageView.ScaleType.FIT_XY
 //            if(AllUtil.isNetworkAvailable(requireContext()))
-                Picasso.get()
+                DoctorDashboardFragment.setImageWithGlideInImageView(
+                    poemImage,
+                    AllUtil.getPoemImage(poem, viewModel.getDpi())
+                )
+                /*Picasso.get()
                     .load(AllUtil.getPoemImage(poem, viewModel.getDpi()))
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.ic_broken_image)
-                    .into(poemImage)
+                    .into(poemImage)*/
 
                 Log.i("got", "${poem.name}")
 

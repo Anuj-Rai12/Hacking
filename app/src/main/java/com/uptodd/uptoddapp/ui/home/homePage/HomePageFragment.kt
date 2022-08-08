@@ -40,7 +40,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.OkHttpDownloader
-import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -65,16 +64,14 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
+import com.uptodd.uptoddapp.utils.dialog.showDialogBox
+import com.uptodd.uptoddapp.utils.isNetworkAvailable
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -595,9 +592,17 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
     }
 
-    private fun testInternetConnectionAndRefreshData(): Disposable? {
-
-        return ReactiveNetwork
+    private fun testInternetConnectionAndRefreshData() {
+        if (activity?.isNetworkAvailable()!!) {
+            viewModel.performAction(requireContext(), requireActivity())
+        } else {
+            activity?.showDialogBox(
+                "No Internet",
+                "No Connection Detected on this Device",
+                icon = R.drawable.network_error
+            ) {}
+        }
+        /*return ReactiveNetwork
             .observeNetworkConnectivity(requireContext())
             .subscribeOn(Schedulers.io())
             // anything else what you can do with RxJava
@@ -637,7 +642,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                     }
                 }
 
-            )
+            )*/
 
     }
 
@@ -1083,7 +1088,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                     val handler = Handler(Looper.getMainLooper())
                     handler.post {
                         if (showDialogOnce) {
-                            showDialogOnce=false
+                            showDialogOnce = false
                             if (response.getString("status") == "Success") {
                                 val poems =
                                     AllUtil.getAllMemoryFiles(response.get("data").toString())

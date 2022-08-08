@@ -5,9 +5,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.squareup.picasso.Picasso
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.SplashScreenActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
@@ -61,9 +61,13 @@ class UptoddPushNotifications : FirebaseMessagingService() {
             "fcm.push_notification"
         )
         if (imageUrl != null) {
-            val imageBitmap = Picasso.get()
+            val imageBitmap = Glide.with(this)
+                .asBitmap()
                 .load(imageUrl)
-                .get()
+                .submit().get()
+            /*Picasso.get()
+            .load(imageUrl)
+            .get()*/
 
             val logoBitmap = BitmapFactory.decodeResource(resources, R.drawable.app_icon)
             builder.setStyle(

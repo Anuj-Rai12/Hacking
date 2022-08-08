@@ -54,7 +54,7 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:drawableTint="#838383"
-                android:drawableEnd="@drawable/ic_arrow_forward_white_24dp"
+                android:drawableEnd="@drawable/ic_back_nav_arrow"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

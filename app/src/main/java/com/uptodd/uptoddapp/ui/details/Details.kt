@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.database.media.music.MusicFiles
 import com.uptodd.uptoddapp.databinding.DetailsFragmentBinding
@@ -37,8 +37,10 @@ class Details : Fragment() {
         binding.musicDetailsBinding = viewModel
 
 
-        ToolbarUtils.initNCToolbar(requireActivity(),"Details",binding.toolbar,
-            findNavController())
+        ToolbarUtils.initNCToolbar(
+            requireActivity(), "Details", binding.toolbar,
+            findNavController()
+        )
 
         //Get music id from safeargs
         val args = DetailsArgs.fromBundle(requireArguments())
@@ -56,22 +58,50 @@ class Details : Fragment() {
     }
 
     private fun setUpPoemDetails(poems: MusicFiles, binding: DetailsFragmentBinding) {
-        Picasso.get()
-            .load("https://www.uptodd.com/images/app/android/details/poems/${ScreenDpi(requireContext()).getScreenDrawableType()}/${poems.image}.webp")
+        Glide.with(binding.detailsImage.context)
+            .load(
+                "https://www.uptodd.com/images/app/android/details/poems/${
+                    ScreenDpi(
+                        requireContext()
+                    ).getScreenDrawableType()
+                }/${poems.image}.webp"
+            )
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.default_set_android_detail)
             .into(binding.detailsImage)
+        /*Picasso.get()
+            .load("https://www.uptodd.com/images/app/android/details/poems/${ScreenDpi(requireContext()).getScreenDrawableType()}/${poems.image}.webp")
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.default_set_android_detail)
+            .into(binding.detailsImage)*/
 
         binding.detailsDesc.gravity = Gravity.CENTER_HORIZONTAL
 
     }
 
     private fun setUpMusicDetails(music: MusicFiles) {
-        Picasso.get()
-            .load("https://www.uptodd.com/images/app/android/details/musics/${ScreenDpi(requireContext()).getScreenDrawableType()}/${music.image}.webp")
+        Glide.with(binding.detailsImage.context)
+            .load(
+                "https://www.uptodd.com/images/app/android/details/musics/${
+                    ScreenDpi(
+                        requireContext()
+                    ).getScreenDrawableType()
+                }/${music.image}.webp"
+            )
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.default_set_android_detail)
             .into(binding.detailsImage)
+        /*Picasso.get()
+            .load(
+                "https://www.uptodd.com/images/app/android/details/musics/${
+                    ScreenDpi(
+                        requireContext()
+                    ).getScreenDrawableType()
+                }/${music.image}.webp"
+            )
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.default_set_android_detail)
+            .into(binding.detailsImage)*/
 
         Log.i(
             "imageLink",

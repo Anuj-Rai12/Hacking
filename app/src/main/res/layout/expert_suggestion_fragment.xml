@@ -348,7 +348,7 @@
                                         android:layout_width="32dp"
                                         android:layout_height="32dp"
                                         android:layout_margin="4dp"
-                                        android:src="@drawable/ic_done_white_24dp"
+                                        android:src="@drawable/ic_tick_24"
                                         app:tint="@color/themeBlue" />
 
 
