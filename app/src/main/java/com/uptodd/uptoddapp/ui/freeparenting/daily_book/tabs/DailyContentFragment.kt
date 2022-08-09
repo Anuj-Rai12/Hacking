@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyContentFragmentBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.delete.DailyCheckData
+import com.uptodd.uptoddapp.ui.freeparenting.daily_book.adaptor.DailyContentAdaptor
 import com.uptodd.uptoddapp.utils.OnBottomClick
-import com.uptodd.uptoddapp.utils.dialog.bottom_sheet.DemoBottomSheet
-import com.uptodd.uptoddapp.utils.setTextViewMovingAnimation
 import com.uptodd.uptoddapp.utils.showImage
 import com.uptodd.uptoddapp.utils.toastMsg
 
@@ -17,6 +16,7 @@ class DailyContentFragment(private val title: String) : Fragment(R.layout.daily_
     OnBottomClick {
 
     private lateinit var binding: DailyContentFragmentBinding
+    private lateinit var dailVideoAdaptor: DailyContentAdaptor
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,16 +25,17 @@ class DailyContentFragment(private val title: String) : Fragment(R.layout.daily_
         binding.videoThumbnail.apply {
             context.showImage("uSTCoECm3TA", this, true)
         }
-        binding.firstVideoSet.videoThumbnail.apply {
-            context.showImage("uSTCoECm3TA", this, false)
+        setAdaptor()
+    }
+
+    private fun setAdaptor() {
+        binding.suggestionPlayList.apply {
+            isNestedScrollingEnabled=false
+            dailVideoAdaptor = DailyContentAdaptor()
+            dailVideoAdaptor.itemClickListener = this@DailyContentFragment
+            adapter = dailVideoAdaptor
         }
-        binding.firstVideoSet.videoTitle.text = DailyCheckData.list.first().title
-        binding.firstVideoSet.videoTitle.setTextViewMovingAnimation()
-        binding.viewMoreVideo.setOnClickListener {
-            val bottomSheet = DemoBottomSheet(title)
-            bottomSheet.onListener = this
-            bottomSheet.show(parentFragmentManager, "MY_BOTTOM_SHEET_FOR_VIEW_CONTENT")
-        }
+        dailVideoAdaptor.submitList(DailyCheckData.list)
     }
 
     override fun <T> onClickListener(res: T) {

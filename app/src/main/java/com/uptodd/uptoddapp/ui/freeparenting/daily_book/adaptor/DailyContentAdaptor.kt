@@ -25,7 +25,7 @@ class DailyContentAdaptor :
                 context.showImage(data.url, this,false)
             }
             binding.videoTitle.text = data.title
-            binding.videoTitle.setTextViewMovingAnimation()
+//            binding.videoTitle.setTextViewMovingAnimation()
             binding.rootLayout.setOnClickListener {
                 itemClickListener?.onClickListener(data)
             }
