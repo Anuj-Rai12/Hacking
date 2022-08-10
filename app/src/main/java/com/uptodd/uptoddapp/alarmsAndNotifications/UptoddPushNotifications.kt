@@ -55,8 +55,8 @@ class UptoddPushNotifications : FirebaseMessagingService() {
         }
         val builder = UptoddNotificationUtilities.notificationBuilder(
             applicationContext,
-            title!!,
-            text!!,
+            title ?: "Course content",
+            text ?: "View today's program",
             intent,
             "fcm.push_notification"
         )
