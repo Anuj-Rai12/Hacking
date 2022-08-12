@@ -59,16 +59,22 @@ class FreeParentingDemoActivity : AppCompatActivity() {
     }
 
 
-    fun hideBottomNavBar(){
+    fun hideBottomNavBar() {
         binding.bottomNavBar.hide()
     }
 
     fun showBottomNavBar() {
         binding.bottomNavBar.show()
     }
+
     override fun onResume() {
         super.onResume()
         supportActionBar?.hide()
+    }
+
+
+    fun goBack() {
+        onBackPressed()
     }
 
 }

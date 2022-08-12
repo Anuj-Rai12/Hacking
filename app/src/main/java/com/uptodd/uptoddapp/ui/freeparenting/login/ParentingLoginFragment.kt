@@ -59,9 +59,13 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         }
 
 
+        binding.backIconImage.setOnClickListener {
+            (activity as FreeParentingDemoActivity?)?.goBack()
+        }
+
         binding.goToDemoDashBoard.setOnClickListener {
-            val fullName = binding.fullNameEd.text.toString()
-            val email = binding.userEmailEd.text.toString()
+            val fullName = binding.userNameEd2.text.toString()
+            val email = binding.emailIdEd.text.toString()
             val phoneNumber = binding.userPhoneEd.text.toString()
             if (checkUserInput(fullName) || checkUserInput(email) || checkUserInput(phoneNumber)) {
                 activity?.toastMsg("Please Enter Correct Information")
@@ -192,7 +196,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
                     return
                 }
                 data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)?.let { email ->
-                    binding.userEmailEd.setText(email)
+                    binding.emailIdEd.setText(email)
                 }
             }
             else -> {
@@ -246,7 +250,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
         isRequestPhone = false
         binding.countryCodeEd.setAdapter(dropDownArray)
-        val email = binding.userEmailEd.text.toString()
+        val email = binding.emailIdEd.text.toString()
         val phone = binding.userPhoneEd.text.toString()
         if (checkUserInput(email) && checkUserInput(phone))
             phoneSelection(true)

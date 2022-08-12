@@ -377,7 +377,7 @@ class LoginFragment : Fragment() {
         binding.goToFreeBtn.setOnClickListener {
             val intent = Intent(activity, FreeParentingDemoActivity::class.java)
             startActivity(intent)
-            activity?.finish()
+            //activity?.finish()
         }
 
         viewModel.incorrectEmail.observe(viewLifecycleOwner, Observer {
