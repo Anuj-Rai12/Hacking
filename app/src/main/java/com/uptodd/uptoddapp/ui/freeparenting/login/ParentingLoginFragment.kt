@@ -30,11 +30,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
     private lateinit var binding: LoginParentingFragmentBinding
 
     private var codeId: String? = null
-
-    private var isRequestPhone = false
-
-    private var shouldShowEmailDialog = false
-
     private val viewModel: LoginViewModel by viewModels()
 
     private val countryCode = mutableSetOf(
@@ -58,7 +53,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
             }
         }
 
-
+        phoneSelection()
         binding.backIconImage.setOnClickListener {
             (activity as FreeParentingDemoActivity?)?.goBack()
         }
@@ -170,24 +165,20 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             CaptureDeviceInformation.RequestCodeForPhone -> {
-                if (!isRequestPhone) {
-                    isRequestPhone = true
-                    if (resultCode != Activity.RESULT_OK) {
-                        setLogCat("onActivityResult", "error $resultCode")
-                        return
-                    }
-                    val credential: Credential? = data?.getParcelableExtra(Credential.EXTRA_KEY)
-                    credential?.apply {
-                        val res = getPhoneNumber(this.id)
-                        binding.userPhoneEd.setText(res.last())
-                        if (countryCode.add(res.first().toString())) {
-                            binding.countryCodeEd.setAdapter(dropDownArray)
-                        }
-                    }
 
-                    if (shouldShowEmailDialog)
-                        getEmailId()
+                if (resultCode != Activity.RESULT_OK) {
+                    setLogCat("onActivityResult", "error $resultCode")
+                    return
                 }
+                val credential: Credential? = data?.getParcelableExtra(Credential.EXTRA_KEY)
+                credential?.apply {
+                    val res = getPhoneNumber(this.id)
+                    binding.userPhoneEd.setText(res.last())
+                    if (countryCode.add(res.first().toString())) {
+                        binding.countryCodeEd.setAdapter(dropDownArray)
+                    }
+                }
+                getEmailId()
             }
             CaptureDeviceInformation.RequestCodeForEmail -> {
                 //Email
@@ -227,8 +218,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
 
     @SuppressLint("WrongConstant")
-    private fun phoneSelection(flag: Boolean) {
-        shouldShowEmailDialog = flag
+    private fun phoneSelection() {
         val credentialsClient = Credentials.getClient(requireActivity())
         val intent = credentialsClient.getHintPickerIntent(hintRequest())
         try {
@@ -248,16 +238,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
     override fun onResume() {
         super.onResume()
         (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
-        isRequestPhone = false
-        binding.countryCodeEd.setAdapter(dropDownArray)
-        val email = binding.emailIdEd.text.toString()
-        val phone = binding.userPhoneEd.text.toString()
-        if (checkUserInput(email) && checkUserInput(phone))
-            phoneSelection(true)
-        else if (checkUserInput(email))
-            getEmailId()
-        else if (checkUserInput(phone))
-            phoneSelection(false)
     }
 
 }
