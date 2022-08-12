@@ -52,6 +52,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     private fun setAdaptor() {
         viewPagerAdaptor = ViewPagerAdapter(childFragmentManager, lifecycle)
         binding.viewPager.adapter = viewPagerAdaptor
+        binding.viewPager.offscreenPageLimit=2
     }
 
 
