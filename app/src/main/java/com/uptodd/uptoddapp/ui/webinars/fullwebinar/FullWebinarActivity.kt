@@ -3,16 +3,14 @@ package com.uptodd.uptoddapp.ui.webinars.fullwebinar
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.android.youtube.player.YouTubeBaseActivity
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.ActivityFullWebinarBinding
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 
 
-class FullWebinarActivity : YouTubeBaseActivity() {
+class FullWebinarActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityFullWebinarBinding
     lateinit var viewModel: FullWebinarViewModel
@@ -21,7 +19,7 @@ class FullWebinarActivity : YouTubeBaseActivity() {
     private lateinit var title: String
 
 
-    private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
+    //private lateinit var mOnInitializedListener: YouTubePlayer.OnInitializedListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +38,7 @@ class FullWebinarActivity : YouTubeBaseActivity() {
         binding.title.text = title
 
 
-        mOnInitializedListener = object : YouTubePlayer.OnInitializedListener {
+      /*  mOnInitializedListener = object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 p0: YouTubePlayer.Provider?,
                 p1: YouTubePlayer?,
@@ -57,8 +55,8 @@ class FullWebinarActivity : YouTubeBaseActivity() {
                 p1: YouTubeInitializationResult?, ) {
             }
         }
-
-        binding.videoView.initialize(YouTubeConfig().getApiKey(), mOnInitializedListener)
+*/
+  //      binding.videoView.initialize(YouTubeConfig().getApiKey(), mOnInitializedListener)
 
 
     }

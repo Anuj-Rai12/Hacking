@@ -3,7 +3,6 @@ package com.uptodd.uptoddapp.ui.kitTutorial.fragments
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +11,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidnetworking.AndroidNetworking
@@ -21,26 +18,18 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.R
-import com.uptodd.uptoddapp.api.getPeriod
-import com.uptodd.uptoddapp.database.UptoddDatabase
-import com.uptodd.uptoddapp.database.activitysample.ActivitySample
 import com.uptodd.uptoddapp.database.kitTutorial.KitTutorial
-import com.uptodd.uptoddapp.databinding.FragmentActivitySampleBinding
 import com.uptodd.uptoddapp.databinding.FragmentKitTutorialBinding
-import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.kitTutorial.adapters.KitTutorialAdapter
 import com.uptodd.uptoddapp.ui.kitTutorial.adapters.KitTutorialInterface
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
-import com.uptodd.uptoddapp.ui.webinars.fullwebinar.FullWebinarActivity
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
-import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utilities.AppNetworkStatus
+import com.uptodd.uptoddapp.utilities.ToolbarUtils
+import com.uptodd.uptoddapp.utilities.UpToddDialogs
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.json.JSONArray
 import org.json.JSONObject
-import java.util.*
 
 private const val TAG = "ActivitySampleFragment"
 
