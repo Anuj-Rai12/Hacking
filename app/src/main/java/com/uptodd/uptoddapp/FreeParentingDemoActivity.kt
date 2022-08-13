@@ -41,7 +41,7 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         if (showHomeDashBoard) {
             viewModel.getRequestLoginRequest?.let { res ->
                 LoginSingletonResponse.getInstance().setLoginRequest(res)
-                graph.startDestination = R.id.freeDemoBashBoardFragment
+                graph.startDestination = R.id.DailyBookFragment
             } ?: run {
                 showDialogBox(
                     "Failed",
