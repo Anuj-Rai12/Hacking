@@ -9,7 +9,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.BottomSheetLayoutBinding
-import com.uptodd.uptoddapp.datamodel.videocontent.delete.DailyCheckData
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.adaptor.DailyContentAdaptor
 import com.uptodd.uptoddapp.utils.OnBottomClick
 
@@ -50,7 +49,8 @@ class DemoBottomSheet(private val title: String) : BottomSheetDialogFragment(), 
             dailVideoAdaptor.itemClickListener = this@DemoBottomSheet
             adapter = dailVideoAdaptor
         }
-        dailVideoAdaptor.submitList(DailyCheckData.list)
+        // Set New DATA
+    // dailVideoAdaptor.submitList(DailyCheckData.list)
     }
 
 

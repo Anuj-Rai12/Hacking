@@ -20,6 +20,11 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
 
     companion object {
         val error = Pair("Failed to get Response", "Oops something Went Wrong")
+
+        enum class ItemType {
+            MUSIC,
+            VIDEO
+        }
     }
 
     fun getVideoContent() = flow {
@@ -47,10 +52,10 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
             val response = updateProgressApi.getUpdateProgress(request)
             val info = if (response.isSuccessful) {
                 response.body()?.let {
-                    if(it.data && it.status=="Success"){
+                    if (it.data && it.status == "Success") {
                         ApiResponseWrapper.Success(it)
-                    }else{
-                        ApiResponseWrapper.Error("Failed to track your progress",null)
+                    } else {
+                        ApiResponseWrapper.Error("Failed to track your progress", null)
                     }
                 } ?: ApiResponseWrapper.Error(error.second, null)
             } else {
@@ -87,8 +92,6 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
     }.flowOn(IO)
 
 
-
-
     fun deleteVideoFromDb() = flow {
         emit(ApiResponseWrapper.Loading("Loading video content..."))
         val data = try {
@@ -99,7 +102,6 @@ class VideoContentRepository(retrofit: Retrofit, private val dao: VideoContentDa
         }
         emit(data)
     }.flowOn(IO)
-
 
 
 }

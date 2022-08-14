@@ -7,24 +7,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.uptodd.uptoddapp.databinding.DailyContentSuggestionItemLayoutBinding
-import com.uptodd.uptoddapp.datamodel.videocontent.delete.DailyCheckData
+import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.utils.OnBottomClick
-import com.uptodd.uptoddapp.utils.setTextViewMovingAnimation
 import com.uptodd.uptoddapp.utils.showImage
 
 
 class DailyContentAdaptor :
-    ListAdapter<DailyCheckData, DailyContentAdaptor.DailyItemContentViewHolder>(diffUtil) {
+    ListAdapter<Content, DailyContentAdaptor.DailyItemContentViewHolder>(diffUtil) {
 
     var itemClickListener: OnBottomClick? = null
 
     inner class DailyItemContentViewHolder(private val binding: DailyContentSuggestionItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun setData(data: DailyCheckData) {
+        fun setData(data: Content) {
             binding.videoThumbnail.apply {
                 context.showImage(data.url, this,false)
             }
-            binding.videoTitle.text = data.title
+            binding.videoTitle.text = data.name
 //            binding.videoTitle.setTextViewMovingAnimation()
             binding.rootLayout.setOnClickListener {
                 itemClickListener?.onClickListener(data)
@@ -33,15 +32,15 @@ class DailyContentAdaptor :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<DailyCheckData>() {
+        val diffUtil = object : DiffUtil.ItemCallback<Content>() {
             override fun areItemsTheSame(
-                oldItem: DailyCheckData,
-                newItem: DailyCheckData
-            ) = oldItem.title == newItem.title
+                oldItem: Content,
+                newItem: Content
+            ) = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
-                oldItem: DailyCheckData,
-                newItem: DailyCheckData
+                oldItem: Content,
+                newItem: Content
             ) = oldItem == newItem
         }
     }
