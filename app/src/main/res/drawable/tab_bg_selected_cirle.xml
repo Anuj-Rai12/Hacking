@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <item android:right="-5dp"
+        android:left="-5dp">
         <shape
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thickness="4dp"
+            android:thickness="5dp"
             android:useLevel="false">
-            <solid android:color="@color/grey" />
+            <solid android:color="#1c43a1" />
         </shape>
     </item>
 </layer-list>

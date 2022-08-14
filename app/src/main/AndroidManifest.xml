@@ -43,6 +43,10 @@
             android:name=".ui.otherScreens.otherScreens.stories.StoryPlayActivity"
             android:hardwareAccelerated="true" />
         <activity
+            android:name=".ui.loginfreeorpaid.LoginSelectionOption"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true" />
+        <activity
             android:name=".ui.upgrade.PaymentActivity"
             android:exported="false"></activity>
         <activity android:name=".ui.webinars.webinarslist.WebinarsActivity" />
@@ -75,9 +79,8 @@
         <activity
             android:name=".FreeParentingDemoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:launchMode="singleInstance"
             android:hardwareAccelerated="true"
-            />
+            android:launchMode="singleInstance" />
 
         <activity android:name=".MainActivity" />
         <activity

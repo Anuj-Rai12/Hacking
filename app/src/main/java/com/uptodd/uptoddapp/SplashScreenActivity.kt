@@ -14,7 +14,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.daimajia.androidanimations.library.Techniques
@@ -25,6 +24,7 @@ import com.uptodd.uptoddapp.database.score.*
 import com.uptodd.uptoddapp.databinding.ActivitySplashScreenBinding
 import com.uptodd.uptoddapp.doctor.dashboard.DoctorDashboard
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.loginfreeorpaid.LoginSelectionOption
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.KidsPeriod
@@ -122,10 +122,6 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun openMainApp() {
-        //Only For Testing Purpose
-        /*startActivity(Intent(this, LoginActivity::class.java))
-        this.finishAffinity()
-        finish()*/
         if (preferences.contains("userType") && preferences.getString(
                 "userType",
                 "Normal"
@@ -221,7 +217,10 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             this.finishAffinity()
         } else {
-            startActivity(Intent(this, LoginActivity::class.java))
+            /*startActivity(Intent(this, LoginActivity::class.java))
+            this.finishAffinity()*/
+            //Move to Option Selection Screen
+            startActivity(Intent(this, LoginSelectionOption::class.java))
             this.finishAffinity()
         }
 

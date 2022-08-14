@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.ui.loginfreeorpaid.tabs.CourseInfoFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/txt_of_course_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="dgfdkhdklj jklhfklghklf jkghkflghk"
+            android:textAlignment="center"
+            android:textColor="@color/activeBlue"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/course_info_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/app_tutorial_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/txt_of_course_info"
+            app:layout_constraintRight_toRightOf="@id/txt_of_course_info"
+            app:layout_constraintTop_toBottomOf="@id/txt_of_course_info" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

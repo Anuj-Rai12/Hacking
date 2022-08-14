@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.ui.loginfreeorpaid.LoginSelectionOption">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_main_login"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_item_for_intro_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:tabRippleColor="@android:color/transparent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_pager_main_login"
+            app:tabBackground="@drawable/tab_layout"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/go_to_free_login_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#1c43a1"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:text="Free Parenting Content"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_item_for_intro_screen"
+            app:layout_constraintVertical_bias=".25"
+            app:rippleColor="#6cc1d7"
+            app:strokeColor="#1c43a1"
+            app:strokeWidth="2dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/go_to_paid_login_screen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#42c68e"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:text="Access Your Content"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toTopOf="@id/term_and_condition"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/go_to_free_login_screen"
+            app:layout_constraintVertical_bias=".15"
+            app:strokeColor="#51cb98"
+            app:strokeWidth="2dp" />
+
+
+        <TextView
+            android:id="@+id/term_and_condition"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="#f8f8f8"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="Terms and Condition"
+            android:textColor="#979fa3"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

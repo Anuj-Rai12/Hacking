@@ -55,6 +55,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/rounded_corners_text_view_login.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/shine_btn_desgin.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_selected.xml" value="0.2215" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_selected_cirle.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_bg_unselected.xml" value="0.2215" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/tab_layout.xml" value="0.2215" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ticket_detail_drawable.xml" value="0.1255" />
@@ -84,6 +85,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demeo.xml" value="0.22239583333333332" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demo.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/course_info_layout.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_book_layout.xml" value="0.19907407407407407" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_suggestion_item_layout.xml" value="0.25" />
@@ -113,6 +115,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/layout_collapase_toolbar.xml" value="0.16847826086956522" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/login_option_selection_layout.xml" value="0.37271937445699393" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/login_parenting_fragment.xml" value="0.25" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/memory_booster_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/memory_booster_item.xml" value="0.2234375" />

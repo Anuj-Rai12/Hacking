@@ -220,7 +220,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.button.MaterialButton
+            <!--<com.google.android.material.button.MaterialButton
                 android:id="@+id/go_to_free_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/mainLoginButton"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mainForgotPassword" />
+                app:layout_constraintTop_toBottomOf="@id/mainForgotPassword" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

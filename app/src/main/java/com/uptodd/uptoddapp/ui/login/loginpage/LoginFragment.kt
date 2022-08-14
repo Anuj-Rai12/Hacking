@@ -374,12 +374,6 @@ class LoginFragment : Fragment() {
             startActivity(Intent(activity, DoctorLogin::class.java))
         }
 
-        binding.goToFreeBtn.setOnClickListener {
-            val intent = Intent(activity, FreeParentingDemoActivity::class.java)
-            startActivity(intent)
-            //activity?.finish()
-        }
-
         viewModel.incorrectEmail.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.mainLoginPassword.isErrorEnabled = true
