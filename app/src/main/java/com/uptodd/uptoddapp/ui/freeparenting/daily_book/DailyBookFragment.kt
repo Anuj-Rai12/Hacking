@@ -50,12 +50,14 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     private fun setVideoTabItem() {
         viewModel.tabListAndContent.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
+                binding.itemContainer.show()
                 setAdaptor()
                 it.forEach { res ->
                     setFragment(res.first, res.second)
                 }
                 binding.progressForVideoContent.hide()
                 binding.progressForTabContent.hide()
+                binding.loadingTxt.hide()
                 TabLayoutMediator(binding.tabs, binding.viewPager) { tab, pos ->
                     tab.text = it[pos].first
                 }.attach()
@@ -107,6 +109,8 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
                 is ApiResponseWrapper.Error -> {
                     binding.progressForTabContent.hide()
                     binding.progressForVideoContent.hide()
+                    binding.itemContainer.show()
+                    binding.loadingTxt.hide()
                     if (it.data == null) {
                         it.exception?.localizedMessage?.let { msg ->
                             showErrorDialog(msg)
@@ -118,6 +122,10 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
                 is ApiResponseWrapper.Loading -> {
                     binding.progressForTabContent.show()
                     binding.progressForVideoContent.show()
+                    binding.loadingTxt.text = "${it.data}"
+                    binding.loadingTxt.show()
+                    binding.itemContainer.hide()
+
                 }
                 is ApiResponseWrapper.Success -> {
                     //binding.progressForTabContent.hide()

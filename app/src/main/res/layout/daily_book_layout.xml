@@ -30,6 +30,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
+                    android:id="@+id/item_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -77,6 +78,16 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/loading_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="90dp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:visibility="gone" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
