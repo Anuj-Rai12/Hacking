@@ -31,6 +31,11 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         super.onViewCreated(view, savedInstanceState)
         binding = DailyBookLayoutBinding.bind(view)
         //binding.viewPager.isUserInputEnabled = false
+        viewModel.event.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { msg ->
+                showErrorDialog(msg)
+            }
+        }
         fetchDataFromDb()
         fetchDataFromApi()
         setVideoTabItem()
@@ -112,7 +117,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     }
 
     private fun setFragment(title: String, list: List<Content>) {
-        viewPagerAdaptor.setFragment(DailyContentFragment(title, list,arrayOfVideoContentDb))
+        viewPagerAdaptor.setFragment(DailyContentFragment(title, list, arrayOfVideoContentDb))
     }
 
     private fun setAdaptor() {
