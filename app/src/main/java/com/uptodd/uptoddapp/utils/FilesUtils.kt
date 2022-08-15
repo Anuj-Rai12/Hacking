@@ -74,6 +74,14 @@ fun Activity.toastMsg(string: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, length).show()
 }
 
+
+fun View.showSnackBarMsg(msg: String, length: Int = Snackbar.LENGTH_SHORT, anchor: View) {
+    Snackbar.make(this, msg, length)
+        .setAnchorView(anchor)
+        .show()
+}
+
+
 fun View.invisible() {
     this.visibility = View.INVISIBLE
 }
@@ -166,7 +174,7 @@ fun Context.showImage(id: String, view: ImageView, flag: Boolean) {
 }
 
 
-fun TextView.setTextViewMovingAnimation() {
+fun View.setViewMovingAnimation() {
     val animation = TranslateAnimation(
         1500.0f,
         0.0f,

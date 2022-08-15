@@ -72,7 +72,7 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-
+    fun getBottomNav() = binding.bottomNavBar
     fun goBack() {
         onBackPressed()
     }
