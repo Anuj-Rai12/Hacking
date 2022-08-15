@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.work.Constraints
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyBookLayoutBinding
@@ -16,6 +19,9 @@ import com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs.DailyContentFragmen
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.viewmodel.DailyBookVideoModel
 import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
+import com.uptodd.uptoddapp.workManager.FREE_PARENTING_PROGRAM
+import com.uptodd.uptoddapp.workManager.FreeParentingWorkManger
+import java.util.concurrent.TimeUnit
 
 
 class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
@@ -28,6 +34,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         super.onViewCreated(view, savedInstanceState)
         binding = DailyBookLayoutBinding.bind(view)
         //binding.viewPager.isUserInputEnabled = false
+        uploadWorkManger()
         viewModel.event.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { msg ->
                 showErrorDialog(msg)
@@ -71,6 +78,28 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
             }
         }
     }
+
+
+    private fun uploadWorkManger() {
+        val constraints = Constraints.Builder()
+            //.setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val workManager = WorkManager.getInstance(requireActivity().application)
+
+        val freeParentingWork =
+            PeriodicWorkRequestBuilder<FreeParentingWorkManger>(15, TimeUnit.MINUTES)
+                .addTag(FREE_PARENTING_PROGRAM)
+                .setConstraints(constraints)
+                .build()
+        //Just for testing purpose
+        workManager.cancelAllWorkByTag(FREE_PARENTING_PROGRAM)
+
+        workManager.enqueue(freeParentingWork)
+        workManager.getWorkInfoByIdLiveData(freeParentingWork.id).observe(viewLifecycleOwner) {
+            setLogCat("WORK_FREE", "${it.state}")
+        }
+    }
+
 
     private fun fetchDataFromApi() {
         viewModel.videoContentResponseFromApi.observe(viewLifecycleOwner) {

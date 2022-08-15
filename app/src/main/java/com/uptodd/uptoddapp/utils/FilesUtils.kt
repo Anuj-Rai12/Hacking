@@ -10,7 +10,6 @@ import android.util.Patterns
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
