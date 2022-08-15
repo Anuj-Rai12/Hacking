@@ -2,9 +2,12 @@ package com.uptodd.uptoddapp.ui.loginfreeorpaid
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.LoginActivity
@@ -13,6 +16,8 @@ import com.uptodd.uptoddapp.databinding.LoginOptionSelectionLayoutBinding
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.ui.loginfreeorpaid.tabs.CourseInfoFragment
 import com.uptodd.uptoddapp.utils.changeStatusBarColor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class LoginSelectionOption : AppCompatActivity() {
 
@@ -47,6 +52,19 @@ class LoginSelectionOption : AppCompatActivity() {
         binding.goToPaidLoginScreen.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             this.finishAffinity()
+        }
+        movingOnScreenToAnother()
+    }
+
+    private fun movingOnScreenToAnother() {
+        lifecycleScope.launch {
+            var pos = 0
+            while (true) {
+                delay(3000)
+                pos = (pos % 3)
+                binding.viewPagerMainLogin.currentItem = pos
+                pos++
+            }
         }
     }
 
