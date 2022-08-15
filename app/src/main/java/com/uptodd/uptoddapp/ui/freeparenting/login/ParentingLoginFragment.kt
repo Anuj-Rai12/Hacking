@@ -57,7 +57,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         binding.backIconImage.setOnClickListener {
             (activity as FreeParentingDemoActivity?)?.goBack()
         }
-
+        binding.countryCodeEd.setAdapter(dropDownArray)
         binding.goToDemoDashBoard.setOnClickListener {
             val fullName = binding.userNameEd2.text.toString()
             val email = binding.emailIdEd.text.toString()
