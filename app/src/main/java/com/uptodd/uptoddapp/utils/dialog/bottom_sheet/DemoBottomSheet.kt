@@ -45,7 +45,7 @@ class DemoBottomSheet(private val title: String) : BottomSheetDialogFragment(), 
     private fun setAdaptor() {
         binding.viewVideoContentLayout.apply {
             setHasFixedSize(true)
-            dailVideoAdaptor = DailyContentAdaptor()
+            dailVideoAdaptor = DailyContentAdaptor(0)
             dailVideoAdaptor.itemClickListener = this@DemoBottomSheet
             adapter = dailVideoAdaptor
         }

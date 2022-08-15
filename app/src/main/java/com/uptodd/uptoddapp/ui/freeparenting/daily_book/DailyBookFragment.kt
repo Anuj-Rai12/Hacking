@@ -14,11 +14,8 @@ import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs.DailyContentFragment
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.viewmodel.DailyBookVideoModel
-import com.uptodd.uptoddapp.utils.ApiResponseWrapper
+import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
-import com.uptodd.uptoddapp.utils.hide
-import com.uptodd.uptoddapp.utils.setLogCat
-import com.uptodd.uptoddapp.utils.show
 
 
 class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
@@ -117,7 +114,12 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
     }
 
     private fun setFragment(title: String, list: List<Content>) {
-        viewPagerAdaptor.setFragment(DailyContentFragment(title, list, arrayOfVideoContentDb))
+        viewPagerAdaptor.setFragment(
+            DailyContentFragment(
+                title, list, arrayOfVideoContentDb,
+                getRandomBgColor
+            )
+        )
     }
 
     private fun setAdaptor() {

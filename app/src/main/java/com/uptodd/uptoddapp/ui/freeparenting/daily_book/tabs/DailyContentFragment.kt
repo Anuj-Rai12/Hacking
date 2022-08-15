@@ -16,7 +16,8 @@ import com.uptodd.uptoddapp.utils.toastMsg
 class DailyContentFragment(
     private val title: String,
     private val list: List<Content>,
-    private val dbContent: MutableList<Content>
+    private val dbContent: MutableList<Content>,
+    private val bg: Pair<Int, Int>
 ) :
     Fragment(R.layout.daily_content_fragment),
     OnBottomClick {
@@ -28,17 +29,23 @@ class DailyContentFragment(
         super.onViewCreated(view, savedInstanceState)
         binding = DailyContentFragmentBinding.bind(view)
         binding.introProgramsTxt.text = title
+        val firstVideo=list.first()
         binding.videoThumbnail.apply {
-            if (list.first().type == VideoContentRepository.Companion.ItemType.MUSIC.name)
+            if (firstVideo.type == VideoContentRepository.Companion.ItemType.VIDEO.name)
                 context.showImage(list.first().url, this, true)
+            else{
+                setImageResource(R.drawable.music_icon)
+            }
+            binding.mainContainer.setBackgroundResource(bg.second)
         }
+        binding.videoName.text=firstVideo.name
         setAdaptor()
     }
 
     private fun setAdaptor() {
         binding.suggestionPlayList.apply {
             isNestedScrollingEnabled = false
-            dailVideoAdaptor = DailyContentAdaptor()
+            dailVideoAdaptor = DailyContentAdaptor(bg.second)
             dailVideoAdaptor.itemClickListener = this@DailyContentFragment
             adapter = dailVideoAdaptor
         }

@@ -6,13 +6,15 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyContentSuggestionItemLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
+import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
 import com.uptodd.uptoddapp.utils.OnBottomClick
 import com.uptodd.uptoddapp.utils.showImage
 
 
-class DailyContentAdaptor :
+class DailyContentAdaptor(private val bg:Int) :
     ListAdapter<Content, DailyContentAdaptor.DailyItemContentViewHolder>(diffUtil) {
 
     var itemClickListener: OnBottomClick? = null
@@ -21,7 +23,13 @@ class DailyContentAdaptor :
         RecyclerView.ViewHolder(binding.root) {
         fun setData(data: Content) {
             binding.videoThumbnail.apply {
-                context.showImage(data.url, this,false)
+                val type = VideoContentRepository.Companion.ItemType.VIDEO
+                if (type.name == data.type) {
+                    context.showImage(data.url, this, false)
+                } else {
+                    setImageResource(R.drawable.music_icon)
+                    setBackgroundResource(bg)
+                }
             }
             binding.videoTitle.text = data.name
 //            binding.videoTitle.setTextViewMovingAnimation()
