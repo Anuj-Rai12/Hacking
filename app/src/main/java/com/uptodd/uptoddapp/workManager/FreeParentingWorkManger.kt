@@ -13,7 +13,7 @@ import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.module.RetrofitSingleton
-import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
+import com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo.VideoContentRepository
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
 import com.uptodd.uptoddapp.utils.setLogCat
 import kotlinx.coroutines.Dispatchers.IO

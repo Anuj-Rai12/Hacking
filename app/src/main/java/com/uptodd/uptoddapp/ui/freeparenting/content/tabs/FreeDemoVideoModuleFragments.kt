@@ -15,6 +15,4 @@ class FreeDemoVideoModuleFragments :
         binding = FreeDemoVideoModuleFragmentsBinding.bind(view)
 
     }
-
-
 }

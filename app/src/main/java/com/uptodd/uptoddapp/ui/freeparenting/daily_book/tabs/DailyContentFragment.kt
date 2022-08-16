@@ -17,7 +17,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyContentFragmentBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
-import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
+import com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo.VideoContentRepository
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.adaptor.DailyContentAdaptor
 import com.uptodd.uptoddapp.utils.*
 import java.util.concurrent.TimeUnit

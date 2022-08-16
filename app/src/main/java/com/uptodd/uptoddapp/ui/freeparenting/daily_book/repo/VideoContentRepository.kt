@@ -1,4 +1,4 @@
-package com.uptodd.uptoddapp.ui.freeparenting.content.repo
+package com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo
 
 import com.uptodd.uptoddapp.api.freeparentingapi.freedemocontent.VideoContentApi
 import com.uptodd.uptoddapp.api.freeparentingapi.updateprogress.UpdateUserProgressApi

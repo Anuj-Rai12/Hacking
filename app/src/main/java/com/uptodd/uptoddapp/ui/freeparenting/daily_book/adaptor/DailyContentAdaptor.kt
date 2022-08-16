@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyContentSuggestionItemLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
-import com.uptodd.uptoddapp.ui.freeparenting.content.repo.VideoContentRepository
+import com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo.VideoContentRepository
 import com.uptodd.uptoddapp.utils.OnBottomClick
 import com.uptodd.uptoddapp.utils.showImage
 
