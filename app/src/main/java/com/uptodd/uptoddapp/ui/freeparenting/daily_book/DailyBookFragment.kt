@@ -16,7 +16,7 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyBookLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
-import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
+import com.uptodd.uptoddapp.ui.freeparenting.purchase.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs.DailyContentFragment
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.viewmodel.DailyBookVideoModel
 import com.uptodd.uptoddapp.utils.*

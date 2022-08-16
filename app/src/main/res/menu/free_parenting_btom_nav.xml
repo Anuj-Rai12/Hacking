@@ -27,10 +27,10 @@
         android:title="Community" />
 
     <item
-        android:id="@+id/circleFragment"
+        android:id="@+id/purchaseCoursePlan"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_bar_chart_24"
-        android:title="Circle" />
+        android:title="Course" />
 
 
 </menu>

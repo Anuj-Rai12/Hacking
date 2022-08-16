@@ -2,8 +2,6 @@ package com.uptodd.uptoddapp.ui.loginfreeorpaid
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,7 +11,7 @@ import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.LoginActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.LoginOptionSelectionLayoutBinding
-import com.uptodd.uptoddapp.ui.freeparenting.content.viewpager.ViewPagerAdapter
+import com.uptodd.uptoddapp.ui.freeparenting.purchase.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.ui.loginfreeorpaid.tabs.CourseInfoFragment
 import com.uptodd.uptoddapp.utils.changeStatusBarColor
 import kotlinx.coroutines.delay

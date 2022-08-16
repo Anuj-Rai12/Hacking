@@ -25,8 +25,8 @@
         android:label="DailyBookFragment"
         tools:layout="@layout/daily_book_layout" />
     <fragment
-        android:id="@+id/demoVideoContentFragment"
-        android:name="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment"
-        android:label="demo_video_content_layout"
-        tools:layout="@layout/demo_video_content_layout" />
+        android:id="@+id/purchaseCoursePlan"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.purchase.PurchasePlanTabContainerFragment"
+        android:label="purchase_plan_course"
+        tools:layout="@layout/purchase_plan_content_layout" />
 </navigation>

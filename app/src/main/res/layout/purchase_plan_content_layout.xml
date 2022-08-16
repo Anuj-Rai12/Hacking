@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.uptodd.uptoddapp.ui.freeparenting.content.DemoVideoContentFragment">
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.purchase.PurchasePlanTabContainerFragments">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
