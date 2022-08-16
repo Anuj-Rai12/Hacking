@@ -36,7 +36,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="#1c43a1"
+            android:background="@drawable/bg_desgin_for_btn"
             android:elevation="5dp"
             android:fontFamily="@font/montserrat"
             android:paddingTop="13dp"
@@ -46,13 +46,9 @@
             android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:backgroundTint="@null"
             app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             app:rippleColor="#6cc1d7"
-            app:strokeColor="#1c43a1"
             app:strokeWidth="2dp" />
 
 
