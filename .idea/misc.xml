@@ -24,6 +24,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/date_available.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/date_selected.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/date_today.xml" value="0.1355" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/doctor_dashboard_editing.xml" value="0.1385" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/gradient_text_bg.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/home_bottom_doctor.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic__arrow_down.xml" value="0.1465" />
@@ -33,6 +34,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_schedule_24.xml" value="0.1355" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_baseline_star_rate_24.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_cancel.xml" value="0.1385" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_round_star_24.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_syringe_svgrepo_com.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/material_account_round.xml" value="0.1355" />
@@ -90,7 +92,9 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_suggestion_item_layout.xml" value="0.25" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/demo_video_content_layout.xml" value="0.25" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/description_course_text_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/development_tracker_fragment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/dropdown.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_activity_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/fragment_category2.xml" value="0.2234375" />
@@ -121,6 +125,8 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/memory_booster_item.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/music_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/parenting_login_fragment.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/purchase_plan_content_layout.xml" value="0.4" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/purchase_plan_tabs_fragments.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/question_form_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/session_list_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.536" />

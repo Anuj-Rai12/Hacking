@@ -2,26 +2,114 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.uptodd.uptoddapp.ui.freeparenting.purchase.tabs.PurchasePlanTabsFragments">
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.purchase.tabs.PurchasePlanTabsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/course_icon_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_set_default_blog"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:id="@+id/loading_txt"
+            android:id="@+id/upgrade_course_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/montserrat"
+            android:text="UpGrade"
+            android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textFontWeight="800"
+            android:textSize="20sp"
+            app:layout_constraintHorizontal_bias=".4"
+            app:layout_constraintLeft_toLeftOf="@id/course_icon_image"
+            app:layout_constraintRight_toRightOf="@id/course_icon_image"
+            app:layout_constraintTop_toBottomOf="@id/course_icon_image" />
+
+
+        <TextView
+            android:id="@+id/pro_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:backgroundTint="@color/video_container_4"
+            android:elevation="7dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="Pro"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="17sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/upgrade_course_txt"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintLeft_toRightOf="@id/upgrade_course_txt"
+            app:layout_constraintRight_toRightOf="@id/course_icon_image"
+            app:layout_constraintTop_toTopOf="@id/upgrade_course_txt" />
+
+
+        <TextView
+            android:id="@+id/course_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/montserrat"
+            android:text="fjdgkdfgkldfgjklgjdglkdfgkdfgkldldgjdklfgk"
+            android:textColor="#979fa3"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upgrade_course_txt" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buy_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#1c43a1"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:text="Get this course"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
-            tools:text="gfdklgkl dfjlkhklg hjkgfhlkf" />
+            app:rippleColor="#6cc1d7"
+            app:strokeColor="#1c43a1"
+            app:strokeWidth="2dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_course_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/course_desc"
+            tools:listitem="@layout/description_course_text_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
