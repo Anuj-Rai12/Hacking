@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.ui.freeparenting.daily_book
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.work.Constraints
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.material.tabs.TabLayoutMediator
+import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyBookLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
@@ -45,6 +47,16 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         setVideoTabItem()
         setMargin()
 
+    }
+
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
+        } else {
+            (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
+        }
     }
 
     private fun setVideoTabItem() {
