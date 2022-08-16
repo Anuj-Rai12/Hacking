@@ -20,7 +20,6 @@ class PurchasePlanTabContainerFragment : Fragment(R.layout.purchase_plan_content
         binding = PurchasePlanContentLayoutBinding.bind(view)
         setAdaptor()
         viewPagerAdaptor.setFragment(PurchasePlanTabsFragment())
-        viewPagerAdaptor.setFragment(PurchasePlanTabsFragment())
     }
 
     private fun setAdaptor() {

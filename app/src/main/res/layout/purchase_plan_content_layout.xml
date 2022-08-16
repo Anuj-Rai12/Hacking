@@ -2,36 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.uptodd.uptoddapp.ui.freeparenting.purchase.PurchasePlanTabContainerFragments">
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.purchase.PurchasePlanTabContainerFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cancel_icon_view_click"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="15dp"
-            app:cardBackgroundColor="#f5f5f5"
-            app:cardCornerRadius="360dp"
-            app:cardElevation="14dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/back_icon_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_cancel"
-                android:tint="#8a8a8a"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.cardview.widget.CardView>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -50,11 +25,35 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buy_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#1c43a1"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:text="Get this course"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:rippleColor="#6cc1d7"
+            app:strokeColor="#1c43a1"
+            app:strokeWidth="2dp" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
