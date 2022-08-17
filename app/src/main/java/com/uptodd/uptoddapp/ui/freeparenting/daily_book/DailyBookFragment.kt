@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -46,7 +47,10 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         fetchDataFromApi()
         setVideoTabItem()
         setMargin()
-
+        binding.toolbarNav.accountIcon.setOnClickListener {
+            val action = DailyBookFragmentDirections.actionDailyBookFragmentToProfileFragment()
+            findNavController().navigate(action)
+        }
     }
 
 
