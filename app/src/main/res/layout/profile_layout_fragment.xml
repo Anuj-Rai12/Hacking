@@ -141,7 +141,7 @@
                         app:layout_constraintTop_toBottomOf="@id/user_email">
 
                         <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/email_id_ed"
+                            android:id="@+id/user_email_ed"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/montserrat"
@@ -230,7 +230,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buy_btn"
+                android:id="@+id/update_info_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -241,8 +241,8 @@
                 android:fontFamily="@font/montserrat"
                 android:paddingTop="13dp"
                 android:paddingBottom="13dp"
-                android:text="Get this course"
-                android:textAllCaps="false"
+                android:text="Update Details"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
