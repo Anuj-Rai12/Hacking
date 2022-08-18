@@ -68,8 +68,8 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
             if (!it.isNullOrEmpty()) {
                 binding.itemContainer.show()
                 setAdaptor()
-                it.forEach { res ->
-                    setFragment(res.first, res.second)
+                it.forEachIndexed { index, res ->
+                    setFragment(res.first, res.second, (index % getAdaptorViewHolderBg.size))
                 }
                 binding.progressForVideoContent.hide()
                 binding.progressForTabContent.hide()
@@ -166,11 +166,11 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         }
     }
 
-    private fun setFragment(title: String, list: List<Content>) {
+    private fun setFragment(title: String, list: List<Content>,index:Int) {
         viewPagerAdaptor.setFragment(
             DailyContentFragment(
                 title, list, arrayOfVideoContentDb,
-                getRandomBgColor
+                getAdaptorViewHolderBg[index]
             )
         )
     }

@@ -4,15 +4,22 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.PurchasePlanTabsFragmentsBinding
+import com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo.VideoContentRepository
 import com.uptodd.uptoddapp.ui.freeparenting.purchase.adaptor.CoursePurchaseDescAdaptor
+import com.uptodd.uptoddapp.ui.freeparenting.purchase.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PurchasePlanTabsFragment :
     Fragment(R.layout.purchase_plan_tabs_fragments) {
     private lateinit var binding: PurchasePlanTabsFragmentsBinding
     private lateinit var adaptor: CoursePurchaseDescAdaptor
+    private lateinit var viewpagerAdaptor: ViewPagerAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,8 +38,50 @@ class PurchasePlanTabsFragment :
                     "sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam\n" +
                     "recusandae alias error harum maxime adipisci amet laborum. "
         setData()
+        setViewPagerAdaptor()
+        viewpagerAdaptor.setFragment(
+            CourseVideoTabsFragment(
+                "uSTCoECm3TA",
+                VideoContentRepository.Companion.ItemType.VIDEO.name
+            )
+        )
+        viewpagerAdaptor.setFragment(
+            CourseVideoTabsFragment(
+                "CV5BYQbeF-o",
+                VideoContentRepository.Companion.ItemType.MUSIC.name
+            )
+        )
+        viewpagerAdaptor.setFragment(
+            CourseVideoTabsFragment(
+                "KXwn6xjQyVk",
+                VideoContentRepository.Companion.ItemType.MUSIC.name
+            )
+        )
+
+        TabLayoutMediator(
+            binding.tabs,
+            binding.viewPagerForCourse
+        ) { _, _ -> }.attach()
+
+        movingOnScreenToAnother()
 
     }
+
+
+
+
+    private fun movingOnScreenToAnother() {
+        lifecycleScope.launch {
+            var pos = 0
+            while (true) {
+                delay(3000)
+                pos = (pos % 3)
+                binding.viewPagerForCourse.currentItem = pos
+                pos++
+            }
+        }
+    }
+
 
     private fun setData() {
         val list = listOf(
@@ -63,6 +112,11 @@ class PurchasePlanTabsFragment :
             adaptor = CoursePurchaseDescAdaptor()
             this.adapter = adaptor
         }
+    }
+
+    private fun setViewPagerAdaptor() {
+        viewpagerAdaptor = ViewPagerAdapter(childFragmentManager, lifecycle)
+        binding.viewPagerForCourse.adapter = viewpagerAdaptor
     }
 
     fun get(index: Int) = "${getEmojiByUnicode(0x2705)} This is $index st feature\n\n"

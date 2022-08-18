@@ -27,7 +27,7 @@ class DailyContentFragment(
     private val title: String,
     private val list: List<Content>,
     private val dbContent: MutableList<Content>,
-    private val bg: Pair<Int, Int>
+    private val bg: Int
 ) :
     Fragment(R.layout.daily_content_fragment),
     OnBottomClick {
@@ -53,7 +53,7 @@ class DailyContentFragment(
         binding = DailyContentFragmentBinding.bind(view)
         binding.introProgramsTxt.text = title
 //        setLogCat("TESTING_TIME"," Progress :- ${loginSingletonResponse.getProgress()}")
-        binding.mainContainer.setBackgroundResource(bg.second)
+        binding.mainContainer.setBackgroundResource(bg)
         setVideoOrMusicContent(currentPlayingContent)
 
         binding.mainImageLayout.setOnClickListener {
@@ -159,7 +159,7 @@ class DailyContentFragment(
     private fun setAdaptor() {
         binding.suggestionPlayList.apply {
             isNestedScrollingEnabled = false
-            dailVideoAdaptor = DailyContentAdaptor(bg.second)
+            dailVideoAdaptor = DailyContentAdaptor(bg)
             dailVideoAdaptor.itemClickListener = this@DailyContentFragment
             adapter = dailVideoAdaptor
         }

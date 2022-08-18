@@ -89,6 +89,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/actvity_free_demo.xml" value="0.264" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/all_tickets_fragment.xml" value="0.16847826086956522" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/course_info_layout.xml" value="0.264" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/course_video_tabs_layout.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_book_layout.xml" value="0.41690962099125367" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/daily_content_suggestion_item_layout.xml" value="0.25" />
@@ -128,7 +129,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/parenting_login_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/profile_layout_fragment.xml" value="0.25" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/purchase_plan_content_layout.xml" value="0.4" />
-        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/purchase_plan_tabs_fragments.xml" value="0.264" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/purchase_plan_tabs_fragments.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/question_form_fragment.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/session_list_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/ticket_list_item.xml" value="0.536" />
