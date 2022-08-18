@@ -100,7 +100,8 @@
             <ImageView
                 android:id="@+id/course_img"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                android:minHeight="250dp"
                 android:padding="10dp"
                 android:scaleType="fitXY"
                 android:visibility="gone"

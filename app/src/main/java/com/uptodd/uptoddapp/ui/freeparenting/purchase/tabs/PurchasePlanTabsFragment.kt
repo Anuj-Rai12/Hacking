@@ -64,7 +64,6 @@ class PurchasePlanTabsFragment :
         ) { _, _ -> }.attach()
 
         movingOnScreenToAnother()
-
     }
 
 
