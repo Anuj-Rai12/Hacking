@@ -2,6 +2,8 @@ package com.uptodd.uptoddapp.ui.freeparenting.login.otp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -34,9 +36,12 @@ class OtpFragment : Fragment(R.layout.free_parenting_otp_layout) {
                 binding.root.showSnackbar("Invalid OTP!!")
                 return@setOnClickListener
             }
-            val action =
-                OtpFragmentDirections.actionOtpFragmentToUpdateUserPasswordFragment(args.response)
-            findNavController().navigate(action)
+            val handler = Handler(Looper.getMainLooper())
+            handler.post {
+                val action =
+                    OtpFragmentDirections.actionOtpFragmentToUpdateUserPasswordFragment(args.response)
+                findNavController().navigate(action)
+            }
         }
     }
 

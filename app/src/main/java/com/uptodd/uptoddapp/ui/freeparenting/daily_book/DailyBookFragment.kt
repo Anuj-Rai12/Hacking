@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -17,9 +16,9 @@ import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyBookLayoutBinding
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
-import com.uptodd.uptoddapp.ui.freeparenting.purchase.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs.DailyContentFragment
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.viewmodel.DailyBookVideoModel
+import com.uptodd.uptoddapp.ui.freeparenting.purchase.viewpager.ViewPagerAdapter
 import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 import com.uptodd.uptoddapp.workManager.FREE_PARENTING_PROGRAM
@@ -47,10 +46,6 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         fetchDataFromApi()
         setVideoTabItem()
         setMargin()
-        binding.toolbarNav.accountIcon.setOnClickListener {
-            val action = DailyBookFragmentDirections.actionDailyBookFragmentToProfileFragment()
-            findNavController().navigate(action)
-        }
     }
 
 

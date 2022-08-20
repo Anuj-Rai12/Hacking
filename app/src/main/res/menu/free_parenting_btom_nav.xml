@@ -21,10 +21,10 @@
         android:title="Daybook" />
 
     <item
-        android:id="@+id/communityFile"
+        android:id="@+id/profileFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_support_agent_24"
-        android:title="Community" />
+        android:icon="@drawable/account_bottom_doctor"
+        android:title="Profile" />
 
     <item
         android:id="@+id/purchaseCoursePlan"

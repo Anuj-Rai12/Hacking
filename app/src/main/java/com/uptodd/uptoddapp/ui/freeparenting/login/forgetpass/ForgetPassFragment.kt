@@ -6,6 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
@@ -77,12 +79,15 @@ class ForgetPassFragment : Fragment(R.layout.free_parenting_forget_pass_layout) 
                     }
                     is ApiResponseWrapper.Success -> {
                         showBtn()
-                        val res = it.data as ForgetPassResponse?
-                        res?.let { data ->
+                        val data1 = it.data as ForgetPassResponse?
+                        data1?.let { data ->
                             binding.root.showSnackbar("OTP sent!!")
-                            val action =
-                                ForgetPassFragmentDirections.actionForgetPassFragmentToOtpFragment(data)
-                            findNavController().navigate(action)
+                            val handle=Handler(Looper.getMainLooper())
+                            handle.post {
+                                val action =
+                                    ForgetPassFragmentDirections.actionForgetPassFragmentToOtpFragment(data)
+                                findNavController().navigate(action)
+                            }
                         } ?: showErrorDialog("Oops something went wrong")
                     }
                 }

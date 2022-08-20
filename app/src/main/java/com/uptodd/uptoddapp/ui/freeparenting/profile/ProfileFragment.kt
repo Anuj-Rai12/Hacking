@@ -6,12 +6,10 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.ProfileLayoutFragmentBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
-import com.uptodd.uptoddapp.utils.hide
 
 class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
 
@@ -40,23 +38,13 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         binding.userEmailEd.setText(loginSingletonResponse.getLoginRequest()?.email)
         binding.userPhoneEd.setText(loginSingletonResponse.getLoginResponse()?.data?.phone)
         binding.countryCodeEd.setAdapter(dropDownArray)
-        binding.toolbarNav.topAppBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
-        (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
+        binding.toolbarNav.topAppBar.navigationIcon = null
         binding.toolbarNav.titleTxt.text = "My Profile"
-        binding.toolbarNav.titleTxt.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-        binding.toolbarNav.topAppBar.setNavigationIcon(R.drawable.arrow)
-        binding.toolbarNav.accountIcon.hide()
     }
 
-    override fun onPause() {
-        super.onPause()
-        (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
-    }
 }

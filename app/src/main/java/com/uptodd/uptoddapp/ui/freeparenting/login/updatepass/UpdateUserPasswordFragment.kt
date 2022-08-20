@@ -113,9 +113,12 @@ class UpdateUserPasswordFragment : Fragment(R.layout.login_parenting_fragment) {
 
 
     private fun goBack() {
-        val action =
-            UpdateUserPasswordFragmentDirections.actionGlobalParentingLoginFragment()
-        findNavController().navigate(action)
+        val handler = Handler(Looper.getMainLooper())
+        handler.post {
+            val action =
+                UpdateUserPasswordFragmentDirections.actionGlobalParentingLoginFragment()
+            findNavController().navigate(action)
+        }
     }
 
 

@@ -131,7 +131,7 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
     private fun goToParentingDashBoard() {
         val action = ParentingLoginFragmentDirections
-            .actionParentingLoginFragmentToFreeDemoBashBoardFragment()
+            .actionParentingLoginFragmentToDailyBookFragment()
         findNavController().navigate(action)
     }
 

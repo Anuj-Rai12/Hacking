@@ -11,13 +11,13 @@
         android:label="ParentingLoginFragment"
         tools:layout="@layout/login_parenting_fragment">
         <action
-            android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
-            app:destination="@id/freeDemoBashBoardFragment"
-            app:popUpTo="@id/parentingLoginFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_parentingLoginFragment_to_forgetPassFragment"
             app:destination="@id/forgetPassFragment" />
+        <action
+            android:id="@+id/action_parentingLoginFragment_to_DailyBookFragment"
+            app:destination="@id/DailyBookFragment"
+            app:popUpTo="@id/parentingLoginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/freeDemoBashBoardFragment"
@@ -28,11 +28,7 @@
         android:id="@+id/DailyBookFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.daily_book.DailyBookFragment"
         android:label="DailyBookFragment"
-        tools:layout="@layout/daily_book_layout" >
-        <action
-            android:id="@+id/action_DailyBookFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
+        tools:layout="@layout/daily_book_layout" />
     <fragment
         android:id="@+id/purchaseCoursePlan"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.purchase.PurchasePlanTabContainerFragment"
