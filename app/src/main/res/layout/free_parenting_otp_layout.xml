@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.login.otp.OtpFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E0EDFF">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/back_icon_view_click"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="#f5f5f5"
+            app:cardCornerRadius="360dp"
+            app:cardElevation="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/back_icon_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/arrow"
+                android:tint="#8a8a8a"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Hey Anuj,"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/back_icon_view_click"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_icon_view_click" />
+
+
+        <TextView
+            android:id="@+id/page_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Please Enter the OTP send to your registered EMailed"
+            android:textColor="#868686"
+            app:layout_constraintLeft_toLeftOf="@id/page_title"
+            app:layout_constraintRight_toRightOf="@id/page_title"
+            app:layout_constraintTop_toBottomOf="@id/page_title" />
+
+
+        <com.uptodd.uptoddapp.utilities.OtpEditText
+            android:id="@+id/et_otp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:cursorVisible="true"
+            android:digits="1234567890"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/page_desc" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/check_otp_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/gradientCarouselIndicatorStartColor"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="19dp"
+            android:paddingBottom="19dp"
+            android:text="Verify"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_otp"
+            app:layout_constraintVertical_bias=".45"
+            app:rippleColor="#6cc1d7"
+            app:strokeColor="@color/gradientStartColor"
+            app:strokeWidth="2dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

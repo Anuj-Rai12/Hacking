@@ -70,6 +70,13 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
 
         getLoginResponse()
 
+
+        binding.forgetPass.setOnClickListener {
+            val action =
+                ParentingLoginFragmentDirections.actionParentingLoginFragmentToForgetPassFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
 

@@ -12,7 +12,12 @@
         tools:layout="@layout/login_parenting_fragment">
         <action
             android:id="@+id/action_parentingLoginFragment_to_freeDemoBashBoardFragment"
-            app:destination="@id/freeDemoBashBoardFragment" />
+            app:destination="@id/freeDemoBashBoardFragment"
+            app:popUpTo="@id/parentingLoginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_parentingLoginFragment_to_forgetPassFragment"
+            app:destination="@id/forgetPassFragment" />
     </fragment>
     <fragment
         android:id="@+id/freeDemoBashBoardFragment"
@@ -38,4 +43,34 @@
         android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.ProfileFragment"
         android:label="profile_layout_fragment"
         tools:layout="@layout/profile_layout_fragment" />
+    <fragment
+        android:id="@+id/forgetPassFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.login.forgetpass.ForgetPassFragment"
+        android:label="free_parenting_forget_pass_layout"
+        tools:layout="@layout/free_parenting_forget_pass_layout" >
+        <action
+            android:id="@+id/action_forgetPassFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.login.otp.OtpFragment"
+        android:label="free_parenting_otp_layout"
+        tools:layout="@layout/free_parenting_otp_layout" >
+        <action
+            android:id="@+id/action_otpFragment_to_updateUserPasswordFragment"
+            app:destination="@id/updateUserPasswordFragment"
+            app:popUpTo="@id/otpFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateUserPasswordFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.login.updatepass.UpdateUserPasswordFragment"
+        tools:layout="@layout/login_parenting_fragment"
+        android:label="UpdateUserPasswordFragment" />
+    <action
+        android:id="@+id/action_global_parentingLoginFragment"
+        app:destination="@id/parentingLoginFragment"
+        app:popUpTo="@id/free_parenting_navgraph"
+        app:popUpToInclusive="true" />
 </navigation>

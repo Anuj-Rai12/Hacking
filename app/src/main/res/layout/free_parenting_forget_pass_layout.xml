@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.login.forgetpass.ForgetPassFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E0EDFF">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/back_icon_view_click"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="#f5f5f5"
+            app:cardCornerRadius="360dp"
+            app:cardElevation="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/back_icon_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/arrow"
+                android:tint="#8a8a8a"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Forget Password?"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/back_icon_view_click"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_icon_view_click" />
+
+
+        <TextView
+            android:id="@+id/page_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Add your res"
+            android:textColor="#868686"
+            app:layout_constraintLeft_toLeftOf="@id/page_title"
+            app:layout_constraintRight_toRightOf="@id/page_title"
+            app:layout_constraintTop_toBottomOf="@id/page_title" />
+
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/crimson_text_bold"
+            android:text="Email"
+            android:textColor="@color/light_grey_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/page_desc"
+            app:layout_constraintRight_toRightOf="@id/user_name_ed2_layout"
+            app:layout_constraintTop_toBottomOf="@id/page_desc" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_id_ed_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="40dp"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusBottomEnd="4dp"
+            app:boxCornerRadiusBottomStart="4dp"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="4dp"
+            app:boxStrokeColor="@color/light_grey_color"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:layout_constraintLeft_toLeftOf="@id/user_email"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_email">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/email_id_ed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/montserrat"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/check_email_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/gradientCarouselIndicatorStartColor"
+            android:elevation="5dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingTop="19dp"
+            android:paddingBottom="19dp"
+            android:text="Recover my account"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/email_id_ed_layout"
+            app:layout_constraintRight_toRightOf="@id/email_id_ed_layout"
+            app:layout_constraintTop_toBottomOf="@id/email_id_ed_layout"
+            app:layout_constraintVertical_bias=".35"
+            app:rippleColor="#6cc1d7"
+            app:strokeColor="@color/gradientStartColor"
+            app:strokeWidth="2dp"
+
+            />
+
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pb_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/darkBlue"
+            app:layout_constraintBottom_toBottomOf="@id/check_email_btn"
+            app:layout_constraintLeft_toLeftOf="@id/check_email_btn"
+            app:layout_constraintRight_toRightOf="@id/check_email_btn"
+            app:layout_constraintTop_toTopOf="@id/check_email_btn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
