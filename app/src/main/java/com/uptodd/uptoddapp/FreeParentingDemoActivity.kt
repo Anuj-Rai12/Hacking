@@ -11,10 +11,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.uptodd.uptoddapp.databinding.ActvityFreeDemoBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.login.viewmodel.LoginViewModel
+import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
-import com.uptodd.uptoddapp.utils.getEmojiByUnicode
-import com.uptodd.uptoddapp.utils.hide
-import com.uptodd.uptoddapp.utils.show
 
 class FreeParentingDemoActivity : AppCompatActivity() {
 
@@ -31,6 +29,12 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.actvity_free_demo)
 
+        viewModel.event.observe(this){
+            it.getContentIfNotHandled()?.let {err->
+                showErrorDialog(err,true)
+            }
+        }
+        getLoginResponse()
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
 
@@ -41,13 +45,13 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         if (showHomeDashBoard) {
             viewModel.getRequestLoginRequest?.let { res ->
                 LoginSingletonResponse.getInstance().setLoginRequest(res)
+                viewModel.fetchResponse(res)
                 graph.startDestination = R.id.DailyBookFragment
             } ?: run {
-                showDialogBox(
-                    "Failed",
+                showErrorDialog(
                     "Cannot login into account ${getEmojiByUnicode(0x1F615)}\n Try to Login Again!!",
-                    icon = android.R.drawable.stat_notify_error
-                ) {}
+                    true
+                )
                 graph.startDestination = R.id.parentingLoginFragment
             }
         } else {
@@ -58,9 +62,42 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         binding.bottomNavBar.setupWithNavController(navController)
     }
 
+    private fun showErrorDialog(msg: String, isCancel: Boolean) {
+        showDialogBox(
+            "Failed",
+            msg,
+            icon = android.R.drawable.stat_notify_error,
+            isCancel = isCancel
+        ) {}
+    }
+
 
     fun hideBottomNavBar() {
         binding.bottomNavBar.hide()
+    }
+
+    private fun getLoginResponse() {
+        viewModel.loginResponse.observe(this) { value ->
+            value?.let {
+                when (it) {
+                    is ApiResponseWrapper.Error -> {
+                        if (it.data == null) {
+                            it.exception?.localizedMessage?.let { err ->
+                                setLogCat("Error_Data", err)
+                                //activity?.toastMsg("Error $err")
+                                showErrorDialog(err, false)
+                            }
+                        } else {
+                            setLogCat("Error_Data", "${it.data}")
+                            //activity?.toastMsg(" Error Data ${it.data}")
+                            showErrorDialog("${it.data}", false)
+                        }
+                    }
+                    is ApiResponseWrapper.Loading -> {}
+                    is ApiResponseWrapper.Success -> {}
+                }
+            }
+        }
     }
 
     fun showBottomNavBar() {

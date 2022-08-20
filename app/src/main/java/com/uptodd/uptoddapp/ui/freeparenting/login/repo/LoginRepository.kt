@@ -26,8 +26,11 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
             Context.MODE_PRIVATE
         )
     }
-    private val err = "Oops Something Went Wrong"
-    private val err_for_response = "Failed to process response"
+
+    companion object {
+        const val err = "Oops Something Went Wrong"
+        const val err_for_response = "Failed to process response"
+    }
 
     fun getSignInUserInfo(request: FreeParentingLoginRequest) = flow {
         emit(ApiResponseWrapper.Loading(null))
@@ -78,8 +81,6 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
     }.flowOn(IO)
 
 
-
-
     fun changePass(request: ChangePasswordRequest) = flow {
         emit(ApiResponseWrapper.Loading(null))
         val data = try {
@@ -99,7 +100,6 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         }
         emit(data)
     }.flowOn(IO)
-
 
 
     private fun setPresence(response: FreeParentingLoginRequest): Boolean {

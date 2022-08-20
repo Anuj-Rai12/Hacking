@@ -56,8 +56,8 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:fontFamily="@font/montserrat"
-                            android:text="A"
                             android:gravity="center_vertical|center"
+                            android:text="A"
                             android:textColor="@color/white"
                             android:textSize="50sp"
                             android:textStyle="bold"
@@ -198,34 +198,6 @@
                         app:layout_constraintTop_toBottomOf="@id/email_id_ed_layout" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/country_code_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="Country Code"
-                        android:textSize="14sp"
-                        app:boxCornerRadiusBottomEnd="4dp"
-                        app:boxCornerRadiusBottomStart="4dp"
-                        app:boxCornerRadiusTopEnd="4dp"
-                        app:boxCornerRadiusTopStart="4dp"
-                        app:boxStrokeColor="@color/activeBlue"
-                        app:hintTextColor="@color/light_grey_color"
-                        app:layout_constraintLeft_toLeftOf="@id/phone_txt"
-                        app:layout_constraintRight_toRightOf="@id/phone_txt"
-                        app:layout_constraintTop_toBottomOf="@id/phone_txt">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/country_code_ed"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="none"
-                            android:text="Country Code" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/user_phone_ed_layout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
@@ -240,8 +212,8 @@
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/black"
                         app:layout_constraintLeft_toLeftOf="@id/phone_txt"
-                        app:layout_constraintRight_toRightOf="@id/country_code_layout"
-                        app:layout_constraintTop_toBottomOf="@id/country_code_layout">
+                        app:layout_constraintRight_toRightOf="@id/email_id_ed_layout"
+                        app:layout_constraintTop_toBottomOf="@id/phone_txt">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/user_phone_ed"

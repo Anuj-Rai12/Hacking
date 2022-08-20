@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.DailyBookLayoutBinding
+import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.datamodel.videocontent.Content
 import com.uptodd.uptoddapp.datamodel.videocontent.VideoContentList
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.tabs.DailyContentFragment
@@ -182,6 +183,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
 
     override fun onResume() {
         super.onResume()
+        activity?.toastMsg("${LoginSingletonResponse.getInstance().getLoginResponse()}")
         viewModel.getVideoContentApi()
         viewModel.getVideoContentDb()
     }
