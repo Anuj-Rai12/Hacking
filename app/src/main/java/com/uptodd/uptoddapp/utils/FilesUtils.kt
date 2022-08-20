@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 import retrofit2.Retrofit
@@ -136,14 +137,18 @@ object FilesUtils {
 
         object LoginResponse {
             const val email = "email"
-            const val name = "name"
-            const val phone = "phoneNumber"
+            const val password = "password"
+        }
+
+        enum class ApiStatus {
+            SUCCESS,
+            ERROR
         }
     }
 
     object FreeParentingApi {
         //EndPoints
-        const val Login = "intro-program-login"
+        const val Login = "intro-parenting-login"
         const val DemoContent = "demo-content"
         const val UPDATE_PROGRESS = "update-demo-progress"
     }
@@ -157,6 +162,16 @@ fun View.showSnackbar(msg: String, length: Int = Snackbar.LENGTH_SHORT, color: I
     }
     snackBar.show()
 }
+
+
+
+inline fun <reified T> deserializeFromJson(jsonFile: String?): T? {
+    val gson = Gson()
+    return gson.fromJson(jsonFile, T::class.java)
+}
+
+
+
 
 @SuppressLint("CheckResult")
 fun Context.showImage(id: String, view: ImageView, flag: Boolean) {

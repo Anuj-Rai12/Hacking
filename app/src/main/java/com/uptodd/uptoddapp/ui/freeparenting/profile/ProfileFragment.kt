@@ -33,20 +33,13 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProfileLayoutFragmentBinding.bind(view)
-        val name = loginSingletonResponse.getLoginRequest()?.name
+        val name = loginSingletonResponse.getLoginResponse()?.data?.name
         binding.userProfileTxt.text = name?.first()?.uppercaseChar().toString()
         binding.userTitle.text = name?.split("\\s".toRegex())?.get(0)
         binding.userNameEd.setText(name)
         binding.userEmailEd.setText(loginSingletonResponse.getLoginRequest()?.email)
-        binding.userPhoneEd.setText(loginSingletonResponse.getLoginRequest()?.phone)
+        binding.userPhoneEd.setText(loginSingletonResponse.getLoginResponse()?.data?.phone)
         binding.countryCodeEd.setAdapter(dropDownArray)
-        val str = countryCode.find {
-            it.contains(loginSingletonResponse.getLoginRequest()?.mobileCode!!)
-        }
-        if (countryCode.contains(str)) {
-            val index = countryCode.indexOf(str)
-            binding.countryCodeEd.setText(countryCode.elementAt(index), false)
-        }
         binding.toolbarNav.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }

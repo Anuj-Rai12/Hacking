@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Retrofit
+import java.util.*
 
 class LoginRepository(retrofit: Retrofit, application: Application) {
     private val api = buildApi<LoginApi>(retrofit)
@@ -29,20 +30,22 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         emit(ApiResponseWrapper.Loading(null))
         val data = try {
             val response = api.setLoginApi(request)
+            setLogCat("Api_res", "${response.body()}")
+            setLogCat("Api_res", "Error -> ${response.errorBody()}")
+            setLogCat("Api_res", response.message())
             if (response.isSuccessful) {
-                response.body()?.let { res ->
-                    return@let if (setPresence(res)) {
-                        LoginSingletonResponse.getInstance().apply {
-                            setLoginResponse(res)
-                            setLoginRequest(request)
-                        }
+                response.body()?.let {
+                    LoginSingletonResponse.getInstance().setLoginResponse(it)
+                    return@let if (setPresence(request)) {
                         ApiResponseWrapper.Success(null)
                     } else {
-                        ApiResponseWrapper.Error(err, null)
+                        ApiResponseWrapper.Error("Failed to Save the Response Data Store ", null)
                     }
-                } ?: ApiResponseWrapper.Error(err, null)
+                } ?: ApiResponseWrapper.Error("Failed to process response", null)
             } else {
-                ApiResponseWrapper.Error(err, null)
+                deserializeFromJson<FreeParentingResponse>(response.errorBody()?.string())?.let {
+                    ApiResponseWrapper.Error("${it.message}", null)
+                } ?: ApiResponseWrapper.Error(err, null)
             }
         } catch (e: Exception) {
             ApiResponseWrapper.Error(null, e)
@@ -50,13 +53,12 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         emit(data)
     }.flowOn(IO)
 
-    private fun setPresence(response: FreeParentingResponse): Boolean {
+    private fun setPresence(response: FreeParentingLoginRequest): Boolean {
         val edit = preferences.edit()
         edit.apply {
             putString(FilesUtils.DATASTORE.LoginType, FilesUtils.DATASTORE.FREE_LOGIN)
-            putString(FilesUtils.DATASTORE.LoginResponse.email, response.data.email)
-            putString(FilesUtils.DATASTORE.LoginResponse.name, response.data.name)
-            putString(FilesUtils.DATASTORE.LoginResponse.phone, response.data.phone)
+            putString(FilesUtils.DATASTORE.LoginResponse.email, response.email)
+            putString(FilesUtils.DATASTORE.LoginResponse.password, response.pass)
             return commit()
         }
     }
@@ -64,21 +66,15 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
 
     fun getLoginPreferences(): FreeParentingLoginRequest? {
         val email = preferences.getString(FilesUtils.DATASTORE.LoginResponse.email, "") ?: ""
-        val name = preferences.getString(FilesUtils.DATASTORE.LoginResponse.name, "") ?: ""
-        val phone = preferences.getString(FilesUtils.DATASTORE.LoginResponse.phone, "") ?: ""
+        val password = preferences.getString(FilesUtils.DATASTORE.LoginResponse.password, "") ?: ""
 
-        if (checkUserInput(phone) || checkUserInput(name) || checkUserInput(email)) {
+        if (checkUserInput(password) || checkUserInput(email)) {
             return null
         }
-
-        val getMobile = getPhoneNumber(phone)
         return FreeParentingLoginRequest(
             email = email,
-            name = name,
-            phone = getMobile.last().toString(),
-            mobileCode = getMobile.first().toString()
+            pass = password
         )
     }
-
 
 }

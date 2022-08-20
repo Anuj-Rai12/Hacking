@@ -4,7 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 data class FreeParentingLoginRequest(
     @SerializedName("email") val email: String,
-    @SerializedName("mobileCode") val mobileCode: String,
-    @SerializedName("name") val name: String,
-    @SerializedName("phone") val phone: String
+    @SerializedName("password") val pass: String,
+    @SerializedName("device") val device: String = DeviceType.ANDROID.name,
 )
+
+enum class DeviceType {
+    ANDROID
+}

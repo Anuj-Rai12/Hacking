@@ -1,23 +1,19 @@
 package com.uptodd.uptoddapp.ui.freeparenting.login
 
 import android.accounts.AccountManager
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentSender
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.GoogleAuthUtil
-import com.google.android.gms.auth.api.credentials.Credential
-import com.google.android.gms.auth.api.credentials.Credentials
 import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.LoginParentingFragmentBinding
@@ -28,18 +24,7 @@ import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 
 class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
     private lateinit var binding: LoginParentingFragmentBinding
-
-    private var codeId: String? = null
     private val viewModel: LoginViewModel by viewModels()
-
-    private val countryCode = mutableSetOf(
-        "${getEmojiByUnicode(0x1F1EE)}${getEmojiByUnicode(0x1F1F3)} +91",
-        "${getEmojiByUnicode(0x1F1F9)}${getEmojiByUnicode(0x1F1ED)} +66",
-        "${getEmojiByUnicode(0x1F1E6)}${getEmojiByUnicode(0x1F1EA)} +971",
-    )
-    private val dropDownArray: ArrayAdapter<String> by lazy {
-        ArrayAdapter(requireContext(), R.layout.dropdown, countryCode.toTypedArray())
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,58 +38,40 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
             }
         }
 
-        phoneSelection()
+        getEmailId()
+        binding.forgetPass.text =
+            Html.fromHtml("<font color='#2A73CC'><u>Forget Password<u></font>")
         binding.backIconImage.setOnClickListener {
             (activity as FreeParentingDemoActivity?)?.goBack()
         }
-        binding.countryCodeEd.setAdapter(dropDownArray)
         binding.goToDemoDashBoard.setOnClickListener {
-            val fullName = binding.userNameEd2.text.toString()
             val email = binding.emailIdEd.text.toString()
-            val phoneNumber = binding.userPhoneEd.text.toString()
-            if (checkUserInput(fullName) || checkUserInput(email) || checkUserInput(phoneNumber)) {
-                activity?.toastMsg("Please Enter Correct Information")
+            val pass = binding.userPassEd.text.toString()
+            if (checkUserInput(email) || checkUserInput(pass)) {
+                binding.root.showSnackbar(
+                    "Enter the Required Credential"
+                )
                 return@setOnClickListener
             }
 
             if (!isValidEmail(email)) {//Return True means that Email is Not Valid
-                activity?.toastMsg("please enter correct Email address")
-                return@setOnClickListener
-            }
-
-            if (codeId == null) {
-                activity?.toastMsg("Selected the Country Code!!")
-                return@setOnClickListener
-            }
-
-            if (!isValidPhone(phoneNumber)) { // Return True means Phone is No Valid
-                activity?.toastMsg("Please enter the correct Phone Number!!")
+                binding.root.showSnackbar(
+                    "Invalid Email Address!!"
+                )
                 return@setOnClickListener
             }
 
             val request = FreeParentingLoginRequest(
                 email = email,
-                mobileCode = codeId!!,
-                name = fullName,
-                phone = phoneNumber
+                pass = pass
             )
             viewModel.fetchResponse(request)
         }
 
         getLoginResponse()
 
-
-        binding.countryCodeEd.setOnItemClickListener { _, _, position, _ ->
-            codeId = getCode(countryCode.elementAt(position))
-        }
     }
 
-    private fun getCode(str: String): String? {
-        val index = str.indexOf('+')
-        if (index == -1)
-            return null
-        return str.substring(index)
-    }
 
     private fun showErrorDialogBox(msg: String) {
         activity?.showDialogBox(
@@ -164,22 +131,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            CaptureDeviceInformation.RequestCodeForPhone -> {
-
-                if (resultCode != Activity.RESULT_OK) {
-                    setLogCat("onActivityResult", "error $resultCode")
-                    return
-                }
-                val credential: Credential? = data?.getParcelableExtra(Credential.EXTRA_KEY)
-                credential?.apply {
-                    val res = getPhoneNumber(this.id)
-                    binding.userPhoneEd.setText(res.last())
-                    if (countryCode.add(res.first().toString())) {
-                        binding.countryCodeEd.setAdapter(dropDownArray)
-                    }
-                }
-                getEmailId()
-            }
             CaptureDeviceInformation.RequestCodeForEmail -> {
                 //Email
                 if (resultCode != Activity.RESULT_OK) {
@@ -216,24 +167,6 @@ class ParentingLoginFragment : Fragment(R.layout.login_parenting_fragment) {
         }
     }
 
-
-    @SuppressLint("WrongConstant")
-    private fun phoneSelection() {
-        val credentialsClient = Credentials.getClient(requireActivity())
-        val intent = credentialsClient.getHintPickerIntent(hintRequest())
-        try {
-
-            startIntentSenderForResult(
-                intent.intentSender,
-                CaptureDeviceInformation.RequestCodeForPhone,
-                null,
-                0,
-                0, 0, null
-            )
-        } catch (e: IntentSender.SendIntentException) {
-            Log.i("Phone", "phoneSelection: ${e.localizedMessage}")
-        }
-    }
 
     override fun onResume() {
         super.onResume()
