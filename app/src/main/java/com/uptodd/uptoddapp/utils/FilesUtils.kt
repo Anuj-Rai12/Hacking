@@ -141,10 +141,6 @@ object FilesUtils {
             const val password = "password"
         }
 
-        enum class ApiStatus {
-            SUCCESS,
-            ERROR
-        }
     }
 
     object FreeParentingApi {
@@ -152,7 +148,8 @@ object FilesUtils {
         const val Login = "intro-parenting-login"
         const val DemoContent = "demo-content"
         const val UPDATE_PROGRESS = "update-demo-progress"
-        const val forget_Pass="intro-parenting-forgot-password"
+        const val forget_Pass = "intro-parenting-forgot-password"
+        const val CHANGE_PASS = "intro-parenting-new-password"
     }
 }
 
@@ -176,8 +173,6 @@ inline fun <reified T> deserializeFromJson(jsonFile: String?): T? {
     val gson = Gson()
     return gson.fromJson(jsonFile, T::class.java)
 }
-
-
 
 
 @SuppressLint("CheckResult")

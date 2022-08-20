@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.uptodd.uptoddapp.datamodel.changepass.ChangePasswordRequest
 import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.module.RetrofitSingleton
@@ -35,6 +36,26 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val forgetPass: LiveData<ApiResponseWrapper<out Any?>>
         get() = _forgetPassword
 
+    private val _changePassword = MutableLiveData<ApiResponseWrapper<out Any?>>()
+    val changePass: LiveData<ApiResponseWrapper<out Any?>>
+        get() = _changePassword
+
+
+
+
+    fun changePassResponse(request: ChangePasswordRequest) {
+        if (!context.isNetworkAvailable()) {
+            _event.postValue(Event(FilesUtils.NO_INTERNET))
+            return
+        }
+        viewModelScope.launch {
+            loginRepository.changePass(request).collectLatest {
+                _changePassword.postValue(it)
+            }
+        }
+    }
+
+
 
     fun forgetPassResponse(request: ForgetPassRequest) {
         if (!context.isNetworkAvailable()) {
@@ -49,6 +70,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun forgetPassToNull() = _forgetPassword.postValue(null)
+    fun changePassToNull() = _forgetPassword.postValue(null)
     fun fetchResponse(request: FreeParentingLoginRequest) {
         if (context.isNetworkAvailable()) {
             viewModelScope.launch {

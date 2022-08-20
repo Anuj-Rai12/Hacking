@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.uptodd.uptoddapp.api.freeparentingapi.login.LoginApi
+import com.uptodd.uptoddapp.datamodel.changepass.ChangePasswordRequest
 import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassRequest
 import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
@@ -75,6 +76,30 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         }
         emit(data)
     }.flowOn(IO)
+
+
+
+
+    fun changePass(request: ChangePasswordRequest) = flow {
+        emit(ApiResponseWrapper.Loading(null))
+        val data = try {
+            val response = api.changePassword(request)
+            setLogCat("CHANGE_PASS", "${response.errorBody()}")
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    ApiResponseWrapper.Success(it)
+                } ?: ApiResponseWrapper.Error(err_for_response, null)
+            } else {
+                deserializeFromJson<FreeParentingResponse>(response.errorBody()?.string())?.let {
+                    ApiResponseWrapper.Error("${it.message}", null)
+                } ?: ApiResponseWrapper.Error(err, null)
+            }
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(e, null)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 
 
     private fun setPresence(response: FreeParentingLoginRequest): Boolean {

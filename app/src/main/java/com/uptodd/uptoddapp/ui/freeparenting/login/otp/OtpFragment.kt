@@ -43,7 +43,7 @@ class OtpFragment : Fragment(R.layout.free_parenting_otp_layout) {
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
-        binding.pageTitle.text = "Hey ${args.response.data.name},"
+        binding.pageTitle.text = "Hey ${args.response.data.name.split("\\s".toRegex())[0]},"
         binding.pageDesc.text =
             "Please Enter the OTP send to your registered ${args.response.data.email}"
     }
