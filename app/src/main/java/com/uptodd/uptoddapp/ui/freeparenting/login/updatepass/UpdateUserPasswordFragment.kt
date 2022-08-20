@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.LoginParentingFragmentBinding
 import com.uptodd.uptoddapp.utils.getEmojiByUnicode
@@ -14,6 +15,9 @@ import com.uptodd.uptoddapp.utils.hide
 class UpdateUserPasswordFragment : Fragment(R.layout.login_parenting_fragment) {
     private lateinit var binding: LoginParentingFragmentBinding
     private var flagForBackPressed = false
+
+    private val args:UpdateUserPasswordFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = LoginParentingFragmentBinding.bind(view)

@@ -152,6 +152,7 @@ object FilesUtils {
         const val Login = "intro-parenting-login"
         const val DemoContent = "demo-content"
         const val UPDATE_PROGRESS = "update-demo-progress"
+        const val forget_Pass="intro-parenting-forgot-password"
     }
 }
 

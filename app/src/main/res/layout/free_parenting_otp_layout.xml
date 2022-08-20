@@ -57,11 +57,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
             android:fontFamily="@font/montserrat"
             android:text="Please Enter the OTP send to your registered EMailed"
             android:textColor="#868686"
             app:layout_constraintLeft_toLeftOf="@id/page_title"
-            app:layout_constraintRight_toRightOf="@id/page_title"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/page_title" />
 
 

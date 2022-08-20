@@ -1,5 +1,7 @@
 package com.uptodd.uptoddapp.api.freeparentingapi.login
 
+import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassRequest
+import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.utils.FilesUtils
@@ -12,4 +14,7 @@ interface LoginApi {
     @POST(FilesUtils.FreeParentingApi.Login)
     suspend fun setLoginApi(@Body request: FreeParentingLoginRequest): Response<FreeParentingResponse>
 
+
+    @POST(FilesUtils.FreeParentingApi.forget_Pass)
+    suspend fun forgetPass(@Body request: ForgetPassRequest): Response<ForgetPassResponse>
 }

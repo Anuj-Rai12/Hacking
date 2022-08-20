@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.uptodd.uptoddapp.api.freeparentingapi.login.LoginApi
+import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassRequest
+import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
@@ -12,7 +14,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Retrofit
-import java.util.*
 
 class LoginRepository(retrofit: Retrofit, application: Application) {
     private val api = buildApi<LoginApi>(retrofit)
@@ -25,6 +26,7 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         )
     }
     private val err = "Oops Something Went Wrong"
+    private val err_for_response = "Failed to process response"
 
     fun getSignInUserInfo(request: FreeParentingLoginRequest) = flow {
         emit(ApiResponseWrapper.Loading(null))
@@ -41,7 +43,7 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
                     } else {
                         ApiResponseWrapper.Error("Failed to Save the Response Data Store ", null)
                     }
-                } ?: ApiResponseWrapper.Error("Failed to process response", null)
+                } ?: ApiResponseWrapper.Error(err_for_response, null)
             } else {
                 deserializeFromJson<FreeParentingResponse>(response.errorBody()?.string())?.let {
                     ApiResponseWrapper.Error("${it.message}", null)
@@ -52,6 +54,28 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         }
         emit(data)
     }.flowOn(IO)
+
+
+    fun forgetPass(request: ForgetPassRequest) = flow {
+        emit(ApiResponseWrapper.Loading(null))
+        val data = try {
+            val response = api.forgetPass(request)
+            setLogCat("FORGET_PASS", "${response.errorBody()}")
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    ApiResponseWrapper.Success(it)
+                } ?: ApiResponseWrapper.Error(err_for_response, null)
+            } else {
+                deserializeFromJson<FreeParentingResponse>(response.errorBody()?.string())?.let {
+                    ApiResponseWrapper.Error("${it.message}", null)
+                } ?: ApiResponseWrapper.Error(err, null)
+            }
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(e, null)
+        }
+        emit(data)
+    }.flowOn(IO)
+
 
     private fun setPresence(response: FreeParentingLoginRequest): Boolean {
         val edit = preferences.edit()

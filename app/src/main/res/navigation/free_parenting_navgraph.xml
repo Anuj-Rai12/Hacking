@@ -62,12 +62,19 @@
             app:destination="@id/updateUserPasswordFragment"
             app:popUpTo="@id/otpFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="response"
+            app:argType="com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse" />
     </fragment>
     <fragment
         android:id="@+id/updateUserPasswordFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.updatepass.UpdateUserPasswordFragment"
         tools:layout="@layout/login_parenting_fragment"
-        android:label="UpdateUserPasswordFragment" />
+        android:label="UpdateUserPasswordFragment" >
+        <argument
+            android:name="response"
+            app:argType="com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse" />
+    </fragment>
     <action
         android:id="@+id/action_global_parentingLoginFragment"
         app:destination="@id/parentingLoginFragment"
