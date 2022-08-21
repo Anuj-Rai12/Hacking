@@ -38,7 +38,11 @@
         android:id="@+id/profileFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.ProfileFragment"
         android:label="profile_layout_fragment"
-        tools:layout="@layout/profile_layout_fragment" />
+        tools:layout="@layout/profile_layout_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_childProfileFragment"
+            app:destination="@id/childProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forgetPassFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.forgetpass.ForgetPassFragment"
@@ -76,4 +80,9 @@
         app:destination="@id/parentingLoginFragment"
         app:popUpTo="@id/free_parenting_navgraph"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/childProfileFragment"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.childprofile.ChildProfileFragment"
+        android:label="child_profile_fragment_layout"
+        tools:layout="@layout/child_profile_fragment_layout" />
 </navigation>

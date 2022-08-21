@@ -22,6 +22,8 @@ import com.google.gson.Gson
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 import retrofit2.Retrofit
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 
@@ -74,7 +76,11 @@ fun View.show() {
 fun Activity.toastMsg(string: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, length).show()
 }
-
+fun getDate(format: String = "yyyy-MM-dd"): String? {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern(format)
+    return current.format(formatter)
+}
 
 fun View.showSnackBarMsg(msg: String, length: Int = Snackbar.LENGTH_SHORT, anchor: View) {
     Snackbar.make(this, msg, length)

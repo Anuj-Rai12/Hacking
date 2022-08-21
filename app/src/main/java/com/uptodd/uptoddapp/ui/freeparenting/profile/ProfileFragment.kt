@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.ProfileLayoutFragmentBinding
@@ -64,6 +65,10 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
             )
 
         }
+        binding.toolbarNav.accountIcon.setOnClickListener {
+            val action=ProfileFragmentDirections.actionProfileFragmentToChildProfileFragment()
+            findNavController().navigate(action)
+        }
         getProfileResponse()
     }
 
@@ -111,6 +116,7 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         binding.toolbarNav.titleTxt.text = "My Profile"
         binding.userEmailEd.isEnabled = false
         binding.toolbarNav.accountIcon.show()
+        (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
         viewModel.getProfile(loginSingletonResponse.getLoginResponse()?.data?.id!!.toLong())
     }
 
