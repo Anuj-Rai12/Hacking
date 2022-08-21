@@ -76,6 +76,7 @@ fun View.show() {
 fun Activity.toastMsg(string: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, string, length).show()
 }
+
 fun getDate(format: String = "yyyy-MM-dd"): String? {
     val current = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofPattern(format)
@@ -158,6 +159,7 @@ object FilesUtils {
         const val CHANGE_PASS = "intro-parenting-new-password"
         const val Get_user_detail = "intro-parenting-user-details"
         const val Get_profile_section_update = "intro-parenting-update-details"
+        const val upgrade_Request = "intro-parenting-upgrade-request"
     }
 }
 
