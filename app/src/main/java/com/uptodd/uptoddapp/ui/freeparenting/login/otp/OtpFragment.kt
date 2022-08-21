@@ -24,6 +24,7 @@ class OtpFragment : Fragment(R.layout.free_parenting_otp_layout) {
             findNavController().popBackStack()
         }
         setLogCat("OTP_ARGS", "${args.response}")
+        binding.etOtp.setText(args.response.data.otp.toString())
         binding.checkOtpBtn.setOnClickListener {
             val otp = binding.etOtp.text.toString()
             if (checkUserInput(otp)) {
