@@ -7,6 +7,7 @@ import com.uptodd.uptoddapp.ui.freeparenting.login.repo.LoginRepository
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
 import com.uptodd.uptoddapp.utils.buildApi
 import com.uptodd.uptoddapp.utils.deserializeFromJson
+import com.uptodd.uptoddapp.utils.getEmojiByUnicode
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -18,7 +19,7 @@ class ProfileRepository(retrofit: Retrofit) {
 
 
     fun getProfile(id: Long) = flow {
-        emit(ApiResponseWrapper.Loading("loading profile.."))
+        emit(ApiResponseWrapper.Loading("loading profile.. ${getEmojiByUnicode(0x1F575)}"))
         val data = try {
             val response = api.getProfileDetail(id)
             if (response.isSuccessful) {

@@ -183,7 +183,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
 
     override fun onResume() {
         super.onResume()
-        activity?.toastMsg("${LoginSingletonResponse.getInstance().getLoginResponse()}")
+        (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
         viewModel.getVideoContentApi()
         viewModel.getVideoContentDb()
     }
