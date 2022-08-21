@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.ProfileLayoutFragmentBinding
+import com.uptodd.uptoddapp.datamodel.changeprofie.ChangeProfileRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.profile.viewmodel.ProfileViewModel
-import com.uptodd.uptoddapp.utils.ApiResponseWrapper
+import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
-import com.uptodd.uptoddapp.utils.hide
-import com.uptodd.uptoddapp.utils.setLogCat
-import com.uptodd.uptoddapp.utils.show
 
 class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
 
@@ -36,10 +35,43 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
                 showErrorDialogBox(err)
             }
         }
-        binding.toolbarNav.accountIcon.setOnClickListener {
-            //Working on it
+        binding.updateInfoBtn.setOnClickListener {
+            val phone = binding.userPhoneEd.text.toString()
+            val name = binding.userNameEd.text.toString()
+            if (loginSingletonResponse.getLoginResponse()?.data?.phone == phone
+                && loginSingletonResponse.getLoginResponse()?.data?.name == name
+            ) {
+                return@setOnClickListener
+            }
+            if (checkUserInput(phone)) {
+                setToastMsg("Phone number cannot be empty")
+                return@setOnClickListener
+            }
+            if (checkUserInput(name)) {
+                setToastMsg("User Name cannot be empty")
+                return@setOnClickListener
+            }
+            if (!isValidPhone(phone)) {
+                setToastMsg("Invalid Phone number")
+                return@setOnClickListener
+            }
+            viewModel.updateProfileDetail(
+                ChangeProfileRequest(
+                    loginSingletonResponse.getLoginResponse()!!.data.id,
+                    name = name,
+                    phone = phone,
+                )
+            )
+
         }
         getProfileResponse()
+    }
+
+    private fun setToastMsg(msg: String) {
+        binding.root.showSnackBarMsg(
+            msg,
+            anchor = (activity as FreeParentingDemoActivity).getBottomNav()
+        )
     }
 
     private fun getProfileResponse() {
@@ -65,7 +97,7 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
                         val data = it.data as FreeParentingResponse?
                         data?.let { res ->
                             setUpUI(res)
-                        }
+                        } ?: showErrorDialogBox("Failed to show user response")
                     }
                 }
             }
@@ -77,6 +109,7 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         super.onResume()
         binding.toolbarNav.topAppBar.navigationIcon = null
         binding.toolbarNav.titleTxt.text = "My Profile"
+        binding.userEmailEd.isEnabled = false
         binding.toolbarNav.accountIcon.show()
         viewModel.getProfile(loginSingletonResponse.getLoginResponse()?.data?.id!!.toLong())
     }

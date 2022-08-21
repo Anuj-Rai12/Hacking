@@ -1,6 +1,7 @@
 package com.uptodd.uptoddapp.ui.freeparenting.profile.repo
 
 import com.uptodd.uptoddapp.api.freeparentingapi.profle.ProfileApi
+import com.uptodd.uptoddapp.datamodel.changeprofie.ChangeProfileRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.login.repo.LoginRepository
@@ -22,6 +23,27 @@ class ProfileRepository(retrofit: Retrofit) {
         emit(ApiResponseWrapper.Loading("loading profile.. ${getEmojiByUnicode(0x1F575)}"))
         val data = try {
             val response = api.getProfileDetail(id)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    LoginSingletonResponse.getInstance().setLoginResponse(it)
+                    ApiResponseWrapper.Success(it)
+                } ?: ApiResponseWrapper.Error(LoginRepository.err_for_response, null)
+            } else {
+                deserializeFromJson<FreeParentingResponse>(response.errorBody()?.string())?.let {
+                    ApiResponseWrapper.Error("${it.message}", null)
+                } ?: ApiResponseWrapper.Error(LoginRepository.err, null)
+            }
+        } catch (e: Exception) {
+            ApiResponseWrapper.Error(e, null)
+        }
+        emit(data)
+    }.flowOn(IO)
+
+
+    fun changeProfileDetail(request: ChangeProfileRequest) = flow {
+        emit(ApiResponseWrapper.Loading("updating profile.. ${getEmojiByUnicode(0x1F575)}"))
+        val data = try {
+            val response = api.changeProfileApi(request)
             if (response.isSuccessful) {
                 response.body()?.let {
                     LoginSingletonResponse.getInstance().setLoginResponse(it)

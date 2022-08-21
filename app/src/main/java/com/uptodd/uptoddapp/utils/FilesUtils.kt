@@ -151,6 +151,7 @@ object FilesUtils {
         const val forget_Pass = "intro-parenting-forgot-password"
         const val CHANGE_PASS = "intro-parenting-new-password"
         const val Get_user_detail = "intro-parenting-user-details"
+        const val Get_profile_section_update = "intro-parenting-update-details"
     }
 }
 
