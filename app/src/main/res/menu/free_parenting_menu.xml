@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/PrivacyPolicy"
+            android:icon="@android:drawable/ic_secure"
+            android:title="Privacy Policy" />
+        <item
+            android:id="@+id/terms_and_cond"
+            android:icon="@drawable/ic_round_eye"
+            android:title="Terms and Conditions" />
+        <item
+            android:id="@+id/contact_us"
+            android:icon="@drawable/ic_person_support"
+            android:iconTint="@color/black"
+            android:title="Contacts Us" />
+
+                <item android:title="Settings">
+                        <menu>
+                            <group android:checkableBehavior="single">
+
+                                <item
+                                    android:id="@id/resourcesFragment"
+                                    android:icon="@drawable/logout"
+                                    android:iconTint="@color/black"
+                                    android:title="Logout" />
+
+                            </group>
+                        </menu>
+                    </item>
+    </group>
+
+</menu>

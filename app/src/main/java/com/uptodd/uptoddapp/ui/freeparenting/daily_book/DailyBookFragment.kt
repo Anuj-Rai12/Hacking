@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.work.Constraints
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -38,6 +41,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         binding = DailyBookLayoutBinding.bind(view)
         //binding.viewPager.isUserInputEnabled = false
         uploadWorkManger()
+        setNavDrawer()
         viewModel.event.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { msg ->
                 showErrorDialog(msg)
@@ -47,6 +51,18 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         fetchDataFromApi()
         setVideoTabItem()
         setMargin()
+        binding.toolbarNav.topAppBar.setNavigationOnClickListener {
+            binding.drawerLayoutFree.open()
+        }
+    }
+
+    private fun setNavDrawer() {
+        val email = LoginSingletonResponse.getInstance().getLoginRequest()?.email
+        binding.navDrawer.getHeaderView(0).findViewById<TextView>(R.id.user_txt_nav).text =
+            email.toString().first().uppercaseChar().toString()
+        binding.navDrawer.getHeaderView(0).findViewById<TextView>(R.id.email_id_nav).text =
+            email.toString()
+        binding.navDrawer.setupWithNavController(findNavController())
     }
 
 
@@ -162,7 +178,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         }
     }
 
-    private fun setFragment(title: String, list: List<Content>,index:Int) {
+    private fun setFragment(title: String, list: List<Content>, index: Int) {
         viewPagerAdaptor.setFragment(
             DailyContentFragment(
                 title, list, arrayOfVideoContentDb,
