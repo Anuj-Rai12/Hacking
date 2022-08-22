@@ -26,7 +26,7 @@ class PrivacyFragments : Fragment(R.layout.policy_fragments_layout) {
             setWebSiteData(FilesUtils.PrivacyUrl)
             listenForProgress()
         } else {
-            binding.progressbar.visibility = View.INVISIBLE
+            binding.progressbar.visibility = View.VISIBLE
             binding.progressbar.isIndeterminate = true
             binding.root.showSnackbar("No Internet Connection found!!")
         }

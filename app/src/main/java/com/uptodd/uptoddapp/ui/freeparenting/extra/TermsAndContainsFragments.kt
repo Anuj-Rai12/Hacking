@@ -26,7 +26,7 @@ class TermsAndContainsFragments : Fragment(R.layout.policy_fragments_layout) {
             setWebSiteData(FilesUtils.TermsAndConditions)
             listenForProgress()
         } else {
-            binding.progressbar.visibility = View.INVISIBLE
+            binding.progressbar.visibility = View.VISIBLE
             binding.progressbar.isIndeterminate = true
             binding.root.showSnackbar("No Internet Connection found!!")
         }
