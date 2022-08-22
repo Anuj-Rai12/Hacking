@@ -24,7 +24,7 @@
                             <group android:checkableBehavior="single">
 
                                 <item
-                                    android:id="@id/resourcesFragment"
+                                    android:id="@+id/free_parenting_logout"
                                     android:icon="@drawable/logout"
                                     android:iconTint="@color/black"
                                     android:title="Logout" />

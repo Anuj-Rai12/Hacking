@@ -127,4 +127,10 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
         )
     }
 
+
+    fun removeLoginValue() {
+        preferences.edit().remove(FilesUtils.DATASTORE.LoginResponse.email).apply()
+        preferences.edit().remove(FilesUtils.DATASTORE.LoginResponse.password).apply()
+        preferences.edit().remove(FilesUtils.DATASTORE.LoginResponse.userId).apply()
+    }
 }

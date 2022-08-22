@@ -41,8 +41,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         get() = _changePassword
 
 
-
-
     fun changePassResponse(request: ChangePasswordRequest) {
         if (!context.isNetworkAvailable()) {
             _event.postValue(Event(FilesUtils.NO_INTERNET))
@@ -54,7 +52,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
 
 
     fun forgetPassResponse(request: ForgetPassRequest) {
@@ -86,6 +83,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val getRequestLoginRequest: FreeParentingLoginRequest?
         get() = loginRepository.getLoginPreferences()
 
+    fun removeLoginResponse() = loginRepository.removeLoginValue()
 
     override fun onCleared() {
         super.onCleared()

@@ -1,5 +1,7 @@
 package com.uptodd.uptoddapp
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.uptodd.uptoddapp.databinding.ActvityFreeDemoBinding
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.ui.freeparenting.login.viewmodel.LoginViewModel
+import com.uptodd.uptoddapp.ui.loginfreeorpaid.LoginSelectionOption
 import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
 
@@ -29,9 +32,9 @@ class FreeParentingDemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.actvity_free_demo)
 
-        viewModel.event.observe(this){
-            it.getContentIfNotHandled()?.let {err->
-                showErrorDialog(err,true)
+        viewModel.event.observe(this) {
+            it.getContentIfNotHandled()?.let { err ->
+                showErrorDialog(err, true)
             }
         }
         getLoginResponse()
@@ -107,6 +110,18 @@ class FreeParentingDemoActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         supportActionBar?.hide()
+    }
+
+
+    fun logout(): Boolean {
+        viewModel.removeLoginResponse()
+        val sharePreference = getSharedPreferences("LOGIN_INFO", Context.MODE_PRIVATE)
+        return sharePreference.edit().remove(FilesUtils.DATASTORE.LoginType).commit()
+    }
+
+    fun gotSelectionScreen(){
+        startActivity(Intent(this, LoginSelectionOption::class.java))
+        this.finishAffinity()
     }
 
     fun getBottomNav() = binding.bottomNavBar

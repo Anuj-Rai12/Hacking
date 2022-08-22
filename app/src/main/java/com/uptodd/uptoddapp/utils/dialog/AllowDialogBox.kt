@@ -12,6 +12,7 @@ fun Activity.showDialogBox(
     icon: Int = R.drawable.ic_baseline_info_24,
     cancel: String? = null,
     isCancel: Boolean = true,
+    cancelListener: (() -> Unit)? = null,
     listener: () -> Unit
 ) {
     val material = MaterialAlertDialogBuilder(
@@ -30,6 +31,7 @@ fun Activity.showDialogBox(
     cancel?.let {
         dialog.setNegativeButton(it) { dialog, _ ->
             dialog.dismiss()
+            cancelListener?.invoke()
         }
     }
     dialog.show()

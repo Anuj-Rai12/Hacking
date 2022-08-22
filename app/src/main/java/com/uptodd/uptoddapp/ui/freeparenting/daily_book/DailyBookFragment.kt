@@ -51,6 +51,26 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         fetchDataFromApi()
         setVideoTabItem()
         setMargin()
+        binding.navDrawer.setNavigationItemSelectedListener { menu ->
+            if (menu.itemId == R.id.free_parenting_logout) {
+                menu.isChecked = true
+                activity?.showDialogBox(
+                    "Logout?",
+                    "Are you sure want to logout?",
+                    "No",
+                    R.drawable.logout,
+                    "Yes",
+                    cancelListener = {
+                        val activity = (activity as FreeParentingDemoActivity?)
+                        if (activity != null && activity.logout()) {
+                            activity.gotSelectionScreen()
+                        } else {
+                            binding.root.showSnackbar("Cannot logout!!")
+                        }
+                    }, listener = {})
+            }
+            true
+        }
         binding.toolbarNav.topAppBar.setNavigationOnClickListener {
             binding.drawerLayoutFree.open()
         }
