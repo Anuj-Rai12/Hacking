@@ -50,7 +50,9 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
             }
         }
         binding.userGenderEd.setAdapter(dropDownArray)
-        setUI(profileDetail.getLoginResponse()!!)
+        profileDetail.getLoginResponse()?.let {
+            setUI(it)
+        }
 
         binding.userGenderEd.setOnItemClickListener { _, _, position, _ ->
             genderPosition = position
@@ -74,7 +76,8 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
             val genderTxt = if (genderPosition == 0) "Male" else "Female"
             viewModel.updateProfileDetail(
                 ChangeProfileRequest(
-                    id = profileDetail.getLoginResponse()?.data?.id!!,
+                    id = profileDetail.getLoginResponse()?.data?.id ?: profileDetail.getUserId()!!
+                        .toInt(),
                     kidsDob = dob,
                     kidsName = name,
                     kidsGender = genderTxt
@@ -113,10 +116,10 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         binding.dateEd.setText(response.data.kidsDob)
         val gender = response.data.kidsGender
         if (gender.equals("male", true)) {
-            genderPosition=0
+            genderPosition = 0
             binding.userGenderEd.setText(genderCode.elementAt(0), false)
         } else if (gender.equals("female", true)) {
-            genderPosition=1
+            genderPosition = 1
             binding.userGenderEd.setText(genderCode.elementAt(1), false)
         }
     }

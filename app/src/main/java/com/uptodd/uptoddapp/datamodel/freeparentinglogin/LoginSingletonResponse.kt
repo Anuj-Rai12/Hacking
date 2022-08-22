@@ -4,7 +4,7 @@ class LoginSingletonResponse {
 
     private var request: FreeParentingLoginRequest? = null
     private var response: FreeParentingResponse? = null
-
+    private var userId: Long? = null
 
     companion object {
 
@@ -25,6 +25,13 @@ class LoginSingletonResponse {
     fun setLoginRequest(request: FreeParentingLoginRequest) {
         this.request = request
     }
+
+
+    fun setLoginId(id: Long) {
+        this.userId = id
+    }
+
+    fun getUserId() = this.userId
 
     fun getLoginResponse() = this.response
 

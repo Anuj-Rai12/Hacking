@@ -76,7 +76,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/montserrat"
             android:paddingTop="2dp"
-            android:text="gjfklhkl jfklhgfkhl hjkghklfj hjggjhkfghklhjkfgkhlfj"
+            android:text="N/A"
             android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@id/user_profile_pic"
             app:layout_constraintRight_toLeftOf="@id/edit_btn"

@@ -25,28 +25,30 @@ class ChildProfileFragment : Fragment(R.layout.child_profile_fragment_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ChildProfileFragmentLayoutBinding.bind(view)
-        binding.childProfileTxt.text =
-            profileInfo.getLoginResponse()?.data?.kidsName?.first()?.uppercaseChar().toString()
-        val gender = profileInfo.getLoginResponse()?.data?.kidsGender
-        binding.ageTitle.text = "${getEmojiByUnicode(0x1F476)} Age"
-        binding.genderValue.text = if (gender?.equals("male", true)!!) {
-            binding.genderTitle.text = "${getEmojiByUnicode(0x2642)} Gender"
-            "boy"
-        } else if (gender.equals("female", true)) {
-            binding.genderTitle.text = "${getEmojiByUnicode(0x2640)} Gender"
-            "girl"
-        } else {
-            "N/A"
-        }
-        val age = profileInfo.getLoginResponse()?.data?.kidsDob?.split("-")?.get(0)
-        val babyAge = yrs.toString().toLong() - age.toString().toLong()
-        val bybTxt = "<br><font color='#2ba0c4'><b>${babyAge} yrs old<b></font>"
-        val name =
-            profileInfo.getLoginResponse()?.data?.kidsName?.split("\\s".toRegex())?.get(0) + "\n"
+        profileInfo.getLoginResponse()?.let {
+            binding.childProfileTxt.text =
+                profileInfo.getLoginResponse()?.data?.kidsName?.first()?.uppercaseChar().toString()
+            val gender = profileInfo.getLoginResponse()?.data?.kidsGender
+            binding.ageTitle.text = "${getEmojiByUnicode(0x1F476)} Age"
+            binding.genderValue.text = if (gender!=null&& gender.equals("male", true)) {
+                binding.genderTitle.text = "${getEmojiByUnicode(0x2642)} Gender"
+                "boy"
+            } else if (gender.equals("female", true)) {
+                binding.genderTitle.text = "${getEmojiByUnicode(0x2640)} Gender"
+                "girl"
+            } else {
+                "N/A"
+            }
+            val age = profileInfo.getLoginResponse()?.data?.kidsDob?.split("-")?.get(0)
+            val babyAge = yrs.toString().toLong() - age.toString().toLong()
+            val bybTxt = "<br><font color='#2ba0c4'><b>${babyAge} yrs old<b></font>"
+            val name =
+                profileInfo.getLoginResponse()?.data?.kidsName?.split("\\s".toRegex())?.get(0) + "\n"
 
-        binding.profileTxt.text = name
-        binding.profileTxt.append(Html.fromHtml(bybTxt))
-        binding.ageValue.text = "$babyAge yrs old"
+            binding.profileTxt.text = name
+            binding.profileTxt.append(Html.fromHtml(bybTxt))
+            binding.ageValue.text = "$babyAge yrs old"
+        }
         binding.editBtn.setOnClickListener {
             val action =
                 ChildProfileFragmentDirections.actionChildProfileFragmentToEditProfileFragment()

@@ -151,6 +151,7 @@ object FilesUtils {
         object LoginResponse {
             const val email = "email"
             const val password = "password"
+            const val userId="user_id_free_parenting"
         }
 
     }

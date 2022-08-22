@@ -41,7 +41,8 @@ class PurchasePlanTabContainerFragment : Fragment(R.layout.purchase_plan_content
         }
         binding.buyBtn.setOnClickListener {
             viewModel.doCourseUpgrade(
-                LoginSingletonResponse.getInstance().getLoginResponse()?.data?.id?.toLong()!!
+                LoginSingletonResponse.getInstance().getLoginResponse()?.data?.id?.toLong()
+                    ?: LoginSingletonResponse.getInstance().getUserId()!!
             )
         }
         getEndRollResponse()

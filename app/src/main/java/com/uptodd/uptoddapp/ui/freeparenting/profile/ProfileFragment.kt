@@ -58,7 +58,8 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
             }
             viewModel.updateProfileDetail(
                 ChangeProfileRequest(
-                    loginSingletonResponse.getLoginResponse()!!.data.id,
+                    loginSingletonResponse.getLoginResponse()?.data?.id
+                        ?: loginSingletonResponse.getUserId()!!.toInt(),
                     name = name,
                     phone = phone,
                 )
@@ -66,7 +67,7 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
 
         }
         binding.toolbarNav.accountIcon.setOnClickListener {
-            val action=ProfileFragmentDirections.actionProfileFragmentToChildProfileFragment()
+            val action = ProfileFragmentDirections.actionProfileFragmentToChildProfileFragment()
             findNavController().navigate(action)
         }
         getProfileResponse()
@@ -117,7 +118,10 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         binding.userEmailEd.isEnabled = false
         binding.toolbarNav.accountIcon.show()
         (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
-        viewModel.getProfile(loginSingletonResponse.getLoginResponse()?.data?.id!!.toLong())
+        viewModel.getProfile(
+            loginSingletonResponse.getLoginResponse()?.data?.id?.toLong()
+                ?: loginSingletonResponse.getUserId()!!
+        )
     }
 
     private fun setUpUI(data: FreeParentingResponse) {

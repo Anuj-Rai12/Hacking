@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import com.uptodd.uptoddapp.api.freeparentingapi.login.LoginApi
 import com.uptodd.uptoddapp.datamodel.changepass.ChangePasswordRequest
 import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassRequest
-import com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingLoginRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
@@ -42,7 +41,7 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
             if (response.isSuccessful) {
                 response.body()?.let {
                     LoginSingletonResponse.getInstance().setLoginResponse(it)
-                    return@let if (setPresence(request)) {
+                    return@let if (setPresence(request, it.data.id.toLong())) {
                         ApiResponseWrapper.Success(null)
                     } else {
                         ApiResponseWrapper.Error("Failed to Save the Response Data Store ", null)
@@ -102,12 +101,13 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
     }.flowOn(IO)
 
 
-    private fun setPresence(response: FreeParentingLoginRequest): Boolean {
+    private fun setPresence(response: FreeParentingLoginRequest, id: Long): Boolean {
         val edit = preferences.edit()
         edit.apply {
             putString(FilesUtils.DATASTORE.LoginType, FilesUtils.DATASTORE.FREE_LOGIN)
             putString(FilesUtils.DATASTORE.LoginResponse.email, response.email)
             putString(FilesUtils.DATASTORE.LoginResponse.password, response.pass)
+            putLong(FilesUtils.DATASTORE.LoginResponse.userId, id)
             return commit()
         }
     }
@@ -116,10 +116,11 @@ class LoginRepository(retrofit: Retrofit, application: Application) {
     fun getLoginPreferences(): FreeParentingLoginRequest? {
         val email = preferences.getString(FilesUtils.DATASTORE.LoginResponse.email, "") ?: ""
         val password = preferences.getString(FilesUtils.DATASTORE.LoginResponse.password, "") ?: ""
-
+        val id = preferences.getLong(FilesUtils.DATASTORE.LoginResponse.userId, 0)
         if (checkUserInput(password) || checkUserInput(email)) {
             return null
         }
+        LoginSingletonResponse.getInstance().setLoginId(id)
         return FreeParentingLoginRequest(
             email = email,
             pass = password
