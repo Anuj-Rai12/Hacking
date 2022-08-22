@@ -23,6 +23,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.ui.expertCounselling.TermsAndConditions
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 import retrofit2.Retrofit
 import java.text.SimpleDateFormat
@@ -140,6 +141,8 @@ fun getPhoneNumber(num: String): Array<String?> {
 
 object FilesUtils {
     const val BASE_URL = "https://uptodd.com/api/"
+    const val PrivacyUrl = "https://uptodd.com/privacy-policy"
+    const val TermsAndConditions = "https://uptodd.com/terms-conditions"
     const val NO_INTERNET = "Device is Currently Offline!!"
 
     object DATASTORE {
@@ -151,7 +154,7 @@ object FilesUtils {
         object LoginResponse {
             const val email = "email"
             const val password = "password"
-            const val userId="user_id_free_parenting"
+            const val userId = "user_id_free_parenting"
         }
 
     }
@@ -220,6 +223,7 @@ fun View.setViewMovingAnimation() {
 inline fun <reified T> buildApi(retrofit: Retrofit): T {
     return retrofit.create(T::class.java)
 }
+
 @SuppressLint("SimpleDateFormat")
 fun Activity.calenderPicker(
     fragmentManager: FragmentManager,

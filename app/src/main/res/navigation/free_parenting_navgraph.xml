@@ -38,7 +38,7 @@
         android:id="@+id/profileFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.ProfileFragment"
         android:label="profile_layout_fragment"
-        tools:layout="@layout/profile_layout_fragment" >
+        tools:layout="@layout/profile_layout_fragment">
         <action
             android:id="@+id/action_profileFragment_to_childProfileFragment"
             app:destination="@id/childProfileFragment" />
@@ -47,7 +47,7 @@
         android:id="@+id/forgetPassFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.forgetpass.ForgetPassFragment"
         android:label="free_parenting_forget_pass_layout"
-        tools:layout="@layout/free_parenting_forget_pass_layout" >
+        tools:layout="@layout/free_parenting_forget_pass_layout">
         <action
             android:id="@+id/action_forgetPassFragment_to_otpFragment"
             app:destination="@id/otpFragment" />
@@ -56,7 +56,7 @@
         android:id="@+id/otpFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.otp.OtpFragment"
         android:label="free_parenting_otp_layout"
-        tools:layout="@layout/free_parenting_otp_layout" >
+        tools:layout="@layout/free_parenting_otp_layout">
         <action
             android:id="@+id/action_otpFragment_to_updateUserPasswordFragment"
             app:destination="@id/updateUserPasswordFragment"
@@ -69,8 +69,8 @@
     <fragment
         android:id="@+id/updateUserPasswordFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.login.updatepass.UpdateUserPasswordFragment"
-        tools:layout="@layout/login_parenting_fragment"
-        android:label="UpdateUserPasswordFragment" >
+        android:label="UpdateUserPasswordFragment"
+        tools:layout="@layout/login_parenting_fragment">
         <argument
             android:name="response"
             app:argType="com.uptodd.uptoddapp.datamodel.forgetpass.ForgetPassResponse" />
@@ -84,7 +84,7 @@
         android:id="@+id/childProfileFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.childprofile.ChildProfileFragment"
         android:label="child_profile_fragment_layout"
-        tools:layout="@layout/child_profile_fragment_layout" >
+        tools:layout="@layout/child_profile_fragment_layout">
         <action
             android:id="@+id/action_childProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -94,4 +94,16 @@
         android:name="com.uptodd.uptoddapp.ui.freeparenting.profile.childprofile.EditProfileFragment"
         android:label="free_parenting_baby_edit_profile_fragment"
         tools:layout="@layout/free_parenting_baby_edit_profile_fragment" />
+
+    <fragment
+        android:id="@+id/free_termsAndConditions"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.extra.TermsAndContainsFragments"
+        android:label="TermsAndConditions"
+        tools:layout="@layout/policy_fragments_layout" />
+    <fragment
+        android:id="@+id/free_privacyFragments"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.extra.PrivacyFragments"
+        android:label="PrivacyPolicy"
+        tools:layout="@layout/policy_fragments_layout" />
+
 </navigation>

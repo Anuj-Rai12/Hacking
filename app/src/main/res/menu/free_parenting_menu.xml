@@ -6,11 +6,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/PrivacyPolicy"
+            android:id="@+id/free_privacyFragments"
             android:icon="@android:drawable/ic_secure"
             android:title="Privacy Policy" />
         <item
-            android:id="@+id/terms_and_cond"
+            android:id="@+id/free_termsAndConditions"
             android:icon="@drawable/ic_round_eye"
             android:title="Terms and Conditions" />
         <item
