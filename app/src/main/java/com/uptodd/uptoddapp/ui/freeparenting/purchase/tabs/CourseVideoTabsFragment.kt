@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.CourseVideoTabsLayoutBinding
 import com.uptodd.uptoddapp.ui.freeparenting.daily_book.repo.VideoContentRepository
-import com.uptodd.uptoddapp.utils.getAdaptorViewHolderBg
 import com.uptodd.uptoddapp.utils.show
 import com.uptodd.uptoddapp.utils.showImage
 

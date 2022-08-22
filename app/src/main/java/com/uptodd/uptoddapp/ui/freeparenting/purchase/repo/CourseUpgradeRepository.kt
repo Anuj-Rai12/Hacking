@@ -1,9 +1,7 @@
 package com.uptodd.uptoddapp.ui.freeparenting.purchase.repo
 
-import com.google.android.gms.common.api.Api
 import com.uptodd.uptoddapp.api.freeparentingapi.upgrade.UpgradeApi
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
-import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
 import com.uptodd.uptoddapp.datamodel.upgrade.UpgradeRequest
 import com.uptodd.uptoddapp.ui.freeparenting.login.repo.LoginRepository
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
