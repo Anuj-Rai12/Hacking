@@ -28,12 +28,12 @@ class ChildProfileFragment : Fragment(R.layout.child_profile_fragment_layout) {
         binding.childProfileTxt.text =
             profileInfo.getLoginResponse()?.data?.kidsName?.first()?.uppercaseChar().toString()
         val gender = profileInfo.getLoginResponse()?.data?.kidsGender
-        binding.ageTitle.text="${getEmojiByUnicode(0x1F476)} Age"
+        binding.ageTitle.text = "${getEmojiByUnicode(0x1F476)} Age"
         binding.genderValue.text = if (gender?.equals("male", true)!!) {
-            binding.genderTitle.text="${getEmojiByUnicode(0x2642)} Gender"
+            binding.genderTitle.text = "${getEmojiByUnicode(0x2642)} Gender"
             "boy"
         } else if (gender.equals("female", true)) {
-            binding.genderTitle.text="${getEmojiByUnicode(0x2640)} Gender"
+            binding.genderTitle.text = "${getEmojiByUnicode(0x2640)} Gender"
             "girl"
         } else {
             "N/A"
@@ -48,7 +48,9 @@ class ChildProfileFragment : Fragment(R.layout.child_profile_fragment_layout) {
         binding.profileTxt.append(Html.fromHtml(bybTxt))
         binding.ageValue.text = "$babyAge yrs old"
         binding.editBtn.setOnClickListener {
-
+            val action =
+                ChildProfileFragmentDirections.actionChildProfileFragmentToEditProfileFragment()
+            findNavController().navigate(action)
         }
         binding.toolbarNav.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()

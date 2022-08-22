@@ -17,13 +17,18 @@ import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.utilities.AddedPopUpDialog
 import retrofit2.Retrofit
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.regex.Pattern
 
 
@@ -213,4 +218,38 @@ fun View.setViewMovingAnimation() {
 
 inline fun <reified T> buildApi(retrofit: Retrofit): T {
     return retrofit.create(T::class.java)
+}
+@SuppressLint("SimpleDateFormat")
+fun Activity.calenderPicker(
+    fragmentManager: FragmentManager,
+    cancel: () -> Unit,
+    dateListener: (txt: String) -> Unit
+) {
+    val constraint = CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
+    val datePicker = MaterialDatePicker
+        .Builder
+        .datePicker()
+        .setTitleText("Select Child Date of Birth")
+        .setCalendarConstraints(constraint.build())
+        .build()
+
+
+    datePicker.addOnCancelListener {
+        cancel.invoke()
+        it.dismiss()
+    }
+
+    datePicker.addOnDismissListener {
+        cancel.invoke()
+        it.dismiss()
+    }
+
+    datePicker.addOnPositiveButtonClickListener { time ->
+        val calendar: Calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        calendar.timeInMillis = time
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val formattedDate: String = format.format(calendar.time)
+        dateListener.invoke(formattedDate)
+    }
+    datePicker.show(fragmentManager, "DatePicker")
 }
