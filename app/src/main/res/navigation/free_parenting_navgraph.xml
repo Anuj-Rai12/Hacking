@@ -106,4 +106,10 @@
         android:label="PrivacyPolicy"
         tools:layout="@layout/policy_fragments_layout" />
 
+    <fragment
+        android:id="@+id/free_ContactFragments"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.extra.ContactUsFragments"
+        android:label="Contacts us"
+        tools:layout="@layout/policy_fragments_layout" /><action android:id="@+id/action_global_free_ContactFragments" app:destination="@id/free_ContactFragments"/><action android:id="@+id/action_global_free_privacyFragments" app:destination="@id/free_privacyFragments"/><action android:id="@+id/action_global_free_termsAndConditions" app:destination="@id/free_termsAndConditions"/>
+
 </navigation>

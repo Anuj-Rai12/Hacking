@@ -52,22 +52,39 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
         setVideoTabItem()
         setMargin()
         binding.navDrawer.setNavigationItemSelectedListener { menu ->
-            if (menu.itemId == R.id.free_parenting_logout) {
-                menu.isChecked = true
-                activity?.showDialogBox(
-                    "Logout?",
-                    "Are you sure want to logout?",
-                    "No",
-                    R.drawable.logout,
-                    "Yes",
-                    cancelListener = {
-                        val activity = (activity as FreeParentingDemoActivity?)
-                        if (activity != null && activity.logout()) {
-                            activity.gotSelectionScreen()
-                        } else {
-                            binding.root.showSnackbar("Cannot logout!!")
-                        }
-                    }, listener = {})
+            when (menu.itemId) {
+                R.id.free_parenting_logout -> {
+                    menu.isChecked = true
+                    activity?.showDialogBox(
+                        "Logout?",
+                        "Are you sure want to logout?",
+                        "No",
+                        R.drawable.logout,
+                        "Yes",
+                        cancelListener = {
+                            val activity = (activity as FreeParentingDemoActivity?)
+                            if (activity != null && activity.logout()) {
+                                activity.gotSelectionScreen()
+                            } else {
+                                binding.root.showSnackbar("Cannot logout!!")
+                            }
+                        }, listener = {})
+                }
+                R.id.mnu_free_privacyFragments -> {
+                    menu.isChecked = true
+                    val action = DailyBookFragmentDirections.actionGlobalFreePrivacyFragments()
+                    findNavController().navigate(action)
+                }
+                R.id.mnu_free_termsAndConditions -> {
+                    menu.isChecked = true
+                    val action = DailyBookFragmentDirections.actionGlobalFreeTermsAndConditions()
+                    findNavController().navigate(action)
+                }
+                R.id.mnu_free_contact_us -> {
+                    menu.isChecked = true
+                    val action = DailyBookFragmentDirections.actionGlobalFreeContactFragments()
+                    findNavController().navigate(action)
+                }
             }
             true
         }

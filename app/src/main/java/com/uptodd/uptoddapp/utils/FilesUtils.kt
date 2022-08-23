@@ -143,6 +143,7 @@ object FilesUtils {
     const val BASE_URL = "https://uptodd.com/api/"
     const val PrivacyUrl = "https://uptodd.com/privacy-policy"
     const val TermsAndConditions = "https://uptodd.com/terms-conditions"
+    const val Contact_us="https://uptodd.com/contact-us"
     const val NO_INTERNET = "Device is Currently Offline!!"
 
     object DATASTORE {

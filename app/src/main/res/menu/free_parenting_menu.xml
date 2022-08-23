@@ -6,15 +6,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/free_privacyFragments"
+            android:id="@+id/mnu_free_privacyFragments"
             android:icon="@android:drawable/ic_secure"
             android:title="Privacy Policy" />
         <item
-            android:id="@+id/free_termsAndConditions"
+            android:id="@+id/mnu_free_termsAndConditions"
             android:icon="@drawable/ic_round_eye"
             android:title="Terms and Conditions" />
         <item
-            android:id="@+id/contact_us"
+            android:id="@+id/mnu_free_contact_us"
             android:icon="@drawable/ic_person_support"
             android:iconTint="@color/black"
             android:title="Contacts Us" />
