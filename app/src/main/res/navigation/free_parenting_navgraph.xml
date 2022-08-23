@@ -20,10 +20,10 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/freeDemoBashBoardFragment"
-        android:name="com.uptodd.uptoddapp.ui.freeparenting.dashboard.FreeDemoBashBoardFragment"
-        android:label="free_demo_dashboard_screen_framgent"
-        tools:layout="@layout/free_demo_dashboard_screen_framgent" />
+        android:id="@+id/free_feedback_segments"
+        android:name="com.uptodd.uptoddapp.ui.freeparenting.feedback.FreeDemoFreeBackFragments"
+        android:label="Free FeedBack Segments"
+        tools:layout="@layout/free_demo_feed_back_framgent" />
     <fragment
         android:id="@+id/DailyBookFragment"
         android:name="com.uptodd.uptoddapp.ui.freeparenting.daily_book.DailyBookFragment"

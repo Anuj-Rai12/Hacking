@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uptodd.uptoddapp.ui.freeparenting.feedback.FreeDemoFreeBackFragments">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/page_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Hey Devesh,"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias=".1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/page_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Please fill this Feed Back Form"
+                android:textColor="#8b8b8b"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintLeft_toLeftOf="@id/page_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/page_title" />
+
+
+            <EditText
+                android:id="@+id/text_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/back_btn_bg"
+                android:backgroundTint="#f5f5f5"
+                android:fontFamily="@font/montserrat"
+                android:gravity="top"
+                android:hint="Type your message..."
+                android:maxHeight="400dp"
+                android:minHeight="250dp"
+                android:padding="14dp"
+                android:textColor="@color/black"
+                android:textColorHint="#8b8b8b"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/page_desc" />
+
+
+            <TextView
+                android:id="@+id/text_style_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/montserrat"
+                android:text="This forum is only for feedbacks and and suggestion, for any other question please contact us at support@upptodd.com"
+                android:textAlignment="center"
+                android:textColor="#8b8b8b"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="@id/text_message"
+                app:layout_constraintRight_toRightOf="@id/text_message"
+                app:layout_constraintTop_toBottomOf="@id/text_message" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_free_parenting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/gradientCarouselIndicatorStartColor"
+                android:elevation="5dp"
+                android:fontFamily="@font/crimson_text_bold"
+                android:paddingStart="56dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="56dp"
+                android:paddingBottom="17dp"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="360dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/text_style_item"
+                app:layout_constraintRight_toRightOf="@id/text_style_item"
+                app:layout_constraintTop_toBottomOf="@id/text_style_item"
+                app:strokeColor="@color/gradientStartColor"
+                app:strokeWidth="1dp" />
+
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/darkBlue"
+                app:layout_constraintBottom_toBottomOf="@id/submit_free_parenting"
+                app:layout_constraintLeft_toLeftOf="@id/submit_free_parenting"
+                app:layout_constraintRight_toRightOf="@id/submit_free_parenting"
+                app:layout_constraintTop_toTopOf="@id/submit_free_parenting" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    >=
+</layout>

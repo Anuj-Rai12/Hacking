@@ -1,4 +1,4 @@
-package com.uptodd.uptoddapp.ui.freeparenting.dashboard.viewmodel
+package com.uptodd.uptoddapp.ui.freeparenting.feedback.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.uptodd.uptoddapp.datamodel.feedback.FeedBackRequest
 import com.uptodd.uptoddapp.module.RetrofitSingleton
-import com.uptodd.uptoddapp.ui.freeparenting.dashboard.repo.FeedBackRepository
+import com.uptodd.uptoddapp.ui.freeparenting.feedback.repo.FeedBackRepository
 import com.uptodd.uptoddapp.utils.ApiResponseWrapper
 import com.uptodd.uptoddapp.utils.Event
 import com.uptodd.uptoddapp.utils.FilesUtils

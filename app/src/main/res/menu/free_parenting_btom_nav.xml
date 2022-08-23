@@ -2,16 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/freeDemoBashBoardFragment"
+        android:id="@+id/free_feedback_segments"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
-        android:title="Home" />
-
-    <item
-        android:id="@+id/demoVideoContentFragment"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_play_circle_filled_24"
-        android:title="Programs" />
+        android:icon="@drawable/ic_cancel"
+        android:title="Feedback" />
 
 
     <item

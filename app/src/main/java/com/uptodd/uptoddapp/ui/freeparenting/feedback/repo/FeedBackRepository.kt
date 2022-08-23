@@ -1,4 +1,4 @@
-package com.uptodd.uptoddapp.ui.freeparenting.dashboard.repo
+package com.uptodd.uptoddapp.ui.freeparenting.feedback.repo
 
 import com.uptodd.uptoddapp.api.freeparentingapi.feedback.FeedBackApi
 import com.uptodd.uptoddapp.datamodel.feedback.FeedBackRequest
