@@ -169,6 +169,7 @@ object FilesUtils {
         const val Get_user_detail = "intro-parenting-user-details"
         const val Get_profile_section_update = "intro-parenting-update-details"
         const val upgrade_Request = "intro-parenting-upgrade-request"
+        const val feed_back_request="intro-parenting-feedback"
     }
 }
 
