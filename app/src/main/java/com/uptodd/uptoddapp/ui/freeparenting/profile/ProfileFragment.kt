@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.uptodd.uptoddapp.FreeParentingDemoActivity
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.ProfileLayoutFragmentBinding
@@ -40,16 +41,6 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
             }
         }
 
-        binding.genderGrpBtn.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == binding.femaleGenderRadioBtn.id) {
-                setToastMsg("Female")
-                return@setOnCheckedChangeListener
-            }
-            if (checkedId == binding.maleGenderRadioBtn.id) {
-                setToastMsg("Male")
-                return@setOnCheckedChangeListener
-            }
-        }
 
         /*      binding.updateInfoBtn.setOnClickListener {
                   val phone = binding.userPhoneEd.text.toString()
@@ -97,6 +88,10 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
             binding.editBtn.hide()
         })
 
+        binding.editBtn.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+            findNavController().navigate(action)
+        }
 
     }
 
@@ -139,16 +134,15 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
     override fun onResume() {
         super.onResume()
         binding.toolbarNav.topAppBar.navigationIcon = null
-        binding.toolbarNav.titleTxt.text = "My Profile"
+        binding.toolbarNav.titleTxt.text = "\t\t\tMy Profile"
         binding.toolbarNav.accountIcon.setImageResource(R.drawable.ic_more)
         binding.toolbarNav.accountIcon.show()
         (activity as FreeParentingDemoActivity?)?.showBottomNavBar()
-        binding.kidNameEd.isEnabled=false
-        binding.userEmailId.isEnabled=false
-        binding.userPhoneEd.isEnabled=false
-        binding.kidDobEd.isEnabled=false
-        binding.genderGrpBtn.getChildAt(0).isEnabled=false
-        binding.genderGrpBtn.getChildAt(1).isEnabled=false
+        binding.kidNameEd.isEnabled = false
+        binding.userEmailId.isEnabled = false
+        binding.userPhoneEd.isEnabled = false
+        binding.kidDobEd.isEnabled = false
+        binding.kidGenderEd.isEnabled = false
         viewModel.getProfile(
             loginSingletonResponse.getLoginResponse()?.data?.id?.toLong()
                 ?: loginSingletonResponse.getUserId()!!
@@ -167,10 +161,10 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         val gender = data.data.kidsGender.uppercase(Locale.ROOT)
         when (ProfileRepository.Companion.GENDER.valueOf(gender)) {
             ProfileRepository.Companion.GENDER.FEMALE -> {
-                binding.femaleGenderRadioBtn.isChecked = true
+                binding.kidGenderEd.setText("Boy")
             }
             ProfileRepository.Companion.GENDER.MALE -> {
-                binding.maleGenderRadioBtn.isChecked = true
+                binding.kidGenderEd.setText("Girl")
             }
         }
     }

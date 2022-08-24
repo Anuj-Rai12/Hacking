@@ -1,23 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.uptodd.uptoddapp.ui.freeparenting.profile.childprofile.EditProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#E0EDFF">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#E0EDFF"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <include
-                android:id="@+id/toolbar_nav"
-                layout="@layout/free_parenting_toolbar_header"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/back_icon_view_click"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    app:cardBackgroundColor="#f5f5f5"
+                    app:cardCornerRadius="360dp"
+                    app:cardElevation="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/back_icon_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/arrow"
+                        android:tint="#8a8a8a"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/save_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="#8d69ff"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="10dp"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:cornerRadius="4dp" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/pb_btn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:indeterminate="true"
+                    app:indicatorColor="@color/darkBlue" />
+
+            </RelativeLayout>
+
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/profile_layout"
@@ -26,25 +88,26 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="#fefffe"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:background="#E0EDFF">
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#fefffe"
+                    android:background="#E0EDFF"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/user_profile_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
                         android:layout_margin="15dp"
-                        app:cardBackgroundColor="@color/gradientCarouselIndicatorStartColor"
+                        app:cardBackgroundColor="#f1edff"
                         app:cardCornerRadius="360dp"
-                        app:cardElevation="14dp"
+                        app:cardElevation="@null"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -58,9 +121,9 @@
                             android:focusable="true"
                             android:fontFamily="@font/montserrat"
                             android:gravity="center_vertical|center"
-                            android:text="A"
-                            android:textColor="@color/white"
-                            android:textSize="50sp"
+                            android:text=""
+                            android:textColor="#7E7E7E"
+                            android:textSize="26sp"
                             android:textStyle="bold"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -68,227 +131,293 @@
                     </androidx.cardview.widget.CardView>
 
 
-                    <!--<ImageView
-                        android:id="@+id/user_profile_pic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/samplebaby" />-->
-
-
-                    <TextView
-                        android:id="@+id/user_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:fontFamily="@font/montserrat"
-                        android:text="N/A"
-                        android:textColor="#595958"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/user_profile_pic" />
-
-
-                    <TextView
-                        android:id="@+id/user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/crimson_text_bold"
-                        android:text="Name"
-                        android:textColor="#595958"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/user_title" />
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/user_name_ed2_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="55dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        app:boxBackgroundColor="@color/white"
-                        app:boxCornerRadiusBottomEnd="4dp"
-                        app:boxCornerRadiusBottomStart="4dp"
-                        app:boxCornerRadiusTopEnd="4dp"
-                        app:boxCornerRadiusTopStart="4dp"
-                        app:boxStrokeColor="@color/activeBlue"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintLeft_toLeftOf="@id/user_name"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/user_name">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/user_name_ed"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/montserrat"
-                            android:inputType="textPersonName"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="#595958" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <TextView
-                        android:id="@+id/user_email"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:fontFamily="@font/crimson_text_bold"
-                        android:text="Date Of Birth"
-                        android:textColor="#595958"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="@id/user_name_ed2_layout"
-                        app:layout_constraintRight_toRightOf="@id/user_name_ed2_layout"
-                        app:layout_constraintTop_toBottomOf="@id/user_name_ed2_layout" />
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/dob_ed_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="55dp"
-                        android:layout_marginTop="10dp"
-                        app:boxBackgroundColor="@color/white"
-                        app:boxCornerRadiusBottomEnd="4dp"
-                        app:boxCornerRadiusBottomStart="4dp"
-                        app:boxCornerRadiusTopEnd="4dp"
-                        app:boxCornerRadiusTopStart="4dp"
-                        app:boxStrokeColor="@color/activeBlue"
-                        app:endIconMode="clear_text"
-                        app:endIconTint="@color/black"
-                        app:layout_constraintLeft_toLeftOf="@id/user_email"
-                        app:layout_constraintRight_toRightOf="@id/user_email"
-                        app:layout_constraintTop_toBottomOf="@id/user_email">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/date_ed"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/montserrat"
-                            android:inputType="date"
-                            android:editable="false"
-                            android:padding="10dp"
-                            android:singleLine="true"
-                            android:textColor="#595958" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/user_gender_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:fontFamily="@font/montserrat"
-                        android:text="Gender"
-                        android:textColor="#595958"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintLeft_toLeftOf="@id/dob_ed_layout"
-                        app:layout_constraintRight_toRightOf="@id/dob_ed_layout"
-                        app:layout_constraintTop_toBottomOf="@id/dob_ed_layout" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/user_gender_ed_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="Select Gender"
-                        android:textSize="14sp"
-                        app:boxCornerRadiusBottomEnd="4dp"
-                        app:boxCornerRadiusBottomStart="4dp"
-                        app:boxCornerRadiusTopEnd="4dp"
-                        app:boxCornerRadiusTopStart="4dp"
-                        app:boxStrokeColor="@color/activeBlue"
-                        app:hintTextColor="@color/light_grey_color"
-                        app:layout_constraintLeft_toLeftOf="@id/user_gender_title"
-                        app:layout_constraintRight_toRightOf="@id/dob_ed_layout"
-                        app:layout_constraintTop_toBottomOf="@id/user_gender_title">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/user_gender_ed"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="none"
-                            android:text="Select Gender" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/update_info_btn"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginEnd="20dp"
-                        android:elevation="5dp"
-                        android:fontFamily="@font/montserrat"
-                        android:paddingTop="13dp"
-                        android:paddingBottom="13dp"
-                        android:text="Update Details"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="@color/gradientCarouselIndicatorStartColor"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/user_gender_ed_layout"
-                        app:rippleColor="#6cc1d7"
-                        app:strokeColor="@color/gradientCarouselIndicatorStartColor"
-                        app:strokeWidth="1dp" />
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:id="@+id/pb_btn"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Name"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/name_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:backgroundTint="#8b8b8b"
+                                android:fontFamily="@font/montserrat"
+                                android:hint="Enter the Parents Name"
+                                android:textColorHint="#8b8b8b"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center"
-                        android:indeterminate="true"
-                        android:visibility="visible"
-                        app:indicatorColor="@color/darkBlue"
-                        app:layout_constraintBottom_toBottomOf="@id/update_info_btn"
-                        app:layout_constraintLeft_toLeftOf="@id/update_info_btn"
-                        app:layout_constraintRight_toRightOf="@id/update_info_btn"
-                        app:layout_constraintTop_toTopOf="@id/update_info_btn" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Kid's Name"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/kid_name_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:backgroundTint="#8b8b8b"
+                                android:fontFamily="@font/montserrat"
+                                android:hint="Enter the Kids Name"
+                                android:textColorHint="#8b8b8b"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Kid's Date of Birth"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/kid_dob_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:backgroundTint="#8b8b8b"
+                                android:drawableEnd="@drawable/ic_calendar"
+                                android:drawableTint="@color/darkBlue"
+                                android:fontFamily="@font/montserrat"
+                                android:inputType="none"
+                                android:hint="YYYY-MM-DD"
+                                android:textColorHint="#8b8b8b"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Kid's Gender"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <RadioGroup
+                                android:id="@+id/gender_grp_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
+
+                                <RadioButton
+                                    android:id="@+id/male_gender_radio_btn"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Boy"
+                                    android:textColor="#8b8b8b"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <RadioButton
+                                    android:id="@+id/female_gender_radio_btn"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Girl"
+                                    android:textColor="#8b8b8b"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                            </RadioGroup>
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Email ID"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/user_email_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@color/white"
+                                android:fontFamily="@font/montserrat"
+                                android:textColorHint="#8b8b8b"
+                                tools:text="anuj rai@gmail.com"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintTop_toBottomOf="@id/user_title"
+                        app:strokeColor="#E0EDFF"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Phone Number"
+                                android:textColor="#8b8b8b"
+                                android:textSize="13sp" />
+
+                            <EditText
+                                android:id="@+id/user_phone_ed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="@font/montserrat"
+                                android:hint="Enter the Phone Number"
+                                android:textColorHint="#8b8b8b"
+                                android:backgroundTint="#8b8b8b"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp" />
+                </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
-
-
-            <ProgressBar
-                android:id="@+id/progress_for_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/loading_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="90dp"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

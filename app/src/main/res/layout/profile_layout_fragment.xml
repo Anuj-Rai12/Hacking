@@ -7,12 +7,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f1edff">
+        android:background="#E0EDFF">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f1edff">
+            android:background="#E0EDFF">
 
             <include
                 android:id="@+id/toolbar_nav"
@@ -56,14 +56,14 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="#f1edff"
+                android:background="#E0EDFF"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#f1edff"
+                    android:background="#E0EDFF"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -74,7 +74,7 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:layout_margin="15dp"
-                        app:cardBackgroundColor="#E0EDFF"
+                        app:cardBackgroundColor="#f1edff"
                         app:cardCornerRadius="360dp"
                         app:cardElevation="@null"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -148,18 +148,19 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Kid's Name"
                                 android:textColor="#8b8b8b"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                             <EditText
                                 android:id="@+id/kid_name_ed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
                                 android:background="@color/white"
                                 android:fontFamily="@font/montserrat"
-                                android:minHeight="55dp"
                                 android:text="loading.."
                                 android:textColor="#8b8b8b"
-                                android:textSize="16sp"
+                                android:textSize="17sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -190,21 +191,22 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Kid's Date of Birth"
                                 android:textColor="#8b8b8b"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                             <EditText
                                 android:id="@+id/kid_dob_ed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
                                 android:background="@color/white"
                                 android:drawableEnd="@drawable/ic_calendar"
-                                android:drawableTint="@color/darkBlue"
+                                android:drawableTint="#8b8b8b"
                                 android:fontFamily="@font/montserrat"
                                 android:inputType="none"
-                                android:minHeight="55dp"
                                 android:text="loading.."
                                 android:textColor="#8b8b8b"
-                                android:textSize="16sp"
+                                android:textSize="17sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -234,42 +236,20 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Kid's Gender"
                                 android:textColor="#8b8b8b"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
-
-                            <RadioGroup
-                                android:id="@+id/gender_grp_btn"
+                            <EditText
+                                android:id="@+id/kid_gender_ed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
-
-
-                                <RadioButton
-                                    android:id="@+id/male_gender_radio_btn"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Boy"
-                                    android:textAlignment="center"
-                                    android:textColor="#8b8b8b"
-                                    android:textSize="16sp"
-                                    android:textStyle="bold" />
-
-                                <RadioButton
-                                    android:id="@+id/female_gender_radio_btn"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Girl"
-                                    android:textAlignment="center"
-                                    android:textColor="#8b8b8b"
-                                    android:textSize="16sp"
-                                    android:textStyle="bold" />
-
-                            </RadioGroup>
-
-
+                                android:layout_marginBottom="8dp"
+                                android:background="@color/white"
+                                android:fontFamily="@font/montserrat"
+                                android:text="loading.."
+                                android:textColor="#8b8b8b"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -299,18 +279,19 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Email ID"
                                 android:textColor="#8b8b8b"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                             <EditText
                                 android:id="@+id/user_email_id"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
                                 android:background="@color/white"
                                 android:fontFamily="@font/montserrat"
-                                android:minHeight="55dp"
                                 android:text="loading.."
                                 android:textColor="#8b8b8b"
-                                android:textSize="16sp"
+                                android:textSize="17sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -341,22 +322,27 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Phone Number"
                                 android:textColor="#8b8b8b"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                             <EditText
                                 android:id="@+id/user_phone_ed"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
                                 android:background="@color/white"
                                 android:fontFamily="@font/montserrat"
-                                android:minHeight="55dp"
                                 android:text="loading.."
                                 android:textColor="#8b8b8b"
-                                android:textSize="16sp"
+                                android:textSize="17sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp" />
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>

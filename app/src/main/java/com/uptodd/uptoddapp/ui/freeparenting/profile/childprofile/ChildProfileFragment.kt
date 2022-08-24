@@ -50,9 +50,7 @@ class ChildProfileFragment : Fragment(R.layout.child_profile_fragment_layout) {
             binding.ageValue.text = "$babyAge yrs old"
         }
         binding.editBtn.setOnClickListener {
-            val action =
-                ChildProfileFragmentDirections.actionChildProfileFragmentToEditProfileFragment()
-            findNavController().navigate(action)
+
         }
         binding.toolbarNav.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()

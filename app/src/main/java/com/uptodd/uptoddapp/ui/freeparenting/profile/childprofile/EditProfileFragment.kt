@@ -3,7 +3,7 @@ package com.uptodd.uptoddapp.ui.freeparenting.profile.childprofile
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,31 +13,21 @@ import com.uptodd.uptoddapp.databinding.FreeParentingBabyEditProfileFragmentBind
 import com.uptodd.uptoddapp.datamodel.changeprofie.ChangeProfileRequest
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.FreeParentingResponse
 import com.uptodd.uptoddapp.datamodel.freeparentinglogin.LoginSingletonResponse
+import com.uptodd.uptoddapp.ui.freeparenting.profile.repo.ProfileRepository
 import com.uptodd.uptoddapp.ui.freeparenting.profile.viewmodel.ProfileViewModel
 import com.uptodd.uptoddapp.utils.*
 import com.uptodd.uptoddapp.utils.dialog.showDialogBox
+import java.util.*
 
 class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_fragment) {
 
     private lateinit var binding: FreeParentingBabyEditProfileFragmentBinding
-
-    private var genderPosition: Int? = null
-
     private val viewModel: ProfileViewModel by viewModels()
-
+    private var isGenderChanged = false
     private val profileDetail by lazy {
         LoginSingletonResponse.getInstance()
     }
-
     private var isCalenderClick = false
-    private val genderCode = mutableSetOf(
-        "${getEmojiByUnicode(0x2642)} Male",
-        "${getEmojiByUnicode(0x2640)} Female"
-    )
-
-    private val dropDownArray: ArrayAdapter<String> by lazy {
-        ArrayAdapter(requireContext(), R.layout.dropdown, genderCode.toTypedArray())
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,16 +39,28 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
                 showErrorDialogBox(err)
             }
         }
-        binding.userGenderEd.setAdapter(dropDownArray)
-        profileDetail.getLoginResponse()?.let {
-            setUI(it)
+
+        binding.genderGrpBtn.setOnCheckedChangeListener { _, checkedId ->
+            if (isGenderChanged) {
+                isGenderChanged = false
+                return@setOnCheckedChangeListener
+            }
+            if (checkedId == binding.femaleGenderRadioBtn.id) {
+                setToastMsg("Female")
+                return@setOnCheckedChangeListener
+            }
+            if (checkedId == binding.maleGenderRadioBtn.id) {
+                setToastMsg("Male")
+                return@setOnCheckedChangeListener
+            }
         }
 
-        binding.userGenderEd.setOnItemClickListener { _, _, position, _ ->
-            genderPosition = position
+        binding.saveBtn.setOnClickListener {
+            binding.saveBtn.invisible()
+            binding.pbBtn.isVisible = true
         }
 
-        binding.updateInfoBtn.setOnClickListener {
+        /*binding.updateInfoBtn.setOnClickListener {
             val name = binding.userNameEd.text.toString()
             val dob = binding.dateEd.text.toString()
             if (checkUserInput(name)) {
@@ -83,15 +85,15 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
                     kidsGender = genderTxt
                 )
             )
-        }
+        }*/
 
-        binding.dateEd.setOnClickListener {
+        binding.kidDobEd.setOnClickListener {
             if (!isCalenderClick) {
                 isCalenderClick = true
                 activity?.calenderPicker(childFragmentManager, cancel = {
                     isCalenderClick = false
                 }, dateListener = {
-                    binding.dateEd.setText(it)
+                    binding.kidDobEd.setText(it)
                     isCalenderClick = false
                 })
             } else {
@@ -99,29 +101,41 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
             }
         }
 
+        profileDetail.getLoginResponse()?.let {
+            setUI(it)
+        } ?: run {
+            setToastMsg("Cannot load User Detail")
+        }
 
         getProfileResponse()
-        binding.toolbarNav.topAppBar.setNavigationOnClickListener {
+        binding.backIconImage.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setUI(response: FreeParentingResponse) {
-        binding.userTitle.text = response.data.kidsName.split("\\s".toRegex())[0] + "\n"
 
-        binding.userProfileTxt.text =
-            response.data.kidsName.first().uppercaseChar().toString()
-        binding.userNameEd.setText(response.data.kidsName)
-        binding.dateEd.setText(response.data.kidsDob)
-        val gender = response.data.kidsGender
-        if (gender.equals("male", true)) {
-            genderPosition = 0
-            binding.userGenderEd.setText(genderCode.elementAt(0), false)
-        } else if (gender.equals("female", true)) {
-            genderPosition = 1
-            binding.userGenderEd.setText(genderCode.elementAt(1), false)
+
+        binding.userProfileTxt.text = response.data.name.first().uppercaseChar().toString()
+
+        binding.nameEd.setText(response.data.name)
+        binding.kidNameEd.setText(response.data.kidsName)
+        binding.kidDobEd.setText(response.data.kidsDob)
+        binding.userEmailId.setText(response.data.email)
+        binding.userPhoneEd.setText(response.data.phone)
+        val gender = response.data.kidsGender.uppercase(Locale.ROOT)
+        when (ProfileRepository.Companion.GENDER.valueOf(gender)) {
+            ProfileRepository.Companion.GENDER.FEMALE -> {
+                isGenderChanged = true
+                binding.femaleGenderRadioBtn.isChecked = true
+            }
+            ProfileRepository.Companion.GENDER.MALE -> {
+                isGenderChanged = true
+                binding.maleGenderRadioBtn.isChecked = true
+            }
         }
+
     }
 
 
@@ -130,7 +144,6 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
             res?.let {
                 when (it) {
                     is ApiResponseWrapper.Error -> {
-                        hidePb()
                         if (it.data == null) {
                             it.exception?.localizedMessage?.let { err ->
                                 showErrorDialogBox(err)
@@ -140,11 +153,9 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
                         }
                     }
                     is ApiResponseWrapper.Loading -> {
-                        showPb()
-                        binding.loadingTxt.text = "${it.data}"
+                        //binding.loadingTxt.text = "${it.data}"
                     }
                     is ApiResponseWrapper.Success -> {
-                        hidePb()
                         val data = it.data as FreeParentingResponse?
                         data?.let { res ->
                             setUI(res)
@@ -166,9 +177,8 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
-        binding.toolbarNav.topAppBar.setNavigationIcon(R.drawable.arrow)
-        binding.toolbarNav.titleTxt.text = "Edit Profile"
-        binding.toolbarNav.titleTxt.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
+        binding.userEmailId.isEnabled = false
+        (activity as FreeParentingDemoActivity?)?.hideBottomNavBar()
     }
 
     private fun showErrorDialogBox(msg: String) {
@@ -181,7 +191,7 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         }
     }
 
-    private fun hidePb() {
+    /*private fun hidePb() {
         binding.progressForProfile.hide()
         binding.loadingTxt.hide()
         binding.profileLayout.show()
@@ -191,5 +201,5 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         binding.profileLayout.hide()
         binding.progressForProfile.show()
         binding.loadingTxt.show()
-    }
+    }*/
 }
