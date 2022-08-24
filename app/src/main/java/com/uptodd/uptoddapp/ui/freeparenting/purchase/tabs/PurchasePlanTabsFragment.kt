@@ -2,6 +2,7 @@ package com.uptodd.uptoddapp.ui.freeparenting.purchase.tabs
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ class PurchasePlanTabsFragment :
     Fragment(R.layout.purchase_plan_tabs_fragments) {
     private lateinit var binding: PurchasePlanTabsFragmentsBinding
     private lateinit var adaptor: CoursePurchaseDescAdaptor
+    private lateinit var whyUptoddAdaptor: CoursePurchaseDescAdaptor
     private lateinit var viewpagerAdaptor: ViewPagerAdapter
 
     @SuppressLint("SetTextI18n")
@@ -27,16 +29,16 @@ class PurchasePlanTabsFragment :
         binding = PurchasePlanTabsFragmentsBinding.bind(view)
         setAdaptor()
         binding.courseDesc.text =
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,\n" +
-                    "molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum\n" +
-                    "numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium\n" +
-                    "optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis\n" +
-                    "obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam\n" +
-                    "nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,\n" +
-                    "tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,\n" +
-                    "quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos \n" +
-                    "sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam\n" +
-                    "recusandae alias error harum maxime adipisci amet laborum. "
+            "Powerful Personalised Parenting Program as per your " +
+                    "child’s developmental needs, completely customised" +
+                    " program as per your child’s requirements to ensure" +
+                    " you Raise a Genius\n"
+        binding.upToddDesc.text = "Why UpTodd?"
+
+        binding.courseDuration.text =
+            Html.fromHtml("Total Access : <font color='#ff0000'><b>60 Days<b></font>")
+        binding.contactDetail.text =
+            Html.fromHtml("Start Anytime, Mail : <font color='#2ba0c4'><b>support@uptodd.com<b></font>")
         setData()
         setViewPagerAdaptor()
         viewpagerAdaptor.setFragment(
@@ -67,8 +69,6 @@ class PurchasePlanTabsFragment :
     }
 
 
-
-
     private fun movingOnScreenToAnother() {
         lifecycleScope.launch {
             var pos = 0
@@ -84,25 +84,22 @@ class PurchasePlanTabsFragment :
 
     private fun setData() {
         val list = listOf(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "Nullam fringilla est sit amet facilisis pretium.",
-            "Aliquam egestas mauris ut dolor tincidunt cursus.",
-            "Sed porttitor est id massa sodales rhoncus.",
-            "Quisque vitae nunc tempus, egestas lorem nec, bibendum arcu.",
-            "Mauris vel lacus facilisis, laoreet ligula vel, malesuada dolor.",
-            "Vivamus hendrerit felis non sagittis pharetra.",
-            "Donec posuere metus vitae urna auctor, a dignissim diam sodales.",
-            "Vestibulum suscipit ante vitae libero hendrerit, a sagittis nunc ultrices.",
-            "Vestibulum eget magna at diam faucibus posuere.",
-            "Etiam interdum tortor pharetra, scelerisque magna in, fringilla leo.",
-            "Ut consectetur leo id nisi mattis, id aliquam libero dignissim.",
-            "Ut scelerisque nunc pellentesque, convallis enim porttitor, egestas nisl.",
-            "Nunc in urna id nibh imperdiet posuere.",
-            "Duis suscipit ex id ex convallis iaculis.",
-            "Donec ut leo sit amet massa accumsan congue.",
-            "Vivamus semper velit eget nisl rutrum scelerisque.",
-            "Pellentesque euismod purus eget ultricies placerat."
+            "28 days Program with Personalised 24*7 R&D team support at Fingertip | Monthly Developmental form based Tracking | 1-1 Master On boarding Video call",
+            "2 Mega Sets of Memory & Sensory cards with App enabled guide, Parenting Coaches + R&D team + Community Access",
+            "4 App powered Learning Books & 4 Story Builders to implant creativity & imagination power",
+            "1 Mega Special personalised Wooden/Paper Montessori developmental Toy with 2 Months of Total App Access",
+            "100+ Personalised Routine planners with 100s of Neural Musics & Natural Boosters",
+            "Personalised App with 100s of Activities, Sessions, Boosters, Musics, Audio Stories etc. like 30+ Personalised App Features to boost 5X development"
         )
+
+        val listOfTwo = listOf(
+            "100% Transparency of FAQs, Team & Details clearly listed clearly on the website",
+            "Research backed platform by top rated teams with 50+ years of experience",
+            "Only program with 1-1 video session + complete personalisation",
+            "Only program with KIT of TOY, Sensory & Educational Cards, Audio Story Books, Audio Story Builders etc."
+        )
+
+        whyUptoddAdaptor.submitList(listOfTwo)
         adaptor.submitList(list)
     }
 
@@ -110,6 +107,10 @@ class PurchasePlanTabsFragment :
         binding.recycleCourseDescription.apply {
             adaptor = CoursePurchaseDescAdaptor()
             this.adapter = adaptor
+        }
+        binding.recycleUptoddDescription.apply {
+            whyUptoddAdaptor = CoursePurchaseDescAdaptor()
+            this.adapter = whyUptoddAdaptor
         }
     }
 

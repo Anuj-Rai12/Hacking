@@ -79,7 +79,7 @@ class PurchasePlanTabContainerFragment : Fragment(R.layout.purchase_plan_content
                             activity?.showDialogBox(
                                 "Success",
                                 "Thank to Enrolling into the course",
-                                icon = R.drawable.payment_success
+                                icon = R.drawable.ic_tick_24
                             ) {}
                         } ?: showErrorDialogBox("Failed to show Response")
                     }

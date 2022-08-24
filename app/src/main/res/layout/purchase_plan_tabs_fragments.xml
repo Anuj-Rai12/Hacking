@@ -160,41 +160,77 @@
             app:layout_constraintTop_toBottomOf="@id/upgrade_course_txt" />
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buy_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="#1c43a1"
-            android:elevation="5dp"
-            android:fontFamily="@font/montserrat"
-            android:paddingTop="13dp"
-            android:paddingBottom="13dp"
-            android:text="Get this course"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:cornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:rippleColor="#6cc1d7"
-            app:strokeColor="#1c43a1"
-            app:strokeWidth="2dp" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_course_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/course_desc"
             tools:listitem="@layout/description_course_text_layout" />
 
+
+        <TextView
+            android:id="@+id/up_todd_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/montserrat"
+            android:text="fjdgkdfgkldfgjklgjdglkdfgkdfgkldldgjdklfgk"
+            android:textColor="#979fa3"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycle_course_description" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_uptodd_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/up_todd_desc"
+            tools:listitem="@layout/description_course_text_layout" />
+
+
+        <TextView
+            android:id="@+id/course_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/montserrat"
+            android:textColor="#979fa3"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/recycle_uptodd_description"
+            app:layout_constraintTop_toBottomOf="@id/recycle_uptodd_description" />
+
+
+        <TextView
+            android:id="@+id/contact_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat"
+            android:textColor="#979fa3"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/course_duration"
+            app:layout_constraintTop_toBottomOf="@id/course_duration" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contact_detail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

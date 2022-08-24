@@ -14,17 +14,18 @@
         android:icon="@drawable/ic_calendar"
         android:title="Daybook" />
 
-    <item
-        android:id="@+id/profileFragment"
-        android:enabled="true"
-        android:icon="@drawable/account_bottom_doctor"
-        android:title="Profile" />
 
     <item
         android:id="@+id/purchaseCoursePlan"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_bar_chart_24"
-        android:title="Course" />
+        android:title="Enroll" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:enabled="true"
+        android:icon="@drawable/account_bottom_doctor"
+        android:title="Profile" />
 
 
 </menu>

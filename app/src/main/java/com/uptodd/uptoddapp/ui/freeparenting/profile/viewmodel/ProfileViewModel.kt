@@ -28,10 +28,10 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         get() = _profileResponse
 
 
-    private val _profileUpdateResponse = MutableLiveData<ApiResponseWrapper<out Any>>()
+   /* private val _profileUpdateResponse = MutableLiveData<ApiResponseWrapper<out Any>>()
     val profileUpdateResponse: LiveData<ApiResponseWrapper<out Any>>
         get() = _profileUpdateResponse
-
+*/
     private val _event = MutableLiveData<Event<String>>()
     val event: LiveData<Event<String>>
         get() = _event
