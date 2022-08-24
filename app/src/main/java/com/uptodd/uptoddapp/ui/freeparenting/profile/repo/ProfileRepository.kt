@@ -17,7 +17,12 @@ import retrofit2.Retrofit
 class ProfileRepository(retrofit: Retrofit) {
 
     private val api = buildApi<ProfileApi>(retrofit)
-
+companion object{
+    enum class GENDER{
+        FEMALE,
+        MALE
+    }
+}
 
     fun getProfile(id: Long) = flow {
         emit(ApiResponseWrapper.Loading("loading profile.. ${getEmojiByUnicode(0x1F575)}"))
