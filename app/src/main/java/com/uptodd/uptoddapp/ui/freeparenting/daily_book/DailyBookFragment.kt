@@ -59,7 +59,7 @@ class DailyBookFragment : Fragment(R.layout.daily_book_layout) {
                         "Logout?",
                         "Are you sure want to logout?",
                         "No",
-                        R.drawable.logout,
+                        R.drawable.ic_baseline_exit_to_app_24,
                         "Yes",
                         cancelListener = {
                             val activity = (activity as FreeParentingDemoActivity?)

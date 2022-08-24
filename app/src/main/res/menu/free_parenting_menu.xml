@@ -25,7 +25,7 @@
 
                                 <item
                                     android:id="@+id/free_parenting_logout"
-                                    android:icon="@drawable/logout"
+                                    android:icon="@drawable/ic_baseline_exit_to_app_24"
                                     android:iconTint="@color/black"
                                     android:title="Logout" />
 
