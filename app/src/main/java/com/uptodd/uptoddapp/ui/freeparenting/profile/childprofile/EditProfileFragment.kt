@@ -23,11 +23,11 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
 
     private lateinit var binding: FreeParentingBabyEditProfileFragmentBinding
     private val viewModel: ProfileViewModel by viewModels()
-    private var isGenderChanged = false
     private val profileDetail by lazy {
         LoginSingletonResponse.getInstance()
     }
     private var isCalenderClick = false
+    private var genderSelection = ""
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,28 +41,64 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         }
 
         binding.genderGrpBtn.setOnCheckedChangeListener { _, checkedId ->
-            if (isGenderChanged) {
-                isGenderChanged = false
-                return@setOnCheckedChangeListener
-            }
             if (checkedId == binding.femaleGenderRadioBtn.id) {
-                setToastMsg("Female")
+                genderSelection = "Female"
                 return@setOnCheckedChangeListener
             }
             if (checkedId == binding.maleGenderRadioBtn.id) {
-                setToastMsg("Male")
+                genderSelection = "Male"
                 return@setOnCheckedChangeListener
             }
         }
 
         binding.saveBtn.setOnClickListener {
-            binding.saveBtn.invisible()
-            binding.pbBtn.isVisible = true
+            val name = binding.nameEd.text.toString()
+            val kidDob = binding.kidDobEd.text.toString()
+            val kidName = binding.kidNameEd.text.toString()
+            val phoneNum = binding.userPhoneEd.text.toString()
+
+            if (checkUserInput(genderSelection)) {
+                setToastMsg("Select Gender!!")
+                return@setOnClickListener
+            }
+
+            if (checkUserInput(name)) {
+                setToastMsg("Enter the Parent Name!!")
+                return@setOnClickListener
+            }
+
+            if (checkUserInput(kidName)) {
+                setToastMsg("Enter the Kid Name!!")
+                return@setOnClickListener
+            }
+
+            if (checkUserInput(kidDob)) {
+                setToastMsg("Select Kid's Date of Birth!!")
+                return@setOnClickListener
+            }
+
+            if (checkUserInput(phoneNum) || !isValidPhone(phoneNum)) {
+                setToastMsg("Invalid Phone number!!")
+                return@setOnClickListener
+            }
+            val id =
+                profileDetail.getUserId()?.toInt() ?: profileDetail.getLoginResponse()?.data?.id!!
+            viewModel.updateProfileDetail(
+                ChangeProfileRequest(
+                    id = id,
+                    kidsName = kidName,
+                    kidsGender = genderSelection,
+                    kidsDob = kidDob,
+                    phone = phoneNum,
+                    name = name
+                )
+            )
+
+
         }
 
         /*binding.updateInfoBtn.setOnClickListener {
-            val name = binding.userNameEd.text.toString()
-            val dob = binding.dateEd.text.toString()
+
             if (checkUserInput(name)) {
                 setToastMsg("Invalid Name found!!")
                 return@setOnClickListener
@@ -86,6 +122,7 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
                 )
             )
         }*/
+
 
         binding.kidDobEd.setOnClickListener {
             if (!isCalenderClick) {
@@ -127,11 +164,9 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         val gender = response.data.kidsGender.uppercase(Locale.ROOT)
         when (ProfileRepository.Companion.GENDER.valueOf(gender)) {
             ProfileRepository.Companion.GENDER.FEMALE -> {
-                isGenderChanged = true
                 binding.femaleGenderRadioBtn.isChecked = true
             }
             ProfileRepository.Companion.GENDER.MALE -> {
-                isGenderChanged = true
                 binding.maleGenderRadioBtn.isChecked = true
             }
         }
@@ -144,6 +179,7 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
             res?.let {
                 when (it) {
                     is ApiResponseWrapper.Error -> {
+                        showPb()
                         if (it.data == null) {
                             it.exception?.localizedMessage?.let { err ->
                                 showErrorDialogBox(err)
@@ -153,12 +189,14 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
                         }
                     }
                     is ApiResponseWrapper.Loading -> {
-                        //binding.loadingTxt.text = "${it.data}"
+                        hidePb()
                     }
                     is ApiResponseWrapper.Success -> {
+                        showPb()
                         val data = it.data as FreeParentingResponse?
                         data?.let { res ->
                             setUI(res)
+                            setToastMsg("Successfully updated")
                         } ?: showErrorDialogBox("Failed to show user response")
                     }
                 }
@@ -168,10 +206,7 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
 
 
     private fun setToastMsg(msg: String) {
-        binding.root.showSnackBarMsg(
-            msg,
-            anchor = (activity as FreeParentingDemoActivity).getBottomNav()
-        )
+        binding.root.showSnackbar(msg)
     }
 
     @SuppressLint("SetTextI18n")
@@ -191,15 +226,14 @@ class EditProfileFragment : Fragment(R.layout.free_parenting_baby_edit_profile_f
         }
     }
 
-    /*private fun hidePb() {
-        binding.progressForProfile.hide()
-        binding.loadingTxt.hide()
-        binding.profileLayout.show()
+    private fun hidePb() {
+        binding.saveBtn.invisible()
+        binding.pbBtn.isVisible = true
+
     }
 
     private fun showPb() {
-        binding.profileLayout.hide()
-        binding.progressForProfile.show()
-        binding.loadingTxt.show()
-    }*/
+        binding.saveBtn.show()
+        binding.pbBtn.isVisible = false
+    }
 }

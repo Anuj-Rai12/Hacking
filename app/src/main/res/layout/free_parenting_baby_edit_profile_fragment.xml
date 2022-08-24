@@ -406,6 +406,7 @@
                                 android:backgroundTint="#8b8b8b"
                                 android:textColor="@color/black"
                                 android:textSize="17sp"
+                                android:inputType="phone"
                                 android:textStyle="bold" />
                         </LinearLayout>
 

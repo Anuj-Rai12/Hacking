@@ -79,8 +79,6 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
                 binding.editBtn.hide()
             }
             isEditIconDisplayed = !isEditIconDisplayed
-            /*val action = ProfileFragmentDirections.actionProfileFragmentToChildProfileFragment()
-            findNavController().navigate(action)*/
         }
         getProfileResponse()
 
@@ -95,12 +93,7 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
 
     }
 
-    private fun setToastMsg(msg: String) {
-        binding.root.showSnackBarMsg(
-            msg,
-            anchor = (activity as FreeParentingDemoActivity).getBottomNav()
-        )
-    }
+
 
     private fun getProfileResponse() {
         viewModel.profileResponse.observe(viewLifecycleOwner) { res ->
@@ -161,10 +154,10 @@ class ProfileFragment : Fragment(R.layout.profile_layout_fragment) {
         val gender = data.data.kidsGender.uppercase(Locale.ROOT)
         when (ProfileRepository.Companion.GENDER.valueOf(gender)) {
             ProfileRepository.Companion.GENDER.FEMALE -> {
-                binding.kidGenderEd.setText("Boy")
+                binding.kidGenderEd.setText("Girl")
             }
             ProfileRepository.Companion.GENDER.MALE -> {
-                binding.kidGenderEd.setText("Girl")
+                binding.kidGenderEd.setText("Boy")
             }
         }
     }
