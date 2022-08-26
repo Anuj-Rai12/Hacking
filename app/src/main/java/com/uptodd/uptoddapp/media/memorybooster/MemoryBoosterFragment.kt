@@ -219,7 +219,7 @@ class MemoryBoosterFragment : Fragment(), SpeedBoosterAdpaterInterface {
                                 val handler = Handler(Looper.getMainLooper())
                                 var isShowDialogButton = false
                                 handler.post {
-                                    if (!isShowDialogButton){
+                                    if (!isShowDialogButton && isAdded){
                                         isShowDialogButton=true
                                         uptoddDialogs.dismissDialog()
                                         findNavController().navigateUp()

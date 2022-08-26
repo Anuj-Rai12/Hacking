@@ -1082,7 +1082,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                 override fun onResponse(response: JSONObject) {
                     val handler = Handler(Looper.getMainLooper())
                     handler.post {
-                        if (showDialogOnce) {
+                        if (showDialogOnce && isAdded) {
                             showDialogOnce=false
                             if (response.getString("status") == "Success") {
                                 val poems =

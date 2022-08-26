@@ -187,13 +187,15 @@ class AllTicketsFragment : Fragment() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            ShowInfoDialog.showHint(
-                requireActivity(),
-                binding.collapseToolbar.tvLayout,
-                desc = getString(R.string.screen_support),
-                title = "Support",
-                key = id * 3
-            )
+            if (isAdded && activity != null) {
+                ShowInfoDialog.showHint(
+                    requireActivity(),
+                    binding.collapseToolbar.tvLayout,
+                    desc = getString(R.string.screen_support),
+                    title = "Support",
+                    key = id * 3
+                )
+            }
         }, 1000)
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowSupportTip()) {
             UptoddSharedPreferences.getInstance(requireContext()).setShownSupportTip(false)

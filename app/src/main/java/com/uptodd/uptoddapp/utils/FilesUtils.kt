@@ -55,7 +55,7 @@ fun Fragment.setUpErrorMessageDialog(
     var isErrorDialogBoxVisible = false
     val handler = Handler(Looper.getMainLooper())
     handler.post {
-        if (!isErrorDialogBoxVisible) {
+        if (!isErrorDialogBoxVisible && isAdded) {
             isErrorDialogBoxVisible = true
             AddedPopUpDialog.showInfo(
                 title,

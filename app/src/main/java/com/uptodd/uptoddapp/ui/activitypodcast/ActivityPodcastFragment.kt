@@ -139,12 +139,14 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip()) {
             //ShowInfoDialog.showInfo(getString(R.string.screen_podcast), requireFragmentManager())
             Handler(Looper.getMainLooper()).postDelayed({
-                ShowInfoDialog.showHint(
-                    requireActivity(),
-                    binding.collapseToolbar.tvLayout, "Podcast",
-                    getString(R.string.screen_podcast),
-                    id
-                )
+                if (isAdded){
+                    ShowInfoDialog.showHint(
+                        requireActivity(),
+                        binding.collapseToolbar.tvLayout, "Podcast",
+                        getString(R.string.screen_podcast),
+                        id
+                    )
+                }
             }, 1000)
 
             UptoddSharedPreferences.getInstance(requireContext()).setShownPodcastTip(false)
@@ -326,7 +328,7 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
         val handler = Handler(Looper.getMainLooper())
         var isShowNoDataVisible = false
         handler.post {
-            if (!isShowNoDataVisible) {
+            if (!isShowNoDataVisible && isAdded) {
                 isShowNoDataVisible = true
                 if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
                     val title = (requireActivity() as AppCompatActivity).supportActionBar?.title

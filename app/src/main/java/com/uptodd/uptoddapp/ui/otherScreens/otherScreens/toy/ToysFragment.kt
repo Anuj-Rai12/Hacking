@@ -296,7 +296,6 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
 
         findNavController().navigate(direction)
 
-//        findNavController().navigate(R.id.action_toysFragment_to_detailsFragment, bundle)
     }
 
 
@@ -311,8 +310,10 @@ class ToysFragment : Fragment(), ToysRecyclerAdapter.ToysListener {
             getString(R.string.back),
             object : UpToddDialogs.UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {
-                    dialog.dismiss()
-                    findNavController().navigateUp()
+                  if (isAdded){
+                      dialog.dismiss()
+                      findNavController().navigateUp()
+                  }
                 }
             })
         isLoadingDialogVisible.observe(viewLifecycleOwner, Observer {
