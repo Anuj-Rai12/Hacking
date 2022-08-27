@@ -383,6 +383,7 @@ reach you out within 24-48 hours to start your onboarding</string>
     <string name="language_text">Language</string>
     <string name="go_back" translatable="false">go back</string>
     <string name="activity_sample">Session</string>
+    <string name="activity_remedies">Remedies</string>
     <string name="expert_counselling" translatable="false">Expert Counselling</string>
     <string name="no_data" translatable="false">No Data</string>
 

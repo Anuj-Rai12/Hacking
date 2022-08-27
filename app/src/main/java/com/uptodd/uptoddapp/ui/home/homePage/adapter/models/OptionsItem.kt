@@ -22,6 +22,10 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
                 add(OptionsItem(R.id.action_homePageFragment_to_allTodosViewPagerFragment,
                     R.drawable.ic_routines,"Routines"))
 
+
+                add(OptionsItem(R.id.action_homePageFragment_to_remediesFragment,
+                    R.drawable.app_icon_image,"Remedies"))
+
                 add(OptionsItem(R.id.action_homePageFragment_to_music,
                     R.drawable.ic_neural_music,"Neural music"))
 

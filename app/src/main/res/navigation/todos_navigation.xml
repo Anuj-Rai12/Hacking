@@ -303,6 +303,10 @@
         <action
             android:id="@+id/action_homePageFragment_to_homeExpertCounselling"
             app:destination="@id/homeExpertCounselling" />
+
+        <action
+            android:id="@+id/action_homePageFragment_to_remediesFragment"
+            app:destination="@id/remediesFragment" />
         <action
             android:id="@+id/action_homePageFragment_to_allTodosViewPagerFragment"
             app:destination="@id/allTodosViewPagerFragment" />
@@ -810,6 +814,11 @@
             app:argType="com.uptodd.uptoddapp.ui.monthlyDevelopment.models.FormQuestionResponse"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/remediesFragment"
+        android:name="com.uptodd.uptoddapp.ui.remides.RemediesFragment"
+        android:label="remides_layout_fragments"
+        tools:layout="@layout/remides_layout_fragments" />
 
 
     <!--    <fragment-->
