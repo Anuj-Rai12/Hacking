@@ -16,6 +16,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.DownloadRequest
+import com.facebook.all.All
 import com.uptodd.uptoddapp.BuildConfig
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.api.getUserId
@@ -29,6 +30,8 @@ import com.uptodd.uptoddapp.database.todoApiDatabase.UpdateApi
 import com.uptodd.uptoddapp.database.webinars.Webinars
 import com.uptodd.uptoddapp.helperClasses.DateClass
 import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
+import com.uptodd.uptoddapp.ui.home.homePage.repo.HomPageRepository
+import com.uptodd.uptoddapp.ui.home.homePage.reviewmodel.ProgramReviewRequest
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.DAILY_TODOS_TAB_POSITION
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.ESSENTIALS_TODOS_TAB_POSITION
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.masterFragment.MONTHLY_TODOS_TAB_POSITION
@@ -61,6 +64,8 @@ class TodosViewModel(
     private val musicDatabase = database.musicDatabaseDao
     private val memoryDatabase = database.memoryBoosterDao
 
+    private val homPageRepository = HomPageRepository()
+
     var dpi: String = ""
     var apiError: String = ""
     var isnavigated = false
@@ -69,6 +74,12 @@ class TodosViewModel(
     private var _isLoading: MutableLiveData<Int> = MutableLiveData()
     val isLoading: LiveData<Int>
         get() = _isLoading
+
+
+    private val _getReviewSection = MutableLiveData<Pair<String, Any>>()
+    val getReviewSection: LiveData<Pair<String, Any>>
+        get() = _getReviewSection
+
 
     private var _isOutdatedVersion: MutableLiveData<Boolean> = MutableLiveData()
     val isOutDatedVersion: LiveData<Boolean>
@@ -106,6 +117,43 @@ class TodosViewModel(
     val dailyPendingTodosList = Transformations.map(dailyPendingTodosListSource) {
         sortList(it)
     }
+
+
+    fun postReviewApi(rating: Int, comment: String) {
+
+        viewModelScope.launch {
+            _getReviewSection.postValue(
+                Pair(
+                    HomPageRepository.Companion.AndroidNetworkingResponseWrapper.LOADING.name,
+                    "Sending your Response.."
+                )
+            )
+            homPageRepository.postResponseItem(
+                ProgramReviewRequest(
+                    comment = comment,
+                    id = AllUtil.getUserId(),
+                    rating = rating
+                ),
+                success = {
+                    _getReviewSection.postValue(
+                        Pair(
+                            HomPageRepository.Companion.AndroidNetworkingResponseWrapper.SUCCESS.name,
+                            it
+                        )
+                    )
+                }, error = { err, msg ->
+                    _getReviewSection.postValue(
+                        Pair(
+                            HomPageRepository.Companion.AndroidNetworkingResponseWrapper.ERROR.name,
+                            err?.localizedMessage
+                                ?: msg ?: "Unknown Error"
+                        )
+                    )
+                }
+            )
+        }
+    }
+
 
     private val weeklyPendingTodosListSource: LiveData<List<Todo>> =
         todoDatabase.getAllPendingTodosOfType(WEEKLY_TODO, period = period)

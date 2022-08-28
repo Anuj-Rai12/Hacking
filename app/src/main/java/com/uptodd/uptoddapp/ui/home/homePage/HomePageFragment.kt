@@ -61,11 +61,15 @@ import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.WeeklyFragment
+import com.uptodd.uptoddapp.ui.home.homePage.repo.HomPageRepository
+import com.uptodd.uptoddapp.ui.home.homePage.reviewmodel.ProgramReviewResponse
+import com.uptodd.uptoddapp.ui.home.homePage.repo.HomPageRepository.Companion.AndroidNetworkingResponseWrapper
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
+import com.uptodd.uptoddapp.utils.toastMsg
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -257,10 +261,29 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         binding.accountIcon.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_accountFragment2)
         }
-
+        getPostReviewResponse()
+        //Sample Rating App Testing
+        viewModel.postReviewApi(2, "Hey There testing Review")
 
         return binding.root
     }
+
+    private fun getPostReviewResponse() {
+        viewModel.getReviewSection.observe(viewLifecycleOwner) { res ->
+            when (AndroidNetworkingResponseWrapper.valueOf(res.first)) {
+                AndroidNetworkingResponseWrapper.SUCCESS -> {
+                    activity?.toastMsg("${res.second}")
+                }
+                AndroidNetworkingResponseWrapper.ERROR -> {
+                    activity?.toastMsg("${res.second}")
+                }
+                AndroidNetworkingResponseWrapper.LOADING -> {
+                    activity?.toastMsg("${res.second}")
+                }
+            }
+        }
+    }
+
 
     private fun onClickReloadWebinars() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {
@@ -1083,7 +1106,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                     val handler = Handler(Looper.getMainLooper())
                     handler.post {
                         if (showDialogOnce && isAdded) {
-                            showDialogOnce=false
+                            showDialogOnce = false
                             if (response.getString("status") == "Success") {
                                 val poems =
                                     AllUtil.getAllMemoryFiles(response.get("data").toString())
