@@ -139,7 +139,7 @@ class ActivityPodcastFragment : Fragment(), ActivityPodcastInterface {
         if (UptoddSharedPreferences.getInstance(requireContext()).shouldShowPodcastTip()) {
             //ShowInfoDialog.showInfo(getString(R.string.screen_podcast), requireFragmentManager())
             Handler(Looper.getMainLooper()).postDelayed({
-                if (isAdded){
+                if (isAdded) {
                     ShowInfoDialog.showHint(
                         requireActivity(),
                         binding.collapseToolbar.tvLayout, "Podcast",

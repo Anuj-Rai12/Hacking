@@ -20,8 +20,10 @@ import com.uptodd.uptoddapp.utilities.UpToddMediaPlayer
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class PoemViewModel(val database: MusicFilesDatabaseDao, application: Application) : AndroidViewModel(
-    application)  {
+class PoemViewModel(val database: MusicFilesDatabaseDao, application: Application) :
+    AndroidViewModel(
+        application
+    ) {
 
     private var dpi = ""
 
@@ -55,12 +57,12 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
 
     private var _isDownloaded = MutableLiveData<Boolean>()
-    val isDownloaded:LiveData<Boolean>
+    val isDownloaded: LiveData<Boolean>
         get() = _isDownloaded
 
     private var currentPlaying = 0
 
-    var notActive=false
+    var notActive = false
 
     private var mediaPlayer: UpToddMediaPlayer = UpToddMediaPlayer.upToddMediaPlayer
 
@@ -84,11 +86,11 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         }
     }
 
-    fun initializeOffline(){
+    fun initializeOffline() {
         if (_isPlaying.value!!) {
             _title.value = UpToddMediaPlayer.songPlaying.name
             currentPlaying = UpToddMediaPlayer.songPlaying.id
-            if(UpToddMediaPlayer.type=="music")
+            if (UpToddMediaPlayer.type == "music")
                 _image.value = AllUtil.getMusicImage(UpToddMediaPlayer.songPlaying, dpi)
             else
                 _image.value = AllUtil.getPoemImage(UpToddMediaPlayer.songPlaying, dpi)
@@ -100,12 +102,12 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
         viewModelScope.launch {
             downloadedPoems = database.getAllDownloadedPoem()
-            _isDownloaded.postValue(downloadedPoems.size>10)
-            downloadedPoems.forEach{
+            _isDownloaded.postValue(downloadedPoems.size > 10)
+            downloadedPoems.forEach {
                 Log.i("DP", "${it.id} -> ${it.name}")
             }
             _poems.value = ArrayList(downloadedPoems)
-            _poems.value?.forEach{
+            _poems.value?.forEach {
                 Log.i("PV", "${it.id} -> ${it.name}")
             }
             _isLoading.value = 0
@@ -162,8 +164,8 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
 
             override fun onReset(song: MusicFiles) {
                 _isPlaying.value = UpToddMediaPlayer.isPlaying
-                if(song.filePath =="NA"){
-                    _isMediaReady.value=false
+                if (song.filePath == "NA") {
+                    _isMediaReady.value = false
                 }
                 _image.value = AllUtil.getPoemImage(song, dpi)
                 _title.value = song.name
@@ -185,17 +187,18 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
     }
 
     private fun getAllPoems(context: Context) {
-        val userType= UptoddSharedPreferences.getInstance(context).getUserType()
-        val country=AllUtil.getCountry(context)
-        val stage=UptoddSharedPreferences.getInstance(context).getStage()
-        AndroidNetworking.get("https://www.uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage")
-            .addHeaders("Authorization","Bearer ${AllUtil.getAuthToken()}")
+        val userType = UptoddSharedPreferences.getInstance(context).getUserType()
+        val country = AllUtil.getCountry(context)
+        val stage = UptoddSharedPreferences.getInstance(context).getStage()
+        val userId = AllUtil.getUserId()
+        AndroidNetworking.get("https://www.uptodd.com/api/poems?userType=$userType&country=$country&motherStage=$stage&userId=$userId")
+            .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
             .setPriority(Priority.HIGH)
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
                     if (response.getString("status") == "Success") {
-                        if(response.get("data").toString()!="null") {
+                        if (response.get("data").toString() != "null") {
 
                             viewModelScope.launch {
 
@@ -209,15 +212,13 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
                                     else
                                         it.filePath = "NA"
                                 }
-                                _poems.value =poems
+                                _poems.value = poems
                                 notActive = poems.isEmpty()
                                 _isLoading.value = 0
                             }
-                        }
-                        else
-                        {
-                            notActive=true
-                            _poems.value=ArrayList()
+                        } else {
+                            notActive = true
+                            _poems.value = ArrayList()
                             _isLoading.value = 0
                         }
 
@@ -245,7 +246,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         mediaPlayer.playNext()
     }
 
-    fun prevSong(){
+    fun prevSong() {
         mediaPlayer.playPrevious()
     }
 
@@ -254,7 +255,7 @@ class PoemViewModel(val database: MusicFilesDatabaseDao, application: Applicatio
         _image.value = AllUtil.getPoemImage(poem, dpi)
         _isMediaReady.value = false
         mediaPlayer.setSource(poem)
-        UpToddMediaPlayer.type="poem"
+        UpToddMediaPlayer.type = "poem"
         mediaPlayer.setPlaylist(_poems.value!!, _poems.value!!.indexOf(poem))
     }
 

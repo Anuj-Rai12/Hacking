@@ -13,6 +13,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.uptodd.uptoddapp.database.UptoddDatabase
 import com.uptodd.uptoddapp.database.blogs.BlogCategories
 import com.uptodd.uptoddapp.database.blogs.Blogs
+import com.uptodd.uptoddapp.utilities.AllUtil
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
@@ -39,7 +40,8 @@ class BlogsListViewModel(blogDatabase: UptoddDatabase) : ViewModel() {
 
 
     fun getAllCategories() {
-        AndroidNetworking.get("https://www.uptodd.com/api/category/{blogs}")
+        val userId=AllUtil.getUserId()
+        AndroidNetworking.get("https://www.uptodd.com/api/category/{blogs}?userId=$userId")
             .addPathParameter("blogs", "blog")
             .addHeaders("Authorization", "Bearer $token")
             .setPriority(Priority.HIGH)

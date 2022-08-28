@@ -153,9 +153,10 @@ class ExpectedOutcomesFragment : Fragment(), ExpectedOutcomesRecyclerAdapter.Out
             val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
             val country = AllUtil.getCountry(requireContext())
+            val userId=AllUtil.getUserId()
             uiScope.launch {
                 val period = KidsPeriod(requireActivity()).getPeriod()
-                AndroidNetworking.get("https://www.uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/expected_outcomes/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage&userId=$userId")
                     .addPathParameter("period", period.toString())
                     .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
                     .setPriority(Priority.HIGH)

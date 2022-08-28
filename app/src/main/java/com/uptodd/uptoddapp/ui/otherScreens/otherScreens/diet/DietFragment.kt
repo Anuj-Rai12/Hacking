@@ -142,8 +142,9 @@ class DietFragment : Fragment(), DietRecyclerAdapter.DietListener {
             val userType = UptoddSharedPreferences.getInstance(requireContext()).getUserType()
             val stage = UptoddSharedPreferences.getInstance(requireContext()).getStage()
             val country = AllUtil.getCountry(requireContext())
+            val userId=AllUtil.getUserId()
             uiScope.launch {
-                AndroidNetworking.get("https://www.uptodd.com/api/diets/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage")
+                AndroidNetworking.get("https://www.uptodd.com/api/diets/{period}?lang=$language&userType=$userType&country=$country&motherStage=$stage&userId=$userId")
                     .addPathParameter(
                         "period",
                         KidsPeriod(requireActivity()).getPeriod().toString()
