@@ -51,6 +51,7 @@
     <color name="up_item_key_color">#5E5656</color>
     <color name="success_payment">#269B32</color>
     <color name="limited">#4067A2</color>
+    <color name="starts_rating_color">#ED8A19</color>
     <color name="black_high_opacity">#40000000</color>
     <color name="color_normal">#3372C2</color>
     <color name="color_primary">#0679C3</color>
@@ -70,6 +71,6 @@
 
     <color name="video_container_4">#bd96cf</color>
     <color name="video_inner_color_4">#e9dcef</color>
-
+    <color name="semi_white">#F2E8E9EB</color>
 
 </resources>

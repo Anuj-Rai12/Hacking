@@ -68,6 +68,7 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
+import com.uptodd.uptoddapp.utils.rateUsDialog
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import com.uptodd.uptoddapp.utils.toastMsg
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -144,6 +145,9 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
 
         uptoddDialogs = UpToddDialogs(requireContext())
+
+        activity?.rateUsDialog("Ratus","please ")
+
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //
