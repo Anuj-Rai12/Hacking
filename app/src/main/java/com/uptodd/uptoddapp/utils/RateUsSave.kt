@@ -56,11 +56,16 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
 
         if (type == RateUs.DATE_15 && currentDay >= day && currentMonth >= month) {
             return true
+        } else if (type == RateUs.DATE_15 && currentMonth > month) {
+            return true
         }
 
         if (type == RateUs.DATE_30 && currentDay >= day && currentMonth >= month) {
             return true
+        } else if (type == RateUs.DATE_30 && currentMonth > month) {
+            return true
         }
+
         return false
     }
 
