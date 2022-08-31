@@ -818,7 +818,21 @@
         android:id="@+id/remediesFragment"
         android:name="com.uptodd.uptoddapp.ui.remides.RemediesFragment"
         android:label="remides_layout_fragments"
-        tools:layout="@layout/remides_layout_fragments" />
+        tools:layout="@layout/remides_layout_fragments" >
+        <action
+            android:id="@+id/action_remediesFragment_to_remediesDetailFragment"
+            app:destination="@id/remediesDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/remediesDetailFragment"
+        android:name="com.uptodd.uptoddapp.ui.remides.RemediesDetailFragment"
+        android:label="remedies_detail_layout_fragment"
+        tools:layout="@layout/remedies_detail_layout_fragment" >
+        <argument
+            android:name="res"
+            app:argType="com.uptodd.uptoddapp.ui.remides.model.Disease" />
+    </fragment>
 
 
     <!--    <fragment-->

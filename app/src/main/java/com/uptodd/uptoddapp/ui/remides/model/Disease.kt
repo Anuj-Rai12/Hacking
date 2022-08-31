@@ -1,9 +1,12 @@
 package com.uptodd.uptoddapp.ui.remides.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class Data(
+@Parcelize
+data class Disease(
     @SerializedName("definition") val definition: String,
     @SerializedName("id") val id: Int,
     @SerializedName("link") val link: String,
@@ -12,4 +15,4 @@ data class Data(
     @SerializedName("name") val name: String,
     @SerializedName("remedies") val remedies: String,
     @SerializedName("symptoms") val symptoms: String
-)
+):Parcelable

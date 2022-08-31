@@ -47,6 +47,7 @@
                     android:src="@drawable/app_icon" />
 
                 <RelativeLayout
+                    android:id="@+id/grey_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@drawable/bg_border"
