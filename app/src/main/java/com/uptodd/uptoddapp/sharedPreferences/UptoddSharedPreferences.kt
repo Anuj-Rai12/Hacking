@@ -2,11 +2,13 @@ package com.uptodd.uptoddapp.sharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.util.FileUtil
 import com.uptodd.uptoddapp.database.account.Account
 import com.uptodd.uptoddapp.database.logindetails.DoctorLoginInfo
 import com.uptodd.uptoddapp.database.logindetails.UserInfo
 import com.uptodd.uptoddapp.database.nonpremium.NonPremiumAccount
 import com.uptodd.uptoddapp.utilities.AllUtil
+import com.uptodd.uptoddapp.utils.RateUs
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -279,7 +281,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
 
     fun getSubEnd(): String? {
 
-        return loginSharedPreference.getString("sub_end_date","")
+        return loginSharedPreference.getString("sub_end_date", "")
     }
 
     fun saveSubEndDate(date: String) {
@@ -570,7 +572,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         return loginSharedPreference.getString("on_boarding_link", "").toString()
     }
 
-    fun setFillDevelopmentForm(status: Int){
+    fun setFillDevelopmentForm(status: Int) {
         loginSharedPreference.edit().putInt("onDevelopmentFormFilled", status).apply();
     }
 
@@ -579,7 +581,7 @@ class UptoddSharedPreferences private constructor(var context: Context) {
     }
 
 
-    fun setShouldShowKitTutorial(shouldShow:Boolean) {
+    fun setShouldShowKitTutorial(shouldShow: Boolean) {
         loginSharedPreference.edit().putBoolean("should_show_kit", shouldShow).apply()
     }
 
@@ -604,24 +606,52 @@ class UptoddSharedPreferences private constructor(var context: Context) {
         return loginSharedPreference.getLong("sessionBookingDetails", 0)
     }
 
-    fun setDailyDialogTime(date: Long){
+    fun setDailyDialogTime(date: Long) {
         loginSharedPreference.edit().putLong("dialogTime", date).apply();
     }
+
     fun getDailyDialogTime(): Long {
         return loginSharedPreference.getLong("dialogTime", 0)
     }
-    fun setDailyDialogTimeForDevelopmentForm(date: Long){
+
+    fun setDailyDialogTimeForDevelopmentForm(date: Long) {
         loginSharedPreference.edit().putLong("dialogTimeDevelopment", date).apply();
     }
+
     fun getDailyDialogTimeForDevelopmentForm(): Long {
         return loginSharedPreference.getLong("dialogTimeDevelopment", 0)
     }
 
-    fun setPopUpDate(day: Int){
+    fun setPopUpDate(day: Int) {
         lastUpdatedPreferences.edit().putInt("popupDay", day).apply()
     }
 
-    fun getPopUpDate(): Int{
-        return lastUpdatedPreferences.getInt("popupDay",0)
+    fun getPopUpDate(): Int {
+        return lastUpdatedPreferences.getInt("popupDay", 0)
     }
+
+
+    fun saveRatingDate(day: Int, month: Int, type: String) {
+        val edit = lastUpdatedPreferences.edit()
+        edit.putInt(RateUs.currentDay, day)
+        edit.putInt(RateUs.currentMonth, month)
+        edit.putString(RateUs.DATE_TIME,type)
+        edit.apply()
+    }
+
+
+    fun getRatingDay(): Int {
+        return lastUpdatedPreferences.getInt(RateUs.currentDay,-1)
+    }
+
+
+    fun getRatingMonth(): Int {
+        return lastUpdatedPreferences.getInt(RateUs.currentMonth,-1)
+    }
+
+    fun getRatingType(): String? {
+        return lastUpdatedPreferences.getString(RateUs.DATE_TIME,"")
+    }
+
+
 }

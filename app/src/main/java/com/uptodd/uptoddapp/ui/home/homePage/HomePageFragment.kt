@@ -66,6 +66,7 @@ import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
 import com.uptodd.uptoddapp.utilities.*
 import com.uptodd.uptoddapp.utilities.downloadmanager.JishnuDownloadManager
+import com.uptodd.uptoddapp.utils.RateUsSave
 import com.uptodd.uptoddapp.utils.rateUsDialog
 import com.uptodd.uptoddapp.utils.setUpErrorMessageDialog
 import com.uptodd.uptoddapp.utils.toastMsg
@@ -261,15 +262,18 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
         getPostReviewResponse()
         //Sample Rating App Testing
-        showRateUs()
-        return binding.root
+        val store=RateUsSave(uptoddSharedPreferences = UptoddSharedPreferences.getInstance(requireContext()))
+        if (store.shouldShowDialogBox()){
+            showRateUs()
+        }
+            return binding.root
     }
 
     private fun showRateUs() {
         activity?.rateUsDialog("Rate The App!", "Tell us what you think.", success = {
             viewModel.postReviewApi(it)
         }, cancel = {
-            activity?.toastMsg("Cancel")
+            viewModel.setRateUs("", requireContext())
         })
     }
 
@@ -279,10 +283,12 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
                 when (AndroidNetworkingResponseWrapper.valueOf(res.first)) {
                     AndroidNetworkingResponseWrapper.SUCCESS -> {
                         dialogs.dismissDialog()
+                        viewModel.setRateUs("", requireContext())
                         activity?.toastMsg("Thank you.")
                     }
                     AndroidNetworkingResponseWrapper.ERROR -> {
                         dialogs.dismissDialog()
+                        viewModel.setRateUs("", requireContext())
                         setUpErrorMessageDialog(
                             "${res.second}",
                             "Cannot process the FeedBack Request ,so please Try Again.."

@@ -83,3 +83,11 @@ fun View.invisible() {
     this.visibility = View.INVISIBLE
 }
 
+object RateUs {
+    const val DATE_15 = "DAYS_15_DATE_DAY"
+    const val DATE_30 = "DAYS_30_DATE_DAY"
+    const val DATE_TIME="Date_OF_RATE_US"
+    const val currentMonth = "Set_Current_month"
+    const val currentDay = "Set_Current_day"
+
+}

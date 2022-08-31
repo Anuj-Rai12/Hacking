@@ -16,8 +16,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.coolerfall.download.DownloadCallback
 import com.coolerfall.download.DownloadManager
 import com.coolerfall.download.DownloadRequest
-import com.facebook.all.All
-import com.uptodd.uptoddapp.BuildConfig
 import com.uptodd.uptoddapp.alarmsAndNotifications.UptoddAlarm
 import com.uptodd.uptoddapp.api.getUserId
 import com.uptodd.uptoddapp.database.UptoddDatabase
@@ -40,6 +38,7 @@ import com.uptodd.uptoddapp.utilities.AllUtil
 import com.uptodd.uptoddapp.utilities.ChangeLanguage
 import com.uptodd.uptoddapp.utilities.Downloader
 import com.uptodd.uptoddapp.utilities.KidsPeriod
+import com.uptodd.uptoddapp.utils.RateUsSave
 import com.uptodd.uptoddapp.workManager.updateApiWorkmanager.UpdateAlarmThroughApiWorker
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -104,7 +103,7 @@ class TodosViewModel(
     private lateinit var downloadedMusic: List<MusicFiles>
     private lateinit var downloadedMemoryMusic: List<MemoryBoosterFiles>
 
-    var notificationIntent = MutableLiveData<Int>(0)
+    var notificationIntent = MutableLiveData(0)
 
     var notificationIntentExtras = MutableLiveData<Bundle>()
 
@@ -620,8 +619,7 @@ class TodosViewModel(
             _isOutdatedVersion.value = false
             return
         }
-
-
+        Log.i("ANUJ", "checkForAppUpdate: Checkout for update")
 
         AndroidNetworking.get("https://www.uptodd.com/api/appusers/dailyChecks/${AllUtil.getUserId()}")
             .addHeaders("Authorization", "Bearer ${AllUtil.getAuthToken()}")
@@ -636,6 +634,13 @@ class TodosViewModel(
 
                     val res =
                         (data.get("versionDetails") as JSONObject).getDouble("android_supported")
+
+
+                    val subSubscribe = (data.get("subscriptionDetails") as JSONObject)
+                        .get("subscriptionStartDate") as String
+
+                    Log.i("ANUJ", " SubSubScribe ---> onResponse: $subSubscribe")
+                    setRateUs(subSubscribe, context, true)
 
                     val isOnBoardingFilled = (data.get("onboardingFormDetails") as JSONObject)
                         .get("isOnboardingFormFilled") as Int
@@ -676,6 +681,22 @@ class TodosViewModel(
                 }
 
             })
+    }
+
+    fun setRateUs(subSubscribe: String, context: Context, day15Flag: Boolean = false) {
+        val dataStore = UptoddSharedPreferences.getInstance(context)
+        val rateUsSave = RateUsSave(dataStore)
+        val day = dataStore.getRatingDay()
+        val month = dataStore.getRatingMonth()
+        val type = dataStore.getRatingType()
+        Log.i("RATEUS", "setRateUs: DAY is $day MONTH $month and $type")
+        viewModelScope.launch {
+            if (day == -1 && month == -1 && type.isNullOrEmpty() && day15Flag) {
+                rateUsSave.saveForFirst15Day(subSubscribe)
+            } else if (day != -1 && month != -1 && !type.isNullOrEmpty() && !day15Flag) {
+                rateUsSave.saveDateOnEvery30Day(currentDay = day, currentMonth = month)
+            }
+        }
     }
 
 
