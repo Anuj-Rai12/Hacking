@@ -119,21 +119,17 @@ class TodosViewModel(
     }
 
 
-    fun postReviewApi(rating: Int, comment: String) {
+    fun postReviewApi(request: ProgramReviewRequest) {
 
         viewModelScope.launch {
             _getReviewSection.postValue(
                 Pair(
                     HomPageRepository.Companion.AndroidNetworkingResponseWrapper.LOADING.name,
-                    "Sending your Response.."
+                    "Sending your FeedBack.."
                 )
             )
             homPageRepository.postResponseItem(
-                ProgramReviewRequest(
-                    comment = comment,
-                    id = AllUtil.getUserId(),
-                    rating = rating
-                ),
+                request,
                 success = {
                     _getReviewSection.postValue(
                         Pair(
@@ -152,6 +148,10 @@ class TodosViewModel(
                 }
             )
         }
+    }
+
+    fun initReviewSection() {
+        _getReviewSection.postValue(null)
     }
 
 

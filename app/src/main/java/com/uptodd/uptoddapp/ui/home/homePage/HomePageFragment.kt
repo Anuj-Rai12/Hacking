@@ -61,8 +61,6 @@ import com.uptodd.uptoddapp.ui.home.homePage.childFragments.DailyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.EssentialsFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.MonthlyFragment
 import com.uptodd.uptoddapp.ui.home.homePage.childFragments.WeeklyFragment
-import com.uptodd.uptoddapp.ui.home.homePage.repo.HomPageRepository
-import com.uptodd.uptoddapp.ui.home.homePage.reviewmodel.ProgramReviewResponse
 import com.uptodd.uptoddapp.ui.home.homePage.repo.HomPageRepository.Companion.AndroidNetworkingResponseWrapper
 import com.uptodd.uptoddapp.ui.todoScreens.TodosListActivity
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.TodosViewModel
@@ -79,7 +77,6 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -145,9 +142,6 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
 
         uptoddDialogs = UpToddDialogs(requireContext())
-
-        activity?.rateUsDialog("Ratus","please ")
-
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //
@@ -267,27 +261,46 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
         getPostReviewResponse()
         //Sample Rating App Testing
-        viewModel.postReviewApi(2, "Hey There testing Review")
-
+        showRateUs()
         return binding.root
+    }
+
+    private fun showRateUs() {
+        activity?.rateUsDialog("Rate The App!", "Tell us what you think.", success = {
+            viewModel.postReviewApi(it)
+        }, cancel = {
+            activity?.toastMsg("Cancel")
+        })
     }
 
     private fun getPostReviewResponse() {
         viewModel.getReviewSection.observe(viewLifecycleOwner) { res ->
-            when (AndroidNetworkingResponseWrapper.valueOf(res.first)) {
-                AndroidNetworkingResponseWrapper.SUCCESS -> {
-                    activity?.toastMsg("${res.second}")
-                }
-                AndroidNetworkingResponseWrapper.ERROR -> {
-                    activity?.toastMsg("${res.second}")
-                }
-                AndroidNetworkingResponseWrapper.LOADING -> {
-                    activity?.toastMsg("${res.second}")
+            if (res != null) {
+                when (AndroidNetworkingResponseWrapper.valueOf(res.first)) {
+                    AndroidNetworkingResponseWrapper.SUCCESS -> {
+                        dialogs.dismissDialog()
+                        activity?.toastMsg("Thank you.")
+                    }
+                    AndroidNetworkingResponseWrapper.ERROR -> {
+                        dialogs.dismissDialog()
+                        setUpErrorMessageDialog(
+                            "${res.second}",
+                            "Cannot process the FeedBack Request ,so please Try Again.."
+                        )
+                    }
+                    AndroidNetworkingResponseWrapper.LOADING -> {
+                        dialogs.dismissDialog()
+                        dialogs.showOnlyLoadingDialog("${res.second}")
+                    }
                 }
             }
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.initReviewSection()
+    }
 
     private fun onClickReloadWebinars() {
         if (AppNetworkStatus.getInstance(requireContext()).isOnline) {

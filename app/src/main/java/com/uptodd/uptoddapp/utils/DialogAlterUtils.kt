@@ -6,9 +6,16 @@ import android.view.Window
 import android.widget.ImageButton
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.AppRatingLayoutBinding
+import com.uptodd.uptoddapp.ui.home.homePage.reviewmodel.ProgramReviewRequest
+import com.uptodd.uptoddapp.utilities.AllUtil
 
 
-fun Activity.rateUsDialog(title: String, desc: String) {
+fun Activity.rateUsDialog(
+    title: String,
+    desc: String,
+    success: (request: ProgramReviewRequest) -> Unit,
+    cancel: () -> Unit
+) {
 
     val binding = AppRatingLayoutBinding.inflate(layoutInflater)
 
@@ -20,8 +27,9 @@ fun Activity.rateUsDialog(title: String, desc: String) {
         binding.star4,
         binding.star5
     )
-
-    val ratingTxt = arrayListOf("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!")
+    binding.titleOfRate.text = title
+    binding.rateTitleDesc.text = desc
+    val ratingTxt = arrayListOf("Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!")
     val dialog = Dialog(
         this,
         android.R.style.Theme_Translucent_NoTitleBar_Fullscreen
@@ -33,6 +41,21 @@ fun Activity.rateUsDialog(title: String, desc: String) {
     onClickStar(4, binding.star5, binding, ids, ratingTxt)
 
     binding.dissBtn.setOnClickListener {
+        dialog.dismiss()
+        cancel.invoke()
+    }
+
+
+    binding.submitBtn.setOnClickListener {
+        val rating = ratingTxt.indexOf(binding.startDesc.text)
+        val comment = binding.textMessage.text.toString()
+        success.invoke(
+            ProgramReviewRequest(
+                comment = comment,
+                id = AllUtil.getUserId(),
+                rating = rating
+            )
+        )
         dialog.dismiss()
     }
 

@@ -151,10 +151,10 @@ class UpToddDialogs(val context: Context) {
             })
     }
 
-    fun showOnlyLoadingDialog() {
+    fun showOnlyLoadingDialog(msg:String?=null) {
         this.showDialog(
             R.drawable.gif_loading,
-            context.getString(R.string.loading),
+            msg?:context.getString(R.string.loading),
             context.getString(R.string.cancel),
             object : UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {}

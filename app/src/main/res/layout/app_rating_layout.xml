@@ -47,7 +47,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/montserrat"
                         android:maxLines="1"
-                        android:text="Rate The App!"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -60,7 +60,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat"
-                        android:text="Tell us what you think."
+                        android:text=""
                         android:textColor="#8b8b8b" />
 
 
