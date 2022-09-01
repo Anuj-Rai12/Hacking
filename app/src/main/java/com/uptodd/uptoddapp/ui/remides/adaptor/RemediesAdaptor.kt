@@ -26,7 +26,6 @@ class RemediesAdaptor : ListAdapter<Disease, RemediesAdaptor.RemediesPlanViewHol
             binding.root.setOnClickListener {
                 listener?.getRemedies(data)
             }
-            binding.greyThumbnail.hide()
 
             val imageUrl = "https://img.youtube.com/vi/${data.link}/mqdefault.jpg"
             Glide.with(binding.root.context)
