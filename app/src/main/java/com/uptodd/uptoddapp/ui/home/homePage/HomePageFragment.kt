@@ -275,7 +275,7 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
 
     private fun getLinkResponse() {
         viewModel.linkGetKit.observe(viewLifecycleOwner) { link ->
-            if (link != null) {
+            if (link != null&& !link.isNullOrEmpty()) {
                 dialogs.showKitKitOrderDialog(context = requireActivity(), success = {
                     dialogs.dismissDialog()
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
