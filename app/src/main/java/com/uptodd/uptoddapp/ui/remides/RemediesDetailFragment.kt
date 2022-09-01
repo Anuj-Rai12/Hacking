@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.View
 import android.webkit.*
@@ -38,16 +37,7 @@ class RemediesDetailFragment : Fragment(R.layout.remedies_detail_layout_fragment
         }
 
         binding.title.text = args.res.name
-        binding.descriptionTxt.text = (args.res.definition + "\n\nCheck the ")
-        val ageTxt = "<font color='#2ba0c4'><b>Age Limit<b></font>"
-        val age = "Minimum Age: <font color='#269B32'><b>${args.res.minAge} yrs<b></font>"
-        val maxAge = "Maximum Age: <font color='#ff0000'><b>${args.res.maxAge} yrs<b></font>"
-
-        binding.descriptionTxt.append(Html.fromHtml(ageTxt))
-        binding.descriptionTxt.append("\n")
-        binding.descriptionTxt.append(Html.fromHtml(age))
-        binding.descriptionTxt.append("\n")
-        binding.descriptionTxt.append(Html.fromHtml(maxAge))
+        binding.descriptionTxt.text = args.res.definition
 
         if (args.res.remedies.isEmpty() || args.res.remedies.isBlank()) {
             binding.remidesLayout.root.hide()

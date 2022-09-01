@@ -84,6 +84,12 @@ class TodosViewModel(
     val isOutDatedVersion: LiveData<Boolean>
         get() = _isOutdatedVersion
 
+
+    private val _linkToGetKit = MutableLiveData<String>()
+    val linkGetKit: LiveData<String>
+        get() = _linkToGetKit
+
+
     private var _isRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
     val isRefreshing: LiveData<Boolean>
         get() = _isRefreshing
@@ -151,6 +157,7 @@ class TodosViewModel(
 
     fun initReviewSection() {
         _getReviewSection.postValue(null)
+        _linkToGetKit.postValue(null)
     }
 
 
@@ -614,7 +621,7 @@ class TodosViewModel(
 
         val calendar = Calendar.getInstance()
         Log.d("minutes", "${TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis - lastCheck)}")
-
+        //_linkToGetKit.postValue("http://www.google.com")
         if (lastCheck != 0L && TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis - lastCheck) < 2) {
             _isOutdatedVersion.value = false
             return
@@ -653,6 +660,19 @@ class TodosViewModel(
                         .get("isSessionBookingAllowed") as Int
                     val shouldShowKit = (data.get("kitTutorial")) as Int
 
+
+                    val allowToKit = (data.get("nextKitFormDetails") as JSONObject)
+                        .get("isAllowed") as Int
+
+                    val kitLink = (data.get("nextKitFormDetails") as JSONObject)
+                        .get("link") as String
+
+
+                    if (allowToKit==1){
+                        _linkToGetKit.postValue(kitLink)
+                    }else{//0 by default
+                        _linkToGetKit.postValue(null)
+                    }
 
                     val sharedPreferences = UptoddSharedPreferences.getInstance(context)
                     sharedPreferences.setOnBoardingDetailsFilled(isOnBoardingFilled)

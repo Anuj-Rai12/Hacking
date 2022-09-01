@@ -1,5 +1,6 @@
 package com.uptodd.uptoddapp.utilities
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.NavController
 import com.uptodd.uptoddapp.R
+import com.uptodd.uptoddapp.databinding.AlertOfKitDialogBinding
 import pl.droidsonroids.gif.GifImageView
 
 class UpToddDialogs(val context: Context) {
@@ -24,8 +26,11 @@ class UpToddDialogs(val context: Context) {
         ChangeLanguage(context).setLanguage()
     }
 
-    fun showInfoDialog(text: String,buttonText: String,upToddClickListener: UpToddDialogListener):UpToddDialogs
-    {
+    fun showInfoDialog(
+        text: String,
+        buttonText: String,
+        upToddClickListener: UpToddDialogListener
+    ): UpToddDialogs {
         this.upToddDialogListener = upToddClickListener
         dialog.setContentView(R.layout.msg_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -56,6 +61,7 @@ class UpToddDialogs(val context: Context) {
     ): UpToddDialogs {
         this.upToddDialogListener = upToddClickListener
         dialog.setContentView(R.layout.gif_dialog)
+
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogGIF = dialog.findViewById<GifImageView>(R.id.gif_dialog_gif)
         val dialogButton: Button = dialog.findViewById(R.id.gif_dialog_button)
@@ -80,6 +86,30 @@ class UpToddDialogs(val context: Context) {
     }
 
 
+    fun showKitKitOrderDialog(
+        text: String="Please fill this form to get your next kit.",
+        context: Activity,
+        success: () -> Unit,
+        cancel: () -> Unit,
+    ): UpToddDialogs {
+        val binding = AlertOfKitDialogBinding.inflate(context.layoutInflater)
+
+        dialog.setContentView(binding.root)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        binding.gifDialogGif.setImageResource(R.drawable.ic_kit_tutorial)
+        binding.gifDialogText.text = text
+        binding.dismissBtn.setOnClickListener {
+            cancel.invoke()
+        }
+        binding.submitBtn.setOnClickListener {
+            success.invoke()
+        }
+        dialog.show()
+        return this
+    }
+
+
     fun showSetUpsDialog(
         gif: Int,
         text: String,
@@ -95,15 +125,15 @@ class UpToddDialogs(val context: Context) {
         dialogText.text = text
         dialogGIF.setImageResource(gif)
         dialogButton.text = buttonText
-        dialogButton.visibility=View.INVISIBLE
-        val timerCounter  =object : CountDownTimer((1000*15).toLong(), (1000).toLong()){
-            override fun onFinish()
-            {
+        dialogButton.visibility = View.INVISIBLE
+        val timerCounter = object : CountDownTimer((1000 * 15).toLong(), (1000).toLong()) {
+            override fun onFinish() {
                 dialog.dismiss()
             }
 
             override fun onTick(milliFinished: Long) {
-                dialogText.text=context.getString(R.string.setupLoading)+"\n"+"${milliFinished/1000}"
+                dialogText.text =
+                    context.getString(R.string.setupLoading) + "\n" + "${milliFinished / 1000}"
 
             }
         }
@@ -151,10 +181,10 @@ class UpToddDialogs(val context: Context) {
             })
     }
 
-    fun showOnlyLoadingDialog(msg:String?=null) {
+    fun showOnlyLoadingDialog(msg: String? = null) {
         this.showDialog(
             R.drawable.gif_loading,
-            msg?:context.getString(R.string.loading),
+            msg ?: context.getString(R.string.loading),
             context.getString(R.string.cancel),
             object : UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {}
@@ -164,7 +194,7 @@ class UpToddDialogs(val context: Context) {
                     dialogButton: Button,
                     dialogGIF: GifImageView
                 ) {
-                   dialogButton.visibility = View.INVISIBLE
+                    dialogButton.visibility = View.INVISIBLE
                     dialog.setCancelable(false)
 
                 }
@@ -178,7 +208,7 @@ class UpToddDialogs(val context: Context) {
     fun showSetupDialog(navController: NavController, goBack: Boolean = false) {
         this.showDialog(
             R.drawable.gif_loading,
-           context.getString(R.string.setupLoading),
+            context.getString(R.string.setupLoading),
             context.getString(R.string.cancel),
             object : UpToddDialogListener {
                 override fun onDialogButtonClicked(dialog: Dialog) {}
@@ -189,17 +219,18 @@ class UpToddDialogs(val context: Context) {
                     dialogGIF: GifImageView
                 ) {
 
-                    val timerCounter  =object : CountDownTimer((1000*15).toLong(), (1000).toLong()){
-                        override fun onFinish()
-                        {
-                            dialog.dismiss()
-                        }
+                    val timerCounter =
+                        object : CountDownTimer((1000 * 15).toLong(), (1000).toLong()) {
+                            override fun onFinish() {
+                                dialog.dismiss()
+                            }
 
-                        override fun onTick(milliFinished: Long) {
-                            dialogText.text=context.getString(R.string.setupLoading)+"${milliFinished/1000}"
+                            override fun onTick(milliFinished: Long) {
+                                dialogText.text =
+                                    context.getString(R.string.setupLoading) + "${milliFinished / 1000}"
 
+                            }
                         }
-                    }
                     timerCounter.start()
                     dialogButton.visibility = View.GONE
                 }
@@ -264,6 +295,7 @@ class UpToddDialogs(val context: Context) {
             dialogGIF: GifImageView
         ) {
         }
+
         fun onDialogReady(
             dialog: Dialog,
             dialogText: TextView,
@@ -272,8 +304,7 @@ class UpToddDialogs(val context: Context) {
         }
 
         fun onDialogCancelled(dialog: Dialog) {}
-        fun onDialogDismiss()
-        {}
+        fun onDialogDismiss() {}
     }
 
 }

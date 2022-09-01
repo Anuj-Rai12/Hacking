@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -262,11 +263,28 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
         getPostReviewResponse()
         //Sample Rating App Testing
-        val store=RateUsSave(uptoddSharedPreferences = UptoddSharedPreferences.getInstance(requireContext()))
-        if (store.shouldShowDialogBox()){
+        val store =
+            RateUsSave(uptoddSharedPreferences = UptoddSharedPreferences.getInstance(requireContext()))
+        if (store.shouldShowDialogBox()) {
             showRateUs()
         }
-            return binding.root
+        getLinkResponse()
+
+        return binding.root
+    }
+
+    private fun getLinkResponse() {
+        viewModel.linkGetKit.observe(viewLifecycleOwner) { link ->
+            if (link != null) {
+                dialogs.showKitKitOrderDialog(context = requireActivity(), success = {
+                    dialogs.dismissDialog()
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                    startActivity(browserIntent)
+                }, cancel = {
+                    dialogs.dismissDialog()
+                })
+            }
+        }
     }
 
     private fun showRateUs() {
