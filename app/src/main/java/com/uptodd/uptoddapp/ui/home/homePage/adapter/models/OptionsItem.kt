@@ -24,7 +24,7 @@ data class OptionsItem(var navId:Int,var icon:Int,var title:String){
 
 
                 add(OptionsItem(R.id.action_homePageFragment_to_remediesFragment,
-                    R.drawable.app_icon_image,"Remedies"))
+                    R.drawable.ic_gradma_tip,"Grandma Tips"))
 
                 add(OptionsItem(R.id.action_homePageFragment_to_music,
                     R.drawable.ic_neural_music,"Neural music"))

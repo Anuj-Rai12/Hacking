@@ -56,6 +56,7 @@
     <color name="color_normal">#3372C2</color>
     <color name="color_primary">#0679C3</color>
     <color name="color_dialog_btn">#EC5F4A</color>
+    <color name="color_start_baby">#B6B6B6</color>
 
     <color name="video_container">#7ea8e7</color>
     <color name="video_inner_color">#d4e2f7</color>

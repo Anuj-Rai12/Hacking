@@ -30,6 +30,7 @@ import com.uptodd.uptoddapp.sharedPreferences.UptoddSharedPreferences
 import com.uptodd.uptoddapp.ui.todoScreens.viewPagerScreens.models.VideosUrlResponse
 import com.uptodd.uptoddapp.ui.webinars.podcastwebinar.PodcastWebinarActivity
 import com.uptodd.uptoddapp.utilities.*
+import com.uptodd.uptoddapp.utils.show
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,7 +104,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
         binding?.allTicketsBinding = viewModel
 
         fetchTutorials(requireContext())
-        binding?.collapseToolbar?.playTutorialIcon?.setOnClickListener {
+        binding.collapseToolbar.playTutorialIcon.setOnClickListener {
 
             fragmentManager?.let { it1 ->
                 val intent = Intent(context, PodcastWebinarActivity::class.java)
@@ -115,7 +116,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
             }
         }
 
-        binding?.collapseToolbar?.playTutorialIcon?.visibility = View.VISIBLE
+        binding.collapseToolbar.playTutorialIcon.show()
 
 
         val end = SimpleDateFormat("yyyy-MM-dd").parse(
@@ -133,7 +134,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                         view?.findNavController()?.navigateUp()
                     }
                 }
-            )
+            ,R.drawable.conselling_icon_popup)
         } else if (AllUtil.isSubscriptionOver(end)) {
             val upToddDialogs = UpToddDialogs(requireContext())
             upToddDialogs.showInfoDialog("24*7 Support is only for Premium Subscribers", "Close",
@@ -147,7 +148,7 @@ class HomeExpertCounselling : Fragment(), ExpertCounsellingInterface {
                     }
 
                 }
-            )
+            ,R.drawable.conselling_icon_popup)
         } else {
             fetchDataFromApi()
         }

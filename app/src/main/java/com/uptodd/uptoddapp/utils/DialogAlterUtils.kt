@@ -2,8 +2,11 @@ package com.uptodd.uptoddapp.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.res.ColorStateList
 import android.view.Window
 import android.widget.ImageButton
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import com.uptodd.uptoddapp.R
 import com.uptodd.uptoddapp.databinding.AppRatingLayoutBinding
 import com.uptodd.uptoddapp.ui.home.homePage.reviewmodel.ProgramReviewRequest
@@ -84,14 +87,21 @@ private fun onClickStar(
 
 private fun clearStart(index: Int, ids: ArrayList<ImageButton>) {
     for (i in index until ids.size) {
-        ids[i].setImageResource(R.drawable.ic_starts_svg_empty)
+        ImageViewCompat.setImageTintList(
+            ids[i],
+            ColorStateList.valueOf(ContextCompat.getColor(ids[i].context, R.color.color_start_baby))
+        )
+        //ids[i].setImageResource(R.drawable.ic_starts_svg_empty)
     }
 }
 
 private fun setStarItem(index: Int, ids: ArrayList<ImageButton>) {
 
     for (i in 0..index) {
-        ids[i].setImageResource(R.drawable.ic_starts_svg_full)
+        ImageViewCompat.setImageTintList(
+            ids[i],
+            null
+        )
     }
 
 

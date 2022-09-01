@@ -10,6 +10,7 @@ import android.os.CountDownTimer
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.NavController
 import com.uptodd.uptoddapp.R
@@ -29,11 +30,15 @@ class UpToddDialogs(val context: Context) {
     fun showInfoDialog(
         text: String,
         buttonText: String,
-        upToddClickListener: UpToddDialogListener
+        upToddClickListener: UpToddDialogListener,
+        res: Int? = null
     ): UpToddDialogs {
         this.upToddDialogListener = upToddClickListener
         dialog.setContentView(R.layout.msg_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        if (res!=null){//For Counselling Section only
+            dialog.findViewById<ImageView>(R.id.msg_dialog_img).setImageResource(res)
+        }
         val dialogButton: Button = dialog.findViewById(R.id.msg_dialog_button)
         val dialogText = dialog.findViewById<TextView>(R.id.msg_dialog_text)
         dialogText.text = text
@@ -87,7 +92,7 @@ class UpToddDialogs(val context: Context) {
 
 
     fun showKitKitOrderDialog(
-        text: String="Please fill this form to get your next kit.",
+        text: String = "Please fill this form to get your next kit.",
         context: Activity,
         success: () -> Unit,
         cancel: () -> Unit,

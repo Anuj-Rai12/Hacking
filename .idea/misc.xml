@@ -8,6 +8,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/arrow_circle_right.xml" value="0.1255" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/back_btn_bg.xml" value="0.1465" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/bg_border.xml" value="0.1255" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/circle_blue_fill_boy.xml" value="0.2215" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic__arrow_down.xml" value="0.1465" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_arrow.xml" value="0.214" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/drawable/ic_back_black.xml" value="0.1255" />
@@ -95,6 +96,7 @@
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_demo_video_module_fragments.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/free_parenting_action_bar.xml" value="0.4" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/gif_dialog.xml" value="0.2234375" />
+        <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/home_options_recyclerview_item.xml" value="0.6" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_podcast.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/item_act_sample.xml" value="0.2234375" />
         <entry key="..\:/Androidprojects/upToddAndroidApp3/app/src/main/res/layout/kit_tutorial_recyclerview_item.xml" value="0.2234375" />

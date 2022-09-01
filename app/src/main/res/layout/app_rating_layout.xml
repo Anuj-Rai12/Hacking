@@ -74,43 +74,50 @@
 
                         <ImageButton
                             android:id="@+id/star_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
                             android:layout_margin="5dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_starts_svg_full" />
+                            android:src="@drawable/star_baby_icon" />
 
                         <ImageButton
                             android:id="@+id/star_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
                             android:layout_margin="5dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_starts_svg_full" />
+                            android:src="@drawable/star_baby_icon" />
 
                         <ImageButton
                             android:id="@+id/star_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
                             android:layout_margin="5dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_starts_svg_full" />
+                            android:src="@drawable/star_baby_icon" />
 
                         <ImageButton
                             android:id="@+id/star_4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
+                            android:tint="#B6B6B6"
                             android:layout_margin="5dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_starts_svg_empty" />
+                            android:src="@drawable/star_baby_icon" />
 
                         <ImageButton
                             android:id="@+id/star_5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
                             android:layout_margin="5dp"
+                            android:tint="#B6B6B6"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_starts_svg_empty" />
+                            android:src="@drawable/star_baby_icon" />
 
                     </LinearLayout>
 

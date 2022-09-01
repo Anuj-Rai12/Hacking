@@ -29,7 +29,7 @@ class RemediesFragment : Fragment(R.layout.remides_layout_fragments), RemediesIn
         ToolbarUtils.initToolbar(
             requireActivity(), binding.collapseToolbar,
             findNavController(), getString(R.string.activity_remedies), "Symptoms and it's Cure",
-            R.drawable.app_icon_image
+            R.drawable.ic_gradma_tip
         )
 
         viewModel.getRemedies()
