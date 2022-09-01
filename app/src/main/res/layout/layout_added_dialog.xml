@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:background="@drawable/dark__blue_bg"
+                    app:backgroundTint="@color/color_dialog_btn"
                     android:fontFamily="@font/crimson_text_bold"
                     android:padding="7dp"
                     android:textAllCaps="false"

@@ -621,7 +621,7 @@ class TodosViewModel(
 
         val calendar = Calendar.getInstance()
         Log.d("minutes", "${TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis - lastCheck)}")
-        //_linkToGetKit.postValue("http://www.google.com")
+        _linkToGetKit.postValue("http://www.google.com")
         if (lastCheck != 0L && TimeUnit.MILLISECONDS.toHours(calendar.timeInMillis - lastCheck) < 2) {
             _isOutdatedVersion.value = false
             return
