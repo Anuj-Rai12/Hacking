@@ -54,16 +54,20 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
             return false
         }
 
-        if (type == RateUs.DATE_15 && currentDay >= day && currentMonth >= month) {
+        if (type == RateUs.DATE_15 && currentDay == day && currentMonth == month) {
             return true
         } else if (type == RateUs.DATE_15 && currentMonth > month) {
-            return true
+            saveDateOnEvery30Day(month, day)
+        } else if (type == RateUs.DATE_15 && currentMonth == month && currentDay > day) {
+            saveDateOnEvery30Day(month, day)
         }
 
-        if (type == RateUs.DATE_30 && currentDay >= day && currentMonth >= month) {
+        if (type == RateUs.DATE_30 && currentDay == day && currentMonth == month) {
             return true
-        } else if (type == RateUs.DATE_30 && currentMonth > month) {
-            return true
+        }  else if (type == RateUs.DATE_30 && currentMonth > month) {
+            saveDateOnEvery30Day(month, day)
+        } else if (type == RateUs.DATE_30 && currentMonth == month && currentDay > day) {
+            saveDateOnEvery30Day(month, day)
         }
 
         return false
