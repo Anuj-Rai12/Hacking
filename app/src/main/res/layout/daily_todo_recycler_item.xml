@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/todoRecyclerItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp"
+    android:layout_margin="10dp"
     android:background="?android:attr/selectableItemBackground"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <CheckBox
         android:id="@+id/completeStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:checked="true"
         android:visibility="gone"
-        tools:visibility="gone" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/thumbnail_todo"
         android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@drawable/round_rectangle"
         android:backgroundTint="@color/white"
         android:src="@drawable/superman"
-        android:layout_toRightOf="@+id/completeStatus"
-        android:layout_height="100dp">
-    </ImageView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/completeStatus"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="170dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/alarmSwitch"
         android:layout_centerVertical="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="13dp"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnail_todo"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/thumbnail_todo"
-        android:padding="@dimen/activity_vertical_margin"
+        android:padding="10dp"
+        android:textAlignment="textStart"
         android:text="task name here"
         android:textColor="@color/textGrey"
-        android:textSize="17sp" />
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        app:layout_constraintTop_toTopOf="@id/thumbnail_todo"
+        app:layout_constraintLeft_toRightOf="@id/thumbnail_todo"
+        app:layout_constraintRight_toLeftOf="@id/alarmSwitch" />
 
     <TextView
         android:id="@+id/timeTextView"
@@ -48,8 +58,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:text="TextView"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="time" />
 
     <ImageView
         android:id="@+id/alarmClockIcon"
@@ -57,9 +69,14 @@
         android:layout_height="35dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="30dp"
         android:src="@drawable/ic_baseline_alarm_24"
-        android:visibility="invisible" />
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeTextView"
+        tools:visibility="visible" />
+
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/alarmSwitch"
@@ -68,6 +85,10 @@
         android:layout_below="@+id/timeTextView"
         android:layout_alignStart="@+id/timeTextView"
         android:layout_alignLeft="@+id/timeTextView"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp" />
-</RelativeLayout>
+        android:layout_marginRight="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/alarmClockIcon"
+        app:layout_constraintTop_toBottomOf="@id/timeTextView"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

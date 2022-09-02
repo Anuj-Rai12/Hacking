@@ -119,8 +119,9 @@ class TodosRecyclerAdapter(
             } else {
                 holder.itemView.completeStatus.visibility = View.GONE
             }
+
             if (todo.doType == 0) {  // dont's will not have alarm switch
-                holder.itemView.alarmSwitch.visibility = View.INVISIBLE
+                holder.itemView.alarmSwitch.visibility = View.GONE
             }
 
             holder.bind(todo, todosInterface)
@@ -175,9 +176,9 @@ class TodosRecyclerAdapter(
             itemView.alarmSwitch.isChecked = todo.isAlarmNeededByUser
 
             itemView.alarmSwitch.visibility =
-                if (todo.alarmTimeByUser != "00:00:00") View.VISIBLE else View.INVISIBLE
+                if (todo.alarmTimeByUser != "00:00:00") View.VISIBLE else View.GONE
             itemView.timeTextView.visibility =
-                if (todo.alarmTimeByUser != "00:00:00") View.VISIBLE else View.INVISIBLE
+                if (todo.alarmTimeByUser != "00:00:00") View.VISIBLE else View.GONE
 
 
             if (todo.type == WEEKLY_TODO && todo.alarmTimeByUser != "00:00:00") {
