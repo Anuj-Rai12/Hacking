@@ -263,6 +263,11 @@ class HomePageFragment : Fragment(), HomeOptionsAdapter.HomeOptionsClickListener
         }
         getPostReviewResponse()
         //Sample Rating App Testing
+        activity?.rateUsDialog("Rate The App!", "Tell us what you think.", success = {
+//            viewModel.postReviewApi(it)
+        }, cancel = {
+          //  viewModel.setRateUs("", requireContext())
+        })
         val store =
             RateUsSave(uptoddSharedPreferences = UptoddSharedPreferences.getInstance(requireContext()))
         if (store.shouldShowDialogBox()) {
