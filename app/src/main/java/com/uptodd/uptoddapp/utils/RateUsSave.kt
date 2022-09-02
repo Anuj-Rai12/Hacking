@@ -49,9 +49,16 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
         val day = uptoddSharedPreferences.getRatingDay()
         val month = uptoddSharedPreferences.getRatingMonth()
         val type = uptoddSharedPreferences.getRatingType()
-
+        Log.i(
+            "RATEUS",
+            "  check shouldShowDialogBox: $day and $month and DayInMonth ${months[month - 1]} type $type"
+        )
         if (type.isNullOrEmpty() || month == -1 || day == -1) {
             return false
+        }
+
+        if (isDateIn4NextYr(currentDay = currentDay, Day = day+1, DayInMonth = months[month - 1])) {
+            return true
         }
 
         if (type == RateUs.DATE_15 && currentDay == day && currentMonth == month) {
@@ -64,7 +71,7 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
 
         if (type == RateUs.DATE_30 && currentDay == day && currentMonth == month) {
             return true
-        }  else if (type == RateUs.DATE_30 && currentMonth > month) {
+        } else if (type == RateUs.DATE_30 && currentMonth > month) {
             saveDateOnEvery30Day(month, day)
         } else if (type == RateUs.DATE_30 && currentMonth == month && currentDay > day) {
             saveDateOnEvery30Day(month, day)
@@ -72,6 +79,20 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
 
         return false
     }
+
+
+    private fun isDateIn4NextYr(currentDay: Int, Day: Int, DayInMonth: Int): Boolean {
+        val intArray = IntArray(4)
+        for ((index, i) in (Day+1..Day + 4).withIndex()) {
+            if (i % DayInMonth == 0)
+                intArray[index] = i
+            else
+                intArray[index] = i % DayInMonth
+        }
+
+        return intArray.contains(currentDay)
+    }
+
 
     private fun getDate(format: String = "yyyy-MM-dd"): String? {
         val current = LocalDateTime.now()
