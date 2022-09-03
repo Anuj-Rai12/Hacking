@@ -49,14 +49,14 @@ class RateUsSave(private val uptoddSharedPreferences: UptoddSharedPreferences) {
         val day = uptoddSharedPreferences.getRatingDay()
         val month = uptoddSharedPreferences.getRatingMonth()
         val type = uptoddSharedPreferences.getRatingType()
-        Log.i(
-            "RATEUS",
-            "  check shouldShowDialogBox: $day and $month and DayInMonth ${months[month - 1]} type $type"
-        )
         if (type.isNullOrEmpty() || month == -1 || day == -1) {
             return false
         }
 
+        Log.i(
+            "RATEUS",
+            "  check shouldShowDialogBox: $day and $month and DayInMonth ${months[month - 1]} type $type"
+        )
         if (isDateIn4NextYr(currentDay = currentDay, Day = day+1, DayInMonth = months[month - 1])) {
             return true
         }
